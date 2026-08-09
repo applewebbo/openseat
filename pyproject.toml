@@ -1,0 +1,90 @@
+[dependency-groups]
+dev = [
+  "coverage",
+  "django-coverage-plugin",
+  "django-crawl",
+  "django-devbar",
+  "django-test-plus",
+  "django-watchfiles",
+  "djade",
+  "djlint",
+  "factory-boy",
+  "httpx",
+  "pre-commit",
+  "pytest",
+  "pytest-cov",
+  "pytest-django",
+  "pytest-factoryboy",
+  "pytest-httpx",
+  "pytest-mock",
+  "pytest-xdist",
+  "ruff",
+  "time-machine"
+]
+
+[project]
+dependencies = [
+  "crispy-tailwind",
+  "dj-database-url",
+  "django>=6.1",
+  "django-allauth[socialaccount]",
+  "django-anymail[mailgun]",
+  "django-browser-reload",
+  "django-cotton",
+  "django-crispy-forms",
+  "django-dbbackup",
+  "django-environ",
+  "django-extensions",
+  "django-htmx",
+  "django-pwa",
+  "django-q2",
+  "django-redis",
+  "django-storages",
+  "django-tailwind-cli",
+  "granian[pname]",
+  "pillow",
+  "psycopg[binary]",
+  "redis",
+  "uvloop",
+  "whitenoise"
+]
+description = "OpenSeat"
+name = "openseat"
+readme = "README.md"
+requires-python = ">=3.14"
+version = "2026.1.0"
+
+[tool.bandit]
+exclude_dirs = ["tests"]  # fixture credentials are not secrets
+skips = ["B101"]
+
+[tool.coverage.run]
+branch = true
+omit = [
+  '*/migrations/*',
+  '*/tests/*',
+  '*/test_*.py',
+  '*/wsgi.py',
+  '*/asgi.py',
+  '*/manage.py',
+  '*/core/*',
+  '*/scripts/*'
+]
+
+[tool.djlint]
+ignore = "T002,H006"
+profile = "django"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "core.settings"
+addopts = "--reuse-db --nomigrations"
+python_files = "test_*.py"
+testpaths = ["tests"]
+xfail_strict = true
+
+[tool.ruff]
+target-version = "py314"
+
+[tool.ruff.lint]
+ignore = ["E501", "E741"]
+select = ["E", "F", "B", "I"]

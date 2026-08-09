@@ -1,0 +1,5 @@
+procs:
+  web:
+    cmd: [just, local]
+  worker:
+    cmd: [uv, run, python, manage.py, qcluster]

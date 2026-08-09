@@ -1,0 +1,27 @@
+{% load django_htmx i18n static tailwind_cli %}
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description"
+              content="{% block meta_description %}OpenSeat{% endblock %}" />
+        <title>
+            {% block title %}OpenSeat{% endblock %}
+        </title>
+        {% tailwind_css %}
+        {% block extra_head %}{% endblock %}
+    </head>
+    <body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'
+          class="bg-base-100 text-base-content min-h-screen">
+        {% block content %}{% endblock %}
+        {% htmx_script %}
+        <!-- main.js must load before Alpine to register its alpine:init listener -->
+        <script src="{% static 'js/main.js' %}" defer></script>
+        <!-- Alpine plugins before Alpine core -->
+        <script src="{% static 'js/alpine-collapse.min.js' %}" defer></script>
+        <script src="{% static 'js/alpine-focus.min.js' %}" defer></script>
+        <script src="{% static 'js/alpine.min.js' %}" defer></script>
+        {% block script %}{% endblock %}
+    </body>
+</html>

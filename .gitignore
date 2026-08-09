@@ -1,0 +1,30 @@
+.venv/
+__pycache__/
+*.py[cod]
+
+.env
+.env.*
+!.env.example
+
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+backups/
+
+# Compiled by `manage.py tailwind build`
+static/css/tailwind.css
+.django_tailwind_cli/
+
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+.ruff_cache/
+
+# Compiled translations are built at deploy time
+*.mo
+
+plans/
+.DS_Store
+.playwright-mcp/

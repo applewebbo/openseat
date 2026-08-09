@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 20**]
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    env:
+      SECRET_KEY: ci-secret-key
+      ENVIRONMENT: test
+      DEBUG: 'False'
+      TEST_WORKERS: '4'
+    steps:
+    - uses: actions/checkout@v5
+
+    - uses: astral-sh/setup-uv@v7
+      with:
+        enable-cache: true
+
+    - run: uv sync --frozen
+
+    - name: Lint
+      run: uvx prek run --all-files
+
+    - name: Tests with coverage
+      run: |
+        uv run pytest -n "$TEST_WORKERS" --dist loadscope --cov=. \
+          --cov-report term:skip-covered --cov-fail-under 100

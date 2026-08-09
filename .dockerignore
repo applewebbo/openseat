@@ -1,0 +1,16 @@
+.venv/
+.git/
+.env
+.env.*
+!.env.example
+db.sqlite3
+htmlcov/
+staticfiles/
+static/css/tailwind.css
+media/
+docs/
+site/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/

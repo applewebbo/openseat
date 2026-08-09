@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+    <main class="hero min-h-screen">
+        <div class="hero-content text-center">
+            <div class="max-w-md">
+                <h1 class="text-5xl font-bold">OpenSeat</h1>
+                <p class="py-6">{% translate "The project is up and running." %}</p>
+                <a class="btn btn-primary" href="{% url 'admin:index' %}">{% translate "Admin" %}</a>
+            </div>
+        </div>
+    </main>
+{% endblock content %}
