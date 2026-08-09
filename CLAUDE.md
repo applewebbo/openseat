@@ -47,6 +47,9 @@ just update_all       # lock + Alpine + hooks
   holding classes needs its own `@source` line; never point one inside `.venv/`.
 - After adding utility classes run `manage.py tailwind build --force` — a plain
   build reports "up to date" and skips the rebuild.
+- The compiled `static/css/tailwind.css` is gitignored, so **the crawl tests need it
+  built**: on a fresh clone run `just local` (or a `tailwind build`) once before
+  `just cov`. CI builds it explicitly for the same reason.
 - **`DEBUG` fails closed**: strict parse, defaults to `False`. So does `ENVIRONMENT`
   (defaults to `prod`). `SECRET_KEY` has no default and crashes at startup if unset.
 - **`LoginRequiredMiddleware` is on**: every public view needs `@login_not_required`.
