@@ -1,7 +1,22 @@
 # OpenSeat
 
-Django 6.1 application, server-driven (htmx + Alpine + Tailwind/daisyUI), deployed
-to Coolify.
+Free and open source, self-hosted booking manager for non-profit associations.
+OpenSeat handles event reservations, keeps the membership roster with CSV export,
+and mails the attendance report automatically once an event is over.
+
+Built to be run by the association itself: one container, one database, no SaaS
+subscription and no data leaving the organisation.
+
+## Features
+
+- **Event bookings** — members reserve a seat, the organiser sees the list fill up.
+- **Membership roster** — the members an association has to keep track of anyway,
+  exportable to CSV for the accountant or the annual filing.
+- **Automatic reports** — when an event closes, the summary goes out by email
+  without anyone remembering to send it.
+
+> **Status:** the project scaffold is in place (auth, background tasks, deployment).
+> The features above are the goal, not yet the implementation.
 
 ## Requirements
 

@@ -1,6 +1,10 @@
 # OpenSeat
 
-Django 6.1 project, server-driven, deployed to Coolify from `main`.
+Self-hosted, open source booking manager for non-profit associations: event
+reservations, membership roster with CSV export, and automatic attendance reports
+emailed when an event closes.
+
+Django 6.1, server-driven, deployed to Coolify from `main`.
 
 ## Stack
 

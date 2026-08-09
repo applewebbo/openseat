@@ -144,7 +144,7 @@ DATE_INPUT_FORMATS = ["%d/%m/%Y", "%Y-%m-%d"]
 
 # PWA
 PWA_APP_NAME = "OpenSeat"
-PWA_APP_DESCRIPTION = "OpenSeat"
+PWA_APP_DESCRIPTION = "Event bookings and membership roster for non-profit associations"
 PWA_APP_THEME_COLOR = "#1d4ed8"
 PWA_APP_BACKGROUND_COLOR = "#ffffff"
 PWA_APP_DISPLAY = "standalone"
