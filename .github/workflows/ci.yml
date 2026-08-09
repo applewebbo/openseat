@@ -22,17 +22,6 @@ jobs:
 
     - run: uv sync --frozen
 
-    - name: Cache the Tailwind CLI binary
-      uses: actions/cache@v4
-      with:
-        path: .django_tailwind_cli
-        key: tailwind-cli-${{ runner.os }}
-
-      # The compiled stylesheet is gitignored, so the crawl tests would report it
-      # as a dead asset unless it is built first.
-    - name: Build CSS
-      run: uv run python manage.py tailwind build --force
-
     - name: Lint
       run: uvx prek run --all-files
 

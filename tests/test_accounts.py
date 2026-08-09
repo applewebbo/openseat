@@ -1,18 +1,10 @@
 import pytest
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from django.utils.translation import override
 
 from accounts.models import CustomUser
 
 User = get_user_model()
-
-
-@pytest.fixture
-def english():
-    """Assert on error text in the source language, not the active locale."""
-    with override("en"):
-        yield
 
 
 @pytest.mark.django_db
