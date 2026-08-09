@@ -49,6 +49,8 @@ dependencies = [
   "whitenoise"
 ]
 description = "Self-hosted event bookings and membership roster for non-profit associations"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE"]
 name = "openseat"
 readme = "README.md"
 requires-python = ">=3.14"

@@ -60,3 +60,17 @@ See [CLAUDE.md](CLAUDE.md) for the full stack and the project conventions.
 Coolify builds the `Dockerfile` on push to `main`. `entrypoint.sh` migrates,
 compiles translations, builds the CSS, collects static files, then starts
 `web` + `worker` via hivemind.
+
+## License
+
+Copyright (C) 2026 Enrico Bonardi
+
+OpenSeat is free software: you can redistribute it and/or modify it under the terms
+of the GNU Affero General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later version.
+See [LICENSE](LICENSE) for the full text.
+
+The AGPL covers network use: if you host a **modified** version of OpenSeat and let
+other people use it over a network, you have to offer them its source code.
+Installing and running it unmodified — the normal case for an association — carries
+no such obligation beyond pointing users at this repository.
