@@ -70,9 +70,11 @@ def book(request, slug):
         if chosen.exists():
             for member in chosen:
                 Booking.objects.book(event, member)
-            for booking in event.bookings.confirmed().exclude(
-                member__in=chosen
-            ).filter(member__in=household):
+            for booking in (
+                event.bookings.confirmed()
+                .exclude(member__in=chosen)
+                .filter(member__in=household)
+            ):
                 booking.cancel()
             return redirect("events:booked", slug=event.slug)
 

@@ -22,9 +22,7 @@ def member_rows(members):
     that leaves the app for an accountant or an annual filing."""
     yield COLUMNS
     for member in members:
-        residence = " ".join(
-            part for part in (member.street, member.number) if part
-        )
+        residence = " ".join(part for part in (member.street, member.number) if part)
         if member.city:
             residence = f"{residence}, {member.postcode} {member.city}".strip()
         yield [

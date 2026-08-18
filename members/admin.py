@@ -40,4 +40,6 @@ class MemberAdmin(admin.ModelAdmin):
         updated = queryset.filter(ratified_on__isnull=True).update(
             ratified_on=date.today()
         )
-        self.message_user(request, _("%(count)d admissions minuted.") % {"count": updated})
+        self.message_user(
+            request, _("%(count)d admissions minuted.") % {"count": updated}
+        )

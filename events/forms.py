@@ -27,7 +27,10 @@ class IdentifyForm(forms.Form):
         max_length=16,
         validators=[validate_tax_code],
         widget=forms.TextInput(
-            attrs={"class": "input input-bordered w-full", "autocapitalize": "characters"}
+            attrs={
+                "class": "input input-bordered w-full",
+                "autocapitalize": "characters",
+            }
         ),
     )
 

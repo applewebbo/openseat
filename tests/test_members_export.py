@@ -31,7 +31,9 @@ def test_the_export_names_its_columns(member_factory, association):
 
 def test_a_member_becomes_one_row(member_factory, association):
     member_factory(
-        association=association, first_name="Luca", last_name="Rossi",
+        association=association,
+        first_name="Luca",
+        last_name="Rossi",
         tax_code="RSSLCU15P03F952V",
     )
 
@@ -85,15 +87,20 @@ def test_the_command_exports_only_the_chosen_range(
     member_factory, association, tmp_path
 ):
     today = date.today()
-    _joined(member_factory, association, today - timedelta(days=40), first_name="Vecchia")
+    _joined(
+        member_factory, association, today - timedelta(days=40), first_name="Vecchia"
+    )
     _joined(member_factory, association, today - timedelta(days=2), first_name="Nuova")
     destination = tmp_path / "soci.csv"
 
     call_command(
         "export_members",
-        "--from", (today - timedelta(days=7)).isoformat(),
-        "--to", today.isoformat(),
-        "--output", str(destination),
+        "--from",
+        (today - timedelta(days=7)).isoformat(),
+        "--to",
+        today.isoformat(),
+        "--output",
+        str(destination),
     )
 
     body = destination.read_text()
@@ -105,7 +112,9 @@ def test_the_command_writes_everyone_when_no_range_is_given(
     member_factory, association, tmp_path
 ):
     today = date.today()
-    _joined(member_factory, association, today - timedelta(days=400), first_name="Vecchia")
+    _joined(
+        member_factory, association, today - timedelta(days=400), first_name="Vecchia"
+    )
     destination = tmp_path / "soci.csv"
 
     call_command("export_members", "--output", str(destination))
@@ -113,7 +122,9 @@ def test_the_command_writes_everyone_when_no_range_is_given(
     assert "Vecchia" in destination.read_text()
 
 
-def test_the_command_says_how_many_it_wrote(member_factory, association, tmp_path, capsys):
+def test_the_command_says_how_many_it_wrote(
+    member_factory, association, tmp_path, capsys
+):
     member_factory(association=association)
     destination = tmp_path / "soci.csv"
 

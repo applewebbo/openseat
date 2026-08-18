@@ -5,16 +5,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('events', '0001_initial'),
-        ('intake', '0002_submission_reminder_sent_at'),
+        ("events", "0001_initial"),
+        ("intake", "0002_submission_reminder_sent_at"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='submission',
-            name='event',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='applications', to='events.event', verbose_name='booked for'),
+            model_name="submission",
+            name="event",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="applications",
+                to="events.event",
+                verbose_name="booked for",
+            ),
         ),
     ]

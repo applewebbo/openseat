@@ -5,42 +5,135 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('intake', '0002_submission_reminder_sent_at'),
+        ("intake", "0002_submission_reminder_sent_at"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Member',
+            name="Member",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=100, verbose_name='first name')),
-                ('last_name', models.CharField(max_length=100, verbose_name='last name')),
-                ('birth_date', models.DateField(blank=True, null=True, verbose_name='date of birth')),
-                ('birth_place', models.CharField(blank=True, max_length=100, verbose_name='place of birth')),
-                ('tax_code', models.CharField(blank=True, max_length=16, verbose_name='tax code')),
-                ('street', models.CharField(blank=True, max_length=200, verbose_name='street')),
-                ('number', models.CharField(blank=True, max_length=10, verbose_name='number')),
-                ('postcode', models.CharField(blank=True, max_length=5, verbose_name='postcode')),
-                ('city', models.CharField(blank=True, max_length=100, verbose_name='city')),
-                ('email', models.EmailField(blank=True, max_length=254, verbose_name='email address')),
-                ('contact_name', models.CharField(blank=True, max_length=200, verbose_name='contact')),
-                ('contact_email', models.EmailField(max_length=254, verbose_name='contact email')),
-                ('contact_phone', models.CharField(blank=True, max_length=20, verbose_name='contact phone')),
-                ('joined_on', models.DateField(auto_now_add=True, verbose_name='joined on')),
-                ('ratified_on', models.DateField(blank=True, help_text='When the board minuted the admission.', null=True, verbose_name='ratified on')),
-                ('is_active', models.BooleanField(default=True, verbose_name='active')),
-                ('association', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='members', to='intake.association', verbose_name='association')),
-                ('submission', models.OneToOneField(blank=True, help_text='Empty for members entered by hand from a paper form.', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='member', to='intake.submission', verbose_name='application')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "first_name",
+                    models.CharField(max_length=100, verbose_name="first name"),
+                ),
+                (
+                    "last_name",
+                    models.CharField(max_length=100, verbose_name="last name"),
+                ),
+                (
+                    "birth_date",
+                    models.DateField(
+                        blank=True, null=True, verbose_name="date of birth"
+                    ),
+                ),
+                (
+                    "birth_place",
+                    models.CharField(
+                        blank=True, max_length=100, verbose_name="place of birth"
+                    ),
+                ),
+                (
+                    "tax_code",
+                    models.CharField(
+                        blank=True, max_length=16, verbose_name="tax code"
+                    ),
+                ),
+                (
+                    "street",
+                    models.CharField(blank=True, max_length=200, verbose_name="street"),
+                ),
+                (
+                    "number",
+                    models.CharField(blank=True, max_length=10, verbose_name="number"),
+                ),
+                (
+                    "postcode",
+                    models.CharField(blank=True, max_length=5, verbose_name="postcode"),
+                ),
+                (
+                    "city",
+                    models.CharField(blank=True, max_length=100, verbose_name="city"),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        blank=True, max_length=254, verbose_name="email address"
+                    ),
+                ),
+                (
+                    "contact_name",
+                    models.CharField(
+                        blank=True, max_length=200, verbose_name="contact"
+                    ),
+                ),
+                (
+                    "contact_email",
+                    models.EmailField(max_length=254, verbose_name="contact email"),
+                ),
+                (
+                    "contact_phone",
+                    models.CharField(
+                        blank=True, max_length=20, verbose_name="contact phone"
+                    ),
+                ),
+                (
+                    "joined_on",
+                    models.DateField(auto_now_add=True, verbose_name="joined on"),
+                ),
+                (
+                    "ratified_on",
+                    models.DateField(
+                        blank=True,
+                        help_text="When the board minuted the admission.",
+                        null=True,
+                        verbose_name="ratified on",
+                    ),
+                ),
+                ("is_active", models.BooleanField(default=True, verbose_name="active")),
+                (
+                    "association",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="members",
+                        to="intake.association",
+                        verbose_name="association",
+                    ),
+                ),
+                (
+                    "submission",
+                    models.OneToOneField(
+                        blank=True,
+                        help_text="Empty for members entered by hand from a paper form.",
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="member",
+                        to="intake.submission",
+                        verbose_name="application",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'member',
-                'verbose_name_plural': 'members',
-                'ordering': ('last_name', 'first_name'),
-                'indexes': [models.Index(fields=['association', 'contact_email'], name='members_mem_associa_3163fa_idx')],
+                "verbose_name": "member",
+                "verbose_name_plural": "members",
+                "ordering": ("last_name", "first_name"),
+                "indexes": [
+                    models.Index(
+                        fields=["association", "contact_email"],
+                        name="members_mem_associa_3163fa_idx",
+                    )
+                ],
             },
         ),
     ]

@@ -128,11 +128,15 @@ def test_an_unknown_email_matches_nobody(member_factory, association):
     assert not Member.objects.for_contact(association, "chi@example.com").exists()
 
 
-def test_a_member_of_another_association_is_not_found(member_factory, association_factory):
+def test_a_member_of_another_association_is_not_found(
+    member_factory, association_factory
+):
     other = association_factory(slug="altra")
     member_factory(association=other, contact_email="maria@example.com")
 
-    assert not Member.objects.for_contact(association_factory(slug="qui"), "maria@example.com").exists()
+    assert not Member.objects.for_contact(
+        association_factory(slug="qui"), "maria@example.com"
+    ).exists()
 
 
 def test_an_inactive_member_is_not_offered(member_factory, association):

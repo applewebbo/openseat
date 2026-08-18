@@ -110,9 +110,7 @@ def test_a_member_of_another_association_does_not_open_this_event(
 # --- booking ---------------------------------------------------------------
 
 
-def test_the_whole_family_is_offered_once_one_of_them_is_proven(
-    client, event, family
-):
+def test_the_whole_family_is_offered_once_one_of_them_is_proven(client, event, family):
     """A parent who knows one child's tax code manages the others too."""
     _identify(client, event)
 
@@ -235,15 +233,15 @@ def test_joining_for_an_event_books_the_place_on_submission(
     assert booking.member.first_name == "Luca"
 
 
-def test_an_association_with_no_application_form_cannot_take_new_members(
-    client, event
-):
+def test_an_association_with_no_application_form_cannot_take_new_members(client, event):
     response = client.post(reverse("events:join", args=[event.slug]))
 
     assert response.status_code == 404
 
 
-def test_an_invalid_tax_code_stops_before_the_register_is_queried(client, event, family):
+def test_an_invalid_tax_code_stops_before_the_register_is_queried(
+    client, event, family
+):
     """A malformed code is a field error, not a "no such member" answer."""
     response = _identify(client, event, tax_code="non-un-codice")
 
