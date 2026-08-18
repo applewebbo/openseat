@@ -31,3 +31,14 @@
     margin-inline: auto;
     padding-inline: 1rem;
 }
+
+/* The association's own colours arrive as custom properties on the page, so
+   they cannot be Tailwind classes. These utilities keep them out of style
+   attributes all the same. */
+@utility bg-assoc {
+  background-color: var(--assoc-bright);
+}
+
+@utility text-accent-strong {
+  color: var(--color-accent);
+}

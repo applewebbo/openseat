@@ -60,9 +60,12 @@ INSTALLED_APPS = [
     "intake",
 ]
 
+# WhiteNoise is added by the prod branch alone. In dev, runserver's own static
+# handler answers first and WhiteNoise never sees the request; in tests, nothing
+# asks for a static file and STATIC_ROOT does not exist until collectstatic runs
+# at deploy, so it would warn once per request about a deliberate absence.
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -142,6 +145,13 @@ USE_I18N = True
 USE_TZ = True
 
 DATE_INPUT_FORMATS = ["%d/%m/%Y", "%Y-%m-%d"]
+
+# INTAKE
+# A draft nobody has touched for this long earns one reminder, never two.
+INTAKE_DRAFT_REMINDER_HOURS = env.int("INTAKE_DRAFT_REMINDER_HOURS", default=24)
+# ...and is deleted this long after its last change, which is also what the
+# privacy notice promises about keeping only what is still needed.
+INTAKE_DRAFT_EXPIRY_DAYS = env.int("INTAKE_DRAFT_EXPIRY_DAYS", default=30)
 
 # PWA
 PWA_APP_NAME = "OpenSeat"
@@ -250,6 +260,7 @@ elif ENVIRONMENT == "test":
     }
 
 else:  # prod
+    MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
     DATABASES = {
         "default": dj_database_url.config(
             conn_max_age=env("DATABASE_CONN_MAX_AGE"),

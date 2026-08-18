@@ -1,0 +1,12 @@
+{% load i18n %}{% autoescape off %}{% if reminder %}{% blocktranslate with association=association.name %}Your application to {{ association }} is still unfinished.{% endblocktranslate %}
+
+{% translate "Nothing has been sent to the association yet. Pick it up here, and you will land where you left off:" %}{% else %}{% translate "Here is the link back into your application. Open it whenever you have a moment and you will land where you left off:" %}{% endif %}
+
+{{ resume_url }}
+
+{% blocktranslate with date=expires_at|date:"d/m/Y" %}An unfinished application is deleted on {{ date }}, thirty days after the last change.{% endblocktranslate %}
+
+--
+{{ association.name }}
+{{ association.email }}
+{% endautoescape %}

@@ -49,6 +49,12 @@ def position(submission, step):
     return path.index(step) + 1, len(path)
 
 
+def resume_step(submission):
+    """Where this applicant belongs right now: the first gap, else the last step."""
+    missing = incomplete_steps(submission)
+    return missing[0] if missing else submission.path()[-1]
+
+
 def incomplete_steps(submission):
     """Every step whose own form would still refuse the data on file.
 
@@ -59,7 +65,9 @@ def incomplete_steps(submission):
     for step in submission.path():
         if step == SectionKey.REVIEW:
             continue
-        form = SECTION_FORMS[step](data=_data_on_file(submission, step), instance=submission)
+        form = SECTION_FORMS[step](
+            data=_data_on_file(submission, step), instance=submission
+        )
         if not form.is_valid():
             missing.append(step)
     return missing
@@ -69,7 +77,7 @@ def _data_on_file(submission, step):
     """Re-bind a step's form to what the draft already holds."""
     form = SECTION_FORMS[step](instance=submission)
     data = {}
-    for name, field in form.fields.items():
+    for name in form.fields:
         value = form[name].value()
         if isinstance(value, bool):
             value = str(value)

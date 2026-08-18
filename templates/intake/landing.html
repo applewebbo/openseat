@@ -6,26 +6,44 @@
 {% block content %}
     <h1 class="text-4xl font-bold tracking-tight text-balance sm:text-5xl">{{ public_form.title }}</h1>
     {% if public_form.intro %}
-        <p class="mt-5 max-w-prose text-lg leading-relaxed text-base-content/80">{{ public_form.intro|linebreaksbr }}</p>
+        <p class="text-base-content/80 mt-5 max-w-prose text-lg leading-relaxed">{{ public_form.intro|linebreaksbr }}</p>
+    {% endif %}
+
+    {% if resumable %}
+        <div class="border-primary/30 mt-10 rounded-2xl border-2 bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.15)] sm:p-8">
+            <h2 class="text-base font-semibold tracking-tight">{% translate "You have an application in progress" %}</h2>
+            <p class="text-base-content/80 mt-2 max-w-prose text-sm leading-relaxed">
+                {% if resumable.member_display %}
+                    {% blocktranslate with name=resumable.member_display %}The one you started for {{ name }} is still here, exactly as you left it.{% endblocktranslate %}
+                {% else %}
+                    {% translate "The one you started is still here, exactly as you left it." %}
+                {% endif %}
+            </p>
+            <a class="btn btn-primary mt-6 w-full rounded-xl sm:w-auto sm:px-8"
+               href="{% url 'intake:step' resumable.token resumable_step %}">{% translate "Carry on where you left off" %}</a>
+        </div>
     {% endif %}
 
     {% if public_form.is_open %}
         <div class="mt-10 rounded-2xl border border-black/5 bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.15)] sm:p-8">
-            <h2 class="text-base font-semibold tracking-tight">{% translate "Before you start, have these to hand" %}</h2>
-            <ul class="mt-4 space-y-2.5 text-sm leading-relaxed text-base-content/80">
+            <h2 class="text-base font-semibold tracking-tight">
+                {% if resumable %}
+                    {% translate "Or begin a new one" %}
+                {% else %}
+                    {% translate "Before you start, have these to hand" %}
+                {% endif %}
+            </h2>
+            <ul class="text-base-content/80 mt-4 space-y-2.5 text-sm leading-relaxed">
                 <li class="flex gap-3">
-                    <span class="mt-2 size-1.5 shrink-0 rounded-full"
-                          style="background: var(--assoc-bright)"></span>
+                    <span class="bg-assoc mt-2 size-1.5 shrink-0 rounded-full"></span>
                     {% translate "The tax code and residence of whoever is applying" %}
                 </li>
                 <li class="flex gap-3">
-                    <span class="mt-2 size-1.5 shrink-0 rounded-full"
-                          style="background: var(--assoc-bright)"></span>
+                    <span class="bg-assoc mt-2 size-1.5 shrink-0 rounded-full"></span>
                     {% translate "For a minor, the same details for the child" %}
                 </li>
                 <li class="flex gap-3">
-                    <span class="mt-2 size-1.5 shrink-0 rounded-full"
-                          style="background: var(--assoc-bright)"></span>
+                    <span class="bg-assoc mt-2 size-1.5 shrink-0 rounded-full"></span>
                     {% blocktranslate with fee=association.membership_fee %}The annual fee is € {{ fee }}, to be paid to the association{% endblocktranslate %}
                 </li>
             </ul>
@@ -34,11 +52,16 @@
                   action="{% url 'intake:begin' public_form.slug %}"
                   class="mt-8">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-primary w-full rounded-xl sm:w-auto sm:px-8">
-                    {% translate "Start the application" %}
+                <button type="submit"
+                        class="btn w-full rounded-xl sm:w-auto sm:px-8 {% if resumable %}btn-outline{% else %}btn-primary{% endif %}">
+                    {% if resumable %}
+                        {% translate "Start a different application" %}
+                    {% else %}
+                        {% translate "Start the application" %}
+                    {% endif %}
                 </button>
             </form>
-            <p class="mt-4 text-xs leading-relaxed text-base-content/60">
+            <p class="text-base-content/60 mt-4 text-xs leading-relaxed">
                 {% translate "It takes a few minutes, one question at a time. You can stop and come back later from the same link." %}
             </p>
         </div>
@@ -46,9 +69,9 @@
         <div role="status"
              class="mt-10 rounded-2xl border border-black/10 bg-white p-6 sm:p-8">
             <h2 class="text-base font-semibold tracking-tight">{% translate "Applications are closed" %}</h2>
-            <p class="mt-2 max-w-prose text-sm leading-relaxed text-base-content/70">
+            <p class="text-base-content/70 mt-2 max-w-prose text-sm leading-relaxed">
                 {% blocktranslate with email=association.email %}This form is not accepting applications at the moment. Write to {{ email }} to ask when it reopens.{% endblocktranslate %}
             </p>
         </div>
     {% endif %}
-{% endblock %}
+{% endblock content %}

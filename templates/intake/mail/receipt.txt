@@ -1,4 +1,4 @@
-{% load i18n %}{% blocktranslate with name=submission.member_display %}The membership application for {{ name }} has been sent.{% endblocktranslate %}
+{% load i18n %}{% autoescape off %}{% blocktranslate with name=submission.member_display %}The membership application for {{ name }} has been sent.{% endblocktranslate %}
 
 {% blocktranslate with association=association.name %}It is now with the board of {{ association }}, which will confirm the enrolment.{% endblocktranslate %}
 
@@ -11,3 +11,4 @@
 {{ association.name }}
 {{ association.street }}, {{ association.postcode }} {{ association.city }}
 {{ association.email }}
+{% endautoescape %}

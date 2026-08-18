@@ -70,6 +70,23 @@ Consents are never a single checkbox and never pre-selected. Each is a required
 two-way radio (`yes_no_field`) rendered as two cards. This is a legal
 requirement, not a style: silence must not be readable as agreement.
 
+## Draft continuity
+
+Two mechanisms, deliberately complementary, because neither covers the other's
+case:
+
+- **Session**, for "same phone, came back": the draft token is remembered per
+  browser and the landing page offers it as the primary action, with starting
+  fresh demoted to an outline button beside it. Devices get shared, so the
+  new-application path is never hidden.
+- **Emailed link**, for "other device, or cookie gone": offered explicitly from
+  every step, and sent once by the hourly sweep to drafts untouched for a day.
+  Once, never twice, and never after the request is sent.
+
+An unfinished draft dies thirty days after its last change. Views answer 410 with
+a page that explains rather than an error, and the purge deletes the row — the
+same data minimisation the privacy notice promises.
+
 ## Motion
 
 One authored moment: the progress fill animates its width

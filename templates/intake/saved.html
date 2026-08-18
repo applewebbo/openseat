@@ -1,0 +1,16 @@
+{% extends "intake/base-intake.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Link sent" %} — {{ public_form.title }}{% endblock %}
+
+{% block content %}
+    <div class="rounded-2xl border border-black/5 bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.15)] sm:p-8">
+        <p class="text-accent-strong text-sm font-medium">{% translate "Sent" %}</p>
+        <h1 class="mt-2 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{% translate "The link is on its way" %}</h1>
+        <p class="mt-4 max-w-prose leading-relaxed text-base-content/80">
+            {% translate "Open it whenever you have a moment and you will land exactly where you left off." %}
+        </p>
+        <a class="btn btn-primary mt-8 rounded-xl px-7"
+           href="{% url 'intake:step' submission.token resume_step %}">{% translate "Carry on now" %}</a>
+    </div>
+{% endblock %}

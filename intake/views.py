@@ -4,34 +4,69 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
-from intake.forms import ReviewForm
+from intake.forms import ResumeLinkForm, ReviewForm
 from intake.models import PublicForm, SectionKey, Submission, Subscription
-from intake.notifications import notify_second_parent, send_receipt
-from intake.wizard import form_for, incomplete_steps, neighbours, position
+from intake.notifications import (
+    notify_second_parent,
+    send_receipt,
+    send_resume_link,
+)
+from intake.wizard import (
+    form_for,
+    incomplete_steps,
+    neighbours,
+    position,
+    resume_step,
+)
+
+DRAFT_SESSION_KEY = "intake_draft"
+
+
+def remembered_draft(request, public_form):
+    """The draft this browser already opened on this form, if it still stands."""
+    token = request.session.get(DRAFT_SESSION_KEY)
+    if not token:
+        return None
+    draft = Submission.objects.filter(
+        token=token, form=public_form, state=Submission.State.DRAFT
+    ).first()
+    if draft is None or draft.is_expired:
+        return None
+    return draft
+
+
+def gone(request, submission):
+    """A draft past its expiry is not an error to debug: it is simply over."""
+    return render(
+        request,
+        "intake/expired.html",
+        {"submission": submission, "association": submission.form.association},
+        status=410,
+    )
 
 
 def client_ip(request):
     """The caller's address, reading through a proxy when one is in front."""
-    forwarded = request.META.get("HTTP_X_FORWARDED_FOR", "")
+    forwarded = request.headers.get("x-forwarded-for", "")
     if forwarded:
         return forwarded.split(",")[0].strip()
     return request.META.get("REMOTE_ADDR")
-
-
-def resume_step(submission):
-    """Where an applicant belongs right now: the first gap, else the last step."""
-    missing = incomplete_steps(submission)
-    return missing[0] if missing else submission.path()[-1]
 
 
 @login_not_required
 def landing(request, slug):
     """What the form is, who it belongs to, and what you need before starting."""
     public_form = get_object_or_404(PublicForm, slug=slug)
+    resumable = remembered_draft(request, public_form)
     return render(
         request,
         "intake/landing.html",
-        {"public_form": public_form, "association": public_form.association},
+        {
+            "public_form": public_form,
+            "association": public_form.association,
+            "resumable": resumable,
+            "resumable_step": resume_step(resumable) if resumable else None,
+        },
     )
 
 
@@ -41,6 +76,9 @@ def begin(request, slug):
     """Open a draft. Deliberately not a GET: reading a page enrols nobody."""
     public_form = get_object_or_404(PublicForm, slug=slug, is_open=True)
     submission = Submission.objects.create(form=public_form)
+    # Remembered here so a return visit is offered the draft instead of quietly
+    # opening a second one. The emailed link covers other devices.
+    request.session[DRAFT_SESSION_KEY] = str(submission.token)
     return redirect("intake:step", token=submission.token, step=SectionKey.SUBJECT)
 
 
@@ -50,6 +88,8 @@ def step(request, token, step):
     submission = get_object_or_404(Submission, token=token)
     if submission.state == Submission.State.SUBMITTED:
         return redirect("intake:done", token=submission.token)
+    if submission.is_expired:
+        return gone(request, submission)
     if step not in submission.path():
         return redirect(
             "intake:step", token=submission.token, step=resume_step(submission)
@@ -77,6 +117,8 @@ def review(request, token):
     submission = get_object_or_404(Submission, token=token)
     if submission.state == Submission.State.SUBMITTED:
         return redirect("intake:done", token=submission.token)
+    if submission.is_expired:
+        return gone(request, submission)
     form = ReviewForm(instance=submission)
     return render(
         request,
@@ -92,6 +134,8 @@ def submit(request, token):
     submission = get_object_or_404(
         Submission, token=token, state=Submission.State.DRAFT
     )
+    if submission.is_expired:
+        return gone(request, submission)
     missing = incomplete_steps(submission)
     if missing:
         return redirect("intake:step", token=token, step=missing[0])
@@ -111,6 +155,51 @@ def submit(request, token):
     submission.save()
     _record_signatures(submission, client_ip(request))
     return redirect("intake:done", token=token)
+
+
+@login_not_required
+def save(request, token):
+    """Hand back the link into this draft, and email it on request."""
+    submission = get_object_or_404(Submission, token=token)
+    if submission.state == Submission.State.SUBMITTED:
+        return redirect("intake:done", token=submission.token)
+    if submission.is_expired:
+        return gone(request, submission)
+
+    if request.method == "POST":
+        form = ResumeLinkForm(data=request.POST)
+        if form.is_valid():
+            send_resume_link(submission, form.cleaned_data["email"])
+            return redirect("intake:saved", token=submission.token)
+    else:
+        form = ResumeLinkForm(initial={"email": submission.applicant_email})
+
+    return render(
+        request,
+        "intake/save.html",
+        {
+            "submission": submission,
+            "association": submission.form.association,
+            "public_form": submission.form,
+            "form": form,
+            "resume_step": resume_step(submission),
+        },
+    )
+
+
+@login_not_required
+def saved(request, token):
+    submission = get_object_or_404(Submission, token=token)
+    return render(
+        request,
+        "intake/saved.html",
+        {
+            "submission": submission,
+            "association": submission.form.association,
+            "public_form": submission.form,
+            "resume_step": resume_step(submission),
+        },
+    )
 
 
 @login_not_required
@@ -208,8 +297,10 @@ def _record_signatures(submission, ip):
 def _membership_declaration(submission):
     """The words the applicant actually subscribed to, kept with the signature."""
     lines = [
-        _("Application for membership of %(association)s, accepting its statute and "
-          "undertaking to pay the annual fee.")
+        _(
+            "Application for membership of %(association)s, accepting its statute and "
+            "undertaking to pay the annual fee."
+        )
         % {"association": submission.form.association.name}
     ]
     if submission.applies_for_someone_else:

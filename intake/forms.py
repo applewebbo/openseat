@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from intake.models import Submission, SubjectType
+from intake.models import SubjectType, Submission
 from intake.validators import (
     validate_phone,
     validate_postcode,
@@ -124,8 +124,14 @@ class PersonForm(SectionForm):
 
 class ApplicantForm(PersonForm):
     ROWS = [
-        [("applicant_first_name", "sm:col-span-3"), ("applicant_last_name", "sm:col-span-3")],
-        [("applicant_birth_date", "sm:col-span-3"), ("applicant_birth_place", "sm:col-span-3")],
+        [
+            ("applicant_first_name", "sm:col-span-3"),
+            ("applicant_last_name", "sm:col-span-3"),
+        ],
+        [
+            ("applicant_birth_date", "sm:col-span-3"),
+            ("applicant_birth_place", "sm:col-span-3"),
+        ],
         [("applicant_tax_code", "sm:col-span-6")],
         [("applicant_street", "sm:col-span-4"), ("applicant_number", "sm:col-span-2")],
         [("applicant_postcode", "sm:col-span-2"), ("applicant_city", "sm:col-span-4")],
@@ -151,7 +157,10 @@ class ApplicantForm(PersonForm):
 class MemberForm(PersonForm):
     ROWS = [
         [("member_first_name", "sm:col-span-3"), ("member_last_name", "sm:col-span-3")],
-        [("member_birth_date", "sm:col-span-3"), ("member_birth_place", "sm:col-span-3")],
+        [
+            ("member_birth_date", "sm:col-span-3"),
+            ("member_birth_place", "sm:col-span-3"),
+        ],
         [("member_tax_code", "sm:col-span-6")],
         [("member_street", "sm:col-span-4"), ("member_number", "sm:col-span-2")],
         [("member_city", "sm:col-span-6")],
@@ -181,9 +190,7 @@ class StatuteForm(SectionForm):
 
     accepts_statute = forms.BooleanField(
         required=True,
-        label=_(
-            "I accept the statute and undertake to pay the annual membership fee"
-        ),
+        label=_("I accept the statute and undertake to pay the annual membership fee"),
     )
     sole_holder = yes_no_field(
         label=_("Parental responsibility"),
@@ -264,3 +271,17 @@ class ReviewForm(SectionForm):
         super().__init__(*args, **kwargs)
         self.fields["place"].required = True
         self.fields["place"].initial = self.instance.applicant_city
+
+
+class ResumeLinkForm(forms.Form):
+    """Where to send the way back into a draft."""
+
+    template_name = "intake/forms/section-form.html"
+
+    email = forms.EmailField(
+        label=_("Email address"),
+        help_text=_("We send the link to come back to, and nothing else."),
+        widget=forms.EmailInput(
+            attrs={"class": "input input-bordered w-full", "inputmode": "email"}
+        ),
+    )

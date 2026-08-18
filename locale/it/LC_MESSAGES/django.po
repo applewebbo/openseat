@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-18 10:22+0200\n"
+"POT-Creation-Date: 2026-08-18 11:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,8 +42,8 @@ msgstr "Un superuser deve avere is_staff=True"
 msgid "A superuser must have is_superuser=True"
 msgstr "Un superuser deve avere is_superuser=True"
 
-#: accounts/models.py:38 intake/models.py:55 intake/models.py:189
-#: intake/models.py:214 intake/models.py:289
+#: accounts/models.py:38 intake/models.py:58 intake/models.py:192
+#: intake/models.py:217 intake/models.py:302
 msgid "email address"
 msgstr "indirizzo email"
 
@@ -55,11 +55,11 @@ msgstr "utente"
 msgid "users"
 msgstr "utenti"
 
-#: core/settings.py:138
+#: core/settings.py:141
 msgid "Italian"
 msgstr "Italiano"
 
-#: core/settings.py:138
+#: core/settings.py:141
 msgid "English"
 msgstr "Inglese"
 
@@ -87,15 +87,16 @@ msgstr ""
 msgid "I am the sole holder of parental responsibility"
 msgstr "Sono unico titolare della responsabilità genitoriale"
 
-#: intake/forms.py:185
+#: intake/forms.py:193
 msgid "I accept the statute and undertake to pay the annual membership fee"
-msgstr "Accetto lo statuto e mi impegno al versamento della quota associativa annuale"
+msgstr ""
+"Accetto lo statuto e mi impegno al versamento della quota associativa annuale"
 
-#: intake/forms.py:189 templates/intake/partials/review-partial.html:66
+#: intake/forms.py:196 templates/intake/partials/review-partial.html:66
 msgid "Parental responsibility"
 msgstr "Responsabilità genitoriale"
 
-#: intake/forms.py:192
+#: intake/forms.py:199
 msgid ""
 "Being separated or divorced does not make you the sole holder: under shared "
 "custody both parents remain holders. You are the sole holder with exclusive "
@@ -107,356 +108,381 @@ msgstr ""
 "esclusivo, dopo il decesso dell’altro genitore, o quando sei l’unico "
 "genitore che ha riconosciuto il figlio."
 
-#: intake/forms.py:215
+#: intake/forms.py:222
 msgid "Their first name"
 msgstr "Nome"
 
-#: intake/forms.py:216
+#: intake/forms.py:223
 msgid "Their last name"
 msgstr "Cognome"
 
-#: intake/forms.py:217
+#: intake/forms.py:224
 msgid "Their email address"
 msgstr "Indirizzo email"
 
-#: intake/forms.py:219
+#: intake/forms.py:226
 msgid "Used only to ask them about the image consents."
 msgstr "Serve solo per chiedergli i consensi immagine."
 
-#: intake/forms.py:231
+#: intake/forms.py:238
 msgid "This field is required."
 msgstr "Questo campo è obbligatorio."
 
-#: intake/forms.py:241
+#: intake/forms.py:248
 msgid "Publishing images on the association's website and social channels"
 msgstr ""
 "Pubblicazione delle immagini sul sito e sui canali social dell’associazione"
 
-#: intake/forms.py:244
+#: intake/forms.py:251
 msgid "Sending photos and videos through the WhatsApp broadcast list"
 msgstr "Invio di fotografie e filmati tramite la lista broadcast WhatsApp"
 
-#: intake/forms.py:255
+#: intake/forms.py:262
 msgid ""
 "I declare that the information above is true and I ask to be admitted as a "
 "member"
-msgstr "Dichiaro che quanto sopra è veritiero e chiedo di essere ammesso/a come socio/a"
-#: intake/models.py:9
+msgstr ""
+"Dichiaro che quanto sopra è veritiero e chiedo di essere ammesso/a come "
+"socio/a"
+
+#: intake/forms.py:282
+msgid "Email address"
+msgstr "Indirizzo email"
+
+#: intake/forms.py:283
+msgid "We send the link to come back to, and nothing else."
+msgstr "Ti mandiamo il link per riprendere, nient’altro."
+
+#: intake/models.py:12
 msgid "Use a six-digit hex colour, for example #ED5C08"
 msgstr "Usa un colore esadecimale a sei cifre, per esempio #ED5C08"
 
-#: intake/models.py:14
+#: intake/models.py:17
 msgid "For myself"
 msgstr "Per me"
 
-#: intake/models.py:15
+#: intake/models.py:18
 msgid "For a minor child"
 msgstr "Per un figlio minore"
 
-#: intake/models.py:16
+#: intake/models.py:19
 msgid "For a person I am the legal guardian of"
 msgstr "Per una persona di cui sono tutore o amministratore di sostegno"
 
-#: intake/models.py:20
+#: intake/models.py:23
 msgid "Who the application is for"
 msgstr "Per chi presenti la richiesta"
 
-#: intake/models.py:21 templates/intake/partials/review-partial.html:13
+#: intake/models.py:24 templates/intake/partials/review-partial.html:13
 msgid "Who is applying"
 msgstr "Chi presenta la richiesta"
 
-#: intake/models.py:22 templates/intake/partials/review-partial.html:44
+#: intake/models.py:25 templates/intake/partials/review-partial.html:44
 msgid "Member details"
 msgstr "Dati dell’aderente"
 
-#: intake/models.py:23
+#: intake/models.py:26
 msgid "Statute and fee"
 msgstr "Statuto e quota"
 
-#: intake/models.py:24
+#: intake/models.py:27
 msgid "Privacy notice"
 msgstr "Informativa privacy"
 
-#: intake/models.py:25 templates/intake/partials/review-partial.html:82
+#: intake/models.py:28 templates/intake/partials/review-partial.html:82
 msgid "Image consents"
 msgstr "Consensi immagine"
 
-#: intake/models.py:26
+#: intake/models.py:29
 msgid "Review and subscription"
 msgstr "Riepilogo e sottoscrizione"
 
-#: intake/models.py:49
+#: intake/models.py:52
 msgid "name"
 msgstr "nome"
 
-#: intake/models.py:50 intake/models.py:89
+#: intake/models.py:53 intake/models.py:92
 msgid "slug"
 msgstr "slug"
 
-#: intake/models.py:51 intake/models.py:184 intake/models.py:198
+#: intake/models.py:54 intake/models.py:187 intake/models.py:201
 msgid "street"
 msgstr "via"
 
-#: intake/models.py:52 intake/models.py:186
+#: intake/models.py:55 intake/models.py:189
 msgid "postcode"
 msgstr "CAP"
 
-#: intake/models.py:53 intake/models.py:187 intake/models.py:200
+#: intake/models.py:56 intake/models.py:190 intake/models.py:203
 msgid "city"
 msgstr "comune"
 
-#: intake/models.py:54 intake/models.py:183 intake/models.py:197
+#: intake/models.py:57 intake/models.py:186 intake/models.py:200
 msgid "tax code"
 msgstr "codice fiscale"
 
-#: intake/models.py:56
+#: intake/models.py:59
 msgid "statute link"
 msgstr "link allo statuto"
 
-#: intake/models.py:58
+#: intake/models.py:61
 msgid "annual membership fee"
 msgstr "quota associativa annuale"
 
-#: intake/models.py:60
+#: intake/models.py:63
 msgid "logo"
 msgstr "logo"
 
-#: intake/models.py:62
+#: intake/models.py:65
 msgid "primary colour"
 msgstr "colore primario"
 
-#: intake/models.py:65
+#: intake/models.py:68
 msgid "accent colour"
 msgstr "colore d’accento"
 
-#: intake/models.py:68
+#: intake/models.py:71
 msgid "neutral colour"
 msgstr "colore neutro"
 
-#: intake/models.py:72 intake/models.py:85
+#: intake/models.py:75 intake/models.py:88
 msgid "association"
 msgstr "associazione"
 
-#: intake/models.py:73
+#: intake/models.py:76
 msgid "associations"
 msgstr "associazioni"
 
-#: intake/models.py:90
+#: intake/models.py:93
 msgid "title"
 msgstr "titolo"
 
-#: intake/models.py:91
+#: intake/models.py:94
 msgid "introduction"
 msgstr "introduzione"
 
-#: intake/models.py:92
+#: intake/models.py:95
 msgid "open"
 msgstr "aperto"
 
-#: intake/models.py:93 intake/models.py:222
+#: intake/models.py:96 intake/models.py:226
 msgid "created at"
 msgstr "creato il"
 
-#: intake/models.py:96
+#: intake/models.py:99
 msgid "public form"
 msgstr "modulo pubblico"
 
-#: intake/models.py:97
+#: intake/models.py:100
 msgid "public forms"
 msgstr "moduli pubblici"
 
-#: intake/models.py:136 intake/models.py:165
+#: intake/models.py:137 intake/models.py:166
 msgid "form"
 msgstr "modulo"
 
-#: intake/models.py:140 intake/models.py:145
+#: intake/models.py:141 intake/models.py:146
 msgid "section"
 msgstr "sezione"
 
-#: intake/models.py:141
+#: intake/models.py:142
 msgid "order"
 msgstr "ordine"
 
-#: intake/models.py:142
+#: intake/models.py:143
 msgid "enabled"
 msgstr "attiva"
 
-#: intake/models.py:146
+#: intake/models.py:147
 msgid "sections"
 msgstr "sezioni"
 
-#: intake/models.py:160
+#: intake/models.py:161
 msgid "Draft"
 msgstr "Bozza"
 
-#: intake/models.py:161
+#: intake/models.py:162
 msgid "Submitted"
 msgstr "Inviata"
 
-#: intake/models.py:169 intake/models.py:295
+#: intake/models.py:171 intake/models.py:309
 msgid "token"
 msgstr "token"
 
-#: intake/models.py:171 intake/models.py:293
+#: intake/models.py:174 intake/models.py:306
 msgid "state"
 msgstr "stato"
 
-#: intake/models.py:174
+#: intake/models.py:177
 msgid "applying for"
 msgstr "richiesta per"
 
-#: intake/models.py:177 intake/models.py:191 intake/models.py:209
+#: intake/models.py:180 intake/models.py:194 intake/models.py:212
 msgid "first name"
 msgstr "nome"
 
-#: intake/models.py:178 intake/models.py:192 intake/models.py:212
+#: intake/models.py:181 intake/models.py:195 intake/models.py:215
 msgid "last name"
 msgstr "cognome"
 
-#: intake/models.py:179 intake/models.py:193
+#: intake/models.py:182 intake/models.py:196
 msgid "date of birth"
 msgstr "data di nascita"
 
-#: intake/models.py:181 intake/models.py:195
+#: intake/models.py:184 intake/models.py:198
 msgid "place of birth"
 msgstr "luogo di nascita"
 
-#: intake/models.py:185 intake/models.py:199
+#: intake/models.py:188 intake/models.py:202
 msgid "number"
 msgstr "numero civico"
 
-#: intake/models.py:188
+#: intake/models.py:191
 msgid "phone"
 msgstr "telefono"
 
-#: intake/models.py:202
+#: intake/models.py:205
 msgid "accepts the statute"
 msgstr "accetta lo statuto"
 
-#: intake/models.py:206
+#: intake/models.py:209
 msgid "sole holder of parental responsibility"
 msgstr "unico titolare della responsabilità genitoriale"
 
-#: intake/models.py:216
+#: intake/models.py:219
 msgid "image consent"
 msgstr "consenso immagine"
 
-#: intake/models.py:217
+#: intake/models.py:220
 msgid "WhatsApp consent"
 msgstr "consenso WhatsApp"
 
-#: intake/models.py:219
+#: intake/models.py:222
+msgid "reminded at"
+msgstr "sollecitata il"
+
+#: intake/models.py:223
 msgid "place"
 msgstr "luogo"
 
-#: intake/models.py:220
+#: intake/models.py:224
 msgid "submitted at"
 msgstr "inviata il"
 
-#: intake/models.py:221 intake/models.py:298
+#: intake/models.py:225 intake/models.py:313
 msgid "IP address"
 msgstr "indirizzo IP"
 
-#: intake/models.py:223
+#: intake/models.py:227
 msgid "updated at"
 msgstr "aggiornata il"
 
-#: intake/models.py:226 intake/models.py:284
+#: intake/models.py:230 intake/models.py:297
 msgid "submission"
 msgstr "richiesta"
 
-#: intake/models.py:227
+#: intake/models.py:231
 msgid "submissions"
 msgstr "richieste"
 
-#: intake/models.py:231
+#: intake/models.py:235
 msgid "draft"
 msgstr "bozza"
 
-#: intake/models.py:270
+#: intake/models.py:283
 msgid "Applicant"
 msgstr "Richiedente"
 
-#: intake/models.py:271
+#: intake/models.py:284
 msgid "Second holder of parental responsibility"
 msgstr "Secondo titolare della responsabilità genitoriale"
 
-#: intake/models.py:274
+#: intake/models.py:287
 msgid "Membership application"
 msgstr "Richiesta di adesione"
 
-#: intake/models.py:275 templates/intake/second-parent.html:4
+#: intake/models.py:288 templates/intake/second-parent.html:4
 msgid "Image consent"
 msgstr "Consenso immagine"
 
-#: intake/models.py:278
+#: intake/models.py:291
 msgid "Awaiting signature"
 msgstr "In attesa di firma"
 
-#: intake/models.py:279
+#: intake/models.py:292
 msgid "Signed"
 msgstr "Firmato"
 
-#: intake/models.py:280
+#: intake/models.py:293
 msgid "Declined"
 msgstr "Rifiutato"
 
-#: intake/models.py:288
+#: intake/models.py:301
 msgid "signatory"
 msgstr "sottoscrittore"
 
-#: intake/models.py:290
+#: intake/models.py:303
 msgid "role"
 msgstr "ruolo"
 
-#: intake/models.py:291
+#: intake/models.py:304
 msgid "subject"
 msgstr "oggetto"
 
-#: intake/models.py:296
+#: intake/models.py:311
 msgid "declaration"
 msgstr "dichiarazione"
 
-#: intake/models.py:297
+#: intake/models.py:312
 msgid "signed at"
 msgstr "firmato il"
 
-#: intake/models.py:301
+#: intake/models.py:316
 msgid "subscription"
 msgstr "sottoscrizione"
 
-#: intake/models.py:302
+#: intake/models.py:317
 msgid "subscriptions"
 msgstr "sottoscrizioni"
 
-#: intake/notifications.py:35
+#: intake/notifications.py:46
+#, python-format
+msgid "Your application to %(association)s is still open"
+msgstr "La tua richiesta a %(association)s è ancora aperta"
+
+#: intake/notifications.py:48
+#, python-format
+msgid "Carry on with your application to %(association)s"
+msgstr "Riprendi la tua richiesta a %(association)s"
+
+#: intake/notifications.py:71
 #, python-format
 msgid "Your membership application to %(association)s"
 msgstr "La tua richiesta di adesione a %(association)s"
 
-#: intake/notifications.py:59
+#: intake/notifications.py:95
 #, python-format
 msgid "Image consent for %(member)s"
 msgstr "Consenso immagine per %(member)s"
 
-#: intake/validators.py:39
+#: intake/validators.py:71
 msgid "A tax code is 16 letters and digits."
 msgstr "Il codice fiscale è di 16 lettere e cifre."
 
-#: intake/validators.py:41
+#: intake/validators.py:73
 msgid "This tax code is not valid: check for a typo."
 msgstr ""
 "Questo codice fiscale non è valido: controlla se c’è un errore di battitura."
 
-#: intake/validators.py:45
+#: intake/validators.py:77
 msgid "An Italian postcode is exactly five digits."
 msgstr "Il CAP è di cinque cifre."
 
-#: intake/validators.py:49
+#: intake/validators.py:81
 msgid "Write the number with digits, spaces or a plus sign."
 msgstr "Scrivi il numero con cifre, spazi o il segno più."
 
-#: intake/views.py:211
+#: intake/views.py:301
 #, python-format
 msgid ""
 "Application for membership of %(association)s, accepting its statute and "
@@ -465,12 +491,12 @@ msgstr ""
 "Richiesta di adesione a %(association)s, con accettazione dello statuto e "
 "impegno al versamento della quota annuale."
 
-#: intake/views.py:217
+#: intake/views.py:308
 msgid "Signed as sole holder of parental responsibility."
 msgstr ""
 "Sottoscritta in qualità di unico titolare della responsabilità genitoriale."
 
-#: intake/views.py:221
+#: intake/views.py:312
 msgid ""
 "Signed on behalf of the other parent too, in agreement with them, under "
 "artt. 316 and 337-ter of the Civil Code."
@@ -500,16 +526,16 @@ msgstr "C.F."
 msgid "Application sent"
 msgstr "Richiesta inviata"
 
-#: templates/intake/done.html:9
+#: templates/intake/done.html:8 templates/intake/saved.html:8
 msgid "Sent"
 msgstr "Inviata"
 
-#: templates/intake/done.html:11
+#: templates/intake/done.html:10
 #, python-format
 msgid "%(name)s's application is with the board"
 msgstr "La richiesta per %(name)s è arrivata al Consiglio Direttivo"
 
-#: templates/intake/done.html:14
+#: templates/intake/done.html:13
 #, python-format
 msgid ""
 "A copy is on its way to %(email)s. Keep this page's link if you want to come "
@@ -518,19 +544,19 @@ msgstr ""
 "Una copia sta arrivando a %(email)s. Conserva il link di questa pagina se "
 "vuoi tornarci."
 
-#: templates/intake/done.html:19 templates/intake/mail/receipt.txt:5
+#: templates/intake/done.html:18 templates/intake/mail/receipt.txt:5
 msgid "Signed on"
 msgstr "Sottoscritta il"
 
-#: templates/intake/done.html:23 templates/intake/mail/receipt.txt:6
+#: templates/intake/done.html:22 templates/intake/mail/receipt.txt:6
 msgid "Annual fee"
 msgstr "Quota annuale"
 
-#: templates/intake/done.html:31
+#: templates/intake/done.html:30
 msgid "One thing is still open"
 msgstr "Manca ancora una cosa"
 
-#: templates/intake/done.html:33
+#: templates/intake/done.html:32
 #, python-format
 msgid ""
 "Publishing a child's images needs both holders of parental responsibility. "
@@ -542,36 +568,86 @@ msgstr ""
 "all’indirizzo %(email)s. Finché non risponde non viene pubblicata alcuna "
 "immagine; l’adesione non ne risente."
 
-#: templates/intake/forms/statute-form.html:46
+#: templates/intake/expired.html:4 templates/intake/expired.html:8
+msgid "This draft has expired"
+msgstr "Questa bozza è scaduta"
+
+#: templates/intake/expired.html:10
+msgid ""
+"An application left unfinished is kept for thirty days and then deleted, so "
+"that nobody's details sit around longer than they are needed. Nothing was "
+"sent to the association."
+msgstr ""
+"Una richiesta lasciata a metà si conserva trenta giorni e poi viene "
+"cancellata, perché i dati di nessuno restino in giro più del necessario. "
+"All’associazione non è stato inviato nulla."
+
+#: templates/intake/expired.html:13
+msgid "Start again"
+msgstr "Ricomincia"
+
+#: templates/intake/forms/statute-form.html:49
 msgid "The other parent"
 msgstr "L’altro genitore"
-#: templates/intake/forms/statute-form.html:48
+
+#: templates/intake/forms/statute-form.html:51
 msgid ""
 "They do not sign the application: only the image consents are asked of them, "
 "from their own link."
-msgstr "Non sottoscrive la richiesta: gli vengono chiesti soltanto i consensi immagine, da un link suo."
+msgstr ""
+"Non sottoscrive la richiesta: gli vengono chiesti soltanto i consensi "
+"immagine, da un link suo."
+
 #: templates/intake/landing.html:14
+msgid "You have an application in progress"
+msgstr "Hai una richiesta in corso"
+
+#: templates/intake/landing.html:17
+#, python-format
+msgid "The one you started for %(name)s is still here, exactly as you left it."
+msgstr ""
+"Quella che hai cominciato per %(name)s è ancora qui, esattamente come l’hai "
+"lasciata."
+
+#: templates/intake/landing.html:19
+msgid "The one you started is still here, exactly as you left it."
+msgstr ""
+"Quella che hai cominciato è ancora qui, esattamente come l’hai lasciata."
+
+#: templates/intake/landing.html:23
+msgid "Carry on where you left off"
+msgstr "Riprendi da dove eri rimasto"
+
+#: templates/intake/landing.html:31
+msgid "Or begin a new one"
+msgstr "Oppure comincia una richiesta nuova"
+
+#: templates/intake/landing.html:33
 msgid "Before you start, have these to hand"
 msgstr "Prima di cominciare, tieni a portata di mano"
 
-#: templates/intake/landing.html:19
+#: templates/intake/landing.html:39
 msgid "The tax code and residence of whoever is applying"
 msgstr "Codice fiscale e residenza di chi presenta la richiesta"
 
-#: templates/intake/landing.html:24
+#: templates/intake/landing.html:43
 msgid "For a minor, the same details for the child"
 msgstr "Se la richiesta è per un minore, gli stessi dati del bambino"
 
-#: templates/intake/landing.html:29
+#: templates/intake/landing.html:47
 #, python-format
 msgid "The annual fee is € %(fee)s, to be paid to the association"
 msgstr "La quota annuale è di € %(fee)s, da versare all’associazione"
 
-#: templates/intake/landing.html:38
+#: templates/intake/landing.html:58
+msgid "Start a different application"
+msgstr "Comincia una richiesta diversa"
+
+#: templates/intake/landing.html:60
 msgid "Start the application"
 msgstr "Comincia la richiesta"
 
-#: templates/intake/landing.html:42
+#: templates/intake/landing.html:65
 msgid ""
 "It takes a few minutes, one question at a time. You can stop and come back "
 "later from the same link."
@@ -579,11 +655,11 @@ msgstr ""
 "Bastano pochi minuti, una domanda alla volta. Puoi interrompere e riprendere "
 "più tardi dallo stesso link."
 
-#: templates/intake/landing.html:48
+#: templates/intake/landing.html:71
 msgid "Applications are closed"
 msgstr "Le richieste sono chiuse"
 
-#: templates/intake/landing.html:50
+#: templates/intake/landing.html:73
 #, python-format
 msgid ""
 "This form is not accepting applications at the moment. Write to %(email)s to "
@@ -608,6 +684,36 @@ msgstr ""
 #: templates/intake/mail/receipt.txt:8
 msgid "Your copy"
 msgstr "La tua copia"
+
+#: templates/intake/mail/resume.txt:1
+#, python-format
+msgid "Your application to %(association)s is still unfinished."
+msgstr "La tua richiesta a %(association)s non è ancora completata."
+
+#: templates/intake/mail/resume.txt:3
+msgid ""
+"Nothing has been sent to the association yet. Pick it up here, and you will "
+"land where you left off:"
+msgstr ""
+"All’associazione non è ancora stato inviato nulla. Riprendi da qui e ti "
+"ritrovi dove eri rimasto:"
+
+#: templates/intake/mail/resume.txt:3
+msgid ""
+"Here is the link back into your application. Open it whenever you have a "
+"moment and you will land where you left off:"
+msgstr ""
+"Ecco il link per rientrare nella tua richiesta. Aprilo quando hai un momento "
+"e ti ritrovi dove eri rimasto:"
+
+#: templates/intake/mail/resume.txt:7 templates/intake/save.html:26
+#, python-format
+msgid ""
+"An unfinished application is deleted on %(date)s, thirty days after the last "
+"change."
+msgstr ""
+"Una richiesta non completata viene cancellata il %(date)s, trenta giorni "
+"dopo l’ultima modifica."
 
 #: templates/intake/mail/second-parent.txt:1
 #, python-format
@@ -850,6 +956,45 @@ msgstr ""
 msgid "Read the statute"
 msgstr "Leggi lo statuto"
 
+#: templates/intake/save.html:4
+msgid "Come back later"
+msgstr "Riprendi più tardi"
+
+#: templates/intake/save.html:7
+msgid "Come back to this later"
+msgstr "Riprendi più tardi"
+
+#: templates/intake/save.html:9
+msgid ""
+"Everything you have answered so far is saved. This is the link back to it — "
+"on this device you will also be offered it automatically."
+msgstr ""
+"Tutto quello che hai risposto finora è salvato. Questo è il link per "
+"tornarci — su questo dispositivo te lo riproponiamo anche da soli."
+
+#: templates/intake/save.html:21
+msgid "Email me the link"
+msgstr "Mandami il link via email"
+
+#: templates/intake/save.html:32 templates/intake/saved.html:14
+msgid "Carry on now"
+msgstr "Riprendi adesso"
+
+#: templates/intake/saved.html:4
+msgid "Link sent"
+msgstr "Link inviato"
+
+#: templates/intake/saved.html:9
+msgid "The link is on its way"
+msgstr "Il link sta arrivando"
+
+#: templates/intake/saved.html:11
+msgid ""
+"Open it whenever you have a moment and you will land exactly where you left "
+"off."
+msgstr ""
+"Aprilo quando hai un momento e ti ritrovi esattamente dove eri rimasto."
+
 #: templates/intake/second-parent.html:8
 #, python-format
 msgid "Your consent is needed for %(name)s's images"
@@ -893,27 +1038,34 @@ msgstr ""
 "Hai rifiutato il consenso, quindi non viene pubblicata alcuna immagine del "
 "minore."
 
-#: templates/intake/step.html:13 templates/intake/step.html:23
+#: templates/intake/step.html:11 templates/intake/step.html:18
 #, python-format
 msgid "Step %(current_position)s of %(total_positions)s"
 msgstr "Passo %(current_position)s di %(total_positions)s"
 
-#: templates/intake/step.html:43
+#: templates/intake/step.html:38
 msgid "Back"
 msgstr "Indietro"
 
-#: templates/intake/step.html:49
+#: templates/intake/step.html:42
 msgid "Sign and send"
 msgstr "Sottoscrivi e invia"
 
-#: templates/intake/step.html:51
+#: templates/intake/step.html:44
 msgid "Continue"
 msgstr "Continua"
 
-#: templates/intake/step.html:58
-msgid ""
-"Your answers are saved as you go: you can close this page and come back to "
-"the same link."
-msgstr ""
-"Le risposte vengono salvate man mano: puoi chiudere questa pagina e tornare "
-"allo stesso link."
+#: templates/intake/step.html:51
+msgid "Your answers are saved as you go."
+msgstr "Le risposte vengono salvate man mano."
+
+#: templates/intake/step.html:53
+msgid "Save and come back later"
+msgstr "Salva e riprendi più tardi"
+
+#~ msgid ""
+#~ "Your answers are saved as you go: you can close this page and come back "
+#~ "to the same link."
+#~ msgstr ""
+#~ "Le risposte vengono salvate man mano: puoi chiudere questa pagina e "
+#~ "tornare allo stesso link."

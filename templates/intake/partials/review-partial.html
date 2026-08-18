@@ -4,14 +4,14 @@ The last thing read before signing. Every answer is shown with a way back to the
 step that set it, so the signature covers something the signer has actually seen.
 {% endcomment %}
 <div class="mb-8 space-y-6">
-    <p class="max-w-prose text-sm leading-relaxed text-base-content/70">
+    <p class="text-base-content/70 max-w-prose text-sm leading-relaxed">
         {% translate "Check what you are about to sign. Anything can still be changed." %}
     </p>
 
     <section>
         <h2 class="mb-2 flex items-baseline justify-between gap-3 text-sm font-semibold">
             {% translate "Who is applying" %}
-            <a class="text-xs font-medium text-primary underline underline-offset-4"
+            <a class="text-primary text-xs font-medium underline underline-offset-4"
                href="{% url 'intake:step' submission.token 'applicant' %}">{% translate "Change" %}</a>
         </h2>
         <dl class="divide-y divide-black/5 rounded-xl bg-[#f6f4f1] px-4 text-sm">
@@ -42,7 +42,7 @@ step that set it, so the signature covers something the signer has actually seen
         <section>
             <h2 class="mb-2 flex items-baseline justify-between gap-3 text-sm font-semibold">
                 {% translate "Member details" %}
-                <a class="text-xs font-medium text-primary underline underline-offset-4"
+                <a class="text-primary text-xs font-medium underline underline-offset-4"
                    href="{% url 'intake:step' submission.token 'member' %}">{% translate "Change" %}</a>
             </h2>
             <dl class="divide-y divide-black/5 rounded-xl bg-[#f6f4f1] px-4 text-sm">
@@ -64,7 +64,7 @@ step that set it, so the signature covers something the signer has actually seen
         <section>
             <h2 class="mb-2 flex items-baseline justify-between gap-3 text-sm font-semibold">
                 {% translate "Parental responsibility" %}
-                <a class="text-xs font-medium text-primary underline underline-offset-4"
+                <a class="text-primary text-xs font-medium underline underline-offset-4"
                    href="{% url 'intake:step' submission.token 'statute' %}">{% translate "Change" %}</a>
             </h2>
             <p class="rounded-xl bg-[#f6f4f1] p-4 text-sm leading-relaxed">
@@ -80,7 +80,7 @@ step that set it, so the signature covers something the signer has actually seen
     <section>
         <h2 class="mb-2 flex items-baseline justify-between gap-3 text-sm font-semibold">
             {% translate "Image consents" %}
-            <a class="text-xs font-medium text-primary underline underline-offset-4"
+            <a class="text-primary text-xs font-medium underline underline-offset-4"
                href="{% url 'intake:step' submission.token 'consents' %}">{% translate "Change" %}</a>
         </h2>
         <dl class="divide-y divide-black/5 rounded-xl bg-[#f6f4f1] px-4 text-sm">
@@ -99,7 +99,7 @@ step that set it, so the signature covers something the signer has actually seen
         </dl>
     </section>
 
-    <p class="max-w-prose border-l-2 border-primary/40 pl-4 text-sm leading-relaxed text-base-content/70">
+    <p class="border-primary/40 text-base-content/70 max-w-prose border-l-2 pl-4 text-sm leading-relaxed">
         {% blocktranslate with name=association.name %}Signing sends the application to the board of {{ name }}. The date, time and network address of the signature are recorded with it.{% endblocktranslate %}
     </p>
 </div>

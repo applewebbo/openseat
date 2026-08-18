@@ -1,8 +1,11 @@
 import uuid
+from datetime import timedelta
 
+from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 hex_colour = RegexValidator(
@@ -118,9 +121,7 @@ class PublicForm(models.Model):
         Until the opening question is answered the rest of the path is unknown,
         so only the opening step is on it.
         """
-        enabled = [
-            section.key for section in self.sections.all() if section.is_enabled
-        ]
+        enabled = [section.key for section in self.sections.all() if section.is_enabled]
         if not subject_type:
             return [key for key in enabled if key == SectionKey.SUBJECT]
         if subject_type == SubjectType.SELF:
@@ -166,7 +167,9 @@ class Submission(models.Model):
         related_name="submissions",
         on_delete=models.CASCADE,
     )
-    token = models.UUIDField(_("token"), default=uuid.uuid4, unique=True, editable=False)
+    token = models.UUIDField(
+        _("token"), default=uuid.uuid4, unique=True, editable=False
+    )
     state = models.CharField(
         _("state"), max_length=10, choices=State, default=State.DRAFT
     )
@@ -216,6 +219,7 @@ class Submission(models.Model):
     consent_images = models.BooleanField(_("image consent"), null=True, blank=True)
     consent_whatsapp = models.BooleanField(_("WhatsApp consent"), null=True, blank=True)
 
+    reminder_sent_at = models.DateTimeField(_("reminded at"), null=True, blank=True)
     place = models.CharField(_("place"), max_length=100, blank=True)
     submitted_at = models.DateTimeField(_("submitted at"), null=True, blank=True)
     ip = models.GenericIPAddressField(_("IP address"), null=True, blank=True)
@@ -259,6 +263,15 @@ class Submission(models.Model):
             state=Subscription.State.SIGNED,
         ).exists()
 
+    @property
+    def expires_at(self):
+        """Thirty days from the last change, not from the first keystroke."""
+        return self.updated_at + timedelta(days=settings.INTAKE_DRAFT_EXPIRY_DAYS)
+
+    @property
+    def is_expired(self):
+        return self.state == self.State.DRAFT and timezone.now() >= self.expires_at
+
     def path(self):
         return self.form.path(self.subject_type)
 
@@ -292,7 +305,9 @@ class Subscription(models.Model):
     state = models.CharField(
         _("state"), max_length=10, choices=State, default=State.PENDING
     )
-    token = models.UUIDField(_("token"), default=uuid.uuid4, unique=True, editable=False)
+    token = models.UUIDField(
+        _("token"), default=uuid.uuid4, unique=True, editable=False
+    )
     declaration = models.TextField(_("declaration"), blank=True)
     signed_at = models.DateTimeField(_("signed at"), null=True, blank=True)
     ip = models.GenericIPAddressField(_("IP address"), null=True, blank=True)

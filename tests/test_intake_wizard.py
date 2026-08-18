@@ -1,7 +1,7 @@
 import pytest
 from django.urls import reverse
 
-from intake.models import SectionKey, Submission, Subscription, SubjectType
+from intake.models import SectionKey, SubjectType, Submission, Subscription
 
 pytestmark = pytest.mark.django_db
 
@@ -20,7 +20,10 @@ def test_a_closed_form_says_so_instead_of_starting(client, public_form):
     response = client.get(public_form.get_absolute_url())
 
     assert response.status_code == 200
-    assert reverse("intake:begin", args=[public_form.slug]) not in response.content.decode()
+    assert (
+        reverse("intake:begin", args=[public_form.slug])
+        not in response.content.decode()
+    )
 
 
 def test_reading_the_landing_page_creates_no_draft(client, public_form):
@@ -196,9 +199,7 @@ def test_the_done_page_reports_a_pending_second_signature(client, minor_submissi
 
 def test_the_second_parent_signs_from_their_own_link(client, minor_submission):
     client.post(_submit_url(minor_submission), {"place": "Novara", "declaration": "on"})
-    pending = minor_submission.subscriptions.get(
-        role=Subscription.Role.SECOND_PARENT
-    )
+    pending = minor_submission.subscriptions.get(role=Subscription.Role.SECOND_PARENT)
 
     response = client.post(
         reverse("intake:second-parent", args=[pending.token]), {"answer": "sign"}

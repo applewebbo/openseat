@@ -5,21 +5,16 @@
 
 {% block progress %}
     {% if path_known %}
-    <div class="h-1 w-full bg-black/5"
-         role="progressbar"
-         aria-valuenow="{{ current_position }}"
-         aria-valuemin="1"
-         aria-valuemax="{{ total_positions }}"
-         aria-label="{% blocktranslate %}Step {{ current_position }} of {{ total_positions }}{% endblocktranslate %}">
-        <div class="h-full transition-[width] duration-500 ease-out"
-             style="width: {{ progress }}%; background: var(--assoc-bright)"></div>
-    </div>
+        <progress class="progress progress-primary h-1 w-full rounded-none bg-black/5"
+                  value="{{ current_position }}"
+                  max="{{ total_positions }}"
+                  aria-label="{% blocktranslate %}Step {{ current_position }} of {{ total_positions }}{% endblocktranslate %}"></progress>
     {% endif %}
-{% endblock %}
+{% endblock progress %}
 
 {% block content %}
     {% if path_known %}
-        <p class="mb-2 text-sm font-medium text-base-content/60">
+        <p class="text-base-content/60 mb-2 text-sm font-medium">
             {% blocktranslate %}Step {{ current_position }} of {{ total_positions }}{% endblocktranslate %}
         </p>
     {% endif %}
@@ -37,14 +32,12 @@
 
         {{ form }}
 
-        <div class="mt-9 flex items-center justify-between gap-4 border-t border-black/5 pt-6">
+        <div class="mt-9 flex items-center gap-4 border-t border-black/5 pt-6">
             {% if previous_step %}
-                <a class="text-sm font-medium text-base-content/70 underline-offset-4 transition-colors duration-200 hover:text-primary hover:underline"
+                <a class="text-base-content/70 hover:text-primary text-sm font-medium underline-offset-4 transition-colors duration-200 hover:underline"
                    href="{% url 'intake:step' submission.token previous_step %}">← {% translate "Back" %}</a>
-            {% else %}
-                <span></span>
             {% endif %}
-            <button type="submit" class="btn btn-primary rounded-xl px-7">
+            <button type="submit" class="btn btn-primary ms-auto rounded-xl px-7">
                 {% if step == "review" %}
                     {% translate "Sign and send" %}
                 {% else %}
@@ -54,7 +47,9 @@
         </div>
     </form>
 
-    <p class="mt-6 text-center text-xs leading-relaxed text-base-content/60">
-        {% translate "Your answers are saved as you go: you can close this page and come back to the same link." %}
+    <p class="text-base-content/60 mt-6 text-center text-xs leading-relaxed">
+        {% translate "Your answers are saved as you go." %}
+        <a class="hover:text-primary font-medium underline underline-offset-4"
+           href="{% url 'intake:save' submission.token %}">{% translate "Save and come back later" %}</a>
     </p>
-{% endblock %}
+{% endblock content %}

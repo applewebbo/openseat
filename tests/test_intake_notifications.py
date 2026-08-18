@@ -34,9 +34,7 @@ def test_the_receipt_carries_the_fee_the_applicant_committed_to(
 def test_the_second_parent_is_written_to_with_their_own_link(client, minor_submission):
     _submit(client, minor_submission)
 
-    pending = minor_submission.subscriptions.get(
-        role=Subscription.Role.SECOND_PARENT
-    )
+    pending = minor_submission.subscriptions.get(role=Subscription.Role.SECOND_PARENT)
     request = next(
         m for m in mail.outbox if minor_submission.second_parent_email in m.to
     )
@@ -53,6 +51,13 @@ def test_nobody_is_written_to_about_consents_that_were_refused(
 
     _submit(client, minor_submission)
 
-    assert not [
-        m for m in mail.outbox if minor_submission.second_parent_email in m.to
-    ]
+    assert not [m for m in mail.outbox if minor_submission.second_parent_email in m.to]
+
+
+def test_plain_text_mail_is_not_html_escaped(client, minor_submission):
+    """An apostrophe in the association name must stay an apostrophe."""
+    _submit(client, minor_submission)
+
+    for message in mail.outbox:
+        assert "&#x27;" not in message.body
+        assert "&amp;" not in message.body

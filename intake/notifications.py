@@ -8,6 +8,7 @@ from django.utils.translation import gettext as _
 from django_q.tasks import async_task
 
 from intake.models import Submission, Subscription
+from intake.wizard import resume_step
 
 
 def send_receipt(submission):
@@ -16,6 +17,41 @@ def send_receipt(submission):
 
 def notify_second_parent(subscription):
     async_task("intake.notifications.deliver_second_parent_request", subscription.pk)
+
+
+def send_resume_link(submission, email):
+    async_task("intake.notifications.deliver_resume_link", submission.pk, email=email)
+
+
+def deliver_resume_link(submission_pk, email=None, reminder=False):
+    """The link back into a draft, either asked for or offered after a silence."""
+    submission = Submission.objects.select_related("form__association").get(
+        pk=submission_pk
+    )
+    association = submission.form.association
+    body = render_to_string(
+        "intake/mail/resume.txt",
+        {
+            "submission": submission,
+            "association": association,
+            "reminder": reminder,
+            "expires_at": submission.expires_at,
+            "resume_url": reverse(
+                "intake:step", args=[submission.token, resume_step(submission)]
+            ),
+        },
+    )
+    send_mail(
+        subject=(
+            _("Your application to %(association)s is still open")
+            if reminder
+            else _("Carry on with your application to %(association)s")
+        )
+        % {"association": association.name},
+        message=body,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[email or submission.applicant_email],
+    )
 
 
 def deliver_receipt(submission_pk):
@@ -56,7 +92,8 @@ def deliver_second_parent_request(subscription_pk):
         },
     )
     send_mail(
-        subject=_("Image consent for %(member)s") % {"member": submission.member_display},
+        subject=_("Image consent for %(member)s")
+        % {"member": submission.member_display},
         message=body,
         from_email=settings.DEFAULT_FROM_EMAIL,
         recipient_list=[subscription.signatory_email],

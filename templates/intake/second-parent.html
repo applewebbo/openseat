@@ -7,7 +7,7 @@
     <h1 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">
         {% blocktranslate with name=submission.member_display %}Your consent is needed for {{ name }}'s images{% endblocktranslate %}
     </h1>
-    <p class="mt-4 max-w-prose leading-relaxed text-base-content/80">
+    <p class="text-base-content/80 mt-4 max-w-prose leading-relaxed">
         {% blocktranslate with parent=submission.applicant_first_name association=association.name %}{{ parent }} has applied to enrol your child in {{ association }} and answered the image questions. Publishing a child's images needs both holders of parental responsibility, so the association is asking you too.{% endblocktranslate %}
     </p>
 
@@ -42,7 +42,7 @@
                     {% translate "I do not consent" %}
                 </button>
             </form>
-            <p class="mt-4 text-xs leading-relaxed text-base-content/60">
+            <p class="text-base-content/60 mt-4 text-xs leading-relaxed">
                 {% translate "Refusing changes nothing about the membership: it only means no image is published." %}
             </p>
         {% else %}
@@ -53,8 +53,8 @@
                 {% else %}
                     {% translate "You have refused consent, so no image of the child is published." %}
                 {% endif %}
-                <span class="mt-1 block text-base-content/60 tabular-nums">{{ subscription.signed_at|date:"d/m/Y H:i" }}</span>
+                <span class="text-base-content/60 mt-1 block tabular-nums">{{ subscription.signed_at|date:"d/m/Y H:i" }}</span>
             </p>
         {% endif %}
     </div>
-{% endblock %}
+{% endblock content %}

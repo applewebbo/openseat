@@ -1,7 +1,7 @@
 {% load i18n %}
 {% if form.non_field_errors %}
     <div role="alert"
-         class="mb-6 rounded-xl border border-error/30 bg-error/5 p-4 text-sm">
+         class="border-error/30 bg-error/5 mb-6 rounded-xl border p-4 text-sm">
         {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
     </div>
 {% endif %}
@@ -14,10 +14,10 @@
                            for="{{ cell.field.id_for_label }}">{{ cell.field.label }}</label>
                     {{ cell.field }}
                     {% if cell.field.help_text %}
-                        <p class="mt-1.5 text-sm leading-relaxed text-base-content/70">{{ cell.field.help_text }}</p>
+                        <p class="text-base-content/70 mt-1.5 text-sm leading-relaxed">{{ cell.field.help_text }}</p>
                     {% endif %}
                     {% for error in cell.field.errors %}
-                        <p class="mt-1.5 text-sm font-medium text-error">{{ error }}</p>
+                        <p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>
                     {% endfor %}
                 </div>
             {% endfor %}

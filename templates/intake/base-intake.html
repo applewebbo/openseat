@@ -34,7 +34,7 @@
         {% block extra_head %}{% endblock %}
     </head>
     <body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'
-          class="min-h-screen bg-[#f6f4f1] text-base-content antialiased">
+          class="text-base-content min-h-screen bg-[#f6f4f1] antialiased">
         <!--
         THESIS: the paper module, walked one section at a time; it refuses the
         single long scroll that makes a legal form unreadable on a phone.
@@ -50,7 +50,7 @@
         carrying its provenance.
         -->
         <a href="#sheet"
-           class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-3 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-content">
+           class="focus:bg-primary focus:text-primary-content sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-3 focus:rounded-lg focus:px-4 focus:py-2">
             {% translate "Skip to the form" %}
         </a>
 
@@ -66,16 +66,16 @@
             {% block progress %}{% endblock %}
         </header>
 
-        <main id="sheet" class="mx-auto w-full max-w-2xl px-4 pb-24 pt-6 sm:pt-10">
+        <main id="sheet" class="mx-auto w-full max-w-2xl px-4 pt-6 pb-24 sm:pt-10">
             {% block content %}{% endblock %}
         </main>
 
-        <footer class="mx-auto max-w-2xl px-4 pb-10 text-xs leading-relaxed text-base-content/60">
+        <footer class="text-base-content/60 mx-auto max-w-2xl px-4 pb-10 text-xs leading-relaxed">
             {% block footer %}
                 <p>
                     {{ association.name }} · {{ association.street }}, {{ association.postcode }} {{ association.city }} · {% translate "Tax code" %} {{ association.tax_code }}
                 </p>
-            {% endblock %}
+            {% endblock footer %}
         </footer>
 
         {% htmx_script %}

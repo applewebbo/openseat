@@ -7,7 +7,7 @@
         {% blocktranslate with fee=association.membership_fee %}You also undertake to pay the annual membership fee of € {{ fee }}.{% endblocktranslate %}
     </p>
     {% if association.statute_url %}
-        <a class="mt-3 inline-block font-medium text-primary underline underline-offset-4"
+        <a class="text-primary mt-3 inline-block font-medium underline underline-offset-4"
            href="{{ association.statute_url }}"
            target="_blank"
            rel="noopener">{% translate "Read the statute" %} ↗</a>
