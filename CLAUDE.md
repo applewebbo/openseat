@@ -30,7 +30,7 @@ Everything goes through `just`; every Python call goes through `uv`. **Never `pi
 ```
 just install          # uv sync
 just local            # tailwind runserver
-just serve            # web + qcluster together (mprocs)
+just serve            # web + qcluster + mailpit together (mprocs)
 just migrate          # apply migrations
 just makemigrations   # create them
 just ftest            # fast parallel suite  ← the one to use

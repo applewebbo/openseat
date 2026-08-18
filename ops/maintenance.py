@@ -3,14 +3,13 @@
 import logging
 from datetime import timedelta
 
+from dbbackup import utils
 from django.apps import apps
 from django.conf import settings
 from django.core.files.storage import default_storage, storages
 from django.core.management import call_command
 from django.db import models
 from django.utils import timezone
-
-from dbbackup import utils
 
 logger = logging.getLogger(__name__)
 

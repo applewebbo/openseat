@@ -72,6 +72,17 @@ update_alpine:
 @serve:
     mprocs -c mprocs-local.yaml
 
+# The mail pane of `just serve`. Wrapped only so a missing binary says why the
+# pane went away; installing it is the developer's call, not this recipe's.
+_mailpit:
+    #!/usr/bin/env bash
+    if ! command -v mailpit > /dev/null; then
+        echo "WARNING: mailpit is not installed, so nothing catches the mail sent"
+        echo "in development and every send fails. Install it with: brew install mailpit"
+        exit 0
+    fi
+    exec mailpit
+
 [group('development')]
 migrate:
     uv run python manage.py migrate
