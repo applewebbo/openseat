@@ -29,7 +29,5 @@ plans/
 .DS_Store
 .playwright-mcp/
 
-# Impeccable review captures (regenerated on demand)
-.impeccable/review/
-.impeccable/mocks/
-.impeccable/questions/
+# Impeccable working files: briefs, captures, decision logs
+.impeccable/

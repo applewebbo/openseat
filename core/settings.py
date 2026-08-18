@@ -3,6 +3,7 @@ from pathlib import Path
 
 import dj_database_url
 import environ
+from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -261,6 +262,40 @@ elif ENVIRONMENT == "test":
 
 else:  # prod
     MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+
+    # WhiteNoise serves static only. Uploads on the container disk disappear on
+    # the next redeploy, taking every association logo with them, so object
+    # storage is required unless the operator says they mount a volume instead.
+    if env("MEDIA_STORAGE", default="") != "local":
+        MEDIA_BUCKET_NAME = env("MEDIA_BUCKET_NAME", default="")
+        if not MEDIA_BUCKET_NAME:
+            raise ImproperlyConfigured(
+                "MEDIA_BUCKET_NAME is unset. Point it at an S3-compatible bucket "
+                "(AWS, Cloudflare R2, Backblaze B2, or a self-hosted MinIO), or "
+                "set MEDIA_STORAGE=local if this install mounts a volume at "
+                "MEDIA_ROOT."
+            )
+        STORAGES["default"] = {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "bucket_name": MEDIA_BUCKET_NAME,
+                # Unset for AWS itself; the endpoint is what makes every other
+                # S3-compatible provider, MinIO included, work unchanged.
+                "endpoint_url": env("MEDIA_ENDPOINT_URL", default=None),
+                "region_name": env("MEDIA_REGION", default="auto"),
+                "access_key": env("MEDIA_ACCESS_KEY", default=""),
+                "secret_key": env("MEDIA_SECRET_KEY", default=""),
+                "custom_domain": env("MEDIA_CUSTOM_DOMAIN", default=None),
+                # A logo sits on a public page and inside emails, so a signed
+                # URL that expires is the wrong shape. Public read comes from
+                # the bucket policy, not from a per-object ACL: R2 and B2
+                # reject ACLs outright.
+                "querystring_auth": False,
+                "default_acl": None,
+                "file_overwrite": False,
+                "location": "media",
+            },
+        }
     DATABASES = {
         "default": dj_database_url.config(
             conn_max_age=env("DATABASE_CONN_MAX_AGE"),

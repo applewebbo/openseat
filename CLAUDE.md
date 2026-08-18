@@ -12,7 +12,8 @@ Django 6.1, server-driven, deployed to Coolify from `main`.
 | ---------- | ------------------------------------------------------------------- |
 | Runtime    | Python 3.14, Django 6.1, granian + uvloop (WSGI), hivemind           |
 | Database   | SQLite in dev, PostgreSQL (`psycopg`) in prod via `DATABASE_URL`     |
-| Static     | WhiteNoise — no nginx                                                |
+| Static     | WhiteNoise (prod only) — no nginx                                    |
+| Media      | django-storages, any S3-compatible bucket; local disk in dev         |
 | Styling    | Tailwind 4 + daisyUI through `django-tailwind-cli` — **no npm**      |
 | Frontend   | htmx (vendored by `django-htmx`), Alpine (vendored), django-cotton   |
 | Forms      | crispy-forms + crispy-tailwind, `TemplatesSetting` renderer          |
@@ -54,6 +55,10 @@ just update_all       # lock + Alpine + hooks
 - **`just crawl` is a release gate, not a test.** It is run by hand before a release,
   with the CSS already built, and is deliberately absent from the suite and from CI.
   It walks the real site in-process and reports dead links and missing assets.
+- **Media is not static.** WhiteNoise serves `static/` only, and only in prod;
+  uploads go to an S3-compatible bucket via `django-storages`. Production refuses
+  to start without `MEDIA_BUCKET_NAME` unless `MEDIA_STORAGE=local` says a volume
+  is mounted. Dev and tests keep the filesystem.
 - **`DEBUG` fails closed**: strict parse, defaults to `False`. So does `ENVIRONMENT`
   (defaults to `prod`). `SECRET_KEY` has no default and crashes at startup if unset.
 - **`LoginRequiredMiddleware` is on**: every public view needs `@login_not_required`.

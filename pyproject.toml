@@ -39,7 +39,7 @@ dependencies = [
   "django-pwa",
   "django-q2",
   "django-redis",
-  "django-storages",
+  "django-storages[s3]",
   "django-tailwind-cli",
   "granian[pname]",
   "pillow",

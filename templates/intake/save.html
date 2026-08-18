@@ -5,7 +5,7 @@
 
 {% block content %}
     <h1 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{% translate "Come back to this later" %}</h1>
-    <p class="mt-4 max-w-prose leading-relaxed text-base-content/80">
+    <p class="text-base-content/80 mt-4 max-w-prose leading-relaxed">
         {% translate "Everything you have answered so far is saved. This is the link back to it — on this device you will also be offered it automatically." %}
     </p>
 
@@ -22,7 +22,7 @@
             </button>
         </form>
 
-        <p class="mt-6 border-t border-black/5 pt-5 text-xs leading-relaxed text-base-content/60">
+        <p class="text-base-content/60 mt-6 border-t border-black/5 pt-5 text-xs leading-relaxed">
             {% blocktranslate with date=submission.expires_at|date:"d/m/Y" %}An unfinished application is deleted on {{ date }}, thirty days after the last change.{% endblocktranslate %}
         </p>
     </div>
@@ -31,4 +31,4 @@
         <a class="text-sm font-medium underline-offset-4 hover:underline"
            href="{% url 'intake:step' submission.token resume_step %}">← {% translate "Carry on now" %}</a>
     </p>
-{% endblock %}
+{% endblock content %}

@@ -1,7 +1,7 @@
-import time_machine
 from datetime import timedelta
 
 import pytest
+import time_machine
 from django.core import mail
 from django.urls import reverse
 from django.utils import timezone
@@ -96,7 +96,10 @@ def test_every_step_offers_to_save_for_later(client, minor_submission):
         reverse("intake:step", args=[minor_submission.token, SectionKey.APPLICANT])
     )
 
-    assert reverse("intake:save", args=[minor_submission.token]) in response.content.decode()
+    assert (
+        reverse("intake:save", args=[minor_submission.token])
+        in response.content.decode()
+    )
 
 
 def test_the_save_page_shows_the_link_to_come_back_to(client, minor_submission):
@@ -324,4 +327,7 @@ def test_the_sent_page_confirms_where_the_link_went(client, minor_submission):
     response = client.get(reverse("intake:saved", args=[minor_submission.token]))
 
     assert response.status_code == 200
-    assert reverse("intake:step", args=[minor_submission.token, SectionKey.REVIEW]) in response.content.decode()
+    assert (
+        reverse("intake:step", args=[minor_submission.token, SectionKey.REVIEW])
+        in response.content.decode()
+    )
