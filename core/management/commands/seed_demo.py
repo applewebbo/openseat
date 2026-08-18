@@ -150,4 +150,6 @@ class Command(BaseCommand):
             )
             self.stdout.write(f"{'created' if created else 'updated'}: {event}")
 
-        self.stdout.write(self.style.SUCCESS("demo content ready — this is example data"))
+        self.stdout.write(
+            self.style.SUCCESS("demo content ready — this is example data")
+        )

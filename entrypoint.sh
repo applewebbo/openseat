@@ -10,6 +10,10 @@ python manage.py intake_schedule
 python manage.py ops_schedule
 python manage.py events_schedule
 
+# Same reason: the role groups are a definition applied at every boot, so a
+# permission granted by hand in the admin does not survive a deploy unnoticed.
+python manage.py accounts_groups
+
 echo "Compiling translations..."
 python manage.py compilemessages -l it -l en --ignore=.venv
 

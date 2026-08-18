@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-18 21:13+0200\n"
+"POT-Creation-Date: 2026-08-18 21:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,6 +29,10 @@ msgstr "Permessi"
 #: accounts/admin.py:28
 msgid "Important dates"
 msgstr "Date importanti"
+
+#: accounts/apps.py:9
+msgid "Back-office users"
+msgstr "Utenti del gestionale"
 
 #: accounts/models.py:13
 msgid "The email address is required"
@@ -55,17 +59,21 @@ msgstr "utente"
 msgid "users"
 msgstr "utenti"
 
-#: core/settings.py:187
+#: core/settings.py:190
 msgid "Italian"
 msgstr "Italiano"
 
-#: core/settings.py:187
+#: core/settings.py:190
 msgid "English"
 msgstr "Inglese"
 
 #: events/admin.py:24
 msgid "booked"
 msgstr "prenotati"
+
+#: events/apps.py:9
+msgid "Events and bookings"
+msgstr "Eventi e prenotazioni"
 
 #: events/checklist.py:32
 #, python-format
@@ -80,7 +88,7 @@ msgstr "Indirizzo email"
 msgid "The one the association writes to."
 msgstr "Quello a cui scrive l’associazione."
 
-#: events/forms.py:25 templates/home.html:99
+#: events/forms.py:25 templates/home.html:101
 #: templates/intake/base-intake.html:58
 msgid "Tax code"
 msgstr "Codice fiscale"
@@ -89,7 +97,7 @@ msgstr "Codice fiscale"
 msgid "Of one of the members registered at that address."
 msgstr "Di uno dei soci registrati a quell’indirizzo."
 
-#: events/forms.py:50
+#: events/forms.py:53
 msgid ""
 "No member is registered with this pair. Check the tax code, or apply to join "
 "below."
@@ -97,76 +105,76 @@ msgstr ""
 "Nessun socio risulta con questa coppia. Controlla il codice fiscale, oppure "
 "presenta domanda di adesione qui sotto."
 
-#: events/models.py:45 intake/models.py:88 intake/models.py:89
+#: events/models.py:47 intake/models.py:88 intake/models.py:89
 #: intake/models.py:116 members/models.py:27
 msgid "association"
 msgstr "associazione"
 
-#: events/models.py:49 intake/models.py:61 intake/models.py:120
+#: events/models.py:51 intake/models.py:61 intake/models.py:120
 msgid "slug"
 msgstr "slug"
 
-#: events/models.py:50 intake/models.py:121
+#: events/models.py:52 intake/models.py:121
 msgid "title"
 msgstr "titolo"
 
-#: events/models.py:51
+#: events/models.py:53
 msgid "description"
 msgstr "descrizione"
 
-#: events/models.py:52
+#: events/models.py:54
 msgid "location"
 msgstr "luogo"
 
-#: events/models.py:53
+#: events/models.py:55
 msgid "starts at"
 msgstr "inizia il"
 
-#: events/models.py:54
+#: events/models.py:56
 msgid "ends at"
 msgstr "termina il"
 
-#: events/models.py:55
+#: events/models.py:57
 msgid "published"
 msgstr "pubblicato"
 
-#: events/models.py:57
+#: events/models.py:59
 msgid "checklist sent at"
 msgstr "lista inviata il"
 
-#: events/models.py:59 intake/models.py:124 intake/models.py:265
+#: events/models.py:61 intake/models.py:124 intake/models.py:265
 msgid "created at"
 msgstr "creato il"
 
-#: events/models.py:64 events/models.py:100
+#: events/models.py:66 events/models.py:102
 msgid "event"
 msgstr "evento"
 
-#: events/models.py:65
+#: events/models.py:67
 msgid "events"
 msgstr "eventi"
 
-#: events/models.py:106 members/models.py:70
+#: events/models.py:108 members/models.py:70
 msgid "member"
 msgstr "socio"
 
-#: events/models.py:110
+#: events/models.py:112
 msgid "note"
 msgstr "nota"
 
-#: events/models.py:111
+#: events/models.py:113
 msgid "booked at"
 msgstr "prenotato il"
 
-#: events/models.py:112
+#: events/models.py:114
 msgid "cancelled at"
 msgstr "annullata il"
 
-#: events/models.py:117
+#: events/models.py:119
 msgid "booking"
 msgstr "prenotazione"
 
-#: events/models.py:118
+#: events/models.py:120
 msgid "bookings"
 msgstr "prenotazioni"
 
@@ -191,13 +199,18 @@ msgstr "Statuto e quota"
 msgid "Colours"
 msgstr "Colori"
 
-#: intake/admin.py:49
+#: intake/admin.py:50
 msgid "Used across the public pages. Six-digit hex, e.g. #ED5C08."
-msgstr "Usati in tutte le pagine pubbliche. Esadecimale a sei cifre, es. #ED5C08."
+msgstr ""
+"Usati in tutte le pagine pubbliche. Esadecimale a sei cifre, es. #ED5C08."
 
-#: intake/admin.py:85
+#: intake/admin.py:87
 msgid "images"
 msgstr "immagini"
+
+#: intake/apps.py:9
+msgid "Association and applications"
+msgstr "Associazione e domande"
 
 #: intake/forms.py:14
 msgid "I give my consent"
@@ -633,10 +646,14 @@ msgstr "Esporta in CSV i soci selezionati"
 msgid "Record the board's ratification today"
 msgstr "Registra la ratifica del direttivo in data odierna"
 
-#: members/admin.py:43
+#: members/admin.py:44
 #, python-format
 msgid "%(count)d admissions minuted."
 msgstr "%(count)d ammissioni verbalizzate."
+
+#: members/apps.py:9
+msgid "Members register"
+msgstr "Registro soci"
 
 #: members/models.py:33
 msgid "application"
@@ -795,23 +812,23 @@ msgstr ""
 msgid "Open the admin"
 msgstr "Apri l'amministrazione"
 
-#: templates/home.html:11
+#: templates/home.html:13
 msgid "Skip to the events"
 msgstr "Vai agli appuntamenti"
 
-#: templates/home.html:40
+#: templates/home.html:42
 msgid "Next date"
 msgstr "Prossimo appuntamento"
 
-#: templates/home.html:51
+#: templates/home.html:53
 msgid "Book your experience"
 msgstr "Prenota la tua esperienza"
 
-#: templates/home.html:56
+#: templates/home.html:58
 msgid "No date is open right now"
 msgstr "Al momento non ci sono date aperte"
 
-#: templates/home.html:58
+#: templates/home.html:60
 #, python-format
 msgid ""
 "The next dates are published here. Write to %(email)s to be told when one "
@@ -820,19 +837,19 @@ msgstr ""
 "Le prossime date vengono pubblicate qui. Scrivi a %(email)s per essere "
 "avvisato quando ne apre una."
 
-#: templates/home.html:64
+#: templates/home.html:66
 msgid "Other open dates"
 msgstr "Altre date aperte"
 
-#: templates/home.html:74
+#: templates/home.html:76
 msgid "Book"
 msgstr "Prenota"
 
-#: templates/home.html:83
+#: templates/home.html:85
 msgid "Already done"
 msgstr "Già fatti"
 
-#: templates/home.html:104
+#: templates/home.html:106
 msgid "Statute"
 msgstr "Statuto"
 

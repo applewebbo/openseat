@@ -5,20 +5,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('intake', '0003_submission_event'),
+        ("intake", "0003_submission_event"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='association',
-            name='home_description',
-            field=django_ckeditor_5.fields.CKEditor5Field(blank=True, verbose_name='home page description'),
+            model_name="association",
+            name="home_description",
+            field=django_ckeditor_5.fields.CKEditor5Field(
+                blank=True, verbose_name="home page description"
+            ),
         ),
         migrations.AddField(
-            model_name='association',
-            name='home_title',
-            field=models.CharField(blank=True, max_length=200, verbose_name='home page title'),
+            model_name="association",
+            name="home_title",
+            field=models.CharField(
+                blank=True, max_length=200, verbose_name="home page title"
+            ),
         ),
     ]

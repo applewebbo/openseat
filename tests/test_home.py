@@ -49,7 +49,9 @@ class TestAssociationContent:
         assert b"<script>alert(1)</script>" not in client.get(reverse("home")).content
 
     def test_an_unstyled_link_is_kept_but_defanged(self, association):
-        association.home_description = '<p><a href="https://example.org" onclick="x()">qui</a></p>'
+        association.home_description = (
+            '<p><a href="https://example.org" onclick="x()">qui</a></p>'
+        )
         association.save()
 
         association.refresh_from_db()
@@ -59,8 +61,12 @@ class TestAssociationContent:
 
 @pytest.mark.django_db
 class TestEventSections:
-    def test_the_next_event_is_the_featured_one(self, client, association, event_factory):
-        event_factory(association=association, title="Fra un mese", starts_at=future(30))
+    def test_the_next_event_is_the_featured_one(
+        self, client, association, event_factory
+    ):
+        event_factory(
+            association=association, title="Fra un mese", starts_at=future(30)
+        )
         soonest = event_factory(
             association=association, title="Domani", starts_at=future(1)
         )

@@ -6,7 +6,20 @@ import nh3
 # editor whose toolbar offers exactly these. Anything else — a paste from a word
 # processor, a tag typed into the source, a stray handler — is dropped rather
 # than trusted, so the public page can never be made to run somebody's script.
-ALLOWED_TAGS = {"p", "br", "strong", "em", "u", "ul", "ol", "li", "a", "h2", "h3", "blockquote"}
+ALLOWED_TAGS = {
+    "p",
+    "br",
+    "strong",
+    "em",
+    "u",
+    "ul",
+    "ol",
+    "li",
+    "a",
+    "h2",
+    "h3",
+    "blockquote",
+}
 ALLOWED_ATTRIBUTES = {"a": {"href", "title"}}
 
 
