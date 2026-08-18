@@ -1,0 +1,42 @@
+{% extends "intake/base-intake.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Who is coming" %} — {{ event.title }}{% endblock %}
+
+{% block content %}
+    <p class="text-sm font-medium text-base-content/60">{{ event.title }} · {{ event.starts_at|date:"d/m/Y H:i" }}</p>
+    <h1 class="mt-1 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{% translate "Who is coming?" %}</h1>
+    <p class="mt-4 max-w-prose leading-relaxed text-base-content/80">
+        {% translate "Tick everyone who will be there. Unticking somebody cancels their place." %}
+    </p>
+
+    <form method="post"
+          class="mt-8 rounded-2xl border border-black/5 bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.15)] sm:p-8">
+        {% csrf_token %}
+        {% if nobody_chosen %}
+            <p role="alert" class="mb-6 rounded-xl border border-error/30 bg-error/5 p-4 text-sm">
+                {% translate "Tick at least one person, or nothing is booked." %}
+            </p>
+        {% endif %}
+        <div class="space-y-2">
+            {% for member in members %}
+                <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-black/10 bg-white p-4 transition-colors duration-200 ease-in-out hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                    <input type="checkbox"
+                           name="members"
+                           value="{{ member.pk }}"
+                           class="checkbox checkbox-primary mt-0.5 [--radius-selector:0.25rem]"
+                           {% if member.pk in booked %}checked{% endif %} />
+                    <span class="text-sm leading-relaxed">
+                        {{ member.full_name }}
+                        {% if member.pk in booked %}
+                            <span class="mt-1 block text-base-content/60">{% translate "already booked" %}</span>
+                        {% endif %}
+                    </span>
+                </label>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-primary mt-8 w-full rounded-xl sm:w-auto sm:px-8">
+            {% translate "Confirm" %}
+        </button>
+    </form>
+{% endblock %}

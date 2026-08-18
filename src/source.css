@@ -8,7 +8,9 @@
 @source "../templates";
 @source "../accounts";
 @source "../core";
+@source "../events";
 @source "../intake";
+@source "../members";
 @source "../static/js";
 
 @theme {

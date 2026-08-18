@@ -57,7 +57,9 @@ INSTALLED_APPS = [
     "storages",
     # INTERNAL
     "accounts",
+    "events",
     "intake",
+    "members",
     "ops",
 ]
 

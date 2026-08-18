@@ -1,0 +1,14 @@
+{% load i18n %}{% autoescape off %}{% blocktranslate with title=event.title %}Bookings for {{ title }}{% endblocktranslate %}
+{{ event.starts_at|date:"l d/m/Y H:i" }}{% if event.location %} · {{ event.location }}{% endif %}
+
+{% blocktranslate count counter=bookings|length %}One person has booked.{% plural %}{{ counter }} people have booked.{% endblocktranslate %}
+{% for booking in bookings %}
+{{ forloop.counter }}. {{ booking.member.last_name }} {{ booking.member.first_name }}{% if booking.member.contact_name %}
+   {% translate "contact" %}: {{ booking.member.contact_name }}{% if booking.member.contact_phone %} · {{ booking.member.contact_phone }}{% endif %}{% endif %}{% if booking.note %}
+   {{ booking.note }}{% endif %}
+{% empty %}
+{% translate "Nobody has booked a place." %}
+{% endfor %}
+--
+{{ association.name }}
+{% endautoescape %}

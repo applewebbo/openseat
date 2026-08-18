@@ -6,14 +6,6 @@ from intake.models import Submission
 pytestmark = pytest.mark.django_db
 
 
-@pytest.fixture
-def staff_client(client, user):
-    user.is_staff = user.is_superuser = True
-    user.save()
-    client.force_login(user)
-    return client
-
-
 def test_the_roster_lists_submissions(staff_client, minor_submission):
     response = staff_client.get(reverse("admin:intake_submission_changelist"))
 

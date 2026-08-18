@@ -1,6 +1,10 @@
+import datetime
+
 import factory
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
+from events.models import Booking, Event
 from intake.models import (
     Association,
     PublicForm,
@@ -9,6 +13,7 @@ from intake.models import (
     Submission,
     Subscription,
 )
+from members.models import Member
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -105,7 +110,11 @@ class MinorSubmissionFactory(SubmissionFactory):
 
 
 __all__ = [
+    "AdultSubmissionFactory",
     "AssociationFactory",
+    "BookingFactory",
+    "EventFactory",
+    "MemberFactory",
     "MinorSubmissionFactory",
     "PublicFormFactory",
     "SectionKey",
@@ -113,3 +122,58 @@ __all__ = [
     "SubscriptionFactory",
     "UserFactory",
 ]
+
+
+class AdultSubmissionFactory(SubmissionFactory):
+    """A draft ready to sign, for somebody joining on their own behalf."""
+
+    subject_type = SubjectType.SELF
+    applicant_first_name = "Anna"
+    applicant_last_name = "Verdi"
+    applicant_birth_date = "1970-01-05"
+    applicant_birth_place = "Novara"
+    applicant_tax_code = "VRDNNA70A45F952I"
+    applicant_street = "Via Roma"
+    applicant_number = "1"
+    applicant_postcode = "28100"
+    applicant_city = "Novara"
+    applicant_phone = "3401234567"
+    applicant_email = "anna.verdi@example.com"
+    accepts_statute = True
+    consent_images = False
+    consent_whatsapp = False
+    place = "Novara"
+
+
+class MemberFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Member
+
+    association = factory.SubFactory(AssociationFactory)
+    first_name = "Luca"
+    last_name = "Rossi"
+    tax_code = "RSSLCU15P03F952V"
+    contact_name = "Maria Rossi"
+    contact_email = factory.Sequence(lambda n: f"contatto{n}@example.com")
+
+
+class EventFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Event
+        django_get_or_create = ("slug",)
+
+    association = factory.SubFactory(AssociationFactory)
+    slug = factory.Sequence(lambda n: f"evento-{n}")
+    title = "Festa di primavera"
+    location = "La Ca' di Asu, Novara"
+    starts_at = factory.LazyFunction(
+        lambda: timezone.now() + datetime.timedelta(days=7)
+    )
+
+
+class BookingFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Booking
+
+    event = factory.SubFactory(EventFactory)
+    member = factory.SubFactory(MemberFactory)

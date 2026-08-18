@@ -8,6 +8,7 @@ python manage.py migrate
 # builds its schema with --nomigrations, so a migration would go untested.
 python manage.py intake_schedule
 python manage.py ops_schedule
+python manage.py events_schedule
 
 echo "Compiling translations..."
 python manage.py compilemessages -l it -l en --ignore=.venv

@@ -219,6 +219,17 @@ class Submission(models.Model):
     consent_images = models.BooleanField(_("image consent"), null=True, blank=True)
     consent_whatsapp = models.BooleanField(_("WhatsApp consent"), null=True, blank=True)
 
+    # By the current statute you cannot attend without joining, so an
+    # application may be the way somebody books a place. When the statute
+    # changes, this is the link that stops being needed.
+    event = models.ForeignKey(
+        "events.Event",
+        verbose_name=_("booked for"),
+        related_name="applications",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
     reminder_sent_at = models.DateTimeField(_("reminded at"), null=True, blank=True)
     place = models.CharField(_("place"), max_length=100, blank=True)
     submitted_at = models.DateTimeField(_("submitted at"), null=True, blank=True)

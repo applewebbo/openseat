@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
+from events.models import Booking
 from intake.forms import ResumeLinkForm, ReviewForm
 from intake.models import PublicForm, SectionKey, Submission, Subscription
 from intake.notifications import (
@@ -18,6 +19,7 @@ from intake.wizard import (
     position,
     resume_step,
 )
+from members.register import enrol
 
 DRAFT_SESSION_KEY = "intake_draft"
 
@@ -154,6 +156,9 @@ def submit(request, token):
     submission.ip = client_ip(request)
     submission.save()
     _record_signatures(submission, client_ip(request))
+    member = enrol(submission)
+    if submission.event_id:
+        Booking.objects.book(submission.event, member)
     return redirect("intake:done", token=token)
 
 

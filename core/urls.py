@@ -12,6 +12,7 @@ from core.views import home
 urlpatterns = [
     path("", home, name="home"),
     path("", include("intake.urls")),
+    path("", include("events.urls")),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("serviceworker.js", login_not_required(service_worker), name="serviceworker"),

@@ -1,22 +1,32 @@
 # OpenSeat
 
 Free and open source, self-hosted booking manager for non-profit associations.
-OpenSeat handles event reservations, keeps the membership roster with CSV export,
-and mails the attendance report automatically once an event is over.
+OpenSeat takes membership applications, keeps the register with CSV export, and
+mails the booking list before each event.
 
 Built to be run by the association itself: one container, one database, no SaaS
 subscription and no data leaving the organisation.
 
 ## Features
 
-- **Event bookings** — members reserve a seat, the organiser sees the list fill up.
-- **Membership roster** — the members an association has to keep track of anyway,
-  exportable to CSV for the accountant or the annual filing.
-- **Automatic reports** — when an event closes, the summary goes out by email
-  without anyone remembering to send it.
+- **Public membership application** — one section per step, from a link anyone can
+  open, with the parental-responsibility and image-consent rules an Italian APS
+  actually has to follow. Drafts survive a lost connection and expire after thirty
+  days.
+- **Membership register** — every submitted application becomes an entry, ready
+  for the board to minute, exportable to CSV over a date range for the accountant
+  or the annual filing.
+- **Event bookings** — a member proves who they are with their email and tax code
+  and books a place for everyone in the family. Someone new joins and books in the
+  same flow, because by the current statute you cannot attend without being a
+  member.
+- **The list, before the event** — at midnight on the day of an event the booking
+  list is mailed to the association, so whoever is on the door has it in hand. It
+  is a checklist, not a report: nobody has to remember to ask for it.
 
-> **Status:** the project scaffold is in place (auth, background tasks, deployment).
-> The features above are the goal, not yet the implementation.
+> **Status:** applications, the register and event bookings work end to end.
+> Not built yet: paying the membership fee online, and bulk import of the paper
+> applications collected on the day.
 
 ## Requirements
 

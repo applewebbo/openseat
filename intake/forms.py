@@ -56,7 +56,10 @@ class SectionForm(forms.ModelForm):
         for field in self.fields.values():
             widget = field.widget
             if isinstance(widget, forms.CheckboxInput):
-                widget.attrs.setdefault("class", "checkbox checkbox-primary mt-0.5")
+                widget.attrs.setdefault(
+                    "class",
+                    "checkbox checkbox-primary mt-0.5 [--radius-selector:0.25rem]",
+                )
             elif isinstance(widget, forms.RadioSelect):
                 widget.attrs.setdefault("class", "radio radio-primary mt-0.5")
             else:

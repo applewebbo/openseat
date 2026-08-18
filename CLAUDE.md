@@ -1,8 +1,8 @@
 # OpenSeat
 
-Self-hosted, open source booking manager for non-profit associations: event
-reservations, membership roster with CSV export, and automatic attendance reports
-emailed when an event closes.
+Self-hosted, open source booking manager for non-profit associations: public
+membership applications, the register with CSV export, event bookings, and the
+booking list mailed to the association at midnight before each event.
 
 Django 6.1, server-driven, deployed to Coolify from `main`.
 
@@ -66,6 +66,14 @@ just update_all       # lock + Alpine + hooks
 - **`DEBUG` fails closed**: strict parse, defaults to `False`. So does `ENVIRONMENT`
   (defaults to `prod`). `SECRET_KEY` has no default and crashes at startup if unset.
 - **`LoginRequiredMiddleware` is on**: every public view needs `@login_not_required`.
+- **Apps by concern**: `intake` is the public form engine, `members` the register,
+  `events` bookings and the pre-event checklist, `ops` the scheduled housekeeping.
+  Each app registers its own django-q schedule through a `*_schedule` command run
+  from `entrypoint.sh`, never from a data migration: the suite runs
+  `--nomigrations`, so a migration would go untested.
+- **Booking an event is applying to join**, because the statute says attending
+  requires membership. That rule lives in `events.views.join` and
+  `Submission.event`; a statute that drops it is a small change, by design.
 - **Function-based views**, one concern each.
 - **Tests live in `tests/`**, never inside the apps. Factories in `tests/factories.py`,
   registered as fixtures in `conftest.py`. Mock only as a last resort.
