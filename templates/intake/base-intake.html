@@ -1,0 +1,88 @@
+{% load django_htmx i18n static tailwind_cli %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'it' }}" data-theme="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="noindex" />
+        <meta name="description"
+              content="{% block meta_description %}{{ public_form.title }}{% endblock %}" />
+        <title>
+            {% block title %}{{ public_form.title }} — {{ association.name }}{% endblock %}
+        </title>
+        {% tailwind_css %}
+        <style>
+            /* The association's own base colours, and nothing else of its site.
+               The bright value carries no text, so it stays as given; every
+               surface that does carry text uses the darkened mix, which clears
+               4.5:1 against white where the raw orange does not. */
+            :root {
+                --assoc-bright: {{ association.colour_primary }};
+                --assoc-accent: {{ association.colour_accent }};
+                --color-primary: color-mix(in oklab, {{ association.colour_primary }} 78%, #1a1103);
+                --color-primary-content: #fff;
+                --color-accent: color-mix(in oklab, {{ association.colour_accent }} 88%, #05100a);
+                --color-accent-content: #fff;
+                --color-base-content: {{ association.colour_neutral }};
+            }
+            /* Browser surfaces the design does not draw but still owns. */
+            [x-cloak] { display: none !important; }
+            ::selection { background: var(--assoc-bright); color: #fff; }
+            :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+            html { scrollbar-color: var(--assoc-bright) #eae7e2; }
+        </style>
+        {% block extra_head %}{% endblock %}
+    </head>
+    <body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'
+          class="min-h-screen bg-[#f6f4f1] text-base-content antialiased">
+        <!--
+        THESIS: the paper module, walked one section at a time; it refuses the
+        single long scroll that makes a legal form unreadable on a phone.
+        OWN-WORLD: one white sheet on warm paper grey, association orange as the
+        only chrome, daisyUI semantic tokens, no ornament competing with fields.
+        STORY: a parent understands whose form this is, answers one thing at a
+        time, and signs knowing what the signature covers.
+        FIRST VIEWPORT: thin association header, orange progress line under it,
+        section title, this section's fields only, action bottom-right.
+        FORM: sheet under a fixed header; candidate 3 of 7; seed 0862c311.
+        FINISH: unreviewed and undocumented is unfinished; this build ends with
+        the finish review, the verdict, DESIGN.md, and every shipping raster
+        carrying its provenance.
+        -->
+        <a href="#sheet"
+           class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-3 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-content">
+            {% translate "Skip to the form" %}
+        </a>
+
+        <header class="sticky top-0 z-30 border-b border-black/5 bg-white/95 backdrop-blur-sm">
+            <div class="mx-auto flex max-w-2xl items-center gap-3 px-4 py-2.5">
+                {% if association.logo %}
+                    <img src="{{ association.logo.url }}"
+                         alt=""
+                         class="h-8 w-auto shrink-0" />
+                {% endif %}
+                <p class="min-w-0 truncate text-sm font-semibold tracking-tight">{{ association.name }}</p>
+            </div>
+            {% block progress %}{% endblock %}
+        </header>
+
+        <main id="sheet" class="mx-auto w-full max-w-2xl px-4 pb-24 pt-6 sm:pt-10">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="mx-auto max-w-2xl px-4 pb-10 text-xs leading-relaxed text-base-content/60">
+            {% block footer %}
+                <p>
+                    {{ association.name }} · {{ association.street }}, {{ association.postcode }} {{ association.city }} · {% translate "Tax code" %} {{ association.tax_code }}
+                </p>
+            {% endblock %}
+        </footer>
+
+        {% htmx_script %}
+        <script src="{% static 'js/main.js' %}" defer></script>
+        <script src="{% static 'js/alpine-collapse.min.js' %}" defer></script>
+        <script src="{% static 'js/alpine-focus.min.js' %}" defer></script>
+        <script src="{% static 'js/alpine.min.js' %}" defer></script>
+        {% block script %}{% endblock %}
+    </body>
+</html>

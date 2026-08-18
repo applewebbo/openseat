@@ -1,0 +1,26 @@
+{% load i18n %}
+{% if form.non_field_errors %}
+    <div role="alert"
+         class="mb-6 rounded-xl border border-error/30 bg-error/5 p-4 text-sm">
+        {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+    </div>
+{% endif %}
+<div class="space-y-5">
+    {% for row in form.rows %}
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-6">
+            {% for cell in row %}
+                <div class="{{ cell.css }}">
+                    <label class="mb-1.5 block text-sm font-medium"
+                           for="{{ cell.field.id_for_label }}">{{ cell.field.label }}</label>
+                    {{ cell.field }}
+                    {% if cell.field.help_text %}
+                        <p class="mt-1.5 text-sm leading-relaxed text-base-content/70">{{ cell.field.help_text }}</p>
+                    {% endif %}
+                    {% for error in cell.field.errors %}
+                        <p class="mt-1.5 text-sm font-medium text-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,35 @@
+{% load i18n %}
+<div class="mb-8">
+    <p class="mb-4 max-w-prose text-sm leading-relaxed text-base-content/70">
+        {% translate "Read this before the next step: it explains what the association does with the data you have just given, and it is what the consents on the next page refer to." %}
+    </p>
+    <div class="max-h-96 overflow-y-auto rounded-xl border border-black/10 bg-[#f6f4f1] p-5 text-sm leading-relaxed [&_h2]:mt-5 [&_h2]:mb-1.5 [&_h2]:font-semibold [&_h2:first-child]:mt-0 [&_p]:mb-3 [&_p:last-child]:mb-0">
+        <h2>{% translate "Data controller" %}</h2>
+        <p>
+            {% blocktranslate with name=association.name street=association.street postcode=association.postcode city=association.city email=association.email %}The controller is {{ name }}, {{ street }}, {{ postcode }} {{ city }}, email {{ email }}.{% endblocktranslate %}
+        </p>
+        <h2>{% translate "Purpose and legal basis" %}</h2>
+        <p>
+            {% translate "Personal data (identity, residence, contact details, tax code) are given when applying and are processed, without further consent and in accordance with the statute, to formalise membership and enter it in the members' register with the related insurance and legal obligations, to call and hold the members' assembly, to send communications about the association's activity, and to record payment of the membership fee (art. 6(b) and (c) GDPR)." %}
+        </p>
+        <p>
+            {% translate "Any health information is discussed orally so the activity can be tailored to the member; no diagnosis or medical record is collected on paper or through this form." %}
+        </p>
+        <h2>{% translate "Images" %}</h2>
+        <p>
+            {% translate "Images are processed only where consent is given (art. 6(a) GDPR), by the person concerned if of age, or by those holding parental responsibility. This consent is optional and refusing it does not affect any activity provided for by the statute." %}
+        </p>
+        <h2>{% translate "Recipients" %}</h2>
+        <p>
+            {% translate "Data may be shared with parties the association must involve by law (accountant, insurer, system administrator) and with people or bodies whose involvement is necessary to the institutional activity (trainers, local authorities, health bodies, suppliers), appointed as processors under art. 28 GDPR where required." %}
+        </p>
+        <h2>{% translate "Retention" %}</h2>
+        <p>
+            {% translate "Data are used until membership ends. After that, only what legal, accounting or tax obligations require is kept, and the name remains in the members' register held by the association as a historical record." %}
+        </p>
+        <h2>{% translate "Your rights" %}</h2>
+        <p>
+            {% translate "You may at any time ask for access, rectification, erasure, restriction, portability, or object to processing (artt. 15-21 GDPR), by writing to the association at the address above. You may also lodge a complaint with the Garante per la protezione dei dati personali." %}
+        </p>
+    </div>
+</div>

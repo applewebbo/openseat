@@ -1,0 +1,15 @@
+{% load i18n %}
+<div class="mb-8 rounded-xl bg-[#f6f4f1] p-5 text-sm leading-relaxed">
+    <p class="mb-3">
+        {% blocktranslate with name=association.name %}By applying you declare that you accept the statute of {{ name }} and share its institutional purposes.{% endblocktranslate %}
+    </p>
+    <p>
+        {% blocktranslate with fee=association.membership_fee %}You also undertake to pay the annual membership fee of € {{ fee }}.{% endblocktranslate %}
+    </p>
+    {% if association.statute_url %}
+        <a class="mt-3 inline-block font-medium text-primary underline underline-offset-4"
+           href="{{ association.statute_url }}"
+           target="_blank"
+           rel="noopener">{% translate "Read the statute" %} ↗</a>
+    {% endif %}
+</div>

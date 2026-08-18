@@ -1,0 +1,37 @@
+{% extends "intake/base-intake.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Application sent" %} — {{ association.name }}{% endblock %}
+
+{% block content %}
+    <div class="rounded-2xl border border-black/5 bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.15)] sm:p-8">
+        <p class="text-sm font-medium"
+           style="color: var(--color-accent)">{% translate "Sent" %}</p>
+        <h1 class="mt-2 text-3xl font-bold tracking-tight text-balance sm:text-4xl">
+            {% blocktranslate with name=submission.member_display %}{{ name }}'s application is with the board{% endblocktranslate %}
+        </h1>
+        <p class="mt-4 max-w-prose leading-relaxed text-base-content/80">
+            {% blocktranslate with email=submission.applicant_email %}A copy is on its way to {{ email }}. Keep this page's link if you want to come back to it.{% endblocktranslate %}
+        </p>
+
+        <dl class="mt-8 divide-y divide-black/5 rounded-xl bg-[#f6f4f1] px-4 text-sm">
+            <div class="flex justify-between gap-4 py-2.5">
+                <dt class="text-base-content/60">{% translate "Signed on" %}</dt>
+                <dd class="text-right font-medium tabular-nums">{{ submission.submitted_at|date:"d/m/Y H:i" }}</dd>
+            </div>
+            <div class="flex justify-between gap-4 py-2.5">
+                <dt class="text-base-content/60">{% translate "Annual fee" %}</dt>
+                <dd class="text-right font-medium tabular-nums">€ {{ association.membership_fee }}</dd>
+            </div>
+        </dl>
+    </div>
+
+    {% if pending %}
+        <div class="mt-6 rounded-2xl border border-black/10 bg-white p-6 sm:p-8">
+            <h2 class="text-base font-semibold tracking-tight">{% translate "One thing is still open" %}</h2>
+            <p class="mt-2 max-w-prose text-sm leading-relaxed text-base-content/80">
+                {% blocktranslate with name=pending.signatory_name email=pending.signatory_email %}Publishing a child's images needs both holders of parental responsibility. We have written to {{ name }} at {{ email }}. Until they answer, no image is published — the membership itself is unaffected.{% endblocktranslate %}
+            </p>
+        </div>
+    {% endif %}
+{% endblock %}

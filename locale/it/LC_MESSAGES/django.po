@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-09 18:50+0200\n"
+"POT-Creation-Date: 2026-08-18 10:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: accounts/admin.py:15
 msgid "Personal info"
 msgstr "Dati personali"
@@ -41,7 +42,8 @@ msgstr "Un superuser deve avere is_staff=True"
 msgid "A superuser must have is_superuser=True"
 msgstr "Un superuser deve avere is_superuser=True"
 
-#: accounts/models.py:38
+#: accounts/models.py:38 intake/models.py:55 intake/models.py:189
+#: intake/models.py:214 intake/models.py:289
 msgid "email address"
 msgstr "indirizzo email"
 
@@ -53,13 +55,428 @@ msgstr "utente"
 msgid "users"
 msgstr "utenti"
 
-#: core/settings.py:137
+#: core/settings.py:138
 msgid "Italian"
 msgstr "Italiano"
 
-#: core/settings.py:137
+#: core/settings.py:138
 msgid "English"
 msgstr "Inglese"
+
+#: intake/admin.py:43
+msgid "images"
+msgstr "immagini"
+
+#: intake/forms.py:14
+msgid "I give my consent"
+msgstr "Presto il consenso"
+
+#: intake/forms.py:14 templates/intake/second-parent.html:42
+msgid "I do not consent"
+msgstr "Non presto il consenso"
+
+#: intake/forms.py:20
+msgid ""
+"I sign on behalf of the other parent too, in agreement with them (artt. 316 "
+"and 337-ter of the Civil Code)"
+msgstr ""
+"Sottoscrivo anche in nome dell’altro genitore, in accordo con lui/lei (artt. "
+"316 e 337-ter c.c.)"
+
+#: intake/forms.py:24
+msgid "I am the sole holder of parental responsibility"
+msgstr "Sono unico titolare della responsabilità genitoriale"
+
+#: intake/forms.py:185
+msgid "I accept the statute and undertake to pay the annual membership fee"
+msgstr "Accetto lo statuto e mi impegno al versamento della quota associativa annuale"
+
+#: intake/forms.py:189 templates/intake/partials/review-partial.html:66
+msgid "Parental responsibility"
+msgstr "Responsabilità genitoriale"
+
+#: intake/forms.py:192
+msgid ""
+"Being separated or divorced does not make you the sole holder: under shared "
+"custody both parents remain holders. You are the sole holder with exclusive "
+"custody, after the other parent's death, or when you are the only parent who "
+"recognised the child."
+msgstr ""
+"Essere separati o divorziati non rende unico titolare: nell’affido condiviso "
+"entrambi i genitori restano titolari. Sei unico titolare con l’affido "
+"esclusivo, dopo il decesso dell’altro genitore, o quando sei l’unico "
+"genitore che ha riconosciuto il figlio."
+
+#: intake/forms.py:215
+msgid "Their first name"
+msgstr "Nome"
+
+#: intake/forms.py:216
+msgid "Their last name"
+msgstr "Cognome"
+
+#: intake/forms.py:217
+msgid "Their email address"
+msgstr "Indirizzo email"
+
+#: intake/forms.py:219
+msgid "Used only to ask them about the image consents."
+msgstr "Serve solo per chiedergli i consensi immagine."
+
+#: intake/forms.py:231
+msgid "This field is required."
+msgstr "Questo campo è obbligatorio."
+
+#: intake/forms.py:241
+msgid "Publishing images on the association's website and social channels"
+msgstr ""
+"Pubblicazione delle immagini sul sito e sui canali social dell’associazione"
+
+#: intake/forms.py:244
+msgid "Sending photos and videos through the WhatsApp broadcast list"
+msgstr "Invio di fotografie e filmati tramite la lista broadcast WhatsApp"
+
+#: intake/forms.py:255
+msgid ""
+"I declare that the information above is true and I ask to be admitted as a "
+"member"
+msgstr "Dichiaro che quanto sopra è veritiero e chiedo di essere ammesso/a come socio/a"
+#: intake/models.py:9
+msgid "Use a six-digit hex colour, for example #ED5C08"
+msgstr "Usa un colore esadecimale a sei cifre, per esempio #ED5C08"
+
+#: intake/models.py:14
+msgid "For myself"
+msgstr "Per me"
+
+#: intake/models.py:15
+msgid "For a minor child"
+msgstr "Per un figlio minore"
+
+#: intake/models.py:16
+msgid "For a person I am the legal guardian of"
+msgstr "Per una persona di cui sono tutore o amministratore di sostegno"
+
+#: intake/models.py:20
+msgid "Who the application is for"
+msgstr "Per chi presenti la richiesta"
+
+#: intake/models.py:21 templates/intake/partials/review-partial.html:13
+msgid "Who is applying"
+msgstr "Chi presenta la richiesta"
+
+#: intake/models.py:22 templates/intake/partials/review-partial.html:44
+msgid "Member details"
+msgstr "Dati dell’aderente"
+
+#: intake/models.py:23
+msgid "Statute and fee"
+msgstr "Statuto e quota"
+
+#: intake/models.py:24
+msgid "Privacy notice"
+msgstr "Informativa privacy"
+
+#: intake/models.py:25 templates/intake/partials/review-partial.html:82
+msgid "Image consents"
+msgstr "Consensi immagine"
+
+#: intake/models.py:26
+msgid "Review and subscription"
+msgstr "Riepilogo e sottoscrizione"
+
+#: intake/models.py:49
+msgid "name"
+msgstr "nome"
+
+#: intake/models.py:50 intake/models.py:89
+msgid "slug"
+msgstr "slug"
+
+#: intake/models.py:51 intake/models.py:184 intake/models.py:198
+msgid "street"
+msgstr "via"
+
+#: intake/models.py:52 intake/models.py:186
+msgid "postcode"
+msgstr "CAP"
+
+#: intake/models.py:53 intake/models.py:187 intake/models.py:200
+msgid "city"
+msgstr "comune"
+
+#: intake/models.py:54 intake/models.py:183 intake/models.py:197
+msgid "tax code"
+msgstr "codice fiscale"
+
+#: intake/models.py:56
+msgid "statute link"
+msgstr "link allo statuto"
+
+#: intake/models.py:58
+msgid "annual membership fee"
+msgstr "quota associativa annuale"
+
+#: intake/models.py:60
+msgid "logo"
+msgstr "logo"
+
+#: intake/models.py:62
+msgid "primary colour"
+msgstr "colore primario"
+
+#: intake/models.py:65
+msgid "accent colour"
+msgstr "colore d’accento"
+
+#: intake/models.py:68
+msgid "neutral colour"
+msgstr "colore neutro"
+
+#: intake/models.py:72 intake/models.py:85
+msgid "association"
+msgstr "associazione"
+
+#: intake/models.py:73
+msgid "associations"
+msgstr "associazioni"
+
+#: intake/models.py:90
+msgid "title"
+msgstr "titolo"
+
+#: intake/models.py:91
+msgid "introduction"
+msgstr "introduzione"
+
+#: intake/models.py:92
+msgid "open"
+msgstr "aperto"
+
+#: intake/models.py:93 intake/models.py:222
+msgid "created at"
+msgstr "creato il"
+
+#: intake/models.py:96
+msgid "public form"
+msgstr "modulo pubblico"
+
+#: intake/models.py:97
+msgid "public forms"
+msgstr "moduli pubblici"
+
+#: intake/models.py:136 intake/models.py:165
+msgid "form"
+msgstr "modulo"
+
+#: intake/models.py:140 intake/models.py:145
+msgid "section"
+msgstr "sezione"
+
+#: intake/models.py:141
+msgid "order"
+msgstr "ordine"
+
+#: intake/models.py:142
+msgid "enabled"
+msgstr "attiva"
+
+#: intake/models.py:146
+msgid "sections"
+msgstr "sezioni"
+
+#: intake/models.py:160
+msgid "Draft"
+msgstr "Bozza"
+
+#: intake/models.py:161
+msgid "Submitted"
+msgstr "Inviata"
+
+#: intake/models.py:169 intake/models.py:295
+msgid "token"
+msgstr "token"
+
+#: intake/models.py:171 intake/models.py:293
+msgid "state"
+msgstr "stato"
+
+#: intake/models.py:174
+msgid "applying for"
+msgstr "richiesta per"
+
+#: intake/models.py:177 intake/models.py:191 intake/models.py:209
+msgid "first name"
+msgstr "nome"
+
+#: intake/models.py:178 intake/models.py:192 intake/models.py:212
+msgid "last name"
+msgstr "cognome"
+
+#: intake/models.py:179 intake/models.py:193
+msgid "date of birth"
+msgstr "data di nascita"
+
+#: intake/models.py:181 intake/models.py:195
+msgid "place of birth"
+msgstr "luogo di nascita"
+
+#: intake/models.py:185 intake/models.py:199
+msgid "number"
+msgstr "numero civico"
+
+#: intake/models.py:188
+msgid "phone"
+msgstr "telefono"
+
+#: intake/models.py:202
+msgid "accepts the statute"
+msgstr "accetta lo statuto"
+
+#: intake/models.py:206
+msgid "sole holder of parental responsibility"
+msgstr "unico titolare della responsabilità genitoriale"
+
+#: intake/models.py:216
+msgid "image consent"
+msgstr "consenso immagine"
+
+#: intake/models.py:217
+msgid "WhatsApp consent"
+msgstr "consenso WhatsApp"
+
+#: intake/models.py:219
+msgid "place"
+msgstr "luogo"
+
+#: intake/models.py:220
+msgid "submitted at"
+msgstr "inviata il"
+
+#: intake/models.py:221 intake/models.py:298
+msgid "IP address"
+msgstr "indirizzo IP"
+
+#: intake/models.py:223
+msgid "updated at"
+msgstr "aggiornata il"
+
+#: intake/models.py:226 intake/models.py:284
+msgid "submission"
+msgstr "richiesta"
+
+#: intake/models.py:227
+msgid "submissions"
+msgstr "richieste"
+
+#: intake/models.py:231
+msgid "draft"
+msgstr "bozza"
+
+#: intake/models.py:270
+msgid "Applicant"
+msgstr "Richiedente"
+
+#: intake/models.py:271
+msgid "Second holder of parental responsibility"
+msgstr "Secondo titolare della responsabilità genitoriale"
+
+#: intake/models.py:274
+msgid "Membership application"
+msgstr "Richiesta di adesione"
+
+#: intake/models.py:275 templates/intake/second-parent.html:4
+msgid "Image consent"
+msgstr "Consenso immagine"
+
+#: intake/models.py:278
+msgid "Awaiting signature"
+msgstr "In attesa di firma"
+
+#: intake/models.py:279
+msgid "Signed"
+msgstr "Firmato"
+
+#: intake/models.py:280
+msgid "Declined"
+msgstr "Rifiutato"
+
+#: intake/models.py:288
+msgid "signatory"
+msgstr "sottoscrittore"
+
+#: intake/models.py:290
+msgid "role"
+msgstr "ruolo"
+
+#: intake/models.py:291
+msgid "subject"
+msgstr "oggetto"
+
+#: intake/models.py:296
+msgid "declaration"
+msgstr "dichiarazione"
+
+#: intake/models.py:297
+msgid "signed at"
+msgstr "firmato il"
+
+#: intake/models.py:301
+msgid "subscription"
+msgstr "sottoscrizione"
+
+#: intake/models.py:302
+msgid "subscriptions"
+msgstr "sottoscrizioni"
+
+#: intake/notifications.py:35
+#, python-format
+msgid "Your membership application to %(association)s"
+msgstr "La tua richiesta di adesione a %(association)s"
+
+#: intake/notifications.py:59
+#, python-format
+msgid "Image consent for %(member)s"
+msgstr "Consenso immagine per %(member)s"
+
+#: intake/validators.py:39
+msgid "A tax code is 16 letters and digits."
+msgstr "Il codice fiscale è di 16 lettere e cifre."
+
+#: intake/validators.py:41
+msgid "This tax code is not valid: check for a typo."
+msgstr ""
+"Questo codice fiscale non è valido: controlla se c’è un errore di battitura."
+
+#: intake/validators.py:45
+msgid "An Italian postcode is exactly five digits."
+msgstr "Il CAP è di cinque cifre."
+
+#: intake/validators.py:49
+msgid "Write the number with digits, spaces or a plus sign."
+msgstr "Scrivi il numero con cifre, spazi o il segno più."
+
+#: intake/views.py:211
+#, python-format
+msgid ""
+"Application for membership of %(association)s, accepting its statute and "
+"undertaking to pay the annual fee."
+msgstr ""
+"Richiesta di adesione a %(association)s, con accettazione dello statuto e "
+"impegno al versamento della quota annuale."
+
+#: intake/views.py:217
+msgid "Signed as sole holder of parental responsibility."
+msgstr ""
+"Sottoscritta in qualità di unico titolare della responsabilità genitoriale."
+
+#: intake/views.py:221
+msgid ""
+"Signed on behalf of the other parent too, in agreement with them, under "
+"artt. 316 and 337-ter of the Civil Code."
+msgstr ""
+"Sottoscritta anche in nome dell’altro genitore, in accordo con lui/lei, ai "
+"sensi degli artt. 316 e 337-ter c.c."
 
 #: templates/home.html:8
 msgid "The project is up and running."
@@ -68,3 +485,435 @@ msgstr "Il progetto è attivo e funzionante."
 #: templates/home.html:9
 msgid "Admin"
 msgstr "Amministrazione"
+
+#: templates/intake/base-intake.html:54
+msgid "Skip to the form"
+msgstr "Vai al modulo"
+
+#: templates/intake/base-intake.html:76
+#: templates/intake/partials/review-partial.html:23
+#: templates/intake/partials/review-partial.html:54
+msgid "Tax code"
+msgstr "C.F."
+
+#: templates/intake/done.html:4
+msgid "Application sent"
+msgstr "Richiesta inviata"
+
+#: templates/intake/done.html:9
+msgid "Sent"
+msgstr "Inviata"
+
+#: templates/intake/done.html:11
+#, python-format
+msgid "%(name)s's application is with the board"
+msgstr "La richiesta per %(name)s è arrivata al Consiglio Direttivo"
+
+#: templates/intake/done.html:14
+#, python-format
+msgid ""
+"A copy is on its way to %(email)s. Keep this page's link if you want to come "
+"back to it."
+msgstr ""
+"Una copia sta arrivando a %(email)s. Conserva il link di questa pagina se "
+"vuoi tornarci."
+
+#: templates/intake/done.html:19 templates/intake/mail/receipt.txt:5
+msgid "Signed on"
+msgstr "Sottoscritta il"
+
+#: templates/intake/done.html:23 templates/intake/mail/receipt.txt:6
+msgid "Annual fee"
+msgstr "Quota annuale"
+
+#: templates/intake/done.html:31
+msgid "One thing is still open"
+msgstr "Manca ancora una cosa"
+
+#: templates/intake/done.html:33
+#, python-format
+msgid ""
+"Publishing a child's images needs both holders of parental responsibility. "
+"We have written to %(name)s at %(email)s. Until they answer, no image is "
+"published — the membership itself is unaffected."
+msgstr ""
+"Per pubblicare le immagini di un minore serve il consenso di entrambi i "
+"titolari della responsabilità genitoriale. Abbiamo scritto a %(name)s "
+"all’indirizzo %(email)s. Finché non risponde non viene pubblicata alcuna "
+"immagine; l’adesione non ne risente."
+
+#: templates/intake/forms/statute-form.html:46
+msgid "The other parent"
+msgstr "L’altro genitore"
+#: templates/intake/forms/statute-form.html:48
+msgid ""
+"They do not sign the application: only the image consents are asked of them, "
+"from their own link."
+msgstr "Non sottoscrive la richiesta: gli vengono chiesti soltanto i consensi immagine, da un link suo."
+#: templates/intake/landing.html:14
+msgid "Before you start, have these to hand"
+msgstr "Prima di cominciare, tieni a portata di mano"
+
+#: templates/intake/landing.html:19
+msgid "The tax code and residence of whoever is applying"
+msgstr "Codice fiscale e residenza di chi presenta la richiesta"
+
+#: templates/intake/landing.html:24
+msgid "For a minor, the same details for the child"
+msgstr "Se la richiesta è per un minore, gli stessi dati del bambino"
+
+#: templates/intake/landing.html:29
+#, python-format
+msgid "The annual fee is € %(fee)s, to be paid to the association"
+msgstr "La quota annuale è di € %(fee)s, da versare all’associazione"
+
+#: templates/intake/landing.html:38
+msgid "Start the application"
+msgstr "Comincia la richiesta"
+
+#: templates/intake/landing.html:42
+msgid ""
+"It takes a few minutes, one question at a time. You can stop and come back "
+"later from the same link."
+msgstr ""
+"Bastano pochi minuti, una domanda alla volta. Puoi interrompere e riprendere "
+"più tardi dallo stesso link."
+
+#: templates/intake/landing.html:48
+msgid "Applications are closed"
+msgstr "Le richieste sono chiuse"
+
+#: templates/intake/landing.html:50
+#, python-format
+msgid ""
+"This form is not accepting applications at the moment. Write to %(email)s to "
+"ask when it reopens."
+msgstr ""
+"Questo modulo al momento non accetta richieste. Scrivi a %(email)s per "
+"sapere quando riapre."
+
+#: templates/intake/mail/receipt.txt:1
+#, python-format
+msgid "The membership application for %(name)s has been sent."
+msgstr "La richiesta di adesione per %(name)s è stata inviata."
+
+#: templates/intake/mail/receipt.txt:3
+#, python-format
+msgid ""
+"It is now with the board of %(association)s, which will confirm the "
+"enrolment."
+msgstr ""
+"È ora al Consiglio Direttivo di %(association)s, che confermerà l’iscrizione."
+
+#: templates/intake/mail/receipt.txt:8
+msgid "Your copy"
+msgstr "La tua copia"
+
+#: templates/intake/mail/second-parent.txt:1
+#, python-format
+msgid "%(parent)s has applied to enrol %(member)s in %(association)s."
+msgstr ""
+"%(parent)s ha presentato richiesta di adesione per %(member)s a "
+"%(association)s."
+
+#: templates/intake/mail/second-parent.txt:3
+msgid ""
+"Publishing a child's images needs the consent of both holders of parental "
+"responsibility, so the association is asking you as well. Until you answer, "
+"no image is published; the membership itself is unaffected."
+msgstr ""
+"Per pubblicare le immagini di un minore serve il consenso di entrambi i "
+"titolari della responsabilità genitoriale, perciò l’associazione lo chiede "
+"anche a te. Finché non rispondi non viene pubblicata alcuna immagine; "
+"l’adesione non ne risente."
+
+#: templates/intake/mail/second-parent.txt:5
+msgid "Answer here"
+msgstr "Rispondi qui"
+
+#: templates/intake/partials/privacy-partial.html:4
+msgid ""
+"Read this before the next step: it explains what the association does with "
+"the data you have just given, and it is what the consents on the next page "
+"refer to."
+msgstr ""
+"Leggila prima del passo successivo: spiega cosa fa l’associazione con i dati "
+"che hai appena fornito, ed è ciò a cui si riferiscono i consensi della "
+"pagina seguente."
+
+#: templates/intake/partials/privacy-partial.html:7
+msgid "Data controller"
+msgstr "Titolare del trattamento"
+
+#: templates/intake/partials/privacy-partial.html:9
+#, python-format
+msgid ""
+"The controller is %(name)s, %(street)s, %(postcode)s %(city)s, email "
+"%(email)s."
+msgstr ""
+"Il titolare del trattamento è %(name)s, %(street)s, %(postcode)s %(city)s, "
+"email %(email)s."
+
+#: templates/intake/partials/privacy-partial.html:11
+msgid "Purpose and legal basis"
+msgstr "Finalità e base giuridica"
+
+#: templates/intake/partials/privacy-partial.html:13
+msgid ""
+"Personal data (identity, residence, contact details, tax code) are given "
+"when applying and are processed, without further consent and in accordance "
+"with the statute, to formalise membership and enter it in the members' "
+"register with the related insurance and legal obligations, to call and hold "
+"the members' assembly, to send communications about the association's "
+"activity, and to record payment of the membership fee (art. 6(b) and (c) "
+"GDPR)."
+msgstr ""
+"I dati personali comuni (dati anagrafici, residenza, dati di contatto, "
+"codice fiscale) sono forniti al momento della richiesta di iscrizione e sono "
+"trattati, senza ulteriore consenso e nel rispetto dello statuto, per "
+"formalizzare l’adesione con inserimento nel libro soci e i relativi obblighi "
+"assicurativi e di legge, per convocare e svolgere l’assemblea dei soci, per "
+"le comunicazioni relative all’attività associativa e per registrare il "
+"versamento della quota associativa (art. 6, lett. b) e c) GDPR)."
+
+#: templates/intake/partials/privacy-partial.html:16
+msgid ""
+"Any health information is discussed orally so the activity can be tailored "
+"to the member; no diagnosis or medical record is collected on paper or "
+"through this form."
+msgstr ""
+"Le eventuali informazioni sullo stato di salute sono raccolte a voce, per "
+"personalizzare al meglio l’attività per l’utente; nessuna diagnosi o "
+"documentazione sanitaria viene raccolta su carta né tramite questo modulo."
+
+#: templates/intake/partials/privacy-partial.html:18
+msgid "Images"
+msgstr "Immagini"
+
+#: templates/intake/partials/privacy-partial.html:20
+msgid ""
+"Images are processed only where consent is given (art. 6(a) GDPR), by the "
+"person concerned if of age, or by those holding parental responsibility. "
+"This consent is optional and refusing it does not affect any activity "
+"provided for by the statute."
+msgstr ""
+"Le immagini sono trattate solo in presenza di consenso (art. 6, lett. a) "
+"GDPR), prestato dall’interessato se maggiorenne o da chi esercita la "
+"responsabilità genitoriale. Il consenso è facoltativo e il rifiuto non "
+"incide su alcuna attività prevista dallo statuto."
+
+#: templates/intake/partials/privacy-partial.html:22
+msgid "Recipients"
+msgstr "Destinatari"
+
+#: templates/intake/partials/privacy-partial.html:24
+msgid ""
+"Data may be shared with parties the association must involve by law "
+"(accountant, insurer, system administrator) and with people or bodies whose "
+"involvement is necessary to the institutional activity (trainers, local "
+"authorities, health bodies, suppliers), appointed as processors under art. "
+"28 GDPR where required."
+msgstr ""
+"I dati possono essere comunicati ai soggetti che l’associazione deve "
+"coinvolgere per obbligo di legge (commercialista, assicuratore, sistemista) "
+"e alle persone o agli enti il cui coinvolgimento è necessario all’attività "
+"istituzionale (formatori, enti locali, enti sanitari, fornitori), nominati "
+"responsabili del trattamento ai sensi dell’art. 28 GDPR quando previsto."
+
+#: templates/intake/partials/privacy-partial.html:26
+msgid "Retention"
+msgstr "Conservazione"
+
+#: templates/intake/partials/privacy-partial.html:28
+msgid ""
+"Data are used until membership ends. After that, only what legal, accounting "
+"or tax obligations require is kept, and the name remains in the members' "
+"register held by the association as a historical record."
+msgstr ""
+"I dati sono utilizzati fino alla cessazione del rapporto associativo. Dopo "
+"tale data si conserva solo quanto richiesto da obblighi legali, contabili o "
+"fiscali, e il nominativo resta nel libro soci custodito dall’associazione a "
+"titolo di archivio storico."
+
+#: templates/intake/partials/privacy-partial.html:30
+msgid "Your rights"
+msgstr "I tuoi diritti"
+
+#: templates/intake/partials/privacy-partial.html:32
+msgid ""
+"You may at any time ask for access, rectification, erasure, restriction, "
+"portability, or object to processing (artt. 15-21 GDPR), by writing to the "
+"association at the address above. You may also lodge a complaint with the "
+"Garante per la protezione dei dati personali."
+msgstr ""
+"Puoi in qualsiasi momento chiedere accesso, rettifica, cancellazione, "
+"limitazione, portabilità od opporti al trattamento (artt. 15-21 GDPR), "
+"scrivendo all’associazione all’indirizzo indicato sopra. Puoi inoltre "
+"proporre reclamo al Garante per la protezione dei dati personali."
+
+#: templates/intake/partials/review-partial.html:8
+msgid "Check what you are about to sign. Anything can still be changed."
+msgstr "Controlla cosa stai per sottoscrivere. Tutto è ancora modificabile."
+
+#: templates/intake/partials/review-partial.html:15
+#: templates/intake/partials/review-partial.html:46
+#: templates/intake/partials/review-partial.html:68
+#: templates/intake/partials/review-partial.html:84
+msgid "Change"
+msgstr "Modifica"
+
+#: templates/intake/partials/review-partial.html:19
+#: templates/intake/partials/review-partial.html:50
+msgid "Name"
+msgstr "Nome"
+
+#: templates/intake/partials/review-partial.html:27
+msgid "Residence"
+msgstr "Residenza"
+
+#: templates/intake/partials/review-partial.html:33
+msgid "Contacts"
+msgstr "Contatti"
+
+#: templates/intake/partials/review-partial.html:58
+msgid "Born"
+msgstr "Nato/a"
+
+#: templates/intake/partials/review-partial.html:72
+msgid ""
+"You declared that you are the sole holder of parental responsibility, so you "
+"sign alone."
+msgstr ""
+"Hai dichiarato di essere unico titolare della responsabilità genitoriale, "
+"quindi sottoscrivi da solo/a."
+
+#: templates/intake/partials/review-partial.html:74
+#, python-format
+msgid ""
+"You sign on behalf of the other parent too. %(name)s will be asked "
+"separately to confirm the image consents."
+msgstr ""
+"Sottoscrivi anche in nome dell’altro genitore. A %(name)s verrà chiesto "
+"separatamente di confermare i consensi immagine."
+
+#: templates/intake/partials/review-partial.html:88
+#: templates/intake/second-parent.html:18
+msgid "Website and social channels"
+msgstr "Sito e canali social"
+
+#: templates/intake/partials/review-partial.html:90
+#: templates/intake/partials/review-partial.html:96
+#: templates/intake/second-parent.html:20
+#: templates/intake/second-parent.html:26
+msgid "Consent given"
+msgstr "Consenso prestato"
+
+#: templates/intake/partials/review-partial.html:90
+#: templates/intake/partials/review-partial.html:96
+#: templates/intake/second-parent.html:20
+#: templates/intake/second-parent.html:26
+msgid "Not given"
+msgstr "Non prestato"
+
+#: templates/intake/partials/review-partial.html:94
+#: templates/intake/second-parent.html:24
+msgid "WhatsApp broadcast"
+msgstr "Broadcast WhatsApp"
+
+#: templates/intake/partials/review-partial.html:103
+#, python-format
+msgid ""
+"Signing sends the application to the board of %(name)s. The date, time and "
+"network address of the signature are recorded with it."
+msgstr ""
+"Sottoscrivendo, la richiesta viene inviata al Consiglio Direttivo di "
+"%(name)s. Insieme alla firma vengono registrati data, ora e indirizzo di "
+"rete."
+
+#: templates/intake/partials/statute-partial.html:4
+#, python-format
+msgid ""
+"By applying you declare that you accept the statute of %(name)s and share "
+"its institutional purposes."
+msgstr ""
+"Con la richiesta dichiari di accettare lo statuto di %(name)s e di "
+"condividerne le finalità istituzionali."
+
+#: templates/intake/partials/statute-partial.html:7
+#, python-format
+msgid "You also undertake to pay the annual membership fee of € %(fee)s."
+msgstr ""
+"Ti impegni inoltre al versamento della quota associativa annuale di € "
+"%(fee)s."
+
+#: templates/intake/partials/statute-partial.html:13
+msgid "Read the statute"
+msgstr "Leggi lo statuto"
+
+#: templates/intake/second-parent.html:8
+#, python-format
+msgid "Your consent is needed for %(name)s's images"
+msgstr "Serve il tuo consenso per le immagini di %(name)s"
+
+#: templates/intake/second-parent.html:11
+#, python-format
+msgid ""
+"%(parent)s has applied to enrol your child in %(association)s and answered "
+"the image questions. Publishing a child's images needs both holders of "
+"parental responsibility, so the association is asking you too."
+msgstr ""
+"%(parent)s ha presentato richiesta di adesione per tuo figlio a "
+"%(association)s e ha risposto alle domande sulle immagini. Per pubblicare le "
+"immagini di un minore serve il consenso di entrambi i titolari della "
+"responsabilità genitoriale, perciò l’associazione lo chiede anche a te."
+
+#: templates/intake/second-parent.html:15
+msgid "What was answered"
+msgstr "Che cosa è stato risposto"
+
+#: templates/intake/second-parent.html:37
+msgid "I give my consent too"
+msgstr "Presto anch’io il consenso"
+
+#: templates/intake/second-parent.html:46
+msgid ""
+"Refusing changes nothing about the membership: it only means no image is "
+"published."
+msgstr ""
+"Il rifiuto non cambia nulla dell’adesione: significa solo che non viene "
+"pubblicata alcuna immagine."
+
+#: templates/intake/second-parent.html:52
+msgid "You have given your consent. Nothing else is needed."
+msgstr "Hai prestato il consenso. Non serve altro."
+
+#: templates/intake/second-parent.html:54
+msgid "You have refused consent, so no image of the child is published."
+msgstr ""
+"Hai rifiutato il consenso, quindi non viene pubblicata alcuna immagine del "
+"minore."
+
+#: templates/intake/step.html:13 templates/intake/step.html:23
+#, python-format
+msgid "Step %(current_position)s of %(total_positions)s"
+msgstr "Passo %(current_position)s di %(total_positions)s"
+
+#: templates/intake/step.html:43
+msgid "Back"
+msgstr "Indietro"
+
+#: templates/intake/step.html:49
+msgid "Sign and send"
+msgstr "Sottoscrivi e invia"
+
+#: templates/intake/step.html:51
+msgid "Continue"
+msgstr "Continua"
+
+#: templates/intake/step.html:58
+msgid ""
+"Your answers are saved as you go: you can close this page and come back to "
+"the same link."
+msgstr ""
+"Le risposte vengono salvate man mano: puoi chiudere questa pagina e tornare "
+"allo stesso link."

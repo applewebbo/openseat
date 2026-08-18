@@ -1,0 +1,105 @@
+{% load i18n %}
+{% comment %}
+The last thing read before signing. Every answer is shown with a way back to the
+step that set it, so the signature covers something the signer has actually seen.
+{% endcomment %}
+<div class="mb-8 space-y-6">
+    <p class="max-w-prose text-sm leading-relaxed text-base-content/70">
+        {% translate "Check what you are about to sign. Anything can still be changed." %}
+    </p>
+
+    <section>
+        <h2 class="mb-2 flex items-baseline justify-between gap-3 text-sm font-semibold">
+            {% translate "Who is applying" %}
+            <a class="text-xs font-medium text-primary underline underline-offset-4"
+               href="{% url 'intake:step' submission.token 'applicant' %}">{% translate "Change" %}</a>
+        </h2>
+        <dl class="divide-y divide-black/5 rounded-xl bg-[#f6f4f1] px-4 text-sm">
+            <div class="flex justify-between gap-4 py-2.5">
+                <dt class="text-base-content/60">{% translate "Name" %}</dt>
+                <dd class="text-right font-medium">{{ submission.applicant_first_name }} {{ submission.applicant_last_name }}</dd>
+            </div>
+            <div class="flex justify-between gap-4 py-2.5">
+                <dt class="text-base-content/60">{% translate "Tax code" %}</dt>
+                <dd class="text-right font-medium tabular-nums">{{ submission.applicant_tax_code }}</dd>
+            </div>
+            <div class="flex justify-between gap-4 py-2.5">
+                <dt class="text-base-content/60">{% translate "Residence" %}</dt>
+                <dd class="text-right font-medium">
+                    {{ submission.applicant_street }} {{ submission.applicant_number }}, {{ submission.applicant_postcode }} {{ submission.applicant_city }}
+                </dd>
+            </div>
+            <div class="flex justify-between gap-4 py-2.5">
+                <dt class="text-base-content/60">{% translate "Contacts" %}</dt>
+                <dd class="text-right font-medium">
+                    {{ submission.applicant_email }}<br />{{ submission.applicant_phone }}
+                </dd>
+            </div>
+        </dl>
+    </section>
+
+    {% if submission.applies_for_someone_else %}
+        <section>
+            <h2 class="mb-2 flex items-baseline justify-between gap-3 text-sm font-semibold">
+                {% translate "Member details" %}
+                <a class="text-xs font-medium text-primary underline underline-offset-4"
+                   href="{% url 'intake:step' submission.token 'member' %}">{% translate "Change" %}</a>
+            </h2>
+            <dl class="divide-y divide-black/5 rounded-xl bg-[#f6f4f1] px-4 text-sm">
+                <div class="flex justify-between gap-4 py-2.5">
+                    <dt class="text-base-content/60">{% translate "Name" %}</dt>
+                    <dd class="text-right font-medium">{{ submission.member_first_name }} {{ submission.member_last_name }}</dd>
+                </div>
+                <div class="flex justify-between gap-4 py-2.5">
+                    <dt class="text-base-content/60">{% translate "Tax code" %}</dt>
+                    <dd class="text-right font-medium tabular-nums">{{ submission.member_tax_code }}</dd>
+                </div>
+                <div class="flex justify-between gap-4 py-2.5">
+                    <dt class="text-base-content/60">{% translate "Born" %}</dt>
+                    <dd class="text-right font-medium">{{ submission.member_birth_place }}, {{ submission.member_birth_date|date:"d/m/Y" }}</dd>
+                </div>
+            </dl>
+        </section>
+
+        <section>
+            <h2 class="mb-2 flex items-baseline justify-between gap-3 text-sm font-semibold">
+                {% translate "Parental responsibility" %}
+                <a class="text-xs font-medium text-primary underline underline-offset-4"
+                   href="{% url 'intake:step' submission.token 'statute' %}">{% translate "Change" %}</a>
+            </h2>
+            <p class="rounded-xl bg-[#f6f4f1] p-4 text-sm leading-relaxed">
+                {% if submission.sole_holder %}
+                    {% translate "You declared that you are the sole holder of parental responsibility, so you sign alone." %}
+                {% else %}
+                    {% blocktranslate with name=submission.second_parent_first_name %}You sign on behalf of the other parent too. {{ name }} will be asked separately to confirm the image consents.{% endblocktranslate %}
+                {% endif %}
+            </p>
+        </section>
+    {% endif %}
+
+    <section>
+        <h2 class="mb-2 flex items-baseline justify-between gap-3 text-sm font-semibold">
+            {% translate "Image consents" %}
+            <a class="text-xs font-medium text-primary underline underline-offset-4"
+               href="{% url 'intake:step' submission.token 'consents' %}">{% translate "Change" %}</a>
+        </h2>
+        <dl class="divide-y divide-black/5 rounded-xl bg-[#f6f4f1] px-4 text-sm">
+            <div class="flex justify-between gap-4 py-2.5">
+                <dt class="text-base-content/60">{% translate "Website and social channels" %}</dt>
+                <dd class="text-right font-medium">
+                    {% if submission.consent_images %}{% translate "Consent given" %}{% else %}{% translate "Not given" %}{% endif %}
+                </dd>
+            </div>
+            <div class="flex justify-between gap-4 py-2.5">
+                <dt class="text-base-content/60">{% translate "WhatsApp broadcast" %}</dt>
+                <dd class="text-right font-medium">
+                    {% if submission.consent_whatsapp %}{% translate "Consent given" %}{% else %}{% translate "Not given" %}{% endif %}
+                </dd>
+            </div>
+        </dl>
+    </section>
+
+    <p class="max-w-prose border-l-2 border-primary/40 pl-4 text-sm leading-relaxed text-base-content/70">
+        {% blocktranslate with name=association.name %}Signing sends the application to the board of {{ name }}. The date, time and network address of the signature are recorded with it.{% endblocktranslate %}
+    </p>
+</div>

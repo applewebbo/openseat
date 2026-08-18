@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "storages",
     # INTERNAL
     "accounts",
+    "intake",
 ]
 
 MIDDLEWARE = [

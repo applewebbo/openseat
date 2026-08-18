@@ -8,6 +8,7 @@
 @source "../templates";
 @source "../accounts";
 @source "../core";
+@source "../intake";
 @source "../static/js";
 
 @theme {

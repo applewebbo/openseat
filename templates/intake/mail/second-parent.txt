@@ -1,0 +1,9 @@
+{% load i18n %}{% blocktranslate with parent=submission.applicant_first_name member=submission.member_display association=association.name %}{{ parent }} has applied to enrol {{ member }} in {{ association }}.{% endblocktranslate %}
+
+{% translate "Publishing a child's images needs the consent of both holders of parental responsibility, so the association is asking you as well. Until you answer, no image is published; the membership itself is unaffected." %}
+
+{% translate "Answer here" %}: {{ consent_url }}
+
+--
+{{ association.name }}
+{{ association.email }}
