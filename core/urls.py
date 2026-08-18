@@ -5,15 +5,19 @@ from django.contrib.auth.decorators import login_not_required
 from django.urls import include, path, re_path
 from pwa.views import manifest, offline, service_worker
 
-from core.views import home
+from core.views import home, theme_css
 
 # The PWA endpoints must stay reachable anonymously, so they are declared here with
 # login_not_required instead of including pwa.urls behind LoginRequiredMiddleware.
 urlpatterns = [
     path("", home, name="home"),
+    path("theme/<slug:slug>.css", theme_css, name="theme-css"),
     path("", include("intake.urls")),
     path("", include("events.urls")),
     path("admin/", admin.site.urls),
+    # The editor widget reverses its upload endpoint unconditionally, so the
+    # route has to exist even though the toolbar offers no upload button.
+    path("ckeditor5/", include("django_ckeditor_5.urls")),
     path("accounts/", include("allauth.urls")),
     path("serviceworker.js", login_not_required(service_worker), name="serviceworker"),
     path("manifest.json", login_not_required(manifest), name="manifest"),

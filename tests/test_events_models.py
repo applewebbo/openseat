@@ -33,7 +33,9 @@ def test_an_unpublished_event_takes_no_bookings(event):
 def test_an_event_has_no_capacity_limit(event, booking_factory, member_factory):
     """The association caps nothing: the count is for the organiser, not a gate."""
     for _ in range(50):
-        booking_factory(event=event, member=member_factory(association=event.association))
+        booking_factory(
+            event=event, member=member_factory(association=event.association)
+        )
 
     assert event.bookings.count() == 50
     assert event.is_open is True
@@ -72,15 +74,23 @@ def test_booking_again_after_cancelling_revives_the_booking(event, member):
 def test_the_checklist_lists_confirmed_bookings_in_name_order(
     event, member_factory, booking_factory
 ):
-    booking_factory(event=event, member=member_factory(association=event.association, last_name="Zani"))
-    booking_factory(event=event, member=member_factory(association=event.association, last_name="Abbà"))
+    booking_factory(
+        event=event,
+        member=member_factory(association=event.association, last_name="Zani"),
+    )
+    booking_factory(
+        event=event,
+        member=member_factory(association=event.association, last_name="Abbà"),
+    )
 
     names = [b.member.last_name for b in event.bookings.confirmed()]
 
     assert names == ["Abbà", "Zani"]
 
 
+@time_machine.travel("2026-05-14 06:00+02:00", tick=False)
 def test_an_event_starting_today_is_due_its_checklist(event_factory):
+    """Pinned to a morning: run late in the evening, "in ten hours" is tomorrow."""
     event = event_factory(starts_at=timezone.localtime() + timedelta(hours=10))
 
     from events.models import Event
@@ -99,11 +109,14 @@ def test_an_event_next_week_is_not_due_yet(event_factory):
 def test_an_event_whose_checklist_went_out_is_not_due_again(event_factory):
     from events.models import Event
 
-    event = event_factory(starts_at=timezone.localtime() + timedelta(hours=10))
-    event.checklist_sent_at = timezone.now()
-    event.save()
+    with time_machine.travel("2026-05-14 06:00+02:00", tick=False):
+        event = event_factory(starts_at=timezone.localtime() + timedelta(hours=10))
+        event.checklist_sent_at = timezone.now()
+        event.save()
 
-    assert not Event.objects.due_for_checklist().exists()
+        # Inside the frozen day: outside it, the event is simply not today and
+        # the test would pass without proving anything about the stamp.
+        assert not Event.objects.due_for_checklist().exists()
 
 
 def test_the_organiser_sees_how_many_places_are_taken(

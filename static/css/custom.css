@@ -1,0 +1,63 @@
+/* Rules that are the same for every association, and the browser surfaces the
+   design does not draw but still owns. The colours themselves are not here:
+   they come from the database, so they arrive in theme.css. */
+
+[x-cloak] {
+    display: none !important;
+}
+
+::selection {
+    background: var(--assoc-bright);
+    color: #fff;
+}
+
+:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+html {
+    scrollbar-color: var(--assoc-bright) #eae7e2;
+}
+
+/* The home page description is written in the admin, so it arrives as a handful
+   of tags rather than as classes. This is where they get their manners. */
+.rich-text > * + * {
+    margin-top: 1rem;
+}
+
+.rich-text h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-top: 2rem;
+}
+
+.rich-text ul,
+.rich-text ol {
+    padding-left: 1.25rem;
+}
+
+.rich-text ul {
+    list-style: disc;
+}
+
+.rich-text ol {
+    list-style: decimal;
+}
+
+.rich-text li + li {
+    margin-top: 0.35rem;
+}
+
+.rich-text a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.rich-text blockquote {
+    border-left: 3px solid var(--assoc-bright);
+    padding-left: 1rem;
+    font-style: italic;
+}

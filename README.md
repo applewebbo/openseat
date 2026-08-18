@@ -9,6 +9,10 @@ subscription and no data leaving the organisation.
 
 ## Features
 
+- **A public home page** — the association's logo, name, title and description,
+  written in the admin with a small rich-text editor, above the next date in
+  full and the other open ones under it. Past dates stay listed, smaller. Empty
+  sections are simply not drawn.
 - **Public membership application** — one section per step, from a link anyone can
   open, with the parental-responsibility and image-consent rules an Italian APS
   actually has to follow. Drafts survive a lost connection and expire after thirty
@@ -51,6 +55,7 @@ refused connection, which is why `just serve` starts one.
 cp .env.example .env      # then fill in SECRET_KEY at least
 just install
 just migrate
+just seed_demo            # example association, form and events — development only
 just local                # http://127.0.0.1:8000
 ```
 

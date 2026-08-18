@@ -1,13 +1,110 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n static %}
+
+{% block title %}{{ association.name }}{% endblock %}
+
+{% block meta_description %}{{ association.home_title|default:association.name }}{% endblock %}
+
+{% block theme_css %}<link rel="stylesheet" href="{% url 'theme-css' association.slug %}" />{% endblock %}
+
 {% block content %}
-    <main class="hero min-h-screen">
-        <div class="hero-content text-center">
-            <div class="max-w-md">
-                <h1 class="text-5xl font-bold">OpenSeat</h1>
-                <p class="py-6">{% translate "The project is up and running." %}</p>
-                <a class="btn btn-primary" href="{% url 'admin:index' %}">{% translate "Admin" %}</a>
-            </div>
+    <a href="#eventi"
+       class="focus:bg-primary focus:text-primary-content sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-3 focus:rounded-lg focus:px-4 focus:py-2">
+        {% translate "Skip to the events" %}
+    </a>
+
+    <header class="border-b border-black/5 bg-white/95">
+        <div class="mx-auto flex max-w-3xl items-center gap-3 px-4 py-3">
+            {% if association.logo %}
+                <img src="{{ association.logo.url }}" alt="" class="h-10 w-auto shrink-0" />
+            {% endif %}
+            <p class="min-w-0 truncate text-sm font-semibold tracking-tight">{{ association.name }}</p>
         </div>
+    </header>
+
+    <main class="mx-auto w-full max-w-3xl px-4 pt-10 pb-24 sm:pt-16">
+        {% if association.home_title %}
+            <h1 class="text-4xl font-bold tracking-tight text-balance sm:text-5xl">{{ association.home_title }}</h1>
+        {% else %}
+            <h1 class="text-4xl font-bold tracking-tight text-balance sm:text-5xl">{{ association.name }}</h1>
+        {% endif %}
+
+        {% if association.home_description %}
+            <div class="rich-text text-base-content/80 mt-6 max-w-prose text-lg leading-relaxed">
+                {{ association.home_description|safe }}
+            </div>
+        {% endif %}
+
+        <section id="eventi" class="mt-14">
+            {% if featured %}
+                <article class="rounded-2xl border border-black/5 bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.15)] sm:p-8">
+                    <p class="text-accent-strong text-sm font-semibold tracking-tight">
+                        {% translate "Next date" %}
+                    </p>
+                    <h2 class="mt-2 text-2xl font-bold tracking-tight text-balance sm:text-3xl">{{ featured.title }}</h2>
+                    <p class="text-base-content/70 mt-3 text-sm">
+                        {{ featured.starts_at|date:"l d F Y, H:i" }}{% if featured.location %} · {{ featured.location }}{% endif %}
+                    </p>
+                    {% if featured.description %}
+                        <p class="text-base-content/80 mt-5 max-w-prose leading-relaxed">{{ featured.description|linebreaksbr }}</p>
+                    {% endif %}
+                    <a href="{{ featured.get_absolute_url }}"
+                       class="btn btn-primary mt-7 w-full rounded-xl transition-all duration-200 ease-in-out sm:w-auto sm:px-8">
+                        {% translate "Book your experience" %}
+                    </a>
+                </article>
+            {% else %}
+                <div role="status" class="rounded-2xl border border-black/10 bg-white p-6 sm:p-8">
+                    <h2 class="text-base font-semibold tracking-tight">{% translate "No date is open right now" %}</h2>
+                    <p class="text-base-content/70 mt-2 max-w-prose text-sm leading-relaxed">
+                        {% blocktranslate with email=association.email %}The next dates are published here. Write to {{ email }} to be told when one opens.{% endblocktranslate %}
+                    </p>
+                </div>
+            {% endif %}
+
+            {% if upcoming %}
+                <h2 id="prossime" class="mt-14 text-lg font-semibold tracking-tight">{% translate "Other open dates" %}</h2>
+                <ul class="mt-5 space-y-3">
+                    {% for event in upcoming %}
+                        <li>
+                            <a href="{{ event.get_absolute_url }}"
+                               class="flex items-baseline justify-between gap-4 rounded-xl border border-black/5 bg-white px-5 py-4 transition-all duration-200 ease-in-out hover:border-black/15">
+                                <span class="min-w-0">
+                                    <span class="block font-medium tracking-tight">{{ event.title }}</span>
+                                    <span class="text-base-content/60 block text-sm">{{ event.starts_at|date:"d F Y, H:i" }}</span>
+                                </span>
+                                <span class="badge badge-outline shrink-0">{% translate "Book" %}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if past %}
+                <h2 id="archivio" class="text-base-content/60 mt-14 text-sm font-semibold tracking-tight">
+                    {% translate "Already done" %}
+                </h2>
+                <ul class="text-base-content/60 mt-4 space-y-1.5 text-sm">
+                    {% for event in past %}
+                        <li class="flex items-baseline gap-3">
+                            <span class="tabular-nums">{{ event.starts_at|date:"d/m/Y" }}</span>
+                            <span class="min-w-0 truncate">{{ event.title }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </section>
     </main>
+
+    <footer class="text-base-content/60 mx-auto max-w-3xl px-4 pb-10 text-xs leading-relaxed">
+        <p>
+            {{ association.name }} · {{ association.street }}, {{ association.postcode }} {{ association.city }} · {% translate "Tax code" %} {{ association.tax_code }}
+        </p>
+        <p class="mt-1">
+            <a href="mailto:{{ association.email }}" class="underline underline-offset-2">{{ association.email }}</a>
+            {% if association.statute_url %}
+                · <a href="{{ association.statute_url }}" class="underline underline-offset-2">{% translate "Statute" %}</a>
+            {% endif %}
+        </p>
+    </footer>
 {% endblock content %}

@@ -91,9 +91,14 @@ migrate:
 makemigrations *args:
     uv run python manage.py makemigrations {{ args }}
 
+# Example association, form and events, so a fresh clone has a full home page.
+[group('development')]
+seed_demo:
+    uv run python manage.py seed_demo
+
 [group('development')]
 crawl *args:
-    ENVIRONMENT=dev uv run python manage.py crawl -v 2 {{ args }}
+    uv run python manage.py crawl -v 2 {{ args }}
 
 [group('development')]
 messages:

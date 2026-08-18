@@ -11,6 +11,13 @@ from events.checklist import send_due_checklists
 pytestmark = pytest.mark.django_db
 
 
+@pytest.fixture(autouse=True)
+def a_fixed_morning():
+    """The whole file says "today"; run after 14:00, "in ten hours" is tomorrow."""
+    with time_machine.travel("2026-05-14 06:00+02:00", tick=False):
+        yield
+
+
 def _event_today(event_factory, **kwargs):
     return event_factory(starts_at=timezone.localtime() + timedelta(hours=10), **kwargs)
 
@@ -20,7 +27,8 @@ def test_the_list_goes_out_on_the_day_of_the_event(
 ):
     event = _event_today(event_factory)
     booking_factory(
-        event=event, member=member_factory(association=event.association, last_name="Rossi")
+        event=event,
+        member=member_factory(association=event.association, last_name="Rossi"),
     )
 
     send_due_checklists()
@@ -62,7 +70,8 @@ def test_a_cancelled_booking_is_off_the_list(
 ):
     event = _event_today(event_factory)
     booking = booking_factory(
-        event=event, member=member_factory(association=event.association, last_name="Ritirato")
+        event=event,
+        member=member_factory(association=event.association, last_name="Ritirato"),
     )
     booking.cancel()
 

@@ -1,0 +1,13 @@
+/* The association's own base colours, and nothing else of its site.
+   The bright value carries no text, so it stays as given; every surface that
+   does carry text uses the darkened mix, which clears 4.5:1 against white
+   where the raw orange does not. */
+:root {
+    --assoc-bright: {{ association.colour_primary }};
+    --assoc-accent: {{ association.colour_accent }};
+    --color-primary: color-mix(in oklab, {{ association.colour_primary }} 78%, #1a1103);
+    --color-primary-content: #fff;
+    --color-accent: color-mix(in oklab, {{ association.colour_accent }} 88%, #05100a);
+    --color-accent-content: #fff;
+    --color-base-content: {{ association.colour_neutral }};
+}

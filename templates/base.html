@@ -10,6 +10,8 @@
             {% block title %}OpenSeat{% endblock %}
         </title>
         {% tailwind_css %}
+        {% block theme_css %}{% endblock %}
+        <link rel="stylesheet" href="{% static 'css/custom.css' %}" />
         {% block extra_head %}{% endblock %}
     </head>
     <body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'

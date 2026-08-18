@@ -8,6 +8,23 @@ from members.models import Member
 
 
 class EventQuerySet(models.QuerySet):
+    def published(self):
+        return self.filter(is_published=True)
+
+    def upcoming(self):
+        """Still to happen, soonest first — the order the home page reads in."""
+        return (
+            self.published().filter(starts_at__gt=timezone.now()).order_by("starts_at")
+        )
+
+    def past(self):
+        """Already run, newest first: the archive is read backwards."""
+        return (
+            self.published()
+            .filter(starts_at__lte=timezone.now())
+            .order_by("-starts_at")
+        )
+
     def due_for_checklist(self):
         """Events starting today whose list has not gone out yet.
 

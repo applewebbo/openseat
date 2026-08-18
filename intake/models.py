@@ -7,6 +7,9 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django_ckeditor_5.fields import CKEditor5Field
+
+from intake.sanitize import clean_rich_text
 
 hex_colour = RegexValidator(
     r"^#[0-9A-Fa-f]{6}$", _("Use a six-digit hex colour, for example #ED5C08")
@@ -47,7 +50,12 @@ SECTIONS_FOR_OTHERS = {SectionKey.MEMBER}
 
 
 class Association(models.Model):
-    """The organisation the public form belongs to, with its own base colours."""
+    """The organisation everything here belongs to, with its own base colours.
+
+    One installation, one association: this is a singleton the admin keeps at a
+    single row. It stays a model rather than settings because the volunteer who
+    edits the home page has to be able to do it without a deploy.
+    """
 
     name = models.CharField(_("name"), max_length=200)
     slug = models.SlugField(_("slug"), unique=True)
@@ -70,14 +78,34 @@ class Association(models.Model):
     colour_neutral = models.CharField(
         _("neutral colour"), max_length=7, default="#4C5057", validators=[hex_colour]
     )
+    # The home page, in the only four parts it has: the logo and the name above
+    # are two of them, these are the other two. A fixed shape is the point —
+    # the volunteer who edits it should never have to lay a page out.
+    home_title = models.CharField(_("home page title"), max_length=200, blank=True)
+    home_description = CKEditor5Field(_("home page description"), blank=True)
 
     class Meta:
         verbose_name = _("association")
-        verbose_name_plural = _("associations")
+        verbose_name_plural = _("association")
         ordering = ("name",)
 
     def __str__(self):
         return self.name
+
+    @classmethod
+    def current(cls):
+        """The association this installation belongs to, or None before setup.
+
+        By creation order, not by the alphabetical Meta ordering: a row added
+        later must never quietly take over the public pages.
+        """
+        return cls.objects.order_by("pk").first()
+
+    def save(self, *args, **kwargs):
+        # Cleaned here rather than at render: what the register holds is then
+        # exactly what the page shows, and no template can forget the filter.
+        self.home_description = clean_rich_text(self.home_description)
+        super().save(*args, **kwargs)
 
 
 class PublicForm(models.Model):

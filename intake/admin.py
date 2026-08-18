@@ -14,8 +14,52 @@ class SectionInline(admin.TabularInline):
 
 @admin.register(Association)
 class AssociationAdmin(admin.ModelAdmin):
+    """One installation, one association — so the admin offers exactly one.
+
+    The home page is edited here, and it is the first thing on the form: the
+    volunteer who comes to change a paragraph should not have to walk past the
+    tax code to find it.
+    """
+
     list_display = ("name", "city", "membership_fee")
     prepopulated_fields = {"slug": ("name",)}
+    fieldsets = [
+        (
+            _("Home page"),
+            {
+                "fields": ("logo", "name", "home_title", "home_description"),
+                "description": _(
+                    "These four are the public home page, in the order they appear on it."
+                ),
+            },
+        ),
+        (
+            _("Registered details"),
+            {"fields": ("slug", "street", "postcode", "city", "tax_code", "email")},
+        ),
+        (
+            _("Statute and fee"),
+            {"fields": ("statute_url", "membership_fee")},
+        ),
+        (
+            _("Colours"),
+            {
+                "classes": ["collapse"],
+                "fields": ("colour_primary", "colour_accent", "colour_neutral"),
+                "description": _(
+                    "Used across the public pages. Six-digit hex, e.g. #ED5C08."
+                ),
+            },
+        ),
+    ]
+
+    def has_add_permission(self, request):
+        # A second association would silently split events, members and the
+        # home page between two records that look alike.
+        return not Association.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(PublicForm)

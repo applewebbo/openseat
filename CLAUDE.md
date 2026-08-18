@@ -17,6 +17,7 @@ Django 6.1, server-driven, deployed to Coolify from `main`.
 | Styling    | Tailwind 4 + daisyUI through `django-tailwind-cli` — **no npm**      |
 | Frontend   | htmx (vendored by `django-htmx`), Alpine (vendored), django-cotton   |
 | Forms      | crispy-forms + crispy-tailwind, `TemplatesSetting` renderer          |
+| Rich text  | django-ckeditor-5, assets shipped with the package — no CDN          |
 | Auth       | allauth, email-only login, `accounts.CustomUser` without username    |
 | Tasks      | django-q2 — ORM broker in dev, Redis in prod, `sync` in tests        |
 | Backups    | django-dbbackup → `STORAGES["dbbackup"]`, S3-compatible or local disk |

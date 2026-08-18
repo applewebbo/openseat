@@ -38,3 +38,35 @@ def test_associations_are_editable(staff_client, association):
     )
 
     assert response.status_code == 200
+
+
+def test_the_home_page_fields_are_edited_with_the_rich_text_editor(
+    staff_client, association
+):
+    response = staff_client.get(
+        reverse("admin:intake_association_change", args=[association.pk])
+    )
+
+    assert b"home_title" in response.content
+    assert b"django_ckeditor_5" in response.content
+
+
+def test_a_second_association_cannot_be_added(staff_client, association):
+    """One installation, one association: the add form is closed once it exists."""
+    response = staff_client.get(reverse("admin:intake_association_add"))
+
+    assert response.status_code == 403
+
+
+def test_the_first_association_can_be_added(staff_client):
+    response = staff_client.get(reverse("admin:intake_association_add"))
+
+    assert response.status_code == 200
+
+
+def test_the_association_cannot_be_deleted(staff_client, association):
+    response = staff_client.get(
+        reverse("admin:intake_association_delete", args=[association.pk])
+    )
+
+    assert response.status_code == 403

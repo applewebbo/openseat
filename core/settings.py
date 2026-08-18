@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "crispy_tailwind",
     "dbbackup",
     "django_browser_reload",
+    "django_ckeditor_5",
     "django_cotton.apps.SimpleAppConfig",
     "django_extensions",
     "django_htmx",
@@ -56,6 +57,9 @@ INSTALLED_APPS = [
     "pwa",
     "storages",
     # INTERNAL
+    # core holds no models, but it holds the project-level management commands,
+    # which Django only discovers inside an installed app.
+    "core",
     "accounts",
     "events",
     "intake",
@@ -115,6 +119,48 @@ FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 # DJANGO CRISPY FORMS
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
+
+# DJANGO-CKEDITOR-5
+# One toolbar, deliberately short: the home page description is written by a
+# volunteer, and every extra button is one more thing that can break the page.
+# The editor ships its own assets with the package — nothing is fetched at runtime.
+CKEDITOR_5_CONFIGS = {
+    "default": {
+        "toolbar": [
+            "heading",
+            "|",
+            "bold",
+            "italic",
+            "link",
+            "|",
+            "bulletedList",
+            "numberedList",
+            "|",
+            "undo",
+            "redo",
+        ],
+        # No image button is offered, but the bundled image plugin still warns
+        # on every load unless its own toolbar has something in it.
+        "image": {"toolbar": ["imageTextAlternative"]},
+        "heading": {
+            "options": [
+                {
+                    "model": "paragraph",
+                    "title": "Paragrafo",
+                    "class": "ck-heading_paragraph",
+                },
+                {
+                    "model": "heading2",
+                    "view": "h2",
+                    "title": "Titolo di sezione",
+                    "class": "ck-heading_heading2",
+                },
+            ]
+        },
+    }
+}
+CKEDITOR_5_USER_LANGUAGE = True
+CKEDITOR_5_FILE_UPLOAD_PERMISSION = "staff"
 
 # DJANGO-TAILWIND-CLI
 TAILWIND_CLI_SRC_CSS = "src/source.css"
