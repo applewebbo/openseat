@@ -13,13 +13,13 @@ Django 6.1, server-driven, deployed to Coolify from `main`.
 | Runtime    | Python 3.14, Django 6.1, granian + uvloop (WSGI), hivemind           |
 | Database   | SQLite in dev, PostgreSQL (`psycopg`) in prod via `DATABASE_URL`     |
 | Static     | WhiteNoise (prod only) — no nginx                                    |
-| Media      | django-storages, any S3-compatible bucket; local disk in dev         |
+| Media      | volume at `MEDIA_ROOT`, served by WhiteNoise in prod                 |
 | Styling    | Tailwind 4 + daisyUI through `django-tailwind-cli` — **no npm**      |
 | Frontend   | htmx (vendored by `django-htmx`), Alpine (vendored), django-cotton   |
 | Forms      | crispy-forms + crispy-tailwind, `TemplatesSetting` renderer          |
 | Auth       | allauth, email-only login, `accounts.CustomUser` without username    |
 | Tasks      | django-q2 — ORM broker in dev, Redis in prod, `sync` in tests        |
-| Backups    | django-dbbackup (storage backend still to be chosen)                 |
+| Backups    | django-dbbackup → `STORAGES["dbbackup"]`, S3-compatible or local disk |
 | PWA        | django-pwa                                                           |
 | Tooling    | uv, just, prek/pre-commit, ruff, djlint, djade, pytest               |
 
@@ -55,10 +55,14 @@ just update_all       # lock + Alpine + hooks
 - **`just crawl` is a release gate, not a test.** It is run by hand before a release,
   with the CSS already built, and is deliberately absent from the suite and from CI.
   It walks the real site in-process and reports dead links and missing assets.
-- **Media is not static.** WhiteNoise serves `static/` only, and only in prod;
-  uploads go to an S3-compatible bucket via `django-storages`. Production refuses
-  to start without `MEDIA_BUCKET_NAME` unless `MEDIA_STORAGE=local` says a volume
-  is mounted. Dev and tests keep the filesystem.
+- **Media is not static.** Uploads live on a volume at `MEDIA_ROOT`;
+  `core.middleware.MediaWhiteNoiseMiddleware` serves them in prod, ahead of
+  `LoginRequiredMiddleware`, with `WHITENOISE_AUTOREFRESH` so a file added after
+  boot is found. `check --deploy` errors when the volume is absent.
+- **Backups go to `STORAGES["dbbackup"]`**, never to `DBBACKUP_STORAGE`, which
+  django-dbbackup stopped reading in 4.2. `ops.maintenance` runs the daily dump
+  of db and media, purges backups past `BACKUP_RETENTION_DAYS`, and deletes media
+  nothing references. `manage.py ops_maintenance --dry-run` shows what it would do.
 - **`DEBUG` fails closed**: strict parse, defaults to `False`. So does `ENVIRONMENT`
   (defaults to `prod`). `SECRET_KEY` has no default and crashes at startup if unset.
 - **`LoginRequiredMiddleware` is on**: every public view needs `@login_not_required`.

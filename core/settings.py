@@ -3,7 +3,6 @@ from pathlib import Path
 
 import dj_database_url
 import environ
-from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,6 +58,7 @@ INSTALLED_APPS = [
     # INTERNAL
     "accounts",
     "intake",
+    "ops",
 ]
 
 # WhiteNoise is added by the prod branch alone. In dev, runserver's own static
@@ -206,12 +206,39 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="noreply@localhost")
 
-# DBBACKUP — pick a remote backend per project and put its credentials in
-# .env.example. Left on the local filesystem here on purpose.
-DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"
-DBBACKUP_STORAGE_OPTIONS = {"location": str(BASE_DIR / "backups")}
+# DBBACKUP. The destination is the "dbbackup" alias of STORAGES; the older
+# DBBACKUP_STORAGE / DBBACKUP_STORAGE_OPTIONS pair is read by nothing since
+# django-dbbackup 4.2, so setting it would silently back up to the wrong place.
+# It stays on local disk unless a bucket is configured below.
 DBBACKUP_CLEANUP_KEEP = 10
 DBBACKUP_CLEANUP_KEEP_MEDIA = 10
+# dbbackup's own cleanup keeps a count, not an age. ops.maintenance answers
+# "nothing older than this" on whatever storage the alias points at.
+BACKUP_RETENTION_DAYS = env.int("BACKUP_RETENTION_DAYS", default=30)
+# An upload lands on disk before its row is saved, so a sweep in between would
+# delete a file somebody is still attaching. Spare anything this recent.
+MEDIA_ORPHAN_GRACE_HOURS = env.int("MEDIA_ORPHAN_GRACE_HOURS", default=6)
+
+STORAGES["dbbackup"] = {
+    "BACKEND": "django.core.files.storage.FileSystemStorage",
+    "OPTIONS": {"location": str(BASE_DIR / "backups")},
+}
+if BACKUP_BUCKET_NAME := env("BACKUP_BUCKET_NAME", default=""):
+    # Backups are the one thing worth keeping off the host: a volume dies with
+    # the machine it is attached to. Any S3-compatible endpoint will do,
+    # a self-hosted MinIO included.
+    STORAGES["dbbackup"] = {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "bucket_name": BACKUP_BUCKET_NAME,
+            "endpoint_url": env("BACKUP_ENDPOINT_URL", default=None),
+            "region_name": env("BACKUP_REGION", default="auto"),
+            "access_key": env("BACKUP_ACCESS_KEY", default=""),
+            "secret_key": env("BACKUP_SECRET_KEY", default=""),
+            "default_acl": None,  # R2 and B2 reject per-object ACLs
+            "location": env("BACKUP_PREFIX", default="openseat"),
+        },
+    }
 
 Q_CLUSTER_BASE = {
     "name": "openseat",
@@ -261,41 +288,12 @@ elif ENVIRONMENT == "test":
     }
 
 else:  # prod
-    MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
-
-    # WhiteNoise serves static only. Uploads on the container disk disappear on
-    # the next redeploy, taking every association logo with them, so object
-    # storage is required unless the operator says they mount a volume instead.
-    if env("MEDIA_STORAGE", default="") != "local":
-        MEDIA_BUCKET_NAME = env("MEDIA_BUCKET_NAME", default="")
-        if not MEDIA_BUCKET_NAME:
-            raise ImproperlyConfigured(
-                "MEDIA_BUCKET_NAME is unset. Point it at an S3-compatible bucket "
-                "(AWS, Cloudflare R2, Backblaze B2, or a self-hosted MinIO), or "
-                "set MEDIA_STORAGE=local if this install mounts a volume at "
-                "MEDIA_ROOT."
-            )
-        STORAGES["default"] = {
-            "BACKEND": "storages.backends.s3.S3Storage",
-            "OPTIONS": {
-                "bucket_name": MEDIA_BUCKET_NAME,
-                # Unset for AWS itself; the endpoint is what makes every other
-                # S3-compatible provider, MinIO included, work unchanged.
-                "endpoint_url": env("MEDIA_ENDPOINT_URL", default=None),
-                "region_name": env("MEDIA_REGION", default="auto"),
-                "access_key": env("MEDIA_ACCESS_KEY", default=""),
-                "secret_key": env("MEDIA_SECRET_KEY", default=""),
-                "custom_domain": env("MEDIA_CUSTOM_DOMAIN", default=None),
-                # A logo sits on a public page and inside emails, so a signed
-                # URL that expires is the wrong shape. Public read comes from
-                # the bucket policy, not from a per-object ACL: R2 and B2
-                # reject ACLs outright.
-                "querystring_auth": False,
-                "default_acl": None,
-                "file_overwrite": False,
-                "location": "media",
-            },
-        }
+    # Serves STATIC_ROOT and MEDIA_ROOT alike, ahead of LoginRequiredMiddleware
+    # so a public page keeps its logo. Uploads are not part of the build, so
+    # WhiteNoise must look at the filesystem per request rather than indexing
+    # once at boot, or a logo added after the container started stays a 404.
+    MIDDLEWARE.insert(1, "core.middleware.MediaWhiteNoiseMiddleware")
+    WHITENOISE_AUTOREFRESH = True
     DATABASES = {
         "default": dj_database_url.config(
             conn_max_age=env("DATABASE_CONN_MAX_AGE"),

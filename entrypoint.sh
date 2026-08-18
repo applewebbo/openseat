@@ -7,6 +7,7 @@ python manage.py migrate
 # Recurring jobs are registered here, not in a data migration: the suite
 # builds its schema with --nomigrations, so a migration would go untested.
 python manage.py intake_schedule
+python manage.py ops_schedule
 
 echo "Compiling translations..."
 python manage.py compilemessages -l it -l en --ignore=.venv
