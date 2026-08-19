@@ -37,6 +37,23 @@ class TestThemeStylesheet:
 
         assert "--assoc-bright: #ED5C08;" in content
 
+    def test_the_admin_gets_the_palette_without_naming_an_association(
+        self, client, association
+    ):
+        """The admin is not under an association's URL, so it asks for the
+        installation's own."""
+        association.colour_primary = "#112233"
+        association.save()
+
+        content = client.get(reverse("theme-css-current")).content.decode()
+
+        assert "--assoc-bright: #112233;" in content
+
+    def test_a_fresh_install_still_gets_a_palette(self, client):
+        content = client.get(reverse("theme-css-current")).content.decode()
+
+        assert "--assoc-bright: #ED5C08;" in content
+
     def test_it_is_public(self, client, association):
         """It is linked from pages people reach without an account."""
         response = client.get(reverse("theme-css", kwargs={"slug": association.slug}))

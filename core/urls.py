@@ -12,6 +12,9 @@ from core.views import home, theme_css
 urlpatterns = [
     path("", home, name="home"),
     path("theme/<slug:slug>.css", theme_css, name="theme-css"),
+    # The admin belongs to the installation rather than to a form, so it asks
+    # for the palette without naming an association.
+    path("theme.css", theme_css, name="theme-css-current"),
     path("", include("intake.urls")),
     path("", include("events.urls")),
     path("admin/", admin.site.urls),

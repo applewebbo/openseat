@@ -31,7 +31,8 @@ WSGI_APPLICATION = "core.wsgi.application"
 ASGI_APPLICATION = "core.asgi.application"
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    # django.contrib.admin, with the project's own AdminSite as its default
+    "core.admin_config.OpenSeatAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",

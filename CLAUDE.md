@@ -16,6 +16,8 @@ Django 6.1, server-driven, deployed to Coolify from `main`.
 | Media      | volume at `MEDIA_ROOT`, served by WhiteNoise in prod                 |
 | Styling    | Tailwind 4 + daisyUI through `django-tailwind-cli` — **no npm**      |
 | Frontend   | htmx (vendored by `django-htmx`), Alpine (vendored), django-cotton   |
+| Icons      | Phosphor, a handful of SVGs vendored into `static/img/icons/`        |
+| Admin      | Django's own, themed from the association row — no third-party theme |
 | Forms      | crispy-forms + crispy-tailwind, `TemplatesSetting` renderer          |
 | Rich text  | django-ckeditor-5, assets shipped with the package — no CDN          |
 | Auth       | allauth, email-only login, `accounts.CustomUser` without username    |
@@ -41,13 +43,21 @@ just check            # manage.py check --deploy against prod settings
 just crawl            # in-process site crawl, catches dead links and assets
 just messages         # makemessages + compilemessages (it, en)
 just update_alpine    # re-vendor Alpine from the npm registry
-just update_all       # lock + Alpine + hooks
+just update_icons     # re-vendor the Phosphor icons
+just update_all       # lock + Alpine + icons + hooks
 ```
 
 ## Rules specific to this project
 
 - **No CDN, ever.** htmx comes from `{% htmx_script %}`, Tailwind/daisyUI from the
-  `tailwindcss-extra` binary, Alpine from `just update_alpine` into `static/js/`.
+  `tailwindcss-extra` binary, Alpine from `just update_alpine` into `static/js/`,
+  Phosphor icons from `just update_icons` into `static/img/icons/`.
+- **The admin is themed, not replaced.** `core.admin.OpenSeatAdminSite` puts the
+  association into `each_context`, so name and logo reach every page including the
+  login, and `static/css/admin.css` maps Django's own CSS variables onto the
+  palette `theme_css` serves from the database. Every `ModelAdmin` stays a plain
+  `admin.ModelAdmin`. Django writes its dark palette as `html[data-theme="dark"]`,
+  so overrides need `:root[data-theme="dark"]` to outrank it.
 - **`src/source.css` needs `@plugin "daisyui";`** — the `TAILWIND_CLI_USE_DAISY_UI`
   setting only picks the binary, it does not enable the plugin. Every directory
   holding classes needs its own `@source` line; never point one inside `.venv/`.

@@ -1,0 +1,34 @@
+{% extends "admin/base.html" %}
+
+{% load i18n static %}
+
+{% block title %}
+    {% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_header|default:"OpenSeat" }}
+{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    {# The palette comes from the database, so the admin wears the association's own. #}
+    <link rel="stylesheet" href="{% url 'theme-css-current' %}" />
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}" />
+{% endblock %}
+
+{% block branding %}
+    <div id="site-name">
+        <a href="{% url 'admin:index' %}">
+            {% if association.logo %}
+                <img src="{{ association.logo.url }}"
+                     alt="{{ association.name }}"
+                     class="assoc-logo"
+                     height="32" />
+            {% endif %}
+            {{ site_header|default:"OpenSeat" }}
+        </a>
+    </div>
+    {% if user.is_anonymous %}
+        {% include "admin/color_theme_toggle.html" %}
+    {% endif %}
+{% endblock %}
+
+{% block nav-global %}
+{% endblock %}

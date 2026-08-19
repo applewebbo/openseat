@@ -13,7 +13,7 @@ default:
     uv lock --upgrade
 
 [group('setup')]
-@update_all: lock update_alpine
+@update_all: lock update_alpine update_icons
     uv sync --all-extras --upgrade
     uvx --with pre-commit-uv prek auto-update
 
@@ -62,6 +62,56 @@ update_alpine:
 
     echo "$LATEST" > "$VERSION_FILE"
     echo "✓ Alpine $LATEST installed in $STATIC_DIR"
+
+# The handful of Phosphor icons the admin wears, vendored like Alpine: they are
+# masks painted with the text colour, so only the outline matters. The bold
+# weight, because at 14px the regular one goes thin beside the text. MIT licence.
+[group('setup')]
+update_icons:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    STATIC_DIR="static/img/icons"
+    VERSION_FILE="$STATIC_DIR/.phosphor-version"
+    ICONS=(plus pencil-simple trash eye eye-slash calendar-blank clock)
+    WEIGHT="bold"
+
+    LATEST=$(curl -sf https://registry.npmjs.org/@phosphor-icons/core/latest \
+        | python3 -c "import sys,json; print(json.load(sys.stdin)['version'])")
+
+    CURRENT=""
+    if [ -f "$VERSION_FILE" ]; then
+        CURRENT=$(cat "$VERSION_FILE")
+    fi
+
+    MISSING=""
+    for icon in "${ICONS[@]}"; do
+        [ -f "$STATIC_DIR/$icon.svg" ] || MISSING="yes"
+    done
+
+    # The weight is part of the stamp, so changing it re-fetches on its own.
+    if [ "$CURRENT" = "$LATEST $WEIGHT" ] && [ -z "$MISSING" ]; then
+        echo "✓ Phosphor $LATEST already up to date"
+        exit 0
+    fi
+
+    echo "⬇️  Updating Phosphor: ${CURRENT:-none} → $LATEST $WEIGHT"
+
+    TMP_DIR=$(mktemp -d)
+    trap "rm -rf $TMP_DIR" EXIT
+
+    TARBALL=$(curl -sf "https://registry.npmjs.org/@phosphor-icons/core/latest" \
+        | python3 -c "import sys,json; print(json.load(sys.stdin)['dist']['tarball'])")
+    curl -sf "$TARBALL" | tar -xz -C "$TMP_DIR"
+
+    mkdir -p "$STATIC_DIR"
+    for icon in "${ICONS[@]}"; do
+        # Saved under the plain name: the weight is this recipe's business,
+        # not something the stylesheet has to know about.
+        cp "$TMP_DIR/package/assets/$WEIGHT/$icon-$WEIGHT.svg" "$STATIC_DIR/$icon.svg"
+    done
+
+    echo "$LATEST $WEIGHT" > "$VERSION_FILE"
+    echo "✓ Phosphor $LATEST ($WEIGHT): ${ICONS[*]} in $STATIC_DIR"
 
 # ---------- development ----------
 [group('development')]

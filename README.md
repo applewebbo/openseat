@@ -42,7 +42,8 @@ subscription and no data leaving the organisation.
   neither
 
 No Node.js: Tailwind and daisyUI come from the standalone `tailwindcss-extra`
-binary, Alpine is vendored into `static/js/`.
+binary, Alpine is vendored into `static/js/` and the Phosphor icons the admin
+uses into `static/img/icons/`.
 
 The app sends mail while you use it — the application receipt, the link back into
 a draft, the consent request to a second parent — and in development that goes to

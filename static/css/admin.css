@@ -1,0 +1,256 @@
+/* The admin, wearing the association's colours — sparingly.
+
+   Django declares every colour it uses as a custom property, so this is a
+   mapping onto the palette theme.css has already put on the page, which comes
+   from the database and changes when the association changes it.
+
+   The brand is an accent, not a coat of paint: the header, the panels and the
+   table are neutral, and the colour shows up only where something is clickable
+   or has just been done. A back office is read for hours; a page of coloured
+   bands is louder than it is useful. The structural rules at the bottom hold to
+   selectors that have been stable for years, so an upgrade cannot undo them. */
+
+/* All three states of the theme toggle, not just the default one: Django's own
+   dark palette is written as `html[data-theme="dark"]`, which outranks a plain
+   `:root` and would put its blue back on the explicit dark theme. */
+:root,
+:root[data-theme="light"],
+:root[data-theme="dark"] {
+    /* The green of the logo, at reading strength: enough of it to be
+       recognisable, dark enough to sit under body text. The orange is the
+       public site's shout; a back office does not need to shout. */
+    --brand-ink: color-mix(in oklab, var(--color-accent) 62%, #14200f);
+    --brand-wash: color-mix(in oklab, var(--assoc-accent) 8%, transparent);
+
+    --primary: var(--brand-ink);
+    --secondary: var(--brand-ink);
+    --primary-fg: #fff;
+    --accent: var(--brand-ink);
+
+    /* A header that is part of the page rather than a band across it: a wash
+       of the same green, mixed into whatever the canvas happens to be, so it
+       reads the same in both themes. */
+    --header-bg: color-mix(in oklab, var(--assoc-accent) 16%, var(--body-bg));
+    --header-color: var(--body-quiet-color);
+    --header-branding-color: var(--body-loud-color);
+    --header-link-color: var(--body-medium-color);
+
+    --breadcrumbs-bg: var(--darkened-bg);
+    --breadcrumbs-fg: var(--body-quiet-color);
+    --breadcrumbs-link-fg: var(--body-medium-color);
+
+    --link-fg: var(--brand-ink);
+    --link-hover-color: var(--assoc-accent);
+    --link-selected-fg: var(--brand-ink);
+
+    /* One coloured button per page: the one that saves. Everything else is
+       grey, so the eye knows where the action is. */
+    --default-button-bg: var(--brand-ink);
+    --default-button-hover-bg: color-mix(in oklab, var(--brand-ink) 85%, #000);
+    --button-bg: #6b6b6b;
+    --button-hover-bg: #4f4f4f;
+
+    --object-tools-bg: var(--brand-ink);
+    --object-tools-hover-bg: color-mix(in oklab, var(--brand-ink) 85%, #000);
+
+    --selected-row: var(--brand-wash);
+    --selected-bg: var(--brand-wash);
+
+    --font-family-primary:
+        ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+}
+
+/* On a dark canvas the ink is too close to the background to read as a link,
+   so the raw colours are used instead — there they carry text perfectly well. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --brand-ink: var(--color-accent);
+        --link-fg: var(--assoc-accent);
+        --link-selected-fg: var(--assoc-accent);
+        --link-hover-color: var(--assoc-bright);
+        --button-bg: #4a4a4a;
+        --button-hover-bg: #5e5e5e;
+    }
+}
+
+:root[data-theme="dark"] {
+    --brand-ink: var(--color-accent);
+    --link-fg: var(--assoc-accent);
+    --link-selected-fg: var(--assoc-accent);
+    --link-hover-color: var(--assoc-bright);
+    --button-bg: #4a4a4a;
+    --button-hover-bg: #5e5e5e;
+}
+
+/* The header is held by a rule, not by a colour. */
+#header {
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: none;
+}
+
+/* :link and :visited, because that is how base.css spells these rules, and a
+   bare `a` selector loses to them. */
+#site-name a:link,
+#site-name a:visited {
+    color: var(--body-loud-color);
+}
+
+#site-name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+#site-name .assoc-logo {
+    display: inline-block;
+    max-height: 28px;
+    width: auto;
+    margin-right: 0.6rem;
+    vertical-align: middle;
+}
+
+/* A module heading names a group. It is a label, not a banner. */
+.module caption,
+.module h2,
+.inline-group h2,
+#changelist-filter h2 {
+    background: transparent;
+    color: var(--body-quiet-color);
+    border-bottom: 1px solid var(--hairline-color);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.module caption a:link,
+.module caption a:visited,
+.module h2 a:link,
+.module h2 a:visited,
+#nav-sidebar .current-app .section:link,
+#nav-sidebar .current-app .section:visited {
+    color: var(--body-quiet-color);
+}
+
+/* Django ships its row icons as SVGs with the fill baked in — a green plus, a
+   yellow pencil, a red bin — so they cannot be recoloured through a variable.
+   Phosphor's outlines are used instead, vendored by `just update_icons` and
+   painted with the text colour through a mask, which makes every icon
+   monochrome and consistent with the rest of the page. The mask sits on a
+   pseudo-element rather than on the link, because masking the link itself would
+   take its label with it. */
+.addlink,
+.changelink,
+.inlinechangelink,
+.deletelink,
+.viewlink,
+.hidelink {
+    background: none;
+    padding-left: 0;
+}
+
+.addlink::before,
+.changelink::before,
+.inlinechangelink::before,
+.deletelink::before,
+.viewlink::before,
+.hidelink::before {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    vertical-align: -2px;
+    background-color: currentColor;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+}
+
+.addlink::before {
+    mask-image: url(../img/icons/plus.svg);
+}
+
+.changelink::before,
+.inlinechangelink::before {
+    mask-image: url(../img/icons/pencil-simple.svg);
+}
+
+.deletelink::before {
+    mask-image: url(../img/icons/trash.svg);
+}
+
+.viewlink::before {
+    mask-image: url(../img/icons/eye.svg);
+}
+
+.hidelink::before {
+    mask-image: url(../img/icons/eye-slash.svg);
+}
+
+/* The date and time pickers ship as two-state sprites in Django blue. Same
+   treatment: one Phosphor outline each, and hover changes the colour instead of
+   scrolling the sprite. The `button` in the selector is not decoration: the
+   widget's own CSS is loaded with the form media, after this file, so an equal
+   selector would lose. */
+.datetimeshortcuts button .clock-icon,
+.datetimeshortcuts button .date-icon {
+    height: 18px;
+    width: 18px;
+    background: currentColor;
+    color: var(--body-quiet-color);
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+}
+
+.datetimeshortcuts button .clock-icon {
+    mask-image: url(../img/icons/clock.svg);
+}
+
+.datetimeshortcuts button .date-icon {
+    mask-image: url(../img/icons/calendar-blank.svg);
+}
+
+.datetimeshortcuts button:focus .clock-icon,
+.datetimeshortcuts button:hover .clock-icon,
+.datetimeshortcuts button:focus .date-icon,
+.datetimeshortcuts button:hover .date-icon {
+    background-position: 0 0;
+    color: var(--link-fg);
+}
+
+/* The object tools carry their own arrow on the right; with an icon now on the
+   left, the add button would show two plus signs. */
+.object-tools a.addlink,
+.object-tools a.viewsitelink {
+    background-image: none;
+    padding-right: 12px;
+}
+
+/* Panels held by a hairline, without shadows. */
+.module,
+.dashboard #content-related .module {
+    border: 1px solid var(--hairline-color);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: none;
+}
+
+.button,
+input[type="submit"],
+input[type="button"],
+.submit-row input,
+.object-tools a {
+    border-radius: 5px;
+    transition:
+        background 0.2s ease-in-out,
+        color 0.2s ease-in-out;
+}
+
+.object-tools a {
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 500;
+}

@@ -43,16 +43,21 @@ def home(request):
 
 @login_not_required
 @cache_control(max_age=300, public=True)
-def theme_css(request, slug):
+def theme_css(request, slug=None):
     """The association's colours as a stylesheet, so no page carries inline style.
 
     Named per association rather than served from one address: the form engine
     is meant to hold more than one, and a shared stylesheet would hand them all
-    the same palette. Values are re-checked here rather than trusted — a colour
-    that reached the database without passing the field validator would
+    the same palette. Without a slug it answers for the installation's own
+    association, which is how the admin — where no association names itself in
+    the URL — reaches it. Values are re-checked here rather than trusted: a
+    colour that reached the database without passing the field validator would
     otherwise be free text inside a stylesheet.
     """
-    association = Association.objects.filter(slug=slug).first()
+    if slug is None:
+        association = Association.current()
+    else:
+        association = Association.objects.filter(slug=slug).first()
     colours = dict(FALLBACK_COLOURS)
     for field, fallback in FALLBACK_COLOURS.items():
         value = getattr(association, field, "") or ""
