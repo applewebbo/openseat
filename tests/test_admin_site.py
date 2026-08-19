@@ -48,9 +48,7 @@ class TestAppOrder:
         assert labels.index("members") < labels.index("intake")
         assert labels.index("intake") < labels.index("accounts")
 
-    def test_an_app_nobody_decided_about_is_kept_last(
-        self, staff_client, association
-    ):
+    def test_an_app_nobody_decided_about_is_kept_last(self, staff_client, association):
         response = staff_client.get(reverse("admin:index"))
 
         labels = [app["app_label"] for app in response.context["app_list"]]

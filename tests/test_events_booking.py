@@ -233,6 +233,27 @@ def test_joining_for_an_event_books_the_place_on_submission(
     assert booking.member.first_name == "Luca"
 
 
+def test_a_second_open_form_does_not_break_joining(client, event, public_form_factory):
+    """An association may run more than one public form; the newest open one is
+    the application in use."""
+    public_form_factory(association=event.association, slug="adesione-2024")
+    current = public_form_factory(association=event.association, slug="adesione-2025")
+
+    response = client.post(reverse("events:join", args=[event.slug]))
+
+    assert response.status_code == 302
+    assert Submission.objects.get().form == current
+
+
+def test_a_closed_form_is_never_the_one_used(client, event, public_form_factory):
+    open_form = public_form_factory(association=event.association, slug="adesione")
+    public_form_factory(association=event.association, slug="archiviata", is_open=False)
+
+    client.post(reverse("events:join", args=[event.slug]))
+
+    assert Submission.objects.get().form == open_form
+
+
 def test_an_association_with_no_application_form_cannot_take_new_members(client, event):
     response = client.post(reverse("events:join", args=[event.slug]))
 
