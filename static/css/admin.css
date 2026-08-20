@@ -1,24 +1,7 @@
-/* The admin, wearing the association's colours — sparingly.
-
-   Django declares every colour it uses as a custom property, so this is a
-   mapping onto the palette theme.css has already put on the page, which comes
-   from the database and changes when the association changes it.
-
-   The brand is an accent, not a coat of paint: the header, the panels and the
-   table are neutral, and the colour shows up only where something is clickable
-   or has just been done. A back office is read for hours; a page of coloured
-   bands is louder than it is useful. The structural rules at the bottom hold to
-   selectors that have been stable for years, so an upgrade cannot undo them. */
-
-/* All three states of the theme toggle, not just the default one: Django's own
-   dark palette is written as `html[data-theme="dark"]`, which outranks a plain
-   `:root` and would put its blue back on the explicit dark theme. */
 :root,
 :root[data-theme="light"],
 :root[data-theme="dark"] {
-    /* The green of the logo, at reading strength: enough of it to be
-       recognisable, dark enough to sit under body text. The orange is the
-       public site's shout; a back office does not need to shout. */
+
     --brand-ink: color-mix(in oklab, var(--color-accent) 62%, #14200f);
     --brand-wash: color-mix(in oklab, var(--assoc-accent) 8%, transparent);
 
@@ -27,9 +10,7 @@
     --primary-fg: #fff;
     --accent: var(--brand-ink);
 
-    /* A header that is part of the page rather than a band across it: a wash
-       of the same green, mixed into whatever the canvas happens to be, so it
-       reads the same in both themes. */
+
     --header-bg: color-mix(in oklab, var(--assoc-accent) 16%, var(--body-bg));
     --header-color: var(--body-quiet-color);
     --header-branding-color: var(--body-loud-color);
@@ -43,8 +24,7 @@
     --link-hover-color: var(--assoc-accent);
     --link-selected-fg: var(--brand-ink);
 
-    /* One coloured button per page: the one that saves. Everything else is
-       grey, so the eye knows where the action is. */
+
     --default-button-bg: var(--brand-ink);
     --default-button-hover-bg: color-mix(in oklab, var(--brand-ink) 85%, #000);
     --button-bg: #6b6b6b;
@@ -61,8 +41,6 @@
         "Helvetica Neue", Arial, sans-serif;
 }
 
-/* On a dark canvas the ink is too close to the background to read as a link,
-   so the raw colours are used instead — there they carry text perfectly well. */
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
         --brand-ink: var(--color-accent);
@@ -83,10 +61,6 @@
     --button-hover-bg: #5e5e5e;
 }
 
-/* Django lays the page out for a 1024px monitor: the content column grows without
-   limit and stays pinned to the left, and the dashboard is nailed to 600px. On a
-   wide screen that leaves the work in a corner. The column is capped and centred
-   instead — tighter on the dashboard, where the two panels are all there is. */
 .main > .content {
     max-width: 1440px;
     margin-inline: auto;
@@ -100,8 +74,12 @@
     width: auto;
 }
 
-/* The recent actions panel is a panel like the others. Django paints the whole
-   sidebar column instead of the box, so the grey ran on past the card. */
+#nav-sidebar.sticky {
+    position: static;
+    max-height: none;
+    overflow: visible;
+}
+
 #content-related {
     background: none;
 }
@@ -110,22 +88,16 @@
     background: var(--body-bg);
 }
 
-/* The header is held by a rule, not by a colour. */
 #header {
     border-bottom: 1px solid var(--border-color);
     box-shadow: none;
 }
 
-/* :link and :visited, because that is how base.css spells these rules, and a
-   bare `a` selector loses to them. */
 #site-name a:link,
 #site-name a:visited {
     color: var(--body-loud-color);
 }
 
-/* A wordmark rather than a title: small, spaced and in capitals, so it reads as
-   the name of the tool next to the association's mark instead of competing with
-   the page heading below it. */
 #site-name {
     font-size: 0.875rem;
     font-weight: 700;
@@ -133,9 +105,6 @@
     text-transform: uppercase;
 }
 
-/* The account menu: a round button on the right of the bar, and one column of
-   links under it. Two items and the theme toggle are all the header has to
-   carry, so `details` opens it and no script is involved. */
 #user-tools {
     float: none;
     display: flex;
@@ -164,7 +133,6 @@
     transition: color 0.2s ease-in-out;
 }
 
-/* Safari still draws the disclosure triangle from its own pseudo-element. */
 .user-menu > summary::-webkit-details-marker {
     display: none;
 }
@@ -200,8 +168,6 @@
     box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
 }
 
-/* The id is carried along because base.css spells these rules `#user-tools a`
-   and `#logout-form button`, which a class on its own cannot outrank. */
 #user-tools .user-menu-panel a:link,
 #user-tools .user-menu-panel a:visited,
 #user-tools .user-menu-panel #logout-form button {
@@ -230,19 +196,13 @@
     display: block;
 }
 
-/* The theme is a setting, so it sits at the foot of the menu, under a rule. */
-#user-tools .user-menu-panel .theme-toggle {
-    align-self: flex-start;
-    margin: 6px 0 0;
-    padding: 10px 10px 2px;
-    border-top: 1px solid var(--hairline-color);
-    width: 100%;
-    text-align: left;
+#user-tools .theme-toggle {
+    display: flex;
+    align-items: center;
+    margin: 0;
     color: var(--body-medium-color);
 }
 
-/* Wide enough for the links themselves: the panel becomes the row it holds and
-   the button that opened it goes away. */
 @media (min-width: 768px) {
     .user-menu > summary {
         display: none;
@@ -276,21 +236,8 @@
     #user-tools .user-menu-panel #logout-form button:hover {
         background: none;
     }
-
-    /* In a row there is nothing to divide it from, so it is just the last item. */
-    #user-tools .user-menu-panel .theme-toggle {
-        width: auto;
-        margin: 0;
-        padding: 0;
-        border-top: 0;
-    }
 }
 
-/* The bar stays a bar on a phone: the mark on the left, the menu on the right,
-   instead of Django's stacked column. 1024px is its own breakpoint for the admin.
-
-   Every selector here is held down by `#container`: responsive.css is loaded
-   after the extrastyle block, so an equally specific rule would always lose. */
 @media (max-width: 1024px) {
     #container #header {
         flex-direction: row;
@@ -309,15 +256,12 @@
         text-align: right;
     }
 
-    /* The wordmark is short enough to keep on a phone; the mark takes the height
-       the row can afford. */
+
     #container #site-name .assoc-logo {
         height: 48px;
     }
 }
 
-/* The height is set here and not left to the `height` attribute: that attribute
-   is only a presentational hint, and a `max-height` never overrides it. */
 #site-name .assoc-logo {
     display: inline-block;
     height: 40px;
@@ -326,9 +270,6 @@
     vertical-align: middle;
 }
 
-/* A module heading names a group. It is a label, not a banner. The sidebar one
-   carries the id because base.css spells it `#content-related .module h2`, which
-   a bare class selector cannot outrank. */
 .module caption,
 .module h2,
 .inline-group h2,
@@ -352,13 +293,6 @@
     color: var(--body-quiet-color);
 }
 
-/* Django ships its row icons as SVGs with the fill baked in — a green plus, a
-   yellow pencil, a red bin — so they cannot be recoloured through a variable.
-   Phosphor's outlines are used instead, vendored by `just update_icons` and
-   painted with the text colour through a mask, which makes every icon
-   monochrome and consistent with the rest of the page. The mask sits on a
-   pseudo-element rather than on the link, because masking the link itself would
-   take its label with it. */
 .addlink,
 .changelink,
 .inlinechangelink,
@@ -408,11 +342,6 @@
     mask-image: url(../img/icons/eye-slash.svg);
 }
 
-/* The date and time pickers ship as two-state sprites in Django blue. Same
-   treatment: one Phosphor outline each, and hover changes the colour instead of
-   scrolling the sprite. The `button` in the selector is not decoration: the
-   widget's own CSS is loaded with the form media, after this file, so an equal
-   selector would lose. */
 .datetimeshortcuts button .clock-icon,
 .datetimeshortcuts button .date-icon {
     height: 18px;
@@ -440,15 +369,23 @@
     color: var(--link-fg);
 }
 
-/* The object tools carry their own arrow on the right; with an icon now on the
-   left, the add button would show two plus signs. */
 .object-tools a.addlink,
 .object-tools a.viewsitelink {
     background-image: none;
     padding-right: 12px;
 }
 
-/* Panels held by a hairline, without shadows. */
+#changelist #changelist-filter a:link,
+#changelist #changelist-filter a:visited,
+#changelist #changelist-filter a:focus,
+#changelist #changelist-filter a:hover {
+    text-decoration: none;
+}
+
+#changelist-filter .date-hierarchy .date-back a {
+    color: var(--body-quiet-color);
+}
+
 .module,
 .dashboard #content-related .module {
     border: 1px solid var(--hairline-color);

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-20 09:21+0200\n"
+"POT-Creation-Date: 2026-08-20 09:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,7 +67,15 @@ msgstr "Italian"
 msgid "English"
 msgstr "English"
 
-#: events/admin.py:24
+#: events/admin.py:34 templates/admin/date_hierarchy.html:7
+msgid "date"
+msgstr ""
+
+#: events/admin.py:39
+msgid "sent"
+msgstr ""
+
+#: events/admin.py:43
 msgid "booked"
 msgstr ""
 
@@ -701,6 +709,26 @@ msgstr ""
 
 #: templates/admin/base_site.html:63
 msgid "Log out"
+msgstr ""
+
+#: templates/admin/change_list.html:12
+msgid "Filter"
+msgstr ""
+
+#: templates/admin/change_list.html:18
+msgid "Hide counts"
+msgstr ""
+
+#: templates/admin/change_list.html:20
+msgid "Show counts"
+msgstr ""
+
+#: templates/admin/change_list.html:26
+msgid "Clear all filters"
+msgstr ""
+
+#: templates/admin/date_hierarchy.html:11
+msgid "By date"
 msgstr ""
 
 #: templates/events/book.html:4

@@ -1,0 +1,25 @@
+{% load i18n %}
+
+{% if show %}
+    <details class="date-hierarchy" data-filter-title="{% translate 'date' %}" open>
+        <summary>
+            {% translate "By date" %}
+        </summary>
+        <ul>
+            {% if back %}
+                <li class="date-back">
+                    <a href="{{ back.link }}">&lsaquo; {{ back.title }}</a>
+                </li>
+            {% endif %}
+            {% for choice in choices %}
+                <li{% if not choice.link %} class="selected"{% endif %}>
+                    {% if choice.link %}
+                        <a href="{{ choice.link }}">{{ choice.title }}</a>
+                    {% else %}
+                        {{ choice.title }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </details>
+{% endif %}
