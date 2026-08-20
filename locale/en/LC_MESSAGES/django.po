@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-18 21:47+0200\n"
+"POT-Creation-Date: 2026-08-20 09:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,11 +59,11 @@ msgstr "user"
 msgid "users"
 msgstr "users"
 
-#: core/settings.py:190
+#: core/settings.py:191
 msgid "Italian"
 msgstr "Italian"
 
-#: core/settings.py:190
+#: core/settings.py:191
 msgid "English"
 msgstr "English"
 
@@ -685,6 +685,22 @@ msgstr ""
 
 #: members/models.py:71
 msgid "members"
+msgstr ""
+
+#: templates/admin/base_site.html:52 templates/admin/base_site.html:54
+msgid "Account"
+msgstr ""
+
+#: templates/admin/base_site.html:57
+msgid "View site"
+msgstr ""
+
+#: templates/admin/base_site.html:59
+msgid "Change password"
+msgstr ""
+
+#: templates/admin/base_site.html:63
+msgid "Log out"
 msgstr ""
 
 #: templates/events/book.html:4

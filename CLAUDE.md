@@ -57,7 +57,10 @@ just update_all       # lock + Alpine + icons + hooks
   login, and `static/css/admin.css` maps Django's own CSS variables onto the
   palette `theme_css` serves from the database. Every `ModelAdmin` stays a plain
   `admin.ModelAdmin`. Django writes its dark palette as `html[data-theme="dark"]`,
-  so overrides need `:root[data-theme="dark"]` to outrank it.
+  so overrides need `:root[data-theme="dark"]` to outrank it. The header's user
+  tools are re-rendered in `templates/admin/base_site.html` as an account menu —
+  a `details`, closed from `static/js/admin.js` — so no address is on the page and
+  a phone gets logo, menu and theme toggle on one row.
 - **`src/source.css` needs `@plugin "daisyui";`** — the `TAILWIND_CLI_USE_DAISY_UI`
   setting only picks the binary, it does not enable the plugin. Every directory
   holding classes needs its own `@source` line; never point one inside `.venv/`.

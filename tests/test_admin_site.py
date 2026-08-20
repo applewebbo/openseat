@@ -11,6 +11,12 @@ class TestBranding:
 
         assert "Ontano" in content
 
+    def test_the_bar_carries_the_product_name(self, staff_client, association):
+        """The logo says whose installation it is; the wordmark says what it is."""
+        content = staff_client.get(reverse("admin:index")).content.decode()
+
+        assert '<span class="site-name-text">OpenSeat</span>' in content
+
     def test_the_logo_replaces_the_name_when_there_is_one(
         self, staff_client, association
     ):
@@ -31,6 +37,20 @@ class TestBranding:
         content = client.get(reverse("admin:login")).content.decode()
 
         assert "Ontano" in content
+
+    def test_the_account_menu_offers_every_user_tool(self, staff_client, association):
+        """The tools are rewritten for the layout, so nothing may go missing."""
+        content = staff_client.get(reverse("admin:index")).content.decode()
+
+        assert reverse("admin:password_change") in content
+        assert reverse("admin:logout") in content
+        assert 'href="/"' in content
+
+    def test_nobody_is_named_in_the_header(self, staff_client, user, association):
+        """Whose account it is belongs behind the menu, not on every page."""
+        content = staff_client.get(reverse("admin:index")).content.decode()
+
+        assert user.email not in content
 
     def test_the_palette_is_linked(self, staff_client, association):
         content = staff_client.get(reverse("admin:index")).content.decode()

@@ -13,6 +13,11 @@
     <link rel="stylesheet" href="{% static 'css/admin.css' %}" />
 {% endblock extrastyle %}
 
+{% block extrahead %}
+    {{ block.super }}
+    <script src="{% static 'js/admin.js' %}" defer></script>
+{% endblock extrahead %}
+
 {% block branding %}
     <div id="site-name">
         <a href="{% url 'admin:index' %}">
@@ -22,13 +27,47 @@
                      class="assoc-logo"
                      height="32" />
             {% endif %}
-            {{ site_header|default:"OpenSeat" }}
+            {# The logo says whose installation this is; the wordmark says what the #}
+            {# tool is. The association's name is on the tab and on every page it #}
+            {# prints, so the bar does not have to repeat it. #}
+            <span class="site-name-text">OpenSeat</span>
         </a>
     </div>
     {% if user.is_anonymous %}
         {% include "admin/color_theme_toggle.html" %}
     {% endif %}
 {% endblock branding %}
+
+{# Django writes the user tools as one uppercase sentence of slash-separated #}
+{# links, which under a logo on a phone becomes a wall of capitals — and it puts #}
+{# the address of whoever is logged in on every page. The same links live in a #}
+{# menu instead, behind `details`, so no script is needed to open it. #}
+{% block usertools %}
+    {% if has_permission %}
+        <div id="user-tools">
+            {# Open in the markup: from 768px up the links are shown in full and #}
+            {# the button is not drawn at all, so without script the menu is #}
+            {# unfolded rather than unreachable. #}
+            <details class="user-menu" open>
+                <summary title="{% translate 'Account' %}">
+                    <span class="user-menu-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">{% translate 'Account' %}</span>
+                </summary>
+                <div class="user-menu-panel">
+                    {% if site_url %}<a href="{{ site_url }}">{% translate 'View site' %}</a>{% endif %}
+                    {% if user.has_usable_password %}
+                        <a href="{% url 'admin:password_change' %}">{% translate 'Change password' %}</a>
+                    {% endif %}
+                    <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">{% translate 'Log out' %}</button>
+                    </form>
+                    {% include "admin/color_theme_toggle.html" %}
+                </div>
+            </details>
+        </div>
+    {% endif %}
+{% endblock usertools %}
 
 {% block nav-global %}
 {% endblock nav-global %}
