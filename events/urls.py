@@ -9,5 +9,6 @@ urlpatterns = [
     path("evento/<slug:slug>/identify/", views.identify, name="identify"),
     path("evento/<slug:slug>/book/", views.book, name="book"),
     path("evento/<slug:slug>/booked/", views.booked, name="booked"),
+    path("evento/<slug:slug>/prenotazione/<str:token>/", views.manage, name="manage"),
     path("evento/<slug:slug>/join/", views.join, name="join"),
 ]

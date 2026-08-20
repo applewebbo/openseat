@@ -3,10 +3,10 @@
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from django.urls import reverse
 from django.utils.translation import gettext as _
 from django_q.tasks import async_task
 
+from core.links import absolute_url
 from intake.models import Submission, Subscription
 from intake.wizard import resume_step
 
@@ -36,8 +36,8 @@ def deliver_resume_link(submission_pk, email=None, reminder=False):
             "association": association,
             "reminder": reminder,
             "expires_at": submission.expires_at,
-            "resume_url": reverse(
-                "intake:step", args=[submission.token, resume_step(submission)]
+            "resume_url": absolute_url(
+                "intake:step", submission.token, resume_step(submission)
             ),
         },
     )
@@ -64,7 +64,7 @@ def deliver_receipt(submission_pk):
         {
             "submission": submission,
             "association": association,
-            "done_url": reverse("intake:done", args=[submission.token]),
+            "done_url": absolute_url("intake:done", submission.token),
         },
     )
     send_mail(
@@ -88,7 +88,7 @@ def deliver_second_parent_request(subscription_pk):
             "subscription": subscription,
             "submission": submission,
             "association": association,
-            "consent_url": reverse("intake:second-parent", args=[subscription.token]),
+            "consent_url": absolute_url("intake:second-parent", subscription.token),
         },
     )
     send_mail(

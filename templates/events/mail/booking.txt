@@ -1,0 +1,15 @@
+{% load i18n %}{% autoescape off %}{% blocktranslate count counter=bookings|length %}The place is booked.{% plural %}The {{ counter }} places are booked.{% endblocktranslate %}
+
+{{ event.title }}
+{{ event.starts_at|date:"l d/m/Y H:i" }}{% if event.location %} · {{ event.location }}{% endif %}
+
+{% translate "Who is coming" %}:
+{% for booking in bookings %}- {{ booking.member.full_name }}
+{% endfor %}
+{% translate "Something changed? Add or remove a name here, up until the day itself:" %}
+{{ manage_url }}
+
+--
+{{ association.name }}
+{{ association.email }}
+{% endautoescape %}

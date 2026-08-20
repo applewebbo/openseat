@@ -1,0 +1,46 @@
+{% load i18n %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'it' }}">
+    <head>
+        <meta charset="utf-8" />
+        <title>{{ event.title }}</title>
+    </head>
+    <body style="margin:0;padding:24px;background:#f6f4f1;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1f2124;line-height:1.5">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:520px;margin:0 auto">
+            <tr>
+                <td style="background:#ffffff;border:1px solid rgba(0,0,0,.06);border-radius:16px;padding:28px">
+                    <p style="margin:0;font-size:13px;font-weight:600;color:{{ association.colour_primary }}">
+                        {% blocktranslate count counter=bookings|length %}The place is booked.{% plural %}The {{ counter }} places are booked.{% endblocktranslate %}
+                    </p>
+                    <h1 style="margin:8px 0 0;font-size:22px;line-height:1.25;font-weight:700">{{ event.title }}</h1>
+                    <p style="margin:10px 0 0;font-size:14px;color:rgba(31,33,36,.7)">
+                        {{ event.starts_at|date:"l d/m/Y H:i" }}{% if event.location %} · {{ event.location }}{% endif %}
+                    </p>
+
+                    <p style="margin:24px 0 6px;font-size:13px;font-weight:600">{% translate "Who is coming" %}</p>
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                        {% for booking in bookings %}
+                            <tr>
+                                <td style="padding:8px 0;border-top:1px solid rgba(0,0,0,.06);font-size:15px">{{ booking.member.full_name }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                    <p style="margin:28px 0 0">
+                        <a href="{{ manage_url }}"
+                           style="display:inline-block;padding:12px 22px;border-radius:12px;background:{{ association.colour_primary }};color:#ffffff;font-size:15px;font-weight:600;text-decoration:none">
+                            {% translate "Change the booking" %}
+                        </a>
+                    </p>
+                    <p style="margin:12px 0 0;font-size:13px;color:rgba(31,33,36,.6)">
+                        {% translate "Add or remove a name from this link, up until the day itself." %}
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:18px 28px;font-size:12px;color:rgba(31,33,36,.55)">
+                    {{ association.name }} · <a href="mailto:{{ association.email }}" style="color:inherit">{{ association.email }}</a>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-20 11:36+0200\n"
+"POT-Creation-Date: 2026-08-20 19:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -89,10 +89,8 @@ msgid "Bookings for %(event)s"
 msgstr ""
 
 #: events/forms.py:18 intake/forms.py:285
-#, fuzzy
-#| msgid "email address"
 msgid "Email address"
-msgstr "email address"
+msgstr ""
 
 #: events/forms.py:19
 msgid "The one the association writes to."
@@ -198,6 +196,11 @@ msgstr ""
 msgid "bookings"
 msgstr ""
 
+#: events/notifications.py:37
+#, python-format
+msgid "Booked: %(event)s"
+msgstr ""
+
 #: intake/admin.py:28
 msgid "Home page"
 msgstr ""
@@ -273,20 +276,16 @@ msgid "Their last name"
 msgstr ""
 
 #: intake/forms.py:227
-#, fuzzy
-#| msgid "email address"
 msgid "Their email address"
-msgstr "email address"
+msgstr ""
 
 #: intake/forms.py:229
 msgid "Used only to ask them about the image consents."
 msgstr ""
 
 #: intake/forms.py:241
-#, fuzzy
-#| msgid "The email address is required"
 msgid "This field is required."
-msgstr "The email address is required"
+msgstr ""
 
 #: intake/forms.py:251
 msgid "Publishing images on the association's website and social channels"
@@ -516,26 +515,20 @@ msgid "submitted at"
 msgstr ""
 
 #: intake/models.py:264 intake/models.py:352
-#, fuzzy
-#| msgid "email address"
 msgid "IP address"
-msgstr "email address"
+msgstr ""
 
 #: intake/models.py:266
 msgid "updated at"
 msgstr ""
 
 #: intake/models.py:269 intake/models.py:336
-#, fuzzy
-#| msgid "Permissions"
 msgid "submission"
-msgstr "Permissions"
+msgstr ""
 
 #: intake/models.py:270
-#, fuzzy
-#| msgid "Permissions"
 msgid "submissions"
-msgstr "Permissions"
+msgstr ""
 
 #: intake/models.py:274
 msgid "draft"
@@ -633,18 +626,18 @@ msgstr ""
 msgid "Write the number with digits, spaces or a plus sign."
 msgstr ""
 
-#: intake/views.py:306
+#: intake/views.py:308
 #, python-format
 msgid ""
 "Application for membership of %(association)s, accepting its statute and "
 "undertaking to pay the annual fee."
 msgstr ""
 
-#: intake/views.py:313
+#: intake/views.py:315
 msgid "Signed as sole holder of parental responsibility."
 msgstr ""
 
-#: intake/views.py:317
+#: intake/views.py:319
 msgid ""
 "Signed on behalf of the other parent too, in agreement with them, under "
 "artt. 316 and 337-ter of the Civil Code."
@@ -744,6 +737,7 @@ msgid "By date"
 msgstr ""
 
 #: templates/events/book.html:4 templates/events/book.html:12
+#: templates/events/mail/booking.html:19 templates/events/mail/booking.txt:6
 msgid "Who is coming"
 msgstr ""
 
@@ -819,15 +813,48 @@ msgstr ""
 msgid "Book a place"
 msgstr ""
 
-#: templates/events/landing.html:61
+#: templates/events/landing.html:62
+msgid "This date has already been"
+msgstr ""
+
+#: templates/events/landing.html:64
+msgid ""
+"The booking cannot be changed any more. Thank you for coming — the next "
+"dates are on the home page."
+msgstr ""
+
+#: templates/events/landing.html:67
+msgid "The next dates"
+msgstr ""
+
+#: templates/events/landing.html:69
 msgid "Bookings are closed"
 msgstr ""
 
-#: templates/events/landing.html:63
+#: templates/events/landing.html:71
 #, python-format
 msgid ""
 "This event is no longer taking bookings. Write to %(email)s if you need to "
 "reach the organisers."
+msgstr ""
+
+#: templates/events/mail/booking.html:12 templates/events/mail/booking.txt:1
+#, python-format
+msgid "The place is booked."
+msgid_plural "The %(counter)s places are booked."
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/events/mail/booking.html:31
+msgid "Change the booking"
+msgstr ""
+
+#: templates/events/mail/booking.html:35
+msgid "Add or remove a name from this link, up until the day itself."
+msgstr ""
+
+#: templates/events/mail/booking.txt:9
+msgid "Something changed? Add or remove a name here, up until the day itself:"
 msgstr ""
 
 #: templates/events/mail/checklist.txt:1
@@ -936,10 +963,8 @@ msgid ""
 msgstr ""
 
 #: templates/intake/expired.html:4 templates/intake/expired.html:8
-#, fuzzy
-#| msgid "The email address is required"
 msgid "This draft has expired"
-msgstr "The email address is required"
+msgstr ""
 
 #: templates/intake/expired.html:10
 msgid ""

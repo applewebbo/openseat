@@ -2,7 +2,7 @@ import pytest
 from django.core import mail
 from django.urls import reverse
 
-from intake.models import Subscription
+from intake.models import Submission, Subscription
 
 pytestmark = pytest.mark.django_db
 
@@ -61,3 +61,25 @@ def test_plain_text_mail_is_not_html_escaped(client, minor_submission):
     for message in mail.outbox:
         assert "&#x27;" not in message.body
         assert "&amp;" not in message.body
+
+
+def test_every_link_in_the_mail_can_be_clicked(client, minor_submission, settings):
+    """A relative path is dead in a mail client: it has no host to resolve it."""
+    settings.SITE_BASE_URL = "https://soci.example.org"
+
+    _submit(client, minor_submission)
+
+    for message in mail.outbox:
+        assert "https://soci.example.org/" in message.body
+
+
+def test_the_resume_link_is_absolute_too(client, public_form, settings):
+    settings.SITE_BASE_URL = "https://soci.example.org"
+    submission = Submission.objects.create(form=public_form)
+
+    client.post(
+        reverse("intake:save", args=[submission.token]),
+        {"email": "maria.rossi@example.com"},
+    )
+
+    assert "https://soci.example.org/" in mail.outbox[-1].body

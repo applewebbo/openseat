@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-20 11:36+0200\n"
+"POT-Creation-Date: 2026-08-20 19:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -143,10 +143,8 @@ msgid "ends at"
 msgstr "termina il"
 
 #: events/models.py:63
-#, fuzzy
-#| msgid "images"
 msgid "image"
-msgstr "immagini"
+msgstr "immagine"
 
 #: events/models.py:66
 msgid "A wide picture, 1200 px or more. The square one is cut from it."
@@ -199,6 +197,11 @@ msgstr "prenotazione"
 #: events/models.py:160
 msgid "bookings"
 msgstr "prenotazioni"
+
+#: events/notifications.py:37
+#, python-format
+msgid "Booked: %(event)s"
+msgstr "Prenotazione confermata: %(event)s"
 
 #: intake/admin.py:28
 msgid "Home page"
@@ -638,7 +641,7 @@ msgstr "Il CAP è di cinque cifre."
 msgid "Write the number with digits, spaces or a plus sign."
 msgstr "Scrivi il numero con cifre, spazi o il segno più."
 
-#: intake/views.py:306
+#: intake/views.py:308
 #, python-format
 msgid ""
 "Application for membership of %(association)s, accepting its statute and "
@@ -647,12 +650,12 @@ msgstr ""
 "Richiesta di adesione a %(association)s, con accettazione dello statuto e "
 "impegno al versamento della quota annuale."
 
-#: intake/views.py:313
+#: intake/views.py:315
 msgid "Signed as sole holder of parental responsibility."
 msgstr ""
 "Sottoscritta in qualità di unico titolare della responsabilità genitoriale."
 
-#: intake/views.py:317
+#: intake/views.py:319
 msgid ""
 "Signed on behalf of the other parent too, in agreement with them, under "
 "artt. 316 and 337-ter of the Civil Code."
@@ -754,6 +757,7 @@ msgid "By date"
 msgstr "Per data"
 
 #: templates/events/book.html:4 templates/events/book.html:12
+#: templates/events/mail/booking.html:19 templates/events/mail/booking.txt:6
 msgid "Who is coming"
 msgstr "Chi viene"
 
@@ -830,11 +834,27 @@ msgstr "Annulla"
 msgid "Book a place"
 msgstr "Prenota un posto"
 
-#: templates/events/landing.html:61
+#: templates/events/landing.html:62
+msgid "This date has already been"
+msgstr "Questo appuntamento è già passato"
+
+#: templates/events/landing.html:64
+msgid ""
+"The booking cannot be changed any more. Thank you for coming — the next "
+"dates are on the home page."
+msgstr ""
+"La prenotazione non è più modificabile. Grazie di essere venuto: i prossimi "
+"appuntamenti sono nella home."
+
+#: templates/events/landing.html:67
+msgid "The next dates"
+msgstr "I prossimi appuntamenti"
+
+#: templates/events/landing.html:69
 msgid "Bookings are closed"
 msgstr "Le prenotazioni sono chiuse"
 
-#: templates/events/landing.html:63
+#: templates/events/landing.html:71
 #, python-format
 msgid ""
 "This event is no longer taking bookings. Write to %(email)s if you need to "
@@ -842,6 +862,27 @@ msgid ""
 msgstr ""
 "Questo evento non accetta più prenotazioni. Scrivi a %(email)s se ti serve "
 "contattare gli organizzatori."
+
+#: templates/events/mail/booking.html:12 templates/events/mail/booking.txt:1
+#, python-format
+msgid "The place is booked."
+msgid_plural "The %(counter)s places are booked."
+msgstr[0] "Il posto è prenotato."
+msgstr[1] "I %(counter)s posti sono prenotati."
+
+#: templates/events/mail/booking.html:31
+msgid "Change the booking"
+msgstr "Modifica la prenotazione"
+
+#: templates/events/mail/booking.html:35
+msgid "Add or remove a name from this link, up until the day itself."
+msgstr "Da questo link puoi aggiungere o togliere un nome, fino al giorno stesso."
+
+#: templates/events/mail/booking.txt:9
+msgid "Something changed? Add or remove a name here, up until the day itself:"
+msgstr ""
+"È cambiato qualcosa? Da qui puoi aggiungere o togliere un nome, fino al "
+"giorno stesso:"
 
 #: templates/events/mail/checklist.txt:1
 #, python-format

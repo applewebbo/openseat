@@ -3,8 +3,10 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
+from events.access import email_from_token
 from events.forms import IdentifyForm
 from events.models import Booking, Event
+from events.notifications import send_booking_confirmation
 from intake.models import PublicForm, SectionKey, Submission
 from members.models import Member
 
@@ -76,6 +78,7 @@ def book(request, slug):
                 .filter(member__in=household)
             ):
                 booking.cancel()
+            send_booking_confirmation(event, request.session[CONTACT_SESSION_KEY])
             return redirect("events:booked", slug=event.slug)
 
     return render(
@@ -106,6 +109,37 @@ def booked(request, slug):
             "bookings": event.bookings.confirmed().filter(member__in=household),
         },
     )
+
+
+@login_not_required
+def manage(request, slug, token):
+    """Straight back into the booking from the link in the confirmation mail.
+
+    The token proves the address, so the tax code is not asked for a second
+    time: whoever holds the mail already passed that check once.
+    """
+    event = _open_event(slug)
+    email = email_from_token(event, token)
+    if email is None:
+        raise Http404("this link was not written for this event")
+
+    if not event.is_open:
+        return render(
+            request,
+            "events/landing.html",
+            {
+                "event": event,
+                "association": event.association,
+                "form": IdentifyForm(association=event.association),
+                "link_expired": True,
+            },
+        )
+
+    if not Member.objects.for_contact(event.association, email).exists():
+        return redirect("events:landing", slug=event.slug)
+
+    request.session[CONTACT_SESSION_KEY] = email
+    return redirect("events:book", slug=event.slug)
 
 
 @login_not_required

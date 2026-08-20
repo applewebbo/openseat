@@ -5,6 +5,7 @@ from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from events.models import Booking
+from events.notifications import send_booking_confirmation
 from intake.forms import ResumeLinkForm, ReviewForm
 from intake.models import PublicForm, SectionKey, Submission, Subscription
 from intake.notifications import (
@@ -159,6 +160,7 @@ def submit(request, token):
     member = enrol(submission)
     if submission.event_id:
         Booking.objects.book(submission.event, member)
+        send_booking_confirmation(submission.event, member.contact_email)
     return redirect("intake:done", token=token)
 
 

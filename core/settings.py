@@ -254,6 +254,11 @@ SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="noreply@localhost")
+# Mail leaves the request cycle, so nothing in it can infer its own host. The
+# prod branch re-reads this without a default: a base URL guessed there makes
+# every link the association sends out unclickable, and nobody tests their
+# own confirmation mail.
+SITE_BASE_URL = env("SITE_BASE_URL", default="http://localhost:8000").rstrip("/")
 
 # DBBACKUP. The destination is the "dbbackup" alias of STORAGES; the older
 # DBBACKUP_STORAGE / DBBACKUP_STORAGE_OPTIONS pair is read by nothing since
@@ -343,6 +348,7 @@ else:  # prod
     # once at boot, or a logo added after the container started stays a 404.
     MIDDLEWARE.insert(1, "core.middleware.MediaWhiteNoiseMiddleware")
     WHITENOISE_AUTOREFRESH = True
+    SITE_BASE_URL = env("SITE_BASE_URL").rstrip("/")  # unset must crash at startup
     DATABASES = {
         "default": dj_database_url.config(
             conn_max_age=env("DATABASE_CONN_MAX_AGE"),
