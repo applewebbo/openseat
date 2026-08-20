@@ -5,9 +5,9 @@ from events import views
 app_name = "events"
 
 urlpatterns = [
-    path("e/<slug:slug>/", views.landing, name="landing"),
-    path("e/<slug:slug>/identify/", views.identify, name="identify"),
-    path("e/<slug:slug>/book/", views.book, name="book"),
-    path("e/<slug:slug>/booked/", views.booked, name="booked"),
-    path("e/<slug:slug>/join/", views.join, name="join"),
+    path("evento/<slug:slug>/", views.landing, name="landing"),
+    path("evento/<slug:slug>/identify/", views.identify, name="identify"),
+    path("evento/<slug:slug>/book/", views.book, name="book"),
+    path("evento/<slug:slug>/booked/", views.booked, name="booked"),
+    path("evento/<slug:slug>/join/", views.join, name="join"),
 ]

@@ -215,7 +215,7 @@ def test_somebody_new_is_sent_to_the_application(client, event, public_form_fact
 
     submission = Submission.objects.get()
     assert submission.event == event
-    assert response.url.startswith(f"/r/{submission.token}/")
+    assert response.url.startswith(f"/richiesta/{submission.token}/")
 
 
 def test_joining_for_an_event_books_the_place_on_submission(
