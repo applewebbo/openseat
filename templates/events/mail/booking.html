@@ -34,6 +34,27 @@
                     <p style="margin:12px 0 0;font-size:13px;color:rgba(31,33,36,.6)">
                         {% translate "Add or remove a name from this link, up until the day itself." %}
                     </p>
+
+                    {% if submission %}
+                        <div style="margin:28px 0 0;padding:18px 0 0;border-top:1px solid rgba(0,0,0,.06)">
+                            <p style="margin:0;font-size:13px;color:rgba(31,33,36,.7)">
+                                {% blocktranslate with association=association.name %}The membership application is signed and with the board of {{ association }}, which will confirm the enrolment.{% endblocktranslate %}
+                            </p>
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:12px;font-size:13px">
+                                <tr>
+                                    <td style="padding:4px 0;color:rgba(31,33,36,.6)">{% translate "Signed on" %}</td>
+                                    <td style="padding:4px 0;text-align:right;font-weight:600">{{ submission.submitted_at|date:"d/m/Y H:i" }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:4px 0;color:rgba(31,33,36,.6)">{% translate "Annual fee" %}</td>
+                                    <td style="padding:4px 0;text-align:right;font-weight:600">€ {{ association.membership_fee }}</td>
+                                </tr>
+                            </table>
+                            <p style="margin:12px 0 0;font-size:13px">
+                                <a href="{{ done_url }}" style="color:{{ association.colour_primary }}">{% translate "Your copy" %}</a>
+                            </p>
+                        </div>
+                    {% endif %}
                 </td>
             </tr>
             <tr>

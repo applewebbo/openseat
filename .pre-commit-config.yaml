@@ -57,6 +57,9 @@ repos:
   hooks:
   - id: djlint-django
     files: ^templates/.*\.html$
+    # Mail templates are exempt: a mail client reads no stylesheet, so every
+    # rule has to travel inline with the tag it styles.
+    exclude: ^templates/.*/mail/.*\.html$
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.16.2

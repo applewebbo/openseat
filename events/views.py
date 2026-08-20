@@ -70,6 +70,11 @@ def book(request, slug):
             raise Http404("bookings are closed")
         chosen = household.filter(pk__in=request.POST.getlist("members"))
         if chosen.exists():
+            # Only the first booking is worth a mail: it is what carries the
+            # link back here. Every later change is already confirmed on screen.
+            first_time = (
+                not event.bookings.confirmed().filter(member__in=household).exists()
+            )
             for member in chosen:
                 Booking.objects.book(event, member)
             for booking in (
@@ -78,7 +83,8 @@ def book(request, slug):
                 .filter(member__in=household)
             ):
                 booking.cancel()
-            send_booking_confirmation(event, request.session[CONTACT_SESSION_KEY])
+            if first_time:
+                send_booking_confirmation(event, request.session[CONTACT_SESSION_KEY])
             return redirect("events:booked", slug=event.slug)
 
     return render(
@@ -109,6 +115,22 @@ def booked(request, slug):
             "bookings": event.bookings.confirmed().filter(member__in=household),
         },
     )
+
+
+@login_not_required
+@require_POST
+def cancel(request, slug):
+    """Give every place back at once — the whole booking, not one name of it."""
+    event = _open_event(slug)
+    household = _household(request, event)
+    if not household.exists():
+        return redirect("events:landing", slug=event.slug)
+    if not event.is_open:
+        raise Http404("bookings are closed")
+
+    for booking in event.bookings.confirmed().filter(member__in=household):
+        booking.cancel()
+    return redirect("events:booked", slug=event.slug)
 
 
 @login_not_required

@@ -159,8 +159,14 @@ def submit(request, token):
     _record_signatures(submission, client_ip(request))
     member = enrol(submission)
     if submission.event_id:
+        # One act, one mail: the confirmation says everything the receipt says
+        # and names the booking too, so sending both would repeat itself.
         Booking.objects.book(submission.event, member)
-        send_booking_confirmation(submission.event, member.contact_email)
+        send_booking_confirmation(
+            submission.event, member.contact_email, submission=submission
+        )
+    else:
+        send_receipt(submission)
     return redirect("intake:done", token=token)
 
 
@@ -286,7 +292,6 @@ def _record_signatures(submission, ip):
         signed_at=submission.submitted_at,
         ip=ip,
     )
-    send_receipt(submission)
 
     wants_images = bool(submission.consent_images or submission.consent_whatsapp)
     if wants_images and submission.needs_second_parent:

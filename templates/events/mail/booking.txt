@@ -8,6 +8,13 @@
 {% endfor %}
 {% translate "Something changed? Add or remove a name here, up until the day itself:" %}
 {{ manage_url }}
+{% if submission %}
+{% blocktranslate with association=association.name %}The membership application is signed and with the board of {{ association }}, which will confirm the enrolment.{% endblocktranslate %}
+
+{% translate "Signed on" %}: {{ submission.submitted_at|date:"d/m/Y H:i" }}
+{% translate "Annual fee" %}: € {{ association.membership_fee }}
+{% translate "Your copy" %}: {{ done_url }}
+{% endif %}
 
 --
 {{ association.name }}

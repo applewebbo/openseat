@@ -66,16 +66,25 @@ def test_the_confirmation_says_when_and_where(client, event, family):
     assert event.starts_at.astimezone().strftime("%d/%m/%Y") in body
 
 
-def test_the_confirmation_only_lists_places_still_held(client, event, family):
+def test_the_confirmation_lists_only_who_was_ticked(client, event, family):
+    luca, _sara = family
+
+    book_as_member(client, event, [luca])
+
+    body = confirmation(event).body
+    assert "Luca Rossi" in body
+    assert "Sara Rossi" not in body
+
+
+def test_changing_the_booking_later_is_not_confirmed_again(client, event, family):
+    """The page says what was saved. A second mail saying the same thing is noise."""
     luca, _sara = family
     book_as_member(client, event, family)
     mail.outbox.clear()
 
     client.post(reverse("events:book", args=[event.slug]), {"members": [str(luca.pk)]})
 
-    body = confirmation(event).body
-    assert "Luca Rossi" in body
-    assert "Sara Rossi" not in body
+    assert not mail.outbox
 
 
 def test_the_links_in_the_mail_are_absolute(client, event, family, settings):
@@ -110,6 +119,26 @@ def test_joining_to_book_is_confirmed_too(client, event, minor_submission):
     sent = confirmation(event, minor_submission.applicant_email)
     assert event.title in sent.subject
     assert "Luca Rossi" in sent.body
+
+
+def test_joining_to_book_is_one_mail_and_not_two(client, event, minor_submission):
+    """The confirmation carries what the receipt carried, so the receipt itself
+    would be a second mail about the same act."""
+    event.association = minor_submission.form.association
+    event.save()
+    minor_submission.event = event
+    minor_submission.save()
+
+    client.post(
+        reverse("intake:submit", args=[minor_submission.token]),
+        {"place": "Novara", "declaration": "on"},
+    )
+
+    to_applicant = [m for m in mail.outbox if minor_submission.applicant_email in m.to]
+    assert len(to_applicant) == 1
+    body = to_applicant[0].body
+    assert reverse("intake:done", args=[minor_submission.token]) in body
+    assert "10" in body
 
 
 def test_an_application_with_no_event_confirms_nothing(client, event, minor_submission):
@@ -176,7 +205,10 @@ def test_a_link_for_another_event_does_not_open_this_one(
     other = event_factory(slug="altro-evento", association=event.association)
 
     response = client.get(
-        reverse("events:manage", args=[other.slug, token_for(event, family[0].contact_email)])
+        reverse(
+            "events:manage",
+            args=[other.slug, token_for(event, family[0].contact_email)],
+        )
     )
 
     assert response.status_code == 404

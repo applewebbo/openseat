@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-20 19:04+0200\n"
+"POT-Creation-Date: 2026-08-20 19:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -196,7 +196,7 @@ msgstr ""
 msgid "bookings"
 msgstr ""
 
-#: events/notifications.py:37
+#: events/notifications.py:50
 #, python-format
 msgid "Booked: %(event)s"
 msgstr ""
@@ -626,18 +626,18 @@ msgstr ""
 msgid "Write the number with digits, spaces or a plus sign."
 msgstr ""
 
-#: intake/views.py:308
+#: intake/views.py:313
 #, python-format
 msgid ""
 "Application for membership of %(association)s, accepting its statute and "
 "undertaking to pay the annual fee."
 msgstr ""
 
-#: intake/views.py:315
+#: intake/views.py:320
 msgid "Signed as sole holder of parental responsibility."
 msgstr ""
 
-#: intake/views.py:319
+#: intake/views.py:324
 msgid ""
 "Signed on behalf of the other parent too, in agreement with them, under "
 "artt. 316 and 337-ter of the Civil Code."
@@ -768,21 +768,43 @@ msgid "Confirm"
 msgstr ""
 
 #: templates/events/booked.html:4 templates/events/booked.html:12
-#: templates/events/booked.html:19
+#: templates/events/booked.html:21
 msgid "Booked"
 msgstr ""
 
-#: templates/events/booked.html:21
-#, python-format
-msgid "You have a place at %(title)s"
+#: templates/events/booked.html:23
+msgid "Cancelled"
 msgstr ""
 
-#: templates/events/booked.html:29
-msgid "Nobody is booked."
+#: templates/events/booked.html:35 templates/events/booked.html:49
+msgid "Cancel the booking"
 msgstr ""
 
-#: templates/events/booked.html:34
-msgid "Change who is coming"
+#: templates/events/booked.html:38
+msgid ""
+"The booking is cancelled and the places are free again. You can book once "
+"more while the date is open."
+msgstr ""
+
+#: templates/events/booked.html:41
+msgid "Book again"
+msgstr ""
+
+#: templates/events/booked.html:51
+msgid ""
+"Everyone's place goes back. Booking again is possible while the date is open."
+msgstr ""
+
+#: templates/events/booked.html:59
+msgid "Keep it"
+msgstr ""
+
+#: templates/events/booked.html:60
+msgid "Yes, cancel it"
+msgstr ""
+
+#: templates/events/booked.html:64
+msgid "Close"
 msgstr ""
 
 #: templates/events/landing.html:33 templates/home.html:88
@@ -851,6 +873,28 @@ msgstr ""
 
 #: templates/events/mail/booking.html:35
 msgid "Add or remove a name from this link, up until the day itself."
+msgstr ""
+
+#: templates/events/mail/booking.html:41 templates/events/mail/booking.txt:12
+#, python-format
+msgid ""
+"The membership application is signed and with the board of %(association)s, "
+"which will confirm the enrolment."
+msgstr ""
+
+#: templates/events/mail/booking.html:45 templates/events/mail/booking.txt:14
+#: templates/intake/done.html:18 templates/intake/mail/receipt.txt:5
+msgid "Signed on"
+msgstr ""
+
+#: templates/events/mail/booking.html:49 templates/events/mail/booking.txt:15
+#: templates/intake/done.html:22 templates/intake/mail/receipt.txt:6
+msgid "Annual fee"
+msgstr ""
+
+#: templates/events/mail/booking.html:54 templates/events/mail/booking.txt:16
+#: templates/intake/mail/receipt.txt:8
+msgid "Your copy"
 msgstr ""
 
 #: templates/events/mail/booking.txt:9
@@ -940,14 +984,6 @@ msgstr ""
 msgid ""
 "A copy is on its way to %(email)s. Keep this page's link if you want to come "
 "back to it."
-msgstr ""
-
-#: templates/intake/done.html:18 templates/intake/mail/receipt.txt:5
-msgid "Signed on"
-msgstr ""
-
-#: templates/intake/done.html:22 templates/intake/mail/receipt.txt:6
-msgid "Annual fee"
 msgstr ""
 
 #: templates/intake/done.html:30
@@ -1060,10 +1096,6 @@ msgstr ""
 msgid ""
 "It is now with the board of %(association)s, which will confirm the "
 "enrolment."
-msgstr ""
-
-#: templates/intake/mail/receipt.txt:8
-msgid "Your copy"
 msgstr ""
 
 #: templates/intake/mail/resume.txt:1

@@ -268,3 +268,72 @@ def test_an_invalid_tax_code_stops_before_the_register_is_queried(
 
     assert response.status_code == 200
     assert "tax_code" in response.context["form"].errors
+
+
+# --- calling the whole thing off -------------------------------------------
+
+
+def test_cancelling_drops_every_place_the_family_holds(client, event, family):
+    luca, sara = family
+    _identify(client, event)
+    client.post(
+        reverse("events:book", args=[event.slug]),
+        {"members": [str(luca.pk), str(sara.pk)]},
+    )
+
+    response = client.post(reverse("events:cancel", args=[event.slug]))
+
+    assert response.url == reverse("events:booked", args=[event.slug])
+    assert not event.bookings.confirmed().exists()
+
+
+def test_cancelling_leaves_the_other_families_alone(
+    client, event, family, member_factory, booking_factory
+):
+    stranger = member_factory(
+        association=event.association, contact_email="altro@example.com"
+    )
+    booking_factory(event=event, member=stranger)
+    _identify(client, event)
+    client.post(
+        reverse("events:book", args=[event.slug]), {"members": [str(family[0].pk)]}
+    )
+
+    client.post(reverse("events:cancel", args=[event.slug]))
+
+    assert [b.member for b in event.bookings.confirmed()] == [stranger]
+
+
+def test_cancelling_without_identifying_first_sends_you_back(client, event, family):
+    response = client.post(reverse("events:cancel", args=[event.slug]))
+
+    assert response.url == event.get_absolute_url()
+
+
+def test_a_cancellation_after_the_event_started_is_not_found(client, event, family):
+    from datetime import timedelta
+
+    import time_machine
+
+    _identify(client, event)
+    client.post(
+        reverse("events:book", args=[event.slug]), {"members": [str(family[0].pk)]}
+    )
+
+    with time_machine.travel(event.starts_at + timedelta(hours=1), tick=False):
+        response = client.post(reverse("events:cancel", args=[event.slug]))
+
+    assert response.status_code == 404
+    assert event.bookings.confirmed().count() == 1
+
+
+def test_cancelling_says_so_rather_than_showing_an_empty_list(client, event, family):
+    _identify(client, event)
+    client.post(
+        reverse("events:book", args=[event.slug]), {"members": [str(family[0].pk)]}
+    )
+
+    client.post(reverse("events:cancel", args=[event.slug]))
+    response = client.get(reverse("events:booked", args=[event.slug]))
+
+    assert "annullata" in response.content.decode()
