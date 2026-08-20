@@ -206,14 +206,14 @@ INTAKE_DRAFT_EXPIRY_DAYS = env.int("INTAKE_DRAFT_EXPIRY_DAYS", default=30)
 # PWA
 PWA_APP_NAME = "OpenSeat"
 PWA_APP_DESCRIPTION = "Event bookings and membership roster for non-profit associations"
-PWA_APP_THEME_COLOR = "#1d4ed8"
+PWA_APP_THEME_COLOR = "#ED5C08"
 PWA_APP_BACKGROUND_COLOR = "#ffffff"
 PWA_APP_DISPLAY = "standalone"
 PWA_APP_SCOPE = "/"
 PWA_APP_START_URL = "/"
 PWA_APP_ORIENTATION = "any"
 PWA_APP_LANG = "it-IT"
-PWA_APP_ICONS = [{"src": "/static/images/icon-512.png", "sizes": "512x512"}]
+PWA_APP_ICONS = [{"src": "/static/img/icon-512.png", "sizes": "512x512"}]
 PWA_SERVICE_WORKER_PATH = BASE_DIR / "static" / "js" / "serviceworker.js"
 
 # ALLAUTH

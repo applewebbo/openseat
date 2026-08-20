@@ -3,6 +3,17 @@
 
 {% block title %}{{ event.title }} — {{ association.name }}{% endblock %}
 
+{% block breadcrumbs %}
+    <nav class="breadcrumbs mx-auto max-w-2xl px-4 pt-4 text-sm">
+        <ul>
+            <li>
+                <a href="{% url 'home' %}" class="link link-hover">{% translate "Home" %}</a>
+            </li>
+            <li>{{ event.title }}</li>
+        </ul>
+    </nav>
+{% endblock breadcrumbs %}
+
 {% block content %}
     <img src="{{ event.wide_url }}"
          alt="{{ event.title }}"

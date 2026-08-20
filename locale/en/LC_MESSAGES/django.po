@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-20 10:37+0200\n"
+"POT-Creation-Date: 2026-08-20 11:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -98,8 +98,8 @@ msgstr "email address"
 msgid "The one the association writes to."
 msgstr ""
 
-#: events/forms.py:25 templates/home.html:101
-#: templates/intake/base-intake.html:58
+#: events/forms.py:25 templates/home.html:113
+#: templates/intake/base-intake.html:60
 msgid "Tax code"
 msgstr ""
 
@@ -113,76 +113,88 @@ msgid ""
 "below."
 msgstr ""
 
-#: events/models.py:47 intake/models.py:88 intake/models.py:89
+#: events/models.py:52 intake/models.py:88 intake/models.py:89
 #: intake/models.py:116 members/models.py:27
 msgid "association"
 msgstr ""
 
-#: events/models.py:51 intake/models.py:61 intake/models.py:120
+#: events/models.py:56 intake/models.py:61 intake/models.py:120
 msgid "slug"
 msgstr ""
 
-#: events/models.py:52 intake/models.py:121
+#: events/models.py:57 intake/models.py:121
 msgid "title"
 msgstr ""
 
-#: events/models.py:53
+#: events/models.py:58
 msgid "description"
 msgstr ""
 
-#: events/models.py:54
+#: events/models.py:59
 msgid "location"
 msgstr ""
 
-#: events/models.py:55
+#: events/models.py:60
 msgid "starts at"
 msgstr ""
 
-#: events/models.py:56
+#: events/models.py:61
 msgid "ends at"
 msgstr ""
 
-#: events/models.py:57
+#: events/models.py:63
+msgid "image"
+msgstr ""
+
+#: events/models.py:66
+msgid "A wide picture, 1200 px or more. The square one is cut from it."
+msgstr ""
+
+#: events/models.py:69
+msgid "square image"
+msgstr ""
+
+#: events/models.py:72
 msgid "published"
 msgstr ""
 
-#: events/models.py:59
+#: events/models.py:74
 msgid "checklist sent at"
 msgstr ""
 
-#: events/models.py:61 intake/models.py:124 intake/models.py:265
+#: events/models.py:76 intake/models.py:124 intake/models.py:265
 msgid "created at"
 msgstr ""
 
-#: events/models.py:66 events/models.py:102
+#: events/models.py:81 events/models.py:142
 msgid "event"
 msgstr ""
 
-#: events/models.py:67
+#: events/models.py:82
 msgid "events"
 msgstr ""
 
-#: events/models.py:108 members/models.py:70
+#: events/models.py:148 members/models.py:70
 msgid "member"
 msgstr ""
 
-#: events/models.py:112
+#: events/models.py:152
 msgid "note"
 msgstr ""
 
-#: events/models.py:113
+#: events/models.py:153
 msgid "booked at"
 msgstr ""
 
-#: events/models.py:114
+#: events/models.py:154
 msgid "cancelled at"
 msgstr ""
 
-#: events/models.py:119
+#: events/models.py:159
 msgid "booking"
 msgstr ""
 
-#: events/models.py:120
+#: events/models.py:160
 msgid "bookings"
 msgstr ""
 
@@ -731,81 +743,87 @@ msgstr ""
 msgid "By date"
 msgstr ""
 
-#: templates/events/book.html:4
+#: templates/events/book.html:4 templates/events/book.html:12
 msgid "Who is coming"
 msgstr ""
 
-#: templates/events/book.html:8
+#: templates/events/book.html:10 templates/events/booked.html:10
+#: templates/events/landing.html:10
+msgid "Home"
+msgstr ""
+
+#: templates/events/book.html:19
 msgid "Who is coming?"
 msgstr ""
 
-#: templates/events/book.html:10
+#: templates/events/book.html:21
 msgid ""
 "Tick everyone who will be there. Unticking somebody cancels their place."
 msgstr ""
 
-#: templates/events/book.html:18
+#: templates/events/book.html:29
 msgid "Tick at least one person, or nothing is booked."
 msgstr ""
 
-#: templates/events/book.html:32
+#: templates/events/book.html:43
 msgid "already booked"
 msgstr ""
 
-#: templates/events/book.html:39
+#: templates/events/book.html:50
 msgid "Confirm"
 msgstr ""
 
-#: templates/events/booked.html:4 templates/events/booked.html:8
+#: templates/events/booked.html:4 templates/events/booked.html:12
+#: templates/events/booked.html:19
 msgid "Booked"
 msgstr ""
 
-#: templates/events/booked.html:10
+#: templates/events/booked.html:21
 #, python-format
 msgid "You have a place at %(title)s"
 msgstr ""
 
-#: templates/events/booked.html:18
+#: templates/events/booked.html:29
 msgid "Nobody is booked."
 msgstr ""
 
-#: templates/events/booked.html:23
+#: templates/events/booked.html:34
 msgid "Change who is coming"
 msgstr ""
 
-#: templates/events/landing.html:17 templates/home.html:76
+#: templates/events/landing.html:33 templates/home.html:88
 msgid "Book"
 msgstr ""
 
-#: templates/events/landing.html:21
+#: templates/events/landing.html:37
 msgid "Already a member?"
 msgstr ""
 
-#: templates/events/landing.html:21
+#: templates/events/landing.html:37
 msgid "Book by clicking"
 msgstr ""
 
-#: templates/events/landing.html:22
+#: templates/events/landing.html:38
 msgid "here"
 msgstr ""
 
-#: templates/events/landing.html:31
+#: templates/events/landing.html:47
 msgid "Already a member"
 msgstr ""
 
-#: templates/events/landing.html:36 templates/events/landing.html:41
+#: templates/events/landing.html:52 templates/events/landing.html:57
 msgid "Cancel"
 msgstr ""
 
-#: templates/events/landing.html:37
+#: templates/events/landing.html:53
 msgid "Book a place"
 msgstr ""
 
-#: templates/events/landing.html:45
+#: templates/events/landing.html:61
 msgid "Bookings are closed"
 msgstr ""
 
-#: templates/events/landing.html:47
+#: templates/events/landing.html:63
 #, python-format
 msgid ""
 "This event is no longer taking bookings. Write to %(email)s if you need to "
@@ -842,34 +860,34 @@ msgstr ""
 msgid "Skip to the events"
 msgstr ""
 
-#: templates/home.html:42
+#: templates/home.html:48
 msgid "Next date"
 msgstr ""
 
-#: templates/home.html:53
+#: templates/home.html:59
 msgid "Book your experience"
 msgstr ""
 
-#: templates/home.html:58
+#: templates/home.html:65
 msgid "No date is open right now"
 msgstr ""
 
-#: templates/home.html:60
+#: templates/home.html:67
 #, python-format
 msgid ""
 "The next dates are published here. Write to %(email)s to be told when one "
 "opens."
 msgstr ""
 
-#: templates/home.html:66
+#: templates/home.html:73
 msgid "Other open dates"
 msgstr ""
 
-#: templates/home.html:85
+#: templates/home.html:97
 msgid "Already done"
 msgstr ""
 
-#: templates/home.html:106
+#: templates/home.html:118
 msgid "Statute"
 msgstr ""
 

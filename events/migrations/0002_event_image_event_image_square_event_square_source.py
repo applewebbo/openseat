@@ -4,25 +4,34 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('events', '0001_initial'),
+        ("events", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='event',
-            name='image',
-            field=models.ImageField(blank=True, help_text='A wide picture, 1200 px or more. The square one is cut from it.', upload_to='events/', verbose_name='image'),
+            model_name="event",
+            name="image",
+            field=models.ImageField(
+                blank=True,
+                help_text="A wide picture, 1200 px or more. The square one is cut from it.",
+                upload_to="events/",
+                verbose_name="image",
+            ),
         ),
         migrations.AddField(
-            model_name='event',
-            name='image_square',
-            field=models.ImageField(blank=True, editable=False, upload_to='events/', verbose_name='square image'),
+            model_name="event",
+            name="image_square",
+            field=models.ImageField(
+                blank=True,
+                editable=False,
+                upload_to="events/",
+                verbose_name="square image",
+            ),
         ),
         migrations.AddField(
-            model_name='event',
-            name='square_source',
+            model_name="event",
+            name="square_source",
             field=models.CharField(blank=True, editable=False, max_length=100),
         ),
     ]
