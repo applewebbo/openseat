@@ -4,6 +4,11 @@
 {% block title %}{{ event.title }} — {{ association.name }}{% endblock %}
 
 {% block content %}
+    <img src="{{ event.wide_url }}"
+         alt="{{ event.title }}"
+         width="1600"
+         height="900"
+         class="mb-8 aspect-[16/9] w-full rounded-2xl border border-black/5 object-cover" />
     <p class="text-base-content/60 text-sm font-medium">{{ event.starts_at|date:"l d F Y, H:i" }}</p>
     <h1 class="mt-1 text-4xl font-bold tracking-tight text-balance sm:text-5xl">{{ event.title }}</h1>
     {% if event.location %}<p class="text-base-content/70 mt-3">{{ event.location }}</p>{% endif %}
@@ -12,31 +17,33 @@
     {% endif %}
 
     {% if event.is_open %}
-        <div class="mt-10 rounded-2xl border border-black/5 bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.15)] sm:p-8">
-            <h2 class="text-base font-semibold tracking-tight">{% translate "Already a member" %}</h2>
-            <p class="text-base-content/70 mt-2 mb-6 max-w-prose text-sm leading-relaxed">
-                {% translate "The tax code is asked for as well because the names on the register belong to children: an email address alone must not reveal them." %}
-            </p>
-            <form method="post" action="{% url 'events:identify' event.slug %}">
-                {% csrf_token %}
-                {{ form }}
-                <button type="submit" class="btn btn-primary mt-6 w-full rounded-xl sm:w-auto sm:px-8">
-                    {% translate "Book a place" %}
-                </button>
-            </form>
-        </div>
+        <form method="post" action="{% url 'events:join' event.slug %}" class="mt-10">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary rounded-xl max-sm:w-full sm:px-10">{% translate "Book" %}</button>
+        </form>
 
-        <div class="mt-6 rounded-2xl border border-black/10 bg-white p-6 sm:p-8">
-            <h2 class="text-base font-semibold tracking-tight">{% translate "Not a member yet" %}</h2>
-            <p class="text-base-content/70 mt-2 max-w-prose text-sm leading-relaxed">
-                {% blocktranslate with name=association.name %}Taking part means joining {{ name }}: the application and the booking are one and the same. It takes a few minutes.{% endblocktranslate %}
-            </p>
-            <form method="post" action="{% url 'events:join' event.slug %}" class="mt-6">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-outline w-full rounded-xl sm:w-auto sm:px-8">
-                    {% translate "Join and book" %}
-                </button>
-            </form>
+        <p class="text-base-content/70 mt-4 text-sm">
+            {% translate "Already a member?" %} {% translate "Book by clicking" %}
+            <label for="member-booking" class="link link-primary cursor-pointer">{% translate "here" %}</label>
+        </p>
+
+        <input type="checkbox"
+               id="member-booking"
+               class="modal-toggle"
+               {% if form.errors %}checked{% endif %} />
+        <div class="modal" role="dialog">
+            <div class="modal-box rounded-2xl">
+                <h2 class="text-base font-semibold tracking-tight">{% translate "Already a member" %}</h2>
+                <form method="post" action="{% url 'events:identify' event.slug %}" class="mt-6">
+                    {% csrf_token %}
+                    {{ form }}
+                    <div class="modal-action">
+                        <label for="member-booking" class="btn btn-ghost rounded-xl">{% translate "Cancel" %}</label>
+                        <button type="submit" class="btn btn-primary rounded-xl">{% translate "Book a place" %}</button>
+                    </div>
+                </form>
+            </div>
+            <label class="modal-backdrop" for="member-booking">{% translate "Cancel" %}</label>
         </div>
     {% else %}
         <div role="status" class="mt-10 rounded-2xl border border-black/10 bg-white p-6 sm:p-8">

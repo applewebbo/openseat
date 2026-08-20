@@ -33,8 +33,8 @@ ASSOCIATION = {
         "spostati verso l'ambito sociale, specializzandoci negli Interventi Assistiti "
         "con gli Animali. Gli asini, che molti immaginano testardi, si sono rivelati "
         "i migliori insegnanti che potessimo avere.</p>"
-        "<p>Ci trovate negli spazi verdi intorno a Villa Segù, dimora di fine "
-        "Settecento a Olengo, frazione di Novara. Operatori formati in IAA "
+        "<p>Ci trovate negli spazi verdi della Ca' di Asu, a Olengo, frazione di "
+        "Novara. Operatori formati in IAA "
         "accompagnano bambini, ragazzi, adulti e anziani.</p>"
     ),
 }
@@ -46,7 +46,7 @@ EVENTS = [
         "title": "Una giornata con gli asini",
         "days": 12,
         "hour": 10,
-        "location": "Villa Segù, Olengo (NO)",
+        "location": "Ca' di Asu, Olengo",
         "description": (
             "Mattina in compagnia del branco: governo degli asini, passeggiata "
             "nel parco e merenda insieme. Per famiglie con bambini dai 4 anni."
@@ -57,18 +57,18 @@ EVENTS = [
         "title": "Un basto carico di emozioni",
         "days": 40,
         "hour": 15,
-        "location": "Villa Segù, Olengo (NO)",
+        "location": "Ca' di Asu, Olengo",
         "description": (
             "Laboratorio pomeridiano per genitori e figli, condotto dagli "
             "operatori IAA. Posti limitati dal numero degli asini, non dalla sala."
         ),
     },
     {
-        "slug": "porte-aperte-a-villa-segu",
-        "title": "Porte aperte a Villa Segù",
+        "slug": "porte-aperte-a-ca-di-asu",
+        "title": "Porte aperte a Ca' di Asu",
         "days": -21,
         "hour": 10,
-        "location": "Villa Segù, Olengo (NO)",
+        "location": "Ca' di Asu, Olengo",
         "description": "Visita libera al parco e presentazione delle attività dell'anno.",
     },
     {
@@ -76,7 +76,7 @@ EVENTS = [
         "title": "Passeggiata d'autunno con gli asini",
         "days": -68,
         "hour": 14,
-        "location": "Cascina Bornago, Novara",
+        "location": "Ca' di Asu, Olengo",
         "description": "Anello di cinque chilometri lungo la roggia, con soste.",
     },
     {
@@ -84,7 +84,7 @@ EVENTS = [
         "title": "Gli amici ritrovati",
         "days": -120,
         "hour": 16,
-        "location": "Villa Segù, Olengo (NO)",
+        "location": "Ca' di Asu, Olengo",
         "description": "Incontro conclusivo del progetto, aperto alle famiglie.",
     },
 ]

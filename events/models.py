@@ -1,10 +1,15 @@
 from django.db import models
+from django.templatetags.static import static
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from events.images import square_from, square_name
 from intake.models import Association
 from members.models import Member
+
+DEFAULT_WIDE = "img/event-default-wide.jpg"
+DEFAULT_SQUARE = "img/event-default-square.jpg"
 
 
 class EventQuerySet(models.QuerySet):
@@ -54,6 +59,16 @@ class Event(models.Model):
     location = models.CharField(_("location"), max_length=200, blank=True)
     starts_at = models.DateTimeField(_("starts at"))
     ends_at = models.DateTimeField(_("ends at"), null=True, blank=True)
+    image = models.ImageField(
+        _("image"),
+        upload_to="events/",
+        blank=True,
+        help_text=_("A wide picture, 1200 px or more. The square one is cut from it."),
+    )
+    image_square = models.ImageField(
+        _("square image"), upload_to="events/", blank=True, editable=False
+    )
+    square_source = models.CharField(max_length=100, blank=True, editable=False)
     is_published = models.BooleanField(_("published"), default=True)
     checklist_sent_at = models.DateTimeField(
         _("checklist sent at"), null=True, blank=True
@@ -72,6 +87,31 @@ class Event(models.Model):
 
     def get_absolute_url(self):
         return reverse("events:landing", kwargs={"slug": self.slug})
+
+    def save(self, *args, **kwargs):
+        """Keep the square picture in step with the wide one it is cut from."""
+        super().save(*args, **kwargs)
+        if self.image:
+            # The name the storage gave the square file may carry a suffix of its
+            # own, so what it was cut from is recorded rather than guessed back.
+            if self.square_source != self.image.name:
+                self.image_square.save(
+                    square_name(self.image.name), square_from(self.image), save=False
+                )
+                self.square_source = self.image.name
+                super().save(update_fields=["image_square", "square_source"])
+        elif self.image_square or self.square_source:
+            self.image_square = ""
+            self.square_source = ""
+            super().save(update_fields=["image_square", "square_source"])
+
+    @property
+    def wide_url(self):
+        return self.image.url if self.image else static(DEFAULT_WIDE)
+
+    @property
+    def square_url(self):
+        return self.image_square.url if self.image_square else static(DEFAULT_SQUARE)
 
     @property
     def is_open(self):

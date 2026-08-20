@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-20 09:38+0200\n"
+"POT-Creation-Date: 2026-08-20 10:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,7 +67,7 @@ msgstr "Italiano"
 msgid "English"
 msgstr "Inglese"
 
-#: events/admin.py:34 templates/admin/date_hierarchy.html:7
+#: events/admin.py:34 templates/admin/date_hierarchy.html:4
 msgid "date"
 msgstr "data"
 
@@ -703,39 +703,39 @@ msgstr "attivo"
 msgid "members"
 msgstr "soci"
 
-#: templates/admin/base_site.html:52 templates/admin/base_site.html:54
+#: templates/admin/base_site.html:42 templates/admin/base_site.html:44
 msgid "Account"
 msgstr "Account"
 
-#: templates/admin/base_site.html:57
+#: templates/admin/base_site.html:47
 msgid "View site"
 msgstr "Vai al sito"
 
-#: templates/admin/base_site.html:59
+#: templates/admin/base_site.html:49
 msgid "Change password"
 msgstr "Cambia password"
 
-#: templates/admin/base_site.html:63
+#: templates/admin/base_site.html:53
 msgid "Log out"
 msgstr "Esci"
 
-#: templates/admin/change_list.html:12
+#: templates/admin/change_list.html:8
 msgid "Filter"
 msgstr ""
 
-#: templates/admin/change_list.html:18
+#: templates/admin/change_list.html:14
 msgid "Hide counts"
 msgstr ""
 
-#: templates/admin/change_list.html:20
+#: templates/admin/change_list.html:16
 msgid "Show counts"
 msgstr ""
 
-#: templates/admin/change_list.html:26
+#: templates/admin/change_list.html:22
 msgid "Clear all filters"
 msgstr ""
 
-#: templates/admin/date_hierarchy.html:11
+#: templates/admin/date_hierarchy.html:6
 msgid "By date"
 msgstr "Per data"
 
@@ -782,44 +782,39 @@ msgstr "Non c’è nessun prenotato."
 msgid "Change who is coming"
 msgstr "Cambia chi viene"
 
-#: templates/events/landing.html:16
+#: templates/events/landing.html:17 templates/home.html:76
+msgid "Book"
+msgstr "Prenota"
+
+#: templates/events/landing.html:21
+msgid "Already a member?"
+msgstr "Sei già socio?"
+
+#: templates/events/landing.html:21
+msgid "Book by clicking"
+msgstr "Prenota cliccando"
+
+#: templates/events/landing.html:22
+msgid "here"
+msgstr "qui"
+
+#: templates/events/landing.html:31
 msgid "Already a member"
 msgstr "Sei già socio"
 
-#: templates/events/landing.html:18
-msgid ""
-"The tax code is asked for as well because the names on the register belong "
-"to children: an email address alone must not reveal them."
-msgstr ""
-"Chiediamo anche il codice fiscale perché i nomi a registro sono di minori: "
-"il solo indirizzo email non deve poterli rivelare."
+#: templates/events/landing.html:36 templates/events/landing.html:41
+msgid "Cancel"
+msgstr "Annulla"
 
-#: templates/events/landing.html:24
+#: templates/events/landing.html:37
 msgid "Book a place"
 msgstr "Prenota un posto"
 
-#: templates/events/landing.html:30
-msgid "Not a member yet"
-msgstr "Non sei ancora socio"
-
-#: templates/events/landing.html:32
-#, python-format
-msgid ""
-"Taking part means joining %(name)s: the application and the booking are one "
-"and the same. It takes a few minutes."
-msgstr ""
-"Partecipare significa associarsi a %(name)s: la domanda di adesione e la "
-"prenotazione sono la stessa cosa. Bastano pochi minuti."
-
-#: templates/events/landing.html:37
-msgid "Join and book"
-msgstr "Associati e prenota"
-
-#: templates/events/landing.html:43
+#: templates/events/landing.html:45
 msgid "Bookings are closed"
 msgstr "Le prenotazioni sono chiuse"
 
-#: templates/events/landing.html:45
+#: templates/events/landing.html:47
 #, python-format
 msgid ""
 "This event is no longer taking bookings. Write to %(email)s if you need to "
@@ -844,7 +839,7 @@ msgstr[1] ""
 msgid "Nobody has booked a place."
 msgstr "Nessuno ha prenotato un posto."
 
-#: templates/home-unconfigured.html:12
+#: templates/home-unconfigured.html:10
 msgid ""
 "This installation has no association yet. Create one in the admin: its name, "
 "logo, title and description become this page."
@@ -852,7 +847,7 @@ msgstr ""
 "Questa installazione non ha ancora un'associazione. Creala in admin: nome, "
 "logo, titolo e descrizione diventano questa pagina."
 
-#: templates/home-unconfigured.html:15
+#: templates/home-unconfigured.html:13
 msgid "Open the admin"
 msgstr "Apri l'amministrazione"
 
@@ -884,10 +879,6 @@ msgstr ""
 #: templates/home.html:66
 msgid "Other open dates"
 msgstr "Altre date aperte"
-
-#: templates/home.html:76
-msgid "Book"
-msgstr "Prenota"
 
 #: templates/home.html:85
 msgid "Already done"
@@ -1446,6 +1437,30 @@ msgstr "Le risposte vengono salvate man mano."
 #: templates/intake/step.html:53
 msgid "Save and come back later"
 msgstr "Salva e riprendi più tardi"
+
+#~ msgid "Book your place here."
+#~ msgstr "Clicca qui per prenotare l'esperienza."
+
+#~ msgid "Not a member yet"
+#~ msgstr "Non sei ancora socio"
+
+#~ msgid ""
+#~ "The tax code is asked for as well because the names on the register "
+#~ "belong to children: an email address alone must not reveal them."
+#~ msgstr ""
+#~ "Chiediamo anche il codice fiscale perché i nomi a registro sono di "
+#~ "minori: il solo indirizzo email non deve poterli rivelare."
+
+#, python-format
+#~ msgid ""
+#~ "Taking part means joining %(name)s: the application and the booking are "
+#~ "one and the same. It takes a few minutes."
+#~ msgstr ""
+#~ "Partecipare significa associarsi a %(name)s: la domanda di adesione e la "
+#~ "prenotazione sono la stessa cosa. Bastano pochi minuti."
+
+#~ msgid "Join and book"
+#~ msgstr "Associati e prenota"
 
 #~ msgid "associations"
 #~ msgstr "associazioni"

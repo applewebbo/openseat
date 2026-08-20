@@ -165,7 +165,7 @@ class EventFactory(factory.django.DjangoModelFactory):
     association = factory.SubFactory(AssociationFactory)
     slug = factory.Sequence(lambda n: f"evento-{n}")
     title = "Festa di primavera"
-    location = "La Ca' di Asu, Novara"
+    location = "Ca' di Asu, Olengo"
     starts_at = factory.LazyFunction(
         lambda: timezone.now() + datetime.timedelta(days=7)
     )
