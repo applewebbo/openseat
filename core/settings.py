@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from urllib.parse import quote
 
 import dj_database_url
 import environ
@@ -366,6 +367,13 @@ else:  # prod
     MIDDLEWARE.insert(1, "core.middleware.MediaWhiteNoiseMiddleware")
     WHITENOISE_AUTOREFRESH = True
     SITE_BASE_URL = env("SITE_BASE_URL").rstrip("/")  # unset must crash at startup
+    # The proxy terminates TLS and reaches the app over plain HTTP, so without
+    # this request.is_secure() is always False: SECURE_SSL_REDIRECT would then
+    # redirect every request to itself forever. Traefik always sets the header.
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    # The site answers on one address, and that is the only origin a form may
+    # post from — no second variable to keep in step with SITE_BASE_URL.
+    CSRF_TRUSTED_ORIGINS = [SITE_BASE_URL]
     DATABASES = {
         "default": dj_database_url.config(
             conn_max_age=env("DATABASE_CONN_MAX_AGE"),
@@ -375,12 +383,19 @@ else:  # prod
     STORAGES["staticfiles"] = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     }
+    # A managed Redis is password-protected: Coolify generates one when it
+    # provisions the service, and an empty value keeps a bare local instance
+    # working unchanged.
+    REDIS_HOST = env("REDIS_HOST", default="localhost")
+    REDIS_PORT = env.int("REDIS_PORT", default=6379)
+    REDIS_PASSWORD = env("REDIS_PASSWORD", default="")
     Q_CLUSTER = {
         **Q_CLUSTER_BASE,
         "redis": {
-            "host": env("REDIS_HOST", default="localhost"),
-            "port": env.int("REDIS_PORT", default=6379),
+            "host": REDIS_HOST,
+            "port": REDIS_PORT,
             "db": env.int("REDIS_DB", default=0),
+            "password": REDIS_PASSWORD or None,
         },
     }
     # The throttle has to be shared: in local memory each granian worker keeps
@@ -388,9 +403,10 @@ else:  # prod
     CACHES = {
         "default": {
             "BACKEND": "django.core.cache.backends.redis.RedisCache",
-            "LOCATION": "redis://{}:{}/{}".format(
-                env("REDIS_HOST", default="localhost"),
-                env.int("REDIS_PORT", default=6379),
+            "LOCATION": "redis://:{}@{}:{}/{}".format(
+                quote(REDIS_PASSWORD, safe=""),
+                REDIS_HOST,
+                REDIS_PORT,
                 env.int("REDIS_CACHE_DB", default=1),
             ),
         }
