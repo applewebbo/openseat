@@ -7,9 +7,20 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PYTHONUNBUFFERED=1 \
     ENVIRONMENT=prod
 
+# dbbackup shells out to pg_dump, which refuses a server newer than itself:
+# keep this at the major version of the database Coolify provisions.
+ARG POSTGRES_VERSION=18
+
 # System deps + hivemind (process manager, static binary)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq-dev curl ca-certificates gettext \
+    libpq-dev curl ca-certificates gettext gnupg lsb-release \
+  && install -d /usr/share/keyrings \
+  && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+     | gpg --dearmor -o /usr/share/keyrings/postgresql.gpg \
+  && echo "deb [signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" \
+     > /etc/apt/sources.list.d/pgdg.list \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends "postgresql-client-${POSTGRES_VERSION}" \
   && HIVEMIND_VERSION="1.1.0" \
   && ARCH="$(dpkg --print-architecture)" \
   && case "$ARCH" in \
