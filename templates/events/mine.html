@@ -1,0 +1,106 @@
+{% extends "intake/base-intake.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Your bookings" %} — {{ association.name }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav class="breadcrumbs mx-auto max-w-2xl px-4 pt-4 text-sm">
+        <ul>
+            <li>
+                <a href="{% url 'home' %}" class="link link-hover">{% translate "Home" %}</a>
+            </li>
+            <li>{% translate "Your bookings" %}</li>
+        </ul>
+    </nav>
+{% endblock breadcrumbs %}
+
+{% block content %}
+    <div class="rounded-2xl border border-black/5 bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.15)] sm:p-8">
+        <h1 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{% translate "Your bookings" %}</h1>
+
+        {% if bookings %}
+            <ul class="mt-8 space-y-3">
+                {% for booking in bookings %}
+                    <li class="bg-base-200 rounded-xl p-4">
+                        <p class="text-base-content/60 text-sm">{{ booking.event.starts_at|date:"l d F Y, H:i" }}{% if booking.event.location %} · {{ booking.event.location }}{% endif %}</p>
+                        <p class="mt-1 font-semibold tracking-tight">
+                            <a href="{{ booking.event.get_absolute_url }}" class="link link-hover">{{ booking.event.title }}</a>
+                        </p>
+                        <div class="mt-3 flex items-center justify-between gap-3">
+                            <span class="text-sm font-medium">{{ booking.full_name }}</span>
+                            <span class="flex gap-2">
+                                <label for="edit-{{ booking.pk }}" class="btn btn-ghost btn-sm rounded-xl">{% translate "Edit" %}</label>
+                                <label for="cancel-{{ booking.pk }}" class="btn btn-ghost btn-sm rounded-xl">{% translate "Cancel" %}</label>
+                            </span>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-base-content/70 mt-6 max-w-prose leading-relaxed">
+                {% translate "There is nothing booked on this address for a date still to come." %}
+            </p>
+            <a href="{% url 'home' %}"
+               class="btn btn-primary mt-8 rounded-xl max-sm:w-full sm:px-7">{% translate "The next dates" %}</a>
+        {% endif %}
+    </div>
+
+    {% for booking in bookings %}
+        <input type="checkbox" id="cancel-{{ booking.pk }}" class="modal-toggle" />
+        <div class="modal" role="dialog">
+            <div class="modal-box rounded-2xl">
+                <h2 class="text-base font-semibold tracking-tight">{% translate "Cancel the booking" %}</h2>
+                <p class="text-base-content/80 mt-3 text-sm leading-relaxed">
+                    {% blocktranslate with name=booking.full_name %}{{ name }}'s place goes back. Booking again is possible while the date is open.{% endblocktranslate %}
+                </p>
+                <form method="post"
+                      action="{% url 'events:cancel' booking.event.slug booking.pk %}">
+                    {% csrf_token %}
+                    <div class="modal-action">
+                        <label for="cancel-{{ booking.pk }}" class="btn btn-ghost rounded-xl">{% translate "Keep it" %}</label>
+                        <button type="submit" class="btn btn-error rounded-xl">{% translate "Yes, cancel it" %}</button>
+                    </div>
+                </form>
+            </div>
+            <label class="modal-backdrop" for="cancel-{{ booking.pk }}">{% translate "Close" %}</label>
+        </div>
+    {% endfor %}
+
+    {% for booking, form in booking_forms %}
+        <input type="checkbox" id="edit-{{ booking.pk }}" class="modal-toggle" />
+        <div class="modal" role="dialog">
+            <div class="modal-box rounded-2xl">
+                <h2 class="text-base font-semibold tracking-tight">{{ booking.full_name }}</h2>
+                <p class="text-base-content/70 mt-2 text-sm leading-relaxed">
+                    {% translate "Only your contacts and a note can be changed here." %}
+                </p>
+                <form method="post"
+                      action="{% url 'events:edit' booking.event.slug booking.pk %}"
+                      class="mt-4 space-y-3">
+                    {% csrf_token %}
+                    <div>
+                        <label class="label-text text-sm" for="{{ form.contact_name.id_for_label }}">{{ form.contact_name.label }}</label>
+                        {{ form.contact_name }}
+                    </div>
+                    <div>
+                        <label class="label-text text-sm" for="{{ form.contact_email.id_for_label }}">{{ form.contact_email.label }}</label>
+                        {{ form.contact_email }}
+                    </div>
+                    <div>
+                        <label class="label-text text-sm" for="{{ form.contact_phone.id_for_label }}">{{ form.contact_phone.label }}</label>
+                        {{ form.contact_phone }}
+                    </div>
+                    <div>
+                        <label class="label-text text-sm" for="{{ form.note.id_for_label }}">{{ form.note.label }}</label>
+                        {{ form.note }}
+                    </div>
+                    <div class="modal-action">
+                        <label for="edit-{{ booking.pk }}" class="btn btn-ghost rounded-xl">{% translate "Close" %}</label>
+                        <button type="submit" class="btn btn-primary rounded-xl">{% translate "Save" %}</button>
+                    </div>
+                </form>
+            </div>
+            <label class="modal-backdrop" for="edit-{{ booking.pk }}">{% translate "Close" %}</label>
+        </div>
+    {% endfor %}
+{% endblock content %}

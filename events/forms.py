@@ -59,6 +59,28 @@ class IdentifyForm(forms.Form):
         return cleaned
 
 
+class RecoverForm(forms.Form):
+    """The address, and nothing else.
+
+    No tax code: the link goes to the inbox, so holding the inbox is already
+    the proof. Asking for more would only lock out whoever booked through the
+    public form, who is on no register to be checked against.
+    """
+
+    template_name = "intake/forms/section-form.html"
+
+    email = forms.EmailField(
+        label=_("Email address"),
+        widget=forms.EmailInput(
+            attrs={
+                "class": "input input-bordered w-full",
+                "inputmode": "email",
+                "autocomplete": "email",
+            }
+        ),
+    )
+
+
 class BookingContactForm(forms.ModelForm):
     """What can be changed from the mail link: how to reach them, and a note.
 

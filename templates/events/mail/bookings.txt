@@ -1,0 +1,15 @@
+{% load i18n %}{% autoescape off %}{% blocktranslate count counter=bookings|length %}You have one booking coming up.{% plural %}You have {{ counter }} bookings coming up.{% endblocktranslate %}
+{% for booking in bookings %}
+- {{ booking.event.title }}
+  {{ booking.event.starts_at|date:"l d/m/Y H:i" }}{% if booking.event.location %} · {{ booking.event.location }}{% endif %}
+  {{ booking.full_name }}
+{% endfor %}
+{% translate "Change your contacts or cancel from here:" %}
+{{ manage_url }}
+
+{% blocktranslate %}The link works for {{ days }} days. Ask for a new one from the home page whenever you need it.{% endblocktranslate %}
+
+--
+{{ association.name }}
+{{ association.email }}
+{% endautoescape %}

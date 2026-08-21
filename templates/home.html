@@ -92,6 +92,26 @@
                 </ul>
             {% endif %}
 
+            <div class="bg-base-200 mt-14 rounded-2xl border border-black/5 p-6 sm:p-8">
+                <h2 class="text-lg font-semibold tracking-tight">{% translate "Manage your bookings" %}</h2>
+                <p class="text-base-content/70 mt-2 max-w-prose text-sm leading-relaxed">
+                    {% translate "Enter the address you booked with and we will send you the link to change or cancel." %}
+                </p>
+                <form method="post"
+                      action="{% url 'events:recover' %}"
+                      class="mt-5 flex flex-col gap-3 sm:flex-row">
+                    {% csrf_token %}
+                    <label class="sr-only" for="recover-email">{% translate "Email address" %}</label>
+                    <input type="email"
+                           id="recover-email"
+                           name="email"
+                           required
+                           inputmode="email"
+                           autocomplete="email"
+                           class="input input-bordered w-full sm:flex-1" />
+                    <button type="submit" class="btn btn-primary rounded-xl sm:px-7">{% translate "Manage" %}</button>
+                </form>
+            </div>
         </section>
     </main>
 

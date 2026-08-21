@@ -151,6 +151,16 @@ class BookingQuerySet(models.QuerySet):
     def for_contact(self, email):
         return self.filter(contact_email__iexact=(email or "").strip())
 
+    def upcoming(self):
+        """Places at dates still to come, soonest first.
+
+        What a booking page can still act on: a date already run takes no
+        cancellation and no change of contacts.
+        """
+        return self.filter(
+            event__is_published=True, event__starts_at__gt=timezone.now()
+        ).order_by("event__starts_at", "last_name", "first_name")
+
     def book(self, event, member):
         """A place for somebody already on the register.
 

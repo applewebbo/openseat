@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 11:22+0200\n"
+"POT-Creation-Date: 2026-08-21 11:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -92,7 +92,8 @@ msgstr "Eventi e prenotazioni"
 msgid "Bookings for %(event)s"
 msgstr "Prenotazioni per %(event)s"
 
-#: events/forms.py:19 intake/forms.py:285
+#: events/forms.py:19 events/forms.py:73 intake/forms.py:285
+#: templates/home.html:104
 msgid "Email address"
 msgstr "Indirizzo email"
 
@@ -100,7 +101,7 @@ msgstr "Indirizzo email"
 msgid "The one the association writes to."
 msgstr "Quello a cui scrive l’associazione."
 
-#: events/forms.py:26 templates/home.html:103
+#: events/forms.py:26 templates/home.html:123
 #: templates/intake/base-intake.html:63
 msgid "Tax code"
 msgstr "Codice fiscale"
@@ -184,7 +185,7 @@ msgstr "lista inviata il"
 msgid "created at"
 msgstr "creato il"
 
-#: events/models.py:93 events/models.py:204
+#: events/models.py:93 events/models.py:214
 msgid "event"
 msgstr "evento"
 
@@ -204,74 +205,74 @@ msgstr "Bonifico"
 msgid "Other"
 msgstr "Altro"
 
-#: events/models.py:210 members/models.py:70
+#: events/models.py:220 members/models.py:70
 msgid "member"
 msgstr "socio"
 
-#: events/models.py:215
+#: events/models.py:225
 msgid "Filled in when the booking is confirmed."
 msgstr "Compilato quando la prenotazione viene confermata."
 
-#: events/models.py:219 members/models.py:33
+#: events/models.py:229 members/models.py:33
 msgid "application"
 msgstr "domanda di adesione"
 
-#: events/models.py:226 intake/models.py:208 intake/models.py:222
+#: events/models.py:236 intake/models.py:208 intake/models.py:222
 #: intake/models.py:240 members/models.py:41
 msgid "first name"
 msgstr "nome"
 
-#: events/models.py:227 intake/models.py:209 intake/models.py:223
+#: events/models.py:237 intake/models.py:209 intake/models.py:223
 #: intake/models.py:243 members/models.py:42
 msgid "last name"
 msgstr "cognome"
 
-#: events/models.py:228 members/models.py:54
+#: events/models.py:238 members/models.py:54
 #: templates/events/mail/checklist.txt:7
 msgid "contact"
 msgstr "contatto"
 
-#: events/models.py:229 members/models.py:55
+#: events/models.py:239 members/models.py:55
 msgid "contact email"
 msgstr "email di contatto"
 
-#: events/models.py:230 members/models.py:56
+#: events/models.py:240 members/models.py:56
 msgid "contact phone"
 msgstr "telefono di contatto"
 
-#: events/models.py:232
+#: events/models.py:242
 msgid "note"
 msgstr "nota"
 
-#: events/models.py:235
+#: events/models.py:245
 msgid "confirmed on"
 msgstr "confermato il"
 
-#: events/models.py:238
+#: events/models.py:248
 msgid "The day they turned up and paid the fee."
 msgstr "Il giorno in cui si sono presentati e hanno pagato la quota."
 
-#: events/models.py:241
+#: events/models.py:251
 msgid "fee paid"
 msgstr "quota versata"
 
-#: events/models.py:244
+#: events/models.py:254
 msgid "paid by"
 msgstr "pagato con"
 
-#: events/models.py:247
+#: events/models.py:257
 msgid "booked at"
 msgstr "prenotato il"
 
-#: events/models.py:248
+#: events/models.py:258
 msgid "cancelled at"
 msgstr "annullata il"
 
-#: events/models.py:253
+#: events/models.py:263
 msgid "booking"
 msgstr "prenotazione"
 
-#: events/models.py:254
+#: events/models.py:264
 msgid "bookings"
 msgstr "prenotazioni"
 
@@ -279,6 +280,12 @@ msgstr "prenotazioni"
 #, python-format
 msgid "Booked: %(event)s"
 msgstr "Prenotazione confermata: %(event)s"
+
+#: events/notifications.py:79 templates/events/mail/bookings.html:5
+#: templates/events/mail/bookings.html:14 templates/events/mine.html:4
+#: templates/events/mine.html:12 templates/events/mine.html:19
+msgid "Your bookings"
+msgstr "Le tue prenotazioni"
 
 #: intake/admin.py:28
 msgid "Home page"
@@ -809,7 +816,8 @@ msgid "Who is coming"
 msgstr "Chi viene"
 
 #: templates/events/book.html:10 templates/events/booked.html:10
-#: templates/events/landing.html:10
+#: templates/events/landing.html:10 templates/events/mine.html:10
+#: templates/events/recover-sent.html:10 templates/events/recover.html:10
 msgid "Home"
 msgstr "Home"
 
@@ -844,12 +852,12 @@ msgstr "Prenotato"
 msgid "Cancelled"
 msgstr "Annullata"
 
-#: templates/events/booked.html:35
+#: templates/events/booked.html:35 templates/events/mine.html:32
 msgid "Edit"
 msgstr "Modifica"
 
 #: templates/events/booked.html:36 templates/events/landing.html:52
-#: templates/events/landing.html:57
+#: templates/events/landing.html:57 templates/events/mine.html:33
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -865,11 +873,11 @@ msgstr ""
 msgid "Book again"
 msgstr "Prenota di nuovo"
 
-#: templates/events/booked.html:54
+#: templates/events/booked.html:54 templates/events/mine.html:52
 msgid "Cancel the booking"
 msgstr "Annulla la prenotazione"
 
-#: templates/events/booked.html:56
+#: templates/events/booked.html:56 templates/events/mine.html:54
 #, python-format
 msgid ""
 "%(name)s's place goes back. Booking again is possible while the date is open."
@@ -877,24 +885,25 @@ msgstr ""
 "Il posto di %(name)s torna libero. È possibile prenotare di nuovo finché la "
 "data resta aperta."
 
-#: templates/events/booked.html:61
+#: templates/events/booked.html:61 templates/events/mine.html:60
 msgid "Keep it"
 msgstr "Lascia com'è"
 
-#: templates/events/booked.html:62
+#: templates/events/booked.html:62 templates/events/mine.html:61
 msgid "Yes, cancel it"
 msgstr "Sì, annulla"
 
 #: templates/events/booked.html:66 templates/events/booked.html:98
-#: templates/events/booked.html:103
+#: templates/events/booked.html:103 templates/events/mine.html:65
+#: templates/events/mine.html:98 templates/events/mine.html:103
 msgid "Close"
 msgstr "Chiudi"
 
-#: templates/events/booked.html:77
+#: templates/events/booked.html:77 templates/events/mine.html:75
 msgid "Only your contacts and a note can be changed here."
 msgstr "Da qui puoi cambiare solo i tuoi recapiti e una nota."
 
-#: templates/events/booked.html:99
+#: templates/events/booked.html:99 templates/events/mine.html:99
 msgid "Save"
 msgstr "Salva"
 
@@ -934,7 +943,7 @@ msgstr ""
 "La prenotazione non è più modificabile. Grazie di essere venuto: i prossimi "
 "appuntamenti sono nella home."
 
-#: templates/events/landing.html:67
+#: templates/events/landing.html:67 templates/events/mine.html:44
 msgid "The next dates"
 msgstr "I prossimi appuntamenti"
 
@@ -999,6 +1008,32 @@ msgstr ""
 "Da qui puoi annullare la prenotazione o aggiornare i tuoi recapiti, fino al "
 "giorno stesso:"
 
+#: templates/events/mail/bookings.html:12 templates/events/mail/bookings.txt:1
+#, python-format
+msgid "You have one booking coming up."
+msgid_plural "You have %(counter)s bookings coming up."
+msgstr[0] "Hai una prenotazione in arrivo."
+msgstr[1] "Hai %(counter)s prenotazioni in arrivo."
+
+#: templates/events/mail/bookings.html:33 templates/events/recover.html:4
+#: templates/events/recover.html:21 templates/events/recover.html:26
+#: templates/home.html:96
+msgid "Manage your bookings"
+msgstr "Gestisci le tue prenotazioni"
+
+#: templates/events/mail/bookings.html:37 templates/events/mail/bookings.txt:10
+#, python-format
+msgid ""
+"The link works for %(days)s days. Ask for a new one from the home page "
+"whenever you need it."
+msgstr ""
+"Il link vale %(days)s giorni. Puoi richiederne uno nuovo dalla home quando "
+"ti serve."
+
+#: templates/events/mail/bookings.txt:7
+msgid "Change your contacts or cancel from here:"
+msgstr "Da qui puoi cambiare i tuoi recapiti o annullare:"
+
 #: templates/events/mail/checklist.txt:1
 #, python-format
 msgid "Bookings for %(title)s"
@@ -1014,6 +1049,63 @@ msgstr[1] ""
 #: templates/events/mail/checklist.txt:10
 msgid "Nobody has booked a place."
 msgstr "Nessuno ha prenotato un posto."
+
+#: templates/events/mine.html:41
+msgid "There is nothing booked on this address for a date still to come."
+msgstr "Su questo indirizzo non c'è nulla di prenotato per una data futura."
+
+#: templates/events/recover-sent.html:4 templates/events/recover-sent.html:19
+msgid "Check your inbox"
+msgstr "Controlla la posta"
+
+#: templates/events/recover-sent.html:12 templates/events/recover.html:12
+msgid "Bookings"
+msgstr "Prenotazioni"
+
+#: templates/events/recover-sent.html:21
+msgid ""
+"If this address matches an active booking, we have sent you a link to manage "
+"it"
+msgstr ""
+"Se questo indirizzo corrisponde ad una prenotazione attiva ti abbiamo "
+"inviato un link per gestirla"
+
+#: templates/events/recover-sent.html:26
+msgid ""
+"Nothing arrived? The booking may be under another address, or the date may "
+"have passed. Write to us and we will look it up."
+msgstr ""
+"Non è arrivato nulla? La prenotazione potrebbe essere su un altro indirizzo, "
+"oppure la data potrebbe essere passata. Scrivici e la cerchiamo noi."
+
+#: templates/events/recover-sent.html:32 templates/home.html:129
+#: templates/intake/base-intake.html:69
+msgid "Contact us"
+msgstr "Contattaci"
+
+#: templates/events/recover.html:20
+msgid "This link has expired"
+msgstr "Questo link è scaduto"
+
+#: templates/events/recover.html:23
+msgid ""
+"Links last a few days, so an old one no longer opens anything. Ask for a new "
+"one below."
+msgstr ""
+"I link durano pochi giorni, quindi uno vecchio non apre più nulla. Richiedine "
+"uno nuovo qui sotto."
+
+#: templates/events/recover.html:28 templates/home.html:98
+msgid ""
+"Enter the address you booked with and we will send you the link to change or "
+"cancel."
+msgstr ""
+"Inserisci l'indirizzo con cui hai prenotato e ti mandiamo il link per "
+"modificare o annullare."
+
+#: templates/events/recover.html:36 templates/home.html:112
+msgid "Manage"
+msgstr "Gestisci"
 
 #: templates/home-unconfigured.html:10
 msgid ""
@@ -1056,11 +1148,7 @@ msgstr ""
 msgid "Other open dates"
 msgstr "Altre date aperte"
 
-#: templates/home.html:109 templates/intake/base-intake.html:69
-msgid "Contact us"
-msgstr "Contattaci"
-
-#: templates/home.html:115 templates/intake/base-intake.html:75
+#: templates/home.html:135 templates/intake/base-intake.html:75
 msgid "Statute"
 msgstr "Statuto"
 

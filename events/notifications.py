@@ -7,9 +7,9 @@ from django.utils.translation import gettext as _
 from django_q.tasks import async_task
 
 from core.links import absolute_url
-from events.access import token_for
-from events.models import Event
-from intake.models import Submission
+from events.access import contact_token_for, token_for
+from events.models import Booking, Event
+from intake.models import Association, Submission
 
 
 def send_booking_confirmation(event, email, submission=None):
@@ -50,5 +50,35 @@ def deliver_booking_confirmation(event_pk, email, submission_pk=None):
     )
     message.attach_alternative(
         render_to_string("events/mail/booking.html", context), "text/html"
+    )
+    message.send()
+
+
+def send_booking_links(email):
+    async_task("events.notifications.deliver_booking_links", email)
+
+
+def deliver_booking_links(email):
+    """The way back in, for somebody who no longer has the confirmation mail."""
+    bookings = (
+        Booking.objects.active().for_contact(email).upcoming().select_related("event")
+    )
+    if not bookings:
+        return
+
+    context = {
+        "association": Association.current(),
+        "bookings": bookings,
+        "manage_url": absolute_url("events:mine", contact_token_for(email)),
+        "days": settings.EVENTS_BOOKING_LINK_DAYS,
+    }
+    message = EmailMultiAlternatives(
+        subject=_("Your bookings"),
+        body=render_to_string("events/mail/bookings.txt", context),
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[email],
+    )
+    message.attach_alternative(
+        render_to_string("events/mail/bookings.html", context), "text/html"
     )
     message.send()

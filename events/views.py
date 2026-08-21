@@ -3,11 +3,12 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
-from events.access import email_from_token
-from events.forms import BookingContactForm, IdentifyForm
+from events.access import email_from_contact_token, email_from_token
+from events.forms import BookingContactForm, IdentifyForm, RecoverForm
 from events.models import Booking, Event
-from events.notifications import send_booking_confirmation
-from intake.models import PublicForm, SectionKey, Submission
+from events.notifications import send_booking_confirmation, send_booking_links
+from events.throttle import claim_send
+from intake.models import Association, PublicForm, SectionKey, Submission
 from members.models import Member
 
 CONTACT_SESSION_KEY = "events_contact"
@@ -196,6 +197,68 @@ def manage(request, slug, token):
 
     request.session[CONTACT_SESSION_KEY] = email
     return redirect("events:booked", slug=event.slug)
+
+
+@login_not_required
+def recover(request):
+    """Ask for the link back into your bookings, with only your address.
+
+    The answer never says whether the address booked anything: a form that
+    told them apart would let anybody test addresses one at a time.
+    """
+    association = Association.current()
+    form = RecoverForm(data=request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        email = form.cleaned_data["email"]
+        if claim_send(email):
+            send_booking_links(email)
+        return redirect("events:recover-sent")
+
+    return render(
+        request,
+        "events/recover.html",
+        {"association": association, "form": form},
+    )
+
+
+@login_not_required
+def recover_sent(request):
+    """The same words either way, and how to reach a human if none arrives."""
+    return render(
+        request,
+        "events/recover-sent.html",
+        {"association": Association.current()},
+    )
+
+
+@login_not_required
+def mine(request, token):
+    """Everything one address has booked, from the link mailed to it."""
+    email = email_from_contact_token(token)
+    if email is None:
+        return render(
+            request,
+            "events/recover.html",
+            {
+                "association": Association.current(),
+                "form": RecoverForm(),
+                "link_expired": True,
+            },
+        )
+
+    bookings = Booking.objects.active().for_contact(email).upcoming()
+    request.session[CONTACT_SESSION_KEY] = email
+    return render(
+        request,
+        "events/mine.html",
+        {
+            "association": Association.current(),
+            "bookings": bookings,
+            "booking_forms": [
+                (booking, BookingContactForm(instance=booking)) for booking in bookings
+            ],
+        },
+    )
 
 
 @login_not_required

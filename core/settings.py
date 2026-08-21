@@ -207,6 +207,14 @@ INTAKE_DRAFT_EXPIRY_DAYS = env.int("INTAKE_DRAFT_EXPIRY_DAYS", default=30)
 # A booking nobody confirmed this long after the event is not coming back to
 # be confirmed; the application that made it goes with it.
 EVENTS_BOOKING_SWEEP_DAYS = env.int("EVENTS_BOOKING_SWEEP_DAYS", default=30)
+# The link mailed from the Bookings card has no event to die with, so it says
+# how long it lasts itself.
+EVENTS_BOOKING_LINK_DAYS = env.int("EVENTS_BOOKING_LINK_DAYS", default=7)
+# One link per address per this long: the card is a public form that sends
+# mail, which is otherwise a way to flood somebody else's inbox.
+EVENTS_BOOKING_LINK_THROTTLE_SECONDS = env.int(
+    "EVENTS_BOOKING_LINK_THROTTLE_SECONDS", default=300
+)
 
 # PWA
 PWA_APP_NAME = "OpenSeat"
@@ -370,6 +378,18 @@ else:  # prod
             "port": env.int("REDIS_PORT", default=6379),
             "db": env.int("REDIS_DB", default=0),
         },
+    }
+    # The throttle has to be shared: in local memory each granian worker keeps
+    # its own count, so the real limit would be one send per worker.
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": "redis://{}:{}/{}".format(
+                env("REDIS_HOST", default="localhost"),
+                env.int("REDIS_PORT", default=6379),
+                env.int("REDIS_CACHE_DB", default=1),
+            ),
+        }
     }
     MAILERS = {
         "default": {"BACKEND": "anymail.backends.mailgun.EmailBackend"},
