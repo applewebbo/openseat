@@ -20,7 +20,7 @@
                     <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                         {% for booking in bookings %}
                             <tr>
-                                <td style="padding:8px 0;border-top:1px solid rgba(0,0,0,.06);font-size:15px">{{ booking.member.full_name }}</td>
+                                <td style="padding:8px 0;border-top:1px solid rgba(0,0,0,.06);font-size:15px">{{ booking.full_name }}</td>
                             </tr>
                         {% endfor %}
                     </table>
@@ -32,7 +32,7 @@
                         </a>
                     </p>
                     <p style="margin:12px 0 0;font-size:13px;color:rgba(31,33,36,.6)">
-                        {% translate "Add or remove a name from this link, up until the day itself." %}
+                        {% translate "Cancel it or update your contacts from this link, up until the day itself." %}
                     </p>
 
                     {% if submission %}

@@ -49,7 +49,7 @@ def test_cancelling_takes_a_booking_off_the_list(event, booking):
     booking.cancel()
 
     assert booking.cancelled_at is not None
-    assert event.bookings.confirmed().count() == 0
+    assert event.bookings.active().count() == 0
 
 
 def test_the_same_member_is_not_booked_twice(event, member, booking_factory):
@@ -57,8 +57,8 @@ def test_the_same_member_is_not_booked_twice(event, member, booking_factory):
 
     again = Booking.objects.book(event, member)
 
-    assert event.bookings.confirmed().count() == 1
-    assert again.pk == event.bookings.confirmed().get().pk
+    assert event.bookings.active().count() == 1
+    assert again.pk == event.bookings.active().get().pk
 
 
 def test_booking_again_after_cancelling_revives_the_booking(event, member):
@@ -83,7 +83,7 @@ def test_the_checklist_lists_confirmed_bookings_in_name_order(
         member=member_factory(association=event.association, last_name="Abbà"),
     )
 
-    names = [b.member.last_name for b in event.bookings.confirmed()]
+    names = [b.member.last_name for b in event.bookings.active()]
 
     assert names == ["Abbà", "Zani"]
 
@@ -133,7 +133,7 @@ def test_the_organiser_sees_how_many_places_are_taken(
     response = staff_client.get(reverse("admin:events_event_changelist"))
 
     assert response.status_code == 200
-    assert event.bookings.confirmed().count() == 1
+    assert event.bookings.active().count() == 1
 
 
 def test_bookings_are_listed_for_the_organiser(staff_client, booking):
@@ -143,3 +143,43 @@ def test_bookings_are_listed_for_the_organiser(staff_client, booking):
 
     assert response.status_code == 200
     assert booking.member.last_name.encode() in response.content
+
+
+# --- confirming a booking joins the register --------------------------------
+
+
+def test_a_booking_from_the_register_needs_no_enrolling(booking_factory, member):
+    booking = booking_factory(member=member)
+
+    booking.confirmed_on = timezone.localdate()
+    booking.fee_amount = 10
+    booking.save()
+
+    assert booking.member_id == member.pk
+    assert booking.is_confirmed
+
+
+def test_confirming_a_booking_from_an_application_enrols_the_applicant(
+    event, minor_submission
+):
+    minor_submission.event = event
+    minor_submission.submitted_at = timezone.now()
+    minor_submission.save()
+    booking = Booking.objects.book_application(event, minor_submission)
+
+    booking.confirmed_on = timezone.localdate()
+    booking.fee_amount = 10
+    booking.save()
+
+    assert booking.member is not None
+    assert booking.member.first_name == "Luca"
+    assert booking.member.submission_id == minor_submission.pk
+
+
+def test_an_unconfirmed_booking_stays_off_the_register(event, minor_submission):
+    minor_submission.event = event
+    minor_submission.save()
+    booking = Booking.objects.book_application(event, minor_submission)
+
+    assert booking.member is None
+    assert not booking.is_confirmed

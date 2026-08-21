@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from events.access import email_from_token
-from events.forms import IdentifyForm
+from events.forms import BookingContactForm, IdentifyForm
 from events.models import Booking, Event
 from events.notifications import send_booking_confirmation
 from intake.models import PublicForm, SectionKey, Submission
@@ -23,6 +23,18 @@ def _household(request, event):
     if not email:
         return Member.objects.none()
     return Member.objects.for_contact(event.association, email)
+
+
+def _own_booking(request, event, pk):
+    """A booking reached from this session's own email, or none at all.
+
+    Reading by contact address rather than by session-owned membership: a
+    booking from the public form has no member to check against yet.
+    """
+    email = request.session.get(CONTACT_SESSION_KEY)
+    if not email:
+        return None
+    return event.bookings.active().for_contact(email).filter(pk=pk).first()
 
 
 @login_not_required
@@ -73,12 +85,12 @@ def book(request, slug):
             # Only the first booking is worth a mail: it is what carries the
             # link back here. Every later change is already confirmed on screen.
             first_time = (
-                not event.bookings.confirmed().filter(member__in=household).exists()
+                not event.bookings.active().filter(member__in=household).exists()
             )
             for member in chosen:
                 Booking.objects.book(event, member)
             for booking in (
-                event.bookings.confirmed()
+                event.bookings.active()
                 .exclude(member__in=chosen)
                 .filter(member__in=household)
             ):
@@ -94,9 +106,7 @@ def book(request, slug):
             "event": event,
             "association": event.association,
             "members": household,
-            "booked": set(
-                event.bookings.confirmed().values_list("member_id", flat=True)
-            ),
+            "booked": set(event.bookings.active().values_list("member_id", flat=True)),
             "nobody_chosen": request.method == "POST",
         },
     )
@@ -105,31 +115,55 @@ def book(request, slug):
 @login_not_required
 def booked(request, slug):
     event = _open_event(slug)
-    household = _household(request, event)
+    email = request.session.get(CONTACT_SESSION_KEY)
+    bookings = (
+        event.bookings.active().for_contact(email) if email else Booking.objects.none()
+    )
     return render(
         request,
         "events/booked.html",
         {
             "event": event,
             "association": event.association,
-            "bookings": event.bookings.confirmed().filter(member__in=household),
+            "bookings": bookings,
+            "booking_forms": [
+                (booking, BookingContactForm(instance=booking)) for booking in bookings
+            ],
         },
     )
 
 
 @login_not_required
 @require_POST
-def cancel(request, slug):
-    """Give every place back at once — the whole booking, not one name of it."""
+def cancel(request, slug, pk):
+    """Give one person's place back — a booking is one person, not a household."""
     event = _open_event(slug)
-    household = _household(request, event)
-    if not household.exists():
+    booking = _own_booking(request, event, pk)
+    if booking is None:
         return redirect("events:landing", slug=event.slug)
     if not event.is_open:
         raise Http404("bookings are closed")
 
-    for booking in event.bookings.confirmed().filter(member__in=household):
-        booking.cancel()
+    booking.cancel()
+    return redirect("events:booked", slug=event.slug)
+
+
+@login_not_required
+@require_POST
+def edit(request, slug, pk):
+    """Update the contacts and note on one booking. Names and consents belong
+    to the signed application and are not rewritten from a public link."""
+    event = _open_event(slug)
+    booking = _own_booking(request, event, pk)
+    if booking is None:
+        return redirect("events:landing", slug=event.slug)
+    if not event.is_open:
+        raise Http404("bookings are closed")
+
+    form = BookingContactForm(data=request.POST, instance=booking)
+    if form.is_valid():
+        form.save()
+        request.session[CONTACT_SESSION_KEY] = form.cleaned_data["contact_email"]
     return redirect("events:booked", slug=event.slug)
 
 
@@ -157,11 +191,11 @@ def manage(request, slug, token):
             },
         )
 
-    if not Member.objects.for_contact(event.association, email).exists():
+    if not event.bookings.active().for_contact(email).exists():
         return redirect("events:landing", slug=event.slug)
 
     request.session[CONTACT_SESSION_KEY] = email
-    return redirect("events:book", slug=event.slug)
+    return redirect("events:booked", slug=event.slug)
 
 
 @login_not_required

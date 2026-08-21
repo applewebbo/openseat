@@ -23,11 +23,7 @@ def send_booking_confirmation(event, email, submission=None):
 
 def deliver_booking_confirmation(event_pk, email, submission_pk=None):
     event = Event.objects.select_related("association").get(pk=event_pk)
-    bookings = (
-        event.bookings.confirmed()
-        .filter(member__contact_email__iexact=email)
-        .select_related("member")
-    )
+    bookings = event.bookings.active().for_contact(email)
     if not bookings:
         return
 

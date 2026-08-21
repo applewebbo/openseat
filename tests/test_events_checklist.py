@@ -143,7 +143,8 @@ def test_the_job_is_set_to_run_at_midnight():
 
     call_command("events_schedule")
 
-    next_run = timezone.localtime(Schedule.objects.get().next_run)
+    schedule = Schedule.objects.get(name="events: pre-event checklist")
+    next_run = timezone.localtime(schedule.next_run)
     assert (next_run.hour, next_run.minute) == (0, 5)
 
 

@@ -16,8 +16,15 @@ class BookingInline(admin.TabularInline):
     model = Booking
     extra = 0
     autocomplete_fields = ("member",)
-    fields = ("member", "note", "created_at", "cancelled_at")
-    readonly_fields = ("created_at",)
+    fields = (
+        "first_name",
+        "last_name",
+        "member",
+        "confirmed_on",
+        "fee_amount",
+        "fee_method",
+        "cancelled_at",
+    )
 
 
 @admin.register(Event)
@@ -43,12 +50,22 @@ class EventAdmin(admin.ModelAdmin):
     @admin.display(description=_("booked"))
     def booked(self, obj):
         """Confirmed places, cancellations excluded. Never a capacity gate."""
-        return obj.bookings.confirmed().count()
+        return obj.bookings.active().count()
 
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ("member", "event", "created_at", "cancelled_at")
+    list_display = ("full_name", "event", "confirmed_on", "cancelled_at")
     list_filter = ("event",)
-    search_fields = ("member__last_name", "member__first_name")
+    search_fields = (
+        "first_name",
+        "last_name",
+        "member__last_name",
+        "member__first_name",
+    )
     autocomplete_fields = ("member",)
+    readonly_fields = ("submission", "created_at")
+
+    @admin.display(description=_("name"), ordering="last_name")
+    def full_name(self, obj):
+        return obj.full_name

@@ -157,15 +157,17 @@ def submit(request, token):
     submission.ip = client_ip(request)
     submission.save()
     _record_signatures(submission, client_ip(request))
-    member = enrol(submission)
     if submission.event_id:
+        # Booking is not joining: the register entry waits for the association
+        # to confirm attendance and payment, after the event.
+        Booking.objects.book_application(submission.event, submission)
         # One act, one mail: the confirmation says everything the receipt says
         # and names the booking too, so sending both would repeat itself.
-        Booking.objects.book(submission.event, member)
         send_booking_confirmation(
-            submission.event, member.contact_email, submission=submission
+            submission.event, submission.applicant_email, submission=submission
         )
     else:
+        enrol(submission)
         send_receipt(submission)
     return redirect("intake:done", token=token)
 

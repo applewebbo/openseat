@@ -276,8 +276,22 @@ class Submission(models.Model):
     @property
     def member_display(self):
         """The person being enrolled: the child when there is one, else the signer."""
+        return f"{self.subject_first_name} {self.subject_last_name}".strip()
+
+    @property
+    def subject_first_name(self):
         if self.subject_type and self.subject_type != SubjectType.SELF:
-            return f"{self.member_first_name} {self.member_last_name}".strip()
+            return self.member_first_name
+        return self.applicant_first_name
+
+    @property
+    def subject_last_name(self):
+        if self.subject_type and self.subject_type != SubjectType.SELF:
+            return self.member_last_name
+        return self.applicant_last_name
+
+    @property
+    def applicant_name(self):
         return f"{self.applicant_first_name} {self.applicant_last_name}".strip()
 
     @property

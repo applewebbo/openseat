@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
+from events.models import Booking
 from intake.validators import validate_tax_code
 from members.models import Member
 
@@ -56,3 +57,31 @@ class IdentifyForm(forms.Form):
             )
         cleaned["household"] = household
         return cleaned
+
+
+class BookingContactForm(forms.ModelForm):
+    """What can be changed from the mail link: how to reach them, and a note.
+
+    Not the name, tax code or consents — those belong to the signed
+    application, or to the register once the booking is confirmed.
+    """
+
+    template_name = "intake/forms/section-form.html"
+
+    class Meta:
+        model = Booking
+        fields = ["contact_name", "contact_email", "contact_phone", "note"]
+        widgets = {
+            "contact_name": forms.TextInput(
+                attrs={"class": "input input-bordered w-full"}
+            ),
+            "contact_email": forms.EmailInput(
+                attrs={"class": "input input-bordered w-full", "inputmode": "email"}
+            ),
+            "contact_phone": forms.TextInput(
+                attrs={"class": "input input-bordered w-full"}
+            ),
+            "note": forms.Textarea(
+                attrs={"class": "textarea textarea-bordered w-full", "rows": 3}
+            ),
+        }

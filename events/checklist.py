@@ -23,7 +23,7 @@ def send_due_checklists():
 
 
 def send_checklist(event):
-    bookings = event.bookings.confirmed().select_related("member")
+    bookings = event.bookings.active()
     body = render_to_string(
         "events/mail/checklist.txt",
         {"event": event, "association": event.association, "bookings": bookings},

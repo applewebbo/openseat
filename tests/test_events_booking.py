@@ -136,7 +136,7 @@ def test_places_are_booked_for_everyone_ticked(client, event, family):
         {"members": [str(luca.pk), str(sara.pk)]},
     )
 
-    assert event.bookings.confirmed().count() == 2
+    assert event.bookings.active().count() == 2
 
 
 def test_ticking_nobody_asks_again(client, event, family):
@@ -158,7 +158,7 @@ def test_unticking_somebody_cancels_their_place(client, event, family):
 
     client.post(reverse("events:book", args=[event.slug]), {"members": [str(luca.pk)]})
 
-    booked = [b.member for b in event.bookings.confirmed()]
+    booked = [b.member for b in event.bookings.active()]
     assert booked == [luca]
 
 
@@ -229,8 +229,9 @@ def test_joining_for_an_event_books_the_place_on_submission(
         {"place": "Novara", "declaration": "on"},
     )
 
-    booking = event.bookings.confirmed().get()
-    assert booking.member.first_name == "Luca"
+    booking = event.bookings.active().get()
+    assert booking.first_name == "Luca"
+    assert booking.member is None
 
 
 def test_a_second_open_form_does_not_break_joining(client, event, public_form_factory):
@@ -270,21 +271,22 @@ def test_an_invalid_tax_code_stops_before_the_register_is_queried(
     assert "tax_code" in response.context["form"].errors
 
 
-# --- calling the whole thing off -------------------------------------------
+# --- calling one place off --------------------------------------------------
 
 
-def test_cancelling_drops_every_place_the_family_holds(client, event, family):
+def test_cancelling_drops_only_the_chosen_place(client, event, family):
     luca, sara = family
     _identify(client, event)
     client.post(
         reverse("events:book", args=[event.slug]),
         {"members": [str(luca.pk), str(sara.pk)]},
     )
+    luca_booking = event.bookings.active().get(member=luca)
 
-    response = client.post(reverse("events:cancel", args=[event.slug]))
+    response = client.post(reverse("events:cancel", args=[event.slug, luca_booking.pk]))
 
     assert response.url == reverse("events:booked", args=[event.slug])
-    assert not event.bookings.confirmed().exists()
+    assert [b.member for b in event.bookings.active()] == [sara]
 
 
 def test_cancelling_leaves_the_other_families_alone(
@@ -298,14 +300,36 @@ def test_cancelling_leaves_the_other_families_alone(
     client.post(
         reverse("events:book", args=[event.slug]), {"members": [str(family[0].pk)]}
     )
+    own_booking = event.bookings.active().get(member=family[0])
 
-    client.post(reverse("events:cancel", args=[event.slug]))
+    client.post(reverse("events:cancel", args=[event.slug, own_booking.pk]))
 
-    assert [b.member for b in event.bookings.confirmed()] == [stranger]
+    assert [b.member for b in event.bookings.active()] == [stranger]
 
 
-def test_cancelling_without_identifying_first_sends_you_back(client, event, family):
-    response = client.post(reverse("events:cancel", args=[event.slug]))
+def test_cancelling_someone_elses_booking_is_refused(
+    client, event, family, member_factory, booking_factory
+):
+    stranger = member_factory(
+        association=event.association, contact_email="altro@example.com"
+    )
+    stranger_booking = booking_factory(event=event, member=stranger)
+    _identify(client, event)
+
+    response = client.post(
+        reverse("events:cancel", args=[event.slug, stranger_booking.pk])
+    )
+
+    assert response.url == event.get_absolute_url()
+    assert event.bookings.active().filter(pk=stranger_booking.pk).exists()
+
+
+def test_cancelling_without_identifying_first_sends_you_back(
+    client, event, family, booking_factory
+):
+    booking = booking_factory(event=event, member=family[0])
+
+    response = client.post(reverse("events:cancel", args=[event.slug, booking.pk]))
 
     assert response.url == event.get_absolute_url()
 
@@ -319,12 +343,13 @@ def test_a_cancellation_after_the_event_started_is_not_found(client, event, fami
     client.post(
         reverse("events:book", args=[event.slug]), {"members": [str(family[0].pk)]}
     )
+    booking = event.bookings.active().get(member=family[0])
 
     with time_machine.travel(event.starts_at + timedelta(hours=1), tick=False):
-        response = client.post(reverse("events:cancel", args=[event.slug]))
+        response = client.post(reverse("events:cancel", args=[event.slug, booking.pk]))
 
     assert response.status_code == 404
-    assert event.bookings.confirmed().count() == 1
+    assert event.bookings.active().count() == 1
 
 
 def test_cancelling_says_so_rather_than_showing_an_empty_list(client, event, family):
@@ -332,8 +357,9 @@ def test_cancelling_says_so_rather_than_showing_an_empty_list(client, event, fam
     client.post(
         reverse("events:book", args=[event.slug]), {"members": [str(family[0].pk)]}
     )
+    booking = event.bookings.active().get(member=family[0])
 
-    client.post(reverse("events:cancel", args=[event.slug]))
+    client.post(reverse("events:cancel", args=[event.slug, booking.pk]))
     response = client.get(reverse("events:booked", args=[event.slug]))
 
     assert "annullata" in response.content.decode()

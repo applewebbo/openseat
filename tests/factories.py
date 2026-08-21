@@ -177,3 +177,8 @@ class BookingFactory(factory.django.DjangoModelFactory):
 
     event = factory.SubFactory(EventFactory)
     member = factory.SubFactory(MemberFactory)
+    first_name = factory.SelfAttribute("member.first_name")
+    last_name = factory.SelfAttribute("member.last_name")
+    contact_name = factory.SelfAttribute("member.contact_name")
+    contact_email = factory.SelfAttribute("member.contact_email")
+    contact_phone = factory.SelfAttribute("member.contact_phone")

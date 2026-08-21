@@ -158,25 +158,27 @@ def manage_url(event, email="maria.rossi@example.com"):
 
 
 def test_the_link_opens_the_booking_page_without_asking_again(client, event, family):
+    book_as_member(client, event, family)
+    client.cookies.clear()
+
     response = client.get(manage_url(event), follow=True)
 
     assert response.status_code == 200
-    offered = {member.first_name for member in response.context["members"]}
-    assert offered == {"Luca", "Sara"}
+    names = {booking.full_name for booking in response.context["bookings"]}
+    assert names == {"Luca Rossi", "Sara Rossi"}
 
 
-def test_the_link_cancels_a_place_as_well_as_books_one(client, event, family):
+def test_the_link_cancels_one_place_without_touching_the_rest(client, event, family):
     luca, sara = family
     book_as_member(client, event, family)
     client.cookies.clear()
 
     client.get(manage_url(event))
-    client.post(reverse("events:book", args=[event.slug]), {"members": [str(luca.pk)]})
+    luca_booking = event.bookings.active().get(member=luca)
+    client.post(reverse("events:cancel", args=[event.slug, luca_booking.pk]))
 
-    assert set(event.bookings.confirmed().values_list("member_id", flat=True)) == {
-        luca.pk
-    }
-    assert sara.bookings.get().cancelled_at is not None
+    assert set(event.bookings.active().values_list("member_id", flat=True)) == {sara.pk}
+    assert luca.bookings.get().cancelled_at is not None
 
 
 def test_the_link_dies_with_the_event(client, event, family):
@@ -219,6 +221,85 @@ def test_a_link_for_somebody_off_the_register_opens_nothing(client, event, famil
 
     assert response.status_code == 302
     assert response.url == event.get_absolute_url()
+
+
+# --- editing contacts and a note --------------------------------------------
+
+
+def test_the_link_lets_you_update_contacts_and_a_note(client, event, family):
+    luca, _sara = family
+    book_as_member(client, event, [luca])
+    client.cookies.clear()
+
+    client.get(manage_url(event))
+    booking = event.bookings.active().get(member=luca)
+    client.post(
+        reverse("events:edit", args=[event.slug, booking.pk]),
+        {
+            "contact_name": "Maria Rossi",
+            "contact_email": "nuova.maria@example.com",
+            "contact_phone": "3491112233",
+            "note": "Allergica alle noci",
+        },
+    )
+
+    booking.refresh_from_db()
+    assert booking.contact_email == "nuova.maria@example.com"
+    assert booking.contact_phone == "3491112233"
+    assert booking.note == "Allergica alle noci"
+
+
+def test_editing_with_an_invalid_email_changes_nothing(client, event, family):
+    luca, _sara = family
+    book_as_member(client, event, [luca])
+    client.cookies.clear()
+    client.get(manage_url(event))
+    booking = event.bookings.active().get(member=luca)
+
+    client.post(
+        reverse("events:edit", args=[event.slug, booking.pk]),
+        {"contact_name": "Maria Rossi", "contact_email": "not-an-email"},
+    )
+
+    booking.refresh_from_db()
+    assert booking.contact_email == "maria.rossi@example.com"
+
+
+def test_editing_someone_elses_booking_is_refused(
+    client, event, family, member_factory, booking_factory
+):
+    stranger = member_factory(
+        association=event.association, contact_email="altro@example.com"
+    )
+    stranger_booking = booking_factory(event=event, member=stranger)
+    book_as_member(client, event, family)
+    client.cookies.clear()
+    client.get(manage_url(event))
+
+    response = client.post(
+        reverse("events:edit", args=[event.slug, stranger_booking.pk]),
+        {"contact_name": "Nessuno", "contact_email": "nessuno@example.com"},
+    )
+
+    assert response.url == event.get_absolute_url()
+    stranger_booking.refresh_from_db()
+    assert stranger_booking.contact_email == "altro@example.com"
+
+
+def test_editing_after_the_event_started_is_not_found(client, event, family):
+    luca, _sara = family
+    book_as_member(client, event, [luca])
+    client.cookies.clear()
+    client.get(manage_url(event))
+    booking = event.bookings.active().get(member=luca)
+
+    with time_machine.travel(event.starts_at + datetime.timedelta(hours=1), tick=False):
+        response = client.post(
+            reverse("events:edit", args=[event.slug, booking.pk]),
+            {"contact_name": "Maria Rossi", "contact_email": "maria.rossi@example.com"},
+        )
+
+    assert response.status_code == 404
 
 
 def test_a_queued_confirmation_of_nothing_is_not_sent(client, event, family):

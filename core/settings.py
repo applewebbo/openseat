@@ -203,6 +203,11 @@ INTAKE_DRAFT_REMINDER_HOURS = env.int("INTAKE_DRAFT_REMINDER_HOURS", default=24)
 # privacy notice promises about keeping only what is still needed.
 INTAKE_DRAFT_EXPIRY_DAYS = env.int("INTAKE_DRAFT_EXPIRY_DAYS", default=30)
 
+# EVENTS
+# A booking nobody confirmed this long after the event is not coming back to
+# be confirmed; the application that made it goes with it.
+EVENTS_BOOKING_SWEEP_DAYS = env.int("EVENTS_BOOKING_SWEEP_DAYS", default=30)
+
 # PWA
 PWA_APP_NAME = "OpenSeat"
 PWA_APP_DESCRIPTION = "Event bookings and membership roster for non-profit associations"
