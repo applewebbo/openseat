@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n static %}
+{% load i18n intake_extras static %}
 
 {% block title %}{{ association.name }}{% endblock %}
 
@@ -108,15 +108,27 @@
         </section>
     </main>
 
-    <footer class="text-base-content/60 mx-auto max-w-3xl px-4 pb-10 text-xs leading-relaxed">
-        <p>
-            {{ association.name }} · {{ association.street }}, {{ association.postcode }} {{ association.city }} · {% translate "Tax code" %} {{ association.tax_code }}
-        </p>
-        <p class="mt-1">
-            <a href="mailto:{{ association.email }}" class="underline underline-offset-2">{{ association.email }}</a>
-            {% if association.statute_url %}
-                · <a href="{{ association.statute_url }}" class="underline underline-offset-2">{% translate "Statute" %}</a>
-            {% endif %}
-        </p>
+    <footer class="mx-auto max-w-3xl px-4 pb-10">
+        <div class="text-base-content/60 grid grid-cols-1 gap-6 border-t border-black/5 pt-6 text-xs leading-relaxed sm:grid-cols-2">
+            <div>
+                <p class="text-base-content/80 font-semibold">{{ association.name }}</p>
+                <p class="mt-1">{{ association.street }}, {{ association.postcode }} {{ association.city }}</p>
+                <p class="mt-1">{% translate "Tax code" %} {{ association.tax_code }}</p>
+            </div>
+            <div>
+                <a x-data="{ user: '{{ association.email|email_user }}', domain: '{{ association.email|email_domain }}' }"
+                   x-init="$el.href = 'mailto:' + user + '@' + domain"
+                   href="#"
+                   class="link link-hover">{% translate "Contact us" %}</a>
+                {% if association.statute_url %}
+                    <p class="mt-1">
+                        <a href="{{ association.statute_url }}"
+                           target="_blank"
+                           rel="noopener"
+                           class="link link-hover">{% translate "Statute" %}</a>
+                    </p>
+                {% endif %}
+            </div>
+        </div>
     </footer>
 {% endblock content %}

@@ -5,16 +5,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('events', '0003_alter_booking_options_and_more'),
-        ('intake', '0004_association_home_description_association_home_title'),
+        ("events", "0003_alter_booking_options_and_more"),
+        ("intake", "0004_association_home_description_association_home_title"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='event',
-            name='form',
-            field=models.ForeignKey(blank=True, help_text="Booked through when set. Unset falls back to the association's newest open form.", null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='events', to='intake.publicform', verbose_name='application form'),
+            model_name="event",
+            name="form",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Booked through when set. Unset falls back to the association's newest open form.",
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="events",
+                to="intake.publicform",
+                verbose_name="application form",
+            ),
         ),
     ]

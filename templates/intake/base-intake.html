@@ -1,4 +1,4 @@
-{% load django_htmx i18n static tailwind_cli %}
+{% load django_htmx i18n intake_extras static tailwind_cli %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:'it' }}" data-theme="light">
     <head>
@@ -16,7 +16,7 @@
         {% block extra_head %}{% endblock %}
     </head>
     <body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'
-          class="text-base-content min-h-screen bg-[#f6f4f1] antialiased">
+          class="text-base-content bg-base-100 min-h-screen antialiased">
         <!--
         THESIS: the paper module, walked one section at a time; it refuses the
         single long scroll that makes a legal form unreadable on a phone.
@@ -54,11 +54,29 @@
             {% block content %}{% endblock %}
         </main>
 
-        <footer class="text-base-content/60 mx-auto max-w-2xl px-4 pb-10 text-xs leading-relaxed">
+        <footer class="mx-auto max-w-2xl px-4 pb-10">
             {% block footer %}
-                <p>
-                    {{ association.name }} · {{ association.street }}, {{ association.postcode }} {{ association.city }} · {% translate "Tax code" %} {{ association.tax_code }}
-                </p>
+                <div class="text-base-content/60 grid grid-cols-1 gap-6 border-t border-black/5 pt-6 text-xs leading-relaxed sm:grid-cols-2">
+                    <div>
+                        <p class="text-base-content/80 font-semibold">{{ association.name }}</p>
+                        <p class="mt-1">{{ association.street }}, {{ association.postcode }} {{ association.city }}</p>
+                        <p class="mt-1">{% translate "Tax code" %} {{ association.tax_code }}</p>
+                    </div>
+                    <div>
+                        <a x-data="{ user: '{{ association.email|email_user }}', domain: '{{ association.email|email_domain }}' }"
+                           x-init="$el.href = 'mailto:' + user + '@' + domain"
+                           href="#"
+                           class="link link-hover">{% translate "Contact us" %}</a>
+                        {% if association.statute_url %}
+                            <p class="mt-1">
+                                <a href="{{ association.statute_url }}"
+                                   target="_blank"
+                                   rel="noopener"
+                                   class="link link-hover">{% translate "Statute" %}</a>
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
             {% endblock footer %}
         </footer>
 
