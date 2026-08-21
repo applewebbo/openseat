@@ -223,9 +223,7 @@ def test_the_link_dies_after_a_week(client, booked, settings):
     settings.EVENTS_BOOKING_LINK_DAYS = 7
     url = reverse("events:mine", args=[contact_token_for(booked.contact_email)])
 
-    with time_machine.travel(
-        timezone.now() + datetime.timedelta(days=8), tick=False
-    ):
+    with time_machine.travel(timezone.now() + datetime.timedelta(days=8), tick=False):
         response = client.get(url)
 
     assert response.context["link_expired"] is True
