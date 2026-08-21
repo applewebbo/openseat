@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 07:38+0200\n"
+"POT-Creation-Date: 2026-08-21 10:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,19 +67,19 @@ msgstr "Italian"
 msgid "English"
 msgstr "English"
 
-#: events/admin.py:41 templates/admin/date_hierarchy.html:4
+#: events/admin.py:47 templates/admin/date_hierarchy.html:4
 msgid "date"
 msgstr ""
 
-#: events/admin.py:46
+#: events/admin.py:52
 msgid "sent"
 msgstr ""
 
-#: events/admin.py:50
+#: events/admin.py:56
 msgid "booked"
 msgstr ""
 
-#: events/admin.py:64 intake/models.py:60
+#: events/admin.py:75 intake/models.py:60
 msgid "name"
 msgstr ""
 
@@ -120,142 +120,152 @@ msgstr ""
 msgid "association"
 msgstr ""
 
-#: events/models.py:56 intake/models.py:61 intake/models.py:120
+#: events/models.py:58
+msgid "application form"
+msgstr ""
+
+#: events/models.py:64
+msgid ""
+"Booked through when set. Unset falls back to the association's newest open "
+"form."
+msgstr ""
+
+#: events/models.py:68 intake/models.py:61 intake/models.py:120
 msgid "slug"
 msgstr ""
 
-#: events/models.py:57 intake/models.py:121
+#: events/models.py:69 intake/models.py:121
 msgid "title"
 msgstr ""
 
-#: events/models.py:58
+#: events/models.py:70
 msgid "description"
 msgstr ""
 
-#: events/models.py:59
+#: events/models.py:71
 msgid "location"
 msgstr ""
 
-#: events/models.py:60
+#: events/models.py:72
 msgid "starts at"
 msgstr ""
 
-#: events/models.py:61
+#: events/models.py:73
 msgid "ends at"
 msgstr ""
 
-#: events/models.py:63
+#: events/models.py:75
 msgid "image"
 msgstr ""
 
-#: events/models.py:66
+#: events/models.py:78
 msgid "A wide picture, 1200 px or more. The square one is cut from it."
 msgstr ""
 
-#: events/models.py:69
+#: events/models.py:81
 msgid "square image"
 msgstr ""
 
-#: events/models.py:72
+#: events/models.py:84
 msgid "published"
 msgstr ""
 
-#: events/models.py:74
+#: events/models.py:86
 msgid "checklist sent at"
 msgstr ""
 
-#: events/models.py:76 intake/models.py:124 intake/models.py:265
+#: events/models.py:88 intake/models.py:124 intake/models.py:265
 msgid "created at"
 msgstr ""
 
-#: events/models.py:81 events/models.py:192
+#: events/models.py:93 events/models.py:204
 msgid "event"
 msgstr ""
 
-#: events/models.py:82
+#: events/models.py:94
 msgid "events"
 msgstr ""
 
-#: events/models.py:123
+#: events/models.py:135
 msgid "Cash"
 msgstr ""
 
-#: events/models.py:124
+#: events/models.py:136
 msgid "Bank transfer"
 msgstr ""
 
-#: events/models.py:125
+#: events/models.py:137
 msgid "Other"
 msgstr ""
 
-#: events/models.py:198 members/models.py:70
+#: events/models.py:210 members/models.py:70
 msgid "member"
 msgstr ""
 
-#: events/models.py:203
+#: events/models.py:215
 msgid "Filled in when the booking is confirmed."
 msgstr ""
 
-#: events/models.py:207 members/models.py:33
+#: events/models.py:219 members/models.py:33
 msgid "application"
 msgstr ""
 
-#: events/models.py:214 intake/models.py:208 intake/models.py:222
+#: events/models.py:226 intake/models.py:208 intake/models.py:222
 #: intake/models.py:240 members/models.py:41
 msgid "first name"
 msgstr ""
 
-#: events/models.py:215 intake/models.py:209 intake/models.py:223
+#: events/models.py:227 intake/models.py:209 intake/models.py:223
 #: intake/models.py:243 members/models.py:42
 msgid "last name"
 msgstr ""
 
-#: events/models.py:216 members/models.py:54
+#: events/models.py:228 members/models.py:54
 #: templates/events/mail/checklist.txt:7
 msgid "contact"
 msgstr ""
 
-#: events/models.py:217 members/models.py:55
+#: events/models.py:229 members/models.py:55
 msgid "contact email"
 msgstr ""
 
-#: events/models.py:218 members/models.py:56
+#: events/models.py:230 members/models.py:56
 msgid "contact phone"
 msgstr ""
 
-#: events/models.py:220
+#: events/models.py:232
 msgid "note"
 msgstr ""
 
-#: events/models.py:223
+#: events/models.py:235
 msgid "confirmed on"
 msgstr ""
 
-#: events/models.py:226
+#: events/models.py:238
 msgid "The day they turned up and paid the fee."
 msgstr ""
 
-#: events/models.py:229
+#: events/models.py:241
 msgid "fee paid"
 msgstr ""
 
-#: events/models.py:232
+#: events/models.py:244
 msgid "paid by"
 msgstr ""
 
-#: events/models.py:235
+#: events/models.py:247
 msgid "booked at"
 msgstr ""
 
-#: events/models.py:236
+#: events/models.py:248
 msgid "cancelled at"
 msgstr ""
 
-#: events/models.py:241
+#: events/models.py:253
 msgid "booking"
 msgstr ""
 
-#: events/models.py:242
+#: events/models.py:254
 msgid "bookings"
 msgstr ""
 

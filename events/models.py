@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from events.images import square_from, square_name
-from intake.models import Association, Submission
+from intake.models import Association, PublicForm, Submission
 from members.models import Member
 
 DEFAULT_WIDE = "img/event-default-wide.jpg"
@@ -52,6 +52,18 @@ class Event(models.Model):
         verbose_name=_("association"),
         related_name="events",
         on_delete=models.CASCADE,
+    )
+    form = models.ForeignKey(
+        PublicForm,
+        verbose_name=_("application form"),
+        related_name="events",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text=_(
+            "Booked through when set. Unset falls back to the association's "
+            "newest open form."
+        ),
     )
     slug = models.SlugField(_("slug"), unique=True)
     title = models.CharField(_("title"), max_length=200)

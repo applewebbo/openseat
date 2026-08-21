@@ -203,12 +203,13 @@ def manage(request, slug, token):
 def join(request, slug):
     """Not on the register yet: joining is how you book, by the current statute."""
     event = _open_event(slug)
-    # An association may hold more than one public form — last year's application
-    # left open, a form for a specific project — so the newest open one is the
-    # application in use rather than "the" one. Meta.ordering makes that first().
-    public_form = PublicForm.objects.filter(
-        association=event.association, is_open=True
-    ).first()
+    # An organiser can say which form an event books through; unset falls back
+    # to the association's newest open one. Meta.ordering makes that first().
+    public_form = event.form
+    if public_form is None or not public_form.is_open:
+        public_form = PublicForm.objects.filter(
+            association=event.association, is_open=True
+        ).first()
     if public_form is None:
         raise Http404("this association has no open application form")
     submission = Submission.objects.create(form=public_form, event=event)

@@ -140,6 +140,7 @@ class Command(BaseCommand):
                 slug=spec["slug"],
                 defaults={
                     "association": association,
+                    "form": public_form,
                     "title": spec["title"],
                     "description": spec["description"],
                     "location": spec["location"],

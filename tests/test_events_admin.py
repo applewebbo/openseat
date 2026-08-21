@@ -68,3 +68,20 @@ def test_the_columns_are_named_in_italian(staff_client, spring_event):
 
     assert ">Data</a>" in content
     assert ">Inviata</a>" in content
+
+
+def test_only_open_forms_are_offered_for_the_event(
+    staff_client, spring_event, public_form_factory
+):
+    open_form = public_form_factory(association=spring_event.association)
+    closed_form = public_form_factory(
+        association=spring_event.association, is_open=False
+    )
+
+    response = staff_client.get(
+        reverse("admin:events_event_change", args=[spring_event.pk])
+    )
+
+    options = response.context["adminform"].form.fields["form"].queryset
+    assert open_form in options
+    assert closed_form not in options

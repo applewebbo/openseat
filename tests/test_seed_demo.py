@@ -36,6 +36,13 @@ def test_there_is_always_a_next_date_and_an_archive(seeded):
 
 
 @pytest.mark.django_db
+def test_events_book_through_the_seeded_form(seeded):
+    public_form = PublicForm.objects.get()
+
+    assert Event.objects.filter(form=public_form).count() == Event.objects.count()
+
+
+@pytest.mark.django_db
 def test_an_existing_association_is_filled_in_not_duplicated(association):
     """The admin allows one association; the command must not make a second."""
     call_command("seed_demo", verbosity=0)

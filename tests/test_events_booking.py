@@ -255,6 +255,37 @@ def test_a_closed_form_is_never_the_one_used(client, event, public_form_factory)
     assert Submission.objects.get().form == open_form
 
 
+def test_an_event_with_its_own_form_uses_it_over_the_newest_open_one(
+    client, event, public_form_factory
+):
+    newest = public_form_factory(association=event.association, slug="adesione-2025")
+    dedicated = public_form_factory(
+        association=event.association, slug="progetto-scuole"
+    )
+    event.form = dedicated
+    event.save()
+
+    client.post(reverse("events:join", args=[event.slug]))
+
+    assert Submission.objects.get().form == dedicated
+    assert dedicated != newest
+
+
+def test_an_event_whose_own_form_has_closed_falls_back_to_the_newest_open_one(
+    client, event, public_form_factory
+):
+    closed = public_form_factory(
+        association=event.association, slug="progetto-chiuso", is_open=False
+    )
+    fallback = public_form_factory(association=event.association, slug="adesione")
+    event.form = closed
+    event.save()
+
+    client.post(reverse("events:join", args=[event.slug]))
+
+    assert Submission.objects.get().form == fallback
+
+
 def test_an_association_with_no_application_form_cannot_take_new_members(client, event):
     response = client.post(reverse("events:join", args=[event.slug]))
 

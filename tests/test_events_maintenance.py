@@ -37,9 +37,7 @@ def test_a_booking_for_a_recent_event_is_not_stale_yet(event, booking_factory):
     assert booking not in stale_bookings()
 
 
-def test_purging_deletes_the_booking_and_its_application(
-    past_event, minor_submission
-):
+def test_purging_deletes_the_booking_and_its_application(past_event, minor_submission):
     minor_submission.event = past_event
     minor_submission.save()
     booking = Booking.objects.book_application(past_event, minor_submission)
@@ -83,7 +81,5 @@ def test_the_sweep_setting_moves_the_cutoff(settings, event_factory, booking_fac
 def test_time_travelling_past_the_cutoff_makes_a_booking_stale(event, booking_factory):
     booking = booking_factory(event=event)
 
-    with time_machine.travel(
-        event.starts_at + datetime.timedelta(days=31), tick=False
-    ):
+    with time_machine.travel(event.starts_at + datetime.timedelta(days=31), tick=False):
         assert booking in stale_bookings()

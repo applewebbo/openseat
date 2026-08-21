@@ -3,6 +3,7 @@ from django.utils import formats, timezone
 from django.utils.translation import gettext_lazy as _
 
 from events.models import Booking, Event
+from intake.models import PublicForm
 
 
 def _short(moment):
@@ -37,6 +38,11 @@ class EventAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     readonly_fields = ("checklist_sent_at",)
     inlines = [BookingInline]
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "form":
+            kwargs["queryset"] = PublicForm.objects.filter(is_open=True)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     @admin.display(description=_("date"), ordering="starts_at")
     def starts_on(self, obj):
