@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 10:35+0200\n"
+"POT-Creation-Date: 2026-08-21 11:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,7 +100,7 @@ msgstr ""
 msgid "The one the association writes to."
 msgstr ""
 
-#: events/forms.py:26 templates/home.html:116
+#: events/forms.py:26 templates/home.html:103
 #: templates/intake/base-intake.html:63
 msgid "Tax code"
 msgstr ""
@@ -1013,15 +1013,11 @@ msgstr ""
 msgid "Other open dates"
 msgstr ""
 
-#: templates/home.html:97
-msgid "Already done"
-msgstr ""
-
-#: templates/home.html:122 templates/intake/base-intake.html:69
+#: templates/home.html:109 templates/intake/base-intake.html:69
 msgid "Contact us"
 msgstr ""
 
-#: templates/home.html:128 templates/intake/base-intake.html:75
+#: templates/home.html:115 templates/intake/base-intake.html:75
 msgid "Statute"
 msgstr ""
 

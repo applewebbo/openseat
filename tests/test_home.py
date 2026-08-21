@@ -78,16 +78,19 @@ class TestEventSections:
             Event.objects.get(title="Fra un mese")
         ]
 
-    def test_past_events_are_listed_newest_first(
+    def test_past_events_are_not_on_the_home_page(
         self, client, association, event_factory
     ):
-        older = event_factory(association=association, starts_at=past(60))
-        newer = event_factory(association=association, starts_at=past(2))
+        """The home page is what can still be booked, not an archive."""
+        gone = event_factory(
+            association=association, title="Già passato", starts_at=past(2)
+        )
 
         response = client.get(reverse("home"))
 
-        assert list(response.context["past"]) == [newer, older]
         assert response.context["featured"] is None
+        assert not response.context["upcoming"]
+        assert gone.title not in response.content.decode()
 
     def test_the_featured_event_links_to_its_booking_page(
         self, client, association, event

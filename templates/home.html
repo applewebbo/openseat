@@ -92,19 +92,6 @@
                 </ul>
             {% endif %}
 
-            {% if past %}
-                <h2 id="archivio" class="text-base-content/60 mt-14 text-sm font-semibold tracking-tight">
-                    {% translate "Already done" %}
-                </h2>
-                <ul class="text-base-content/60 mt-4 space-y-1.5 text-sm">
-                    {% for event in past %}
-                        <li class="flex items-baseline gap-3">
-                            <span class="tabular-nums">{{ event.starts_at|date:"d/m/Y" }}</span>
-                            <span class="min-w-0 truncate">{{ event.title }}</span>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
         </section>
     </main>
 

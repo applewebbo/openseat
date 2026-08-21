@@ -36,7 +36,6 @@ def home(request):
             # The soonest date carries the page; the others are dates, not news.
             "featured": upcoming[0] if upcoming else None,
             "upcoming": upcoming[1:],
-            "past": Event.objects.filter(association=association).past(),
         },
     )
 
