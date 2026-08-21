@@ -108,3 +108,8 @@ failing step aborts the boot, so a broken migration never becomes healthy.
 
 Keep `ARG TAILWIND_VERSION` in the Dockerfile aligned with what `django-tailwind-cli`
 expects, or the first boot downloads ~120 MB and the health check times out.
+
+Keep `ARG POSTGRES_VERSION` aligned with the major version of the database the
+deploy points at. `dbbackup` shells out to `pg_dump`, which refuses a server newer
+than itself, and the media backup keeps succeeding — so the failure is a silent
+one until someone needs the dump.
