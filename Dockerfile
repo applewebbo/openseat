@@ -46,7 +46,7 @@ RUN uv sync --frozen --no-dev --no-install-project
 # Pre-download the Tailwind CLI so the first boot doesn't pull ~120MB
 # IMPORTANT: keep TAILWIND_VERSION aligned with what django-tailwind-cli expects
 # (the release skill verifies this on every release)
-ARG TAILWIND_VERSION=2.10.10
+ARG TAILWIND_VERSION=2.10.13
 RUN mkdir -p /app/.django_tailwind_cli \
   && ARCH="$(dpkg --print-architecture)" \
   && case "$ARCH" in \
