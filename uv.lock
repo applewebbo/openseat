@@ -1065,7 +1065,7 @@ dependencies = [
 ]
 name = "openseat"
 source = {virtual = "."}
-version = "2026.1.0"
+version = "2026.1"
 
 [package.dev-dependencies]
 dev = [
