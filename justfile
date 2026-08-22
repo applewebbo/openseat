@@ -64,9 +64,9 @@ update_alpine:
     echo "$LATEST" > "$VERSION_FILE"
     echo "✓ Alpine $LATEST installed in $STATIC_DIR"
 
-# The handful of Phosphor icons the admin wears, vendored like Alpine: they are
-# masks painted with the text colour, so only the outline matters. The bold
-# weight, because at 14px the regular one goes thin beside the text. MIT licence.
+# They are masks painted with the text colour, so only the outline matters. The
+# bold weight, because at 14px the regular one goes thin beside the text. MIT.
+# Vendor the handful of Phosphor icons the admin wears, the way Alpine is
 [group('setup')]
 update_icons:
     #!/usr/bin/env bash
