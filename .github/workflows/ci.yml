@@ -35,3 +35,16 @@ jobs:
       run: |
         uv run pytest -n "$TEST_WORKERS" --dist loadscope --cov=. \
           --cov-report term:skip-covered --cov-fail-under 100
+
+  deploy:
+    needs: quality
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Trigger the Coolify deploy
+      env:
+        COOLIFY_WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_URL }}
+        COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+      run: |
+        curl -fsS "$COOLIFY_WEBHOOK_URL" \
+          -H "Authorization: Bearer $COOLIFY_TOKEN"

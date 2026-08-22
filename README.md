@@ -81,9 +81,9 @@ See [CLAUDE.md](CLAUDE.md) for the full stack and the project conventions.
 
 ## Deployment
 
-Coolify builds the `Dockerfile` on push to `main`. `entrypoint.sh` migrates,
-compiles translations, builds the CSS, collects static files, then starts
-`web` + `worker` via hivemind.
+A green suite on `main` calls Coolify's deploy webhook, which builds the
+`Dockerfile`. `entrypoint.sh` migrates, compiles translations, builds the CSS,
+collects static files, then starts `web` + `worker` via hivemind.
 
 ## License
 

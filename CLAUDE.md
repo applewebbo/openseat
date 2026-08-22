@@ -101,7 +101,12 @@ just update_all       # lock + Alpine + icons + hooks
 
 ## Deploy
 
-Coolify builds the `Dockerfile` on push to `main` and gates on its own health check.
+The `deploy` job in `.github/workflows/ci.yml` runs only after `quality` passes on
+`main` and calls Coolify's deploy API webhook, reading `COOLIFY_WEBHOOK_URL` and
+`COOLIFY_TOKEN` from the repository secrets. Automatic Deployment stays **off** in
+the Coolify application, otherwise a push deploys twice and skips the suite.
+
+Coolify then builds the `Dockerfile` and gates on its own health check.
 `entrypoint.sh` runs migrate → compilemessages → tailwind build → collectstatic, then
 hands over to hivemind with the `Procfile` (`web` + `worker`). `set -eu` means a
 failing step aborts the boot, so a broken migration never becomes healthy.
