@@ -39,7 +39,9 @@ just makemigrations   # create them
 just ftest            # fast parallel suite  ← the one to use
 just cov              # suite + coverage, fails under 100%
 just lint             # full pre-commit suite — ALWAYS before `git add`
-just check            # manage.py check --deploy against prod settings
+just check            # manage.py check --deploy against prod settings — needs a
+                      # .env in step with .env.example: the prod branch reads
+                      # SITE_BASE_URL and DATABASE_URL, and crashes without them
 just crawl            # in-process site crawl, catches dead links and assets
 just messages         # makemessages + compilemessages (it, en)
 just update_alpine    # re-vendor Alpine from the npm registry
