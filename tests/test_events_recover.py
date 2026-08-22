@@ -39,13 +39,15 @@ def ask_for_link(client, email="maria.rossi@example.com"):
 
 
 def test_an_address_with_a_booking_is_sent_the_link(client, booked):
-    ask_for_link(client)
+    """The clock stays put: a signed token carries the second it was made in."""
+    with time_machine.travel(timezone.now(), tick=False):
+        ask_for_link(client)
 
-    assert len(mail.outbox) == 1
-    assert "maria.rossi@example.com" in mail.outbox[0].to
-    assert reverse("events:mine", args=[contact_token_for(booked.contact_email)]) in (
-        mail.outbox[0].body
-    )
+        assert len(mail.outbox) == 1
+        assert "maria.rossi@example.com" in mail.outbox[0].to
+        assert reverse(
+            "events:mine", args=[contact_token_for(booked.contact_email)]
+        ) in (mail.outbox[0].body)
 
 
 def test_the_answer_never_says_whether_the_address_booked(client, booked):
