@@ -26,7 +26,10 @@ jobs:
       run: uvx prek run --all-files
 
     - name: Compile translations
-      run: uv run python manage.py compilemessages -l it -l en --ignore=.venv
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y --no-install-recommends gettext
+        uv run python manage.py compilemessages -l it -l en --ignore=.venv
 
     - name: Tests with coverage
       run: |
