@@ -4,6 +4,7 @@ default:
     @just --list
 
 # ---------- setup ----------
+
 [group('setup')]
 @install:
     uv sync
@@ -114,6 +115,7 @@ update_icons:
     echo "✓ Phosphor $LATEST ($WEIGHT): ${ICONS[*]} in $STATIC_DIR"
 
 # ---------- development ----------
+
 [group('development')]
 @local:
     uv run python manage.py tailwind runserver
@@ -156,6 +158,7 @@ messages:
     uv run python manage.py compilemessages -l it -l en --ignore=.venv
 
 # ---------- tests ----------
+
 [group('utility')]
 test *args:
     ENVIRONMENT=test uv run python -m pytest --reuse-db -s -x {{ args }}
@@ -173,6 +176,7 @@ cov *args:
         --cov-fail-under 100 {{ args }}
 
 # ---------- quality ----------
+
 [group('utility')]
 lint:
     nice -n 10 just _pre-commit run --all-files
@@ -183,3 +187,126 @@ check:
 
 _pre-commit *args:
     uvx prek {{ args }}
+
+# ---------- github ----------
+# origin may point elsewhere, so every gh call names the repository
+github_repo := "applewebbo/openseat"
+
+[group('github')]
+issues state="open":
+    gh issue list -R {{ github_repo }} --state {{ state }}
+
+[group('github')]
+issue number:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    gh issue view {{ number }} -R {{ github_repo }}
+    comments=$(gh issue view {{ number }} -R {{ github_repo }} --comments)
+    if [ -n "$comments" ]; then
+        printf '\n--- Comments ---\n%s\n' "$comments"
+    fi
+
+[group('github')]
+issue-create title body="":
+    gh issue create -R {{ github_repo }} --title "{{ title }}" --body "{{ body }}"
+
+[group('github')]
+issue-comment number file:
+    gh issue comment {{ number }} -R {{ github_repo }} --body-file {{ file }}
+
+[group('github')]
+issue-edit-body number file:
+    gh issue edit {{ number }} -R {{ github_repo }} --body-file {{ file }}
+
+[group('github')]
+issue-close number:
+    gh issue close {{ number }} -R {{ github_repo }}
+
+[group('github')]
+issue-reopen number:
+    gh issue reopen {{ number }} -R {{ github_repo }}
+
+# --force updates the colour when the label is already there
+[group('github')]
+label-create name color="0E8A16":
+    gh label create "{{ name }}" -R {{ github_repo }} --color "{{ color }}" --force
+
+[group('github')]
+issue-label number *labels:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    for label in {{ labels }}; do
+        gh issue edit {{ number }} -R {{ github_repo }} --add-label "$label"
+        echo "✓ label '$label' added to issue #{{ number }}"
+    done
+
+[group('github')]
+release-list:
+    gh release list -R {{ github_repo }}
+
+[group('github')]
+release-show tag:
+    gh release view "{{ tag }}" -R {{ github_repo }}
+
+# Push main and the tag, then cut the release
+[group('github')]
+release-create tag previous_tag="" notes_file="" draft="false" prerelease="false":
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    git push origin main
+
+    if git rev-parse "{{ tag }}" >/dev/null 2>&1; then
+        echo "tag {{ tag }} already exists"
+    else
+        git tag "{{ tag }}"
+    fi
+    git push origin "refs/tags/{{ tag }}"
+
+    if [ -n "{{ notes_file }}" ]; then
+        NOTES_FILE="{{ notes_file }}"
+    else
+        NOTES_FILE=$(mktemp /tmp/release-notes-XXXXXX.md)
+        if [ -n "{{ previous_tag }}" ]; then
+            PREV_TAG="{{ previous_tag }}"
+        else
+            PREV_TAG=$(git tag --sort=-version:refname | grep -v "{{ tag }}" | head -1)
+        fi
+        COMMITS=$(git log ${PREV_TAG}..{{ tag }} --pretty=format:"- %s" --reverse 2>/dev/null || echo "- Initial release")
+        {
+            echo "## What's New in {{ tag }}"
+            echo ""
+            for section in "feat:### ✨ Features" "fix:### 🐛 Bug Fixes" \
+                           "chore|build|ci:### 🛠️ Maintenance" "test:### 🚨 Tests" \
+                           "docs:### 📚 Documentation" "refactor|style:### ♻️ Refactoring"; do
+                pattern=${section%%:*}
+                heading=${section#*:}
+                body=$(echo "$COMMITS" | grep -E "^- (${pattern})" || true)
+                if [ -n "$body" ]; then
+                    printf '%s\n%s\n\n' "$heading" "$body"
+                fi
+            done
+            echo "### 📖 Full Changelog"
+            echo "https://github.com/{{ github_repo }}/compare/${PREV_TAG}...{{ tag }}"
+        } > "$NOTES_FILE"
+    fi
+
+    RELEASE_FLAGS=(--title "{{ tag }}" --notes-file "$NOTES_FILE")
+    if [ "{{ draft }}" = "true" ]; then
+        RELEASE_FLAGS+=(--draft)
+    fi
+    if [ "{{ prerelease }}" = "true" ]; then
+        RELEASE_FLAGS+=(--prerelease)
+    fi
+
+    gh release create "{{ tag }}" -R {{ github_repo }} "${RELEASE_FLAGS[@]}"
+
+# ---------- housekeeping ----------
+# Removes the Tailwind binary too: the next build downloads ~120MB again
+[group('setup')]
+clean:
+    rm -rf .venv .pytest_cache .ruff_cache .coverage htmlcov .django_tailwind_cli
+    find . -type d -name "__pycache__" -exec rm -r {} +
+
+[group('setup')]
+fresh: clean install
