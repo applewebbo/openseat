@@ -25,6 +25,9 @@ jobs:
     - name: Lint
       run: uvx prek run --all-files
 
+    - name: Compile translations
+      run: uv run python manage.py compilemessages -l it -l en --ignore=.venv
+
     - name: Tests with coverage
       run: |
         uv run pytest -n "$TEST_WORKERS" --dist loadscope --cov=. \
