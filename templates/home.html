@@ -90,17 +90,21 @@
                     {% for event in upcoming %}
                         <li>
                             <a href="{{ event.get_absolute_url }}"
-                               class="flex items-center gap-4 rounded-xl border border-black/5 bg-white p-3 transition-all duration-200 ease-in-out hover:border-black/15">
-                                <img src="{{ event.square_url }}"
-                                     alt=""
-                                     width="800"
-                                     height="800"
-                                     class="size-16 shrink-0 rounded-lg object-cover sm:size-20" />
-                                <span class="min-w-0 flex-1">
-                                    <span class="block font-medium tracking-tight">{{ event.title }}</span>
-                                    <span class="text-base-content/60 block text-sm">{{ event.starts_at|date:"d F Y, H:i" }}</span>
+                               class="flex flex-col gap-3 rounded-xl border border-black/5 bg-white p-3 transition-all duration-200 ease-in-out hover:border-black/15 sm:flex-row sm:items-center sm:gap-4">
+                                <span class="flex items-center gap-4">
+                                    <img src="{{ event.square_url }}"
+                                         alt=""
+                                         width="800"
+                                         height="800"
+                                         class="size-16 shrink-0 rounded-lg object-cover sm:size-20" />
+                                    <span class="min-w-0 flex-1">
+                                        <span class="block font-medium tracking-tight">{{ event.title }}</span>
+                                        <span class="text-base-content/60 block text-sm">{{ event.starts_at|date:"d F Y, H:i" }}</span>
+                                    </span>
                                 </span>
-                                <span class="badge badge-outline mr-2 shrink-0">{% translate "Book" %}</span>
+                                <span class="badge border-primary/30 bg-primary/10 text-primary w-full justify-center sm:mr-2 sm:w-auto sm:shrink-0">
+                                    {% translate "Book" %}
+                                </span>
                             </a>
                         </li>
                     {% endfor %}
