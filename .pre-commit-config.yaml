@@ -58,8 +58,9 @@ repos:
   - id: djlint-django
     files: ^templates/.*\.html$
     # Mail templates are exempt: a mail client reads no stylesheet, so every
-    # rule has to travel inline with the tag it styles.
-    exclude: ^templates/.*/mail/.*\.html$
+    # rule has to travel inline with the tag it styles. account/email/ is
+    # allauth's own fixed template path for its native emails.
+    exclude: ^templates/.*/mail/.*\.html$|^templates/account/email/.*\.html$
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.16.4

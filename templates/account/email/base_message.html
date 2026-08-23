@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <title>
-            {% block title %}{% endblock title %}
+            {% block title %}{% endblock %}
         </title>
     </head>
     <body style="margin:0;padding:24px;background:#f6f4f1;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1f2124;line-height:1.5">
@@ -13,7 +13,7 @@
                     <p style="margin:0;font-size:13px;font-weight:600;color:{{ association.colour_primary|default:"#ED5C08" }}">
                         {{ association.name|default:"OpenSeat" }}
                     </p>
-                    {% block content %}{% endblock content %}
+                    {% block content %}{% endblock %}
                 </td>
             </tr>
             <tr>
