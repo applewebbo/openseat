@@ -1,9 +1,11 @@
 import pytest
 from allauth.account.models import EmailAddress, EmailConfirmationHMAC
+from allauth.account.signals import email_confirmed, user_signed_up
 from django.core import mail
 from django.urls import reverse
 
 from accounts.models import CustomUser
+from accounts.notifications import deliver_account_approved, deliver_approval_request
 
 
 @pytest.mark.django_db
@@ -63,3 +65,58 @@ def test_approving_a_user_in_admin_activates_them_and_sends_an_email(
     assert pending_user.is_active
     assert len(mail.outbox) == 1
     assert pending_user.email in mail.outbox[0].to
+
+
+@pytest.mark.django_db
+def test_a_pre_verified_signup_is_deactivated_immediately(user_factory):
+    new_user = user_factory(is_active=True)
+    EmailAddress.objects.create(
+        user=new_user, email=new_user.email, verified=True, primary=True
+    )
+
+    user_signed_up.send(sender=new_user.__class__, request=None, user=new_user)
+
+    new_user.refresh_from_db()
+    assert not new_user.is_active
+
+
+@pytest.mark.django_db
+def test_confirming_email_for_an_already_inactive_user_is_a_noop(user_factory):
+    inactive_user = user_factory(is_active=False)
+    email_address = EmailAddress.objects.create(
+        user=inactive_user, email=inactive_user.email, verified=True, primary=True
+    )
+    mail.outbox.clear()
+
+    email_confirmed.send(
+        sender=email_address.__class__, request=None, email_address=email_address
+    )
+
+    inactive_user.refresh_from_db()
+    assert not inactive_user.is_active
+    assert len(mail.outbox) == 0
+
+
+@pytest.mark.django_db
+def test_delivering_approval_request_for_a_missing_user_is_a_noop():
+    deliver_approval_request(999999)
+
+    assert len(mail.outbox) == 0
+
+
+@pytest.mark.django_db
+def test_delivering_approval_request_with_no_active_superusers_is_a_noop(
+    user_factory,
+):
+    pending_user = user_factory()
+
+    deliver_approval_request(pending_user.pk)
+
+    assert len(mail.outbox) == 0
+
+
+@pytest.mark.django_db
+def test_delivering_account_approved_for_a_missing_user_is_a_noop():
+    deliver_account_approved(999999)
+
+    assert len(mail.outbox) == 0
