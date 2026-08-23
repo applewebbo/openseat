@@ -1,0 +1,6 @@
+{% load allauth %}
+<span {% if attrs.title %}title="{{ attrs.title }}"{% endif %}
+      class="badge badge-sm border-base-300 text-base-content/70 bg-base-100">
+    {% slot %}
+    {% endslot %}
+</span>

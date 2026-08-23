@@ -1,0 +1,11 @@
+{% load allauth %}
+<details {% if attrs.open %}open{% endif %} class="collapse-arrow border-base-300 collapse border">
+    <summary class="collapse-title text-sm font-medium">
+        {% slot summary %}
+        {% endslot %}
+    </summary>
+    <div class="collapse-content">
+        {% slot body %}
+        {% endslot %}
+    </div>
+</details>

@@ -60,7 +60,8 @@ version = "2026.1"
 
 [tool.bandit]
 exclude_dirs = ["tests"]  # fixture credentials are not secrets
-skips = ["B101"]
+# B105 misreads ACCOUNT_FORMS dict keys ("change_password", ...) as hardcoded passwords
+skips = ["B101", "B105"]
 
 [tool.coverage.run]
 branch = true

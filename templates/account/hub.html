@@ -1,0 +1,23 @@
+{% extends "allauth/layouts/manage.html" %}
+{% load i18n %}
+{% block head_title %}
+    {% translate "Account" %}
+{% endblock head_title %}
+{% block breadcrumb %}{% endblock breadcrumb %}
+{% block content %}
+    <h1 class="text-xl font-bold tracking-tight">{% translate "Account" %}</h1>
+    <div class="grid gap-4 sm:grid-cols-2">
+        <a href="{% url 'account_email' %}"
+           class="border-base-300 hover:border-primary/50 hover:bg-primary/5 text-base-content block rounded-xl border p-5 no-underline transition-colors duration-200 ease-in-out">
+            <h2 class="text-base font-semibold tracking-tight">{% translate "Email" %}</h2>
+            <p class="text-base-content/70 mt-1 text-sm leading-relaxed">
+                {% translate "Change the address you sign in with." %}
+            </p>
+        </a>
+        <a href="{% url 'account_change_password' %}"
+           class="border-base-300 hover:border-primary/50 hover:bg-primary/5 text-base-content block rounded-xl border p-5 no-underline transition-colors duration-200 ease-in-out">
+            <h2 class="text-base font-semibold tracking-tight">{% translate "Password" %}</h2>
+            <p class="text-base-content/70 mt-1 text-sm leading-relaxed">{% translate "Set a new password." %}</p>
+        </a>
+    </div>
+{% endblock content %}

@@ -50,6 +50,13 @@ html {
     text-underline-offset: 2px;
 }
 
+.account-card p a,
+.account-card .field-help a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
 .rich-text blockquote {
     border-left: 3px solid var(--assoc-bright);
     padding-left: 1rem;

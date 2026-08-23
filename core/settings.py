@@ -104,6 +104,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "core.context_processors.build",
+                "core.context_processors.association",
             ],
             "loaders": [
                 (
@@ -253,6 +254,17 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_PRESERVE_USERNAME_CASING = False
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "OpenSeat - "
+# Every form allauth builds gets the same daisyUI widget classes as the rest
+# of the site — see core.forms.DaisyWidgetsMixin.
+ACCOUNT_FORMS = {
+    "login": "accounts.forms.LoginForm",
+    "signup": "accounts.forms.SignupForm",
+    "add_email": "accounts.forms.AddEmailForm",
+    "change_password": "accounts.forms.ChangePasswordForm",
+    "set_password": "accounts.forms.SetPasswordForm",
+    "reset_password": "accounts.forms.ResetPasswordForm",
+    "reset_password_from_key": "accounts.forms.ResetPasswordKeyForm",
+}
 
 # Register Google only when credentials are present, so an install without OAuth
 # hides the button instead of raising.

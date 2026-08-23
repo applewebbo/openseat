@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 11:44+0200\n"
+"POT-Creation-Date: 2026-08-23 07:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,11 +59,11 @@ msgstr "utente"
 msgid "users"
 msgstr "utenti"
 
-#: core/settings.py:191
+#: core/settings.py:197
 msgid "Italian"
 msgstr "Italiano"
 
-#: core/settings.py:191
+#: core/settings.py:197
 msgid "English"
 msgstr "Inglese"
 
@@ -93,7 +93,7 @@ msgid "Bookings for %(event)s"
 msgstr "Prenotazioni per %(event)s"
 
 #: events/forms.py:19 events/forms.py:73 intake/forms.py:285
-#: templates/home.html:104
+#: templates/home.html:119
 msgid "Email address"
 msgstr "Indirizzo email"
 
@@ -101,7 +101,7 @@ msgstr "Indirizzo email"
 msgid "The one the association writes to."
 msgstr "Quello a cui scrive l’associazione."
 
-#: events/forms.py:26 templates/home.html:123
+#: events/forms.py:26 templates/home.html:138
 #: templates/intake/base-intake.html:63
 msgid "Tax code"
 msgstr "Codice fiscale"
@@ -281,7 +281,7 @@ msgstr "prenotazioni"
 msgid "Booked: %(event)s"
 msgstr "Prenotazione confermata: %(event)s"
 
-#: events/notifications.py:79 templates/events/mail/bookings.html:5
+#: events/notifications.py:76 templates/events/mail/bookings.html:5
 #: templates/events/mail/bookings.html:14 templates/events/mine.html:4
 #: templates/events/mine.html:12 templates/events/mine.html:19
 msgid "Your bookings"
@@ -774,9 +774,65 @@ msgstr "attivo"
 msgid "members"
 msgstr "soci"
 
+#: templates/account/hub.html:4 templates/account/hub.html:8
 #: templates/admin/base_site.html:42 templates/admin/base_site.html:44
+#: templates/allauth/layouts/manage.html:52 templates/home.html:25
 msgid "Account"
 msgstr "Account"
+
+#: templates/account/hub.html:12
+msgid "Email"
+msgstr "Email"
+
+#: templates/account/hub.html:14
+msgid "Change the address you sign in with."
+msgstr "Cambia l'indirizzo con cui accedi."
+
+#: templates/account/hub.html:19
+msgid "Password"
+msgstr "Password"
+
+#: templates/account/hub.html:20
+msgid "Set a new password."
+msgstr "Imposta una nuova password."
+
+#: templates/account/login.html:4 templates/account/login.html:8
+#: templates/account/login.html:21
+msgid "Sign In"
+msgstr "Accedi"
+
+#: templates/account/login.html:32
+#, python-format
+msgid ""
+"If you have not created an account yet, then please %(link)ssign "
+"up%(end_link)s first."
+msgstr ""
+"Se non hai ancora creato un account, %(link)sregistrati%(end_link)s prima."
+
+#: templates/account/login.html:41
+msgid "Sign in with a passkey"
+msgstr "Accedi con una passkey"
+
+#: templates/account/login.html:46
+msgid "Send me a sign-in code"
+msgstr "Inviami un codice di accesso"
+
+#: templates/account/signup.html:4
+msgid "Signup"
+msgstr "Registrazione"
+
+#: templates/account/signup.html:8 templates/account/signup.html:21
+msgid "Sign Up"
+msgstr "Registrati"
+
+#: templates/account/signup.html:32
+#, python-format
+msgid "Already have an account? Then please %(link)ssign in%(end_link)s."
+msgstr "Hai già un account? %(link)sAccedi%(end_link)s."
+
+#: templates/account/signup.html:39
+msgid "Sign up using a passkey"
+msgstr "Registrati con una passkey"
 
 #: templates/admin/base_site.html:47
 msgid "View site"
@@ -809,6 +865,14 @@ msgstr ""
 #: templates/admin/date_hierarchy.html:6
 msgid "By date"
 msgstr "Per data"
+
+#: templates/allauth/elements/hr.html:2
+msgid "or"
+msgstr "oppure"
+
+#: templates/allauth/layouts/manage.html:32 templates/home.html:28
+msgid "Sign out"
+msgstr "Esci"
 
 #: templates/events/book.html:4 templates/events/book.html:12
 #: templates/events/mail/booking.html:19 templates/events/mail/booking.txt:6
@@ -907,7 +971,7 @@ msgstr "Da qui puoi cambiare solo i tuoi recapiti e una nota."
 msgid "Save"
 msgstr "Salva"
 
-#: templates/events/landing.html:33 templates/home.html:88
+#: templates/events/landing.html:33 templates/home.html:103
 msgid "Book"
 msgstr "Prenota"
 
@@ -1017,7 +1081,7 @@ msgstr[1] "Hai %(counter)s prenotazioni in arrivo."
 
 #: templates/events/mail/bookings.html:33 templates/events/recover.html:4
 #: templates/events/recover.html:21 templates/events/recover.html:26
-#: templates/home.html:96
+#: templates/home.html:111
 msgid "Manage your bookings"
 msgstr "Gestisci le tue prenotazioni"
 
@@ -1078,7 +1142,7 @@ msgstr ""
 "Non è arrivato nulla? La prenotazione potrebbe essere su un altro indirizzo, "
 "oppure la data potrebbe essere passata. Scrivici e la cerchiamo noi."
 
-#: templates/events/recover-sent.html:32 templates/home.html:129
+#: templates/events/recover-sent.html:32 templates/home.html:144
 #: templates/intake/base-intake.html:69
 msgid "Contact us"
 msgstr "Contattaci"
@@ -1092,10 +1156,10 @@ msgid ""
 "Links last a few days, so an old one no longer opens anything. Ask for a new "
 "one below."
 msgstr ""
-"I link durano pochi giorni, quindi uno vecchio non apre più nulla. Richiedine "
-"uno nuovo qui sotto."
+"I link durano pochi giorni, quindi uno vecchio non apre più nulla. "
+"Richiedine uno nuovo qui sotto."
 
-#: templates/events/recover.html:28 templates/home.html:98
+#: templates/events/recover.html:28 templates/home.html:113
 msgid ""
 "Enter the address you booked with and we will send you the link to change or "
 "cancel."
@@ -1103,7 +1167,7 @@ msgstr ""
 "Inserisci l'indirizzo con cui hai prenotato e ti mandiamo il link per "
 "modificare o annullare."
 
-#: templates/events/recover.html:36 templates/home.html:112
+#: templates/events/recover.html:36 templates/home.html:127
 msgid "Manage"
 msgstr "Gestisci"
 
@@ -1123,19 +1187,23 @@ msgstr "Apri l'amministrazione"
 msgid "Skip to the events"
 msgstr "Vai agli appuntamenti"
 
-#: templates/home.html:48
+#: templates/home.html:34
+msgid "Login"
+msgstr "Accedi"
+
+#: templates/home.html:63
 msgid "Next date"
 msgstr "Prossimo appuntamento"
 
-#: templates/home.html:59
+#: templates/home.html:74
 msgid "Book your experience"
 msgstr "Prenota la tua esperienza"
 
-#: templates/home.html:65
+#: templates/home.html:80
 msgid "No date is open right now"
 msgstr "Al momento non ci sono date aperte"
 
-#: templates/home.html:67
+#: templates/home.html:82
 #, python-format
 msgid ""
 "The next dates are published here. Write to %(email)s to be told when one "
@@ -1144,11 +1212,11 @@ msgstr ""
 "Le prossime date vengono pubblicate qui. Scrivi a %(email)s per essere "
 "avvisato quando ne apre una."
 
-#: templates/home.html:73
+#: templates/home.html:88
 msgid "Other open dates"
 msgstr "Altre date aperte"
 
-#: templates/home.html:135 templates/intake/base-intake.html:75
+#: templates/home.html:150 templates/intake/base-intake.html:75
 msgid "Statute"
 msgstr "Statuto"
 
@@ -1689,6 +1757,9 @@ msgstr "Le risposte vengono salvate man mano."
 #: templates/intake/step.html:53
 msgid "Save and come back later"
 msgstr "Salva e riprendi più tardi"
+
+#~ msgid "My account"
+#~ msgstr "Il mio account"
 
 #~ msgid "Already done"
 #~ msgstr "Già fatti"

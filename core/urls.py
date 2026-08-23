@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_not_required
 from django.urls import include, path, re_path
 from pwa.views import manifest, offline, service_worker
 
+from accounts.views import hub
 from core.views import home, theme_css
 
 # The PWA endpoints must stay reachable anonymously, so they are declared here with
@@ -17,6 +18,9 @@ urlpatterns = [
     path("theme.css", theme_css, name="theme-css-current"),
     path("", include("intake.urls")),
     path("", include("events.urls")),
+    # Distinct from /accounts/, allauth's own prefix: the hub in front of the
+    # email and password pages it provides.
+    path("account/", hub, name="account-hub"),
     path("admin/", admin.site.urls),
     # The editor widget reverses its upload endpoint unconditionally, so the
     # route has to exist even though the toolbar offers no upload button.

@@ -1,0 +1,65 @@
+{% load allauth %}
+{% if attrs.type == "hidden" %}
+    <input type="hidden"
+           {% if attrs.name %}name="{{ attrs.name }}"{% endif %}
+           {% if attrs.id %}id="{{ attrs.id }}"{% endif %}
+           {% if attrs.value is not None %}value="{{ attrs.value }}"{% endif %}>
+{% else %}
+    <div>
+        {% if attrs.type == "textarea" %}
+            <label class="mb-1.5 block text-sm font-medium {% if attrs.unlabeled %}sr-only{% endif %}"
+                   for="{{ attrs.id }}">
+                {% slot label %}
+                {% endslot %}
+            </label>
+            <textarea {% if attrs.required %}required{% endif %}
+                      {% if attrs.rows %}rows="{{ attrs.rows }}"{% endif %}
+                      {% if attrs.disabled %}disabled{% endif %}
+                      {% if attrs.readonly %}readonly{% endif %}
+                      {% if attrs.name %}name="{{ attrs.name }}"{% endif %}
+                      {% if attrs.id %}id="{{ attrs.id }}"{% endif %}
+                      {% if attrs.placeholder %}placeholder="{{ attrs.placeholder }}"{% endif %}
+                      class="textarea textarea-bordered w-full">{% slot value %}{% endslot %}</textarea>
+        {% elif attrs.type == "checkbox" or attrs.type == "radio" %}
+            <label class="flex cursor-pointer items-center gap-2 text-sm"
+                   for="{{ attrs.id }}">
+                <input {% if attrs.required %}required{% endif %}
+                       {% if attrs.disabled %}disabled{% endif %}
+                       {% if attrs.readonly %}readonly{% endif %}
+                       {% if attrs.checked %}checked{% endif %}
+                       {% if attrs.name %}name="{{ attrs.name }}"{% endif %}
+                       {% if attrs.id %}id="{{ attrs.id }}"{% endif %}
+                       {% if attrs.value is not None %}value="{{ attrs.value }}"{% endif %}
+                       type="{{ attrs.type }}"
+                       class="{% if attrs.class %}{{ attrs.class }}{% elif attrs.type == "checkbox" %}checkbox checkbox-primary{% else %}radio radio-primary{% endif %}">
+                <span>
+                    {% slot label %}
+                    {% endslot %}
+                </span>
+            </label>
+        {% else %}
+            <label class="mb-1.5 block text-sm font-medium {% if attrs.unlabeled %}sr-only{% endif %}"
+                   for="{{ attrs.id }}">
+                {% slot label %}
+                {% endslot %}
+            </label>
+            <input {% if attrs.required %}required{% endif %}
+                   {% if attrs.disabled %}disabled{% endif %}
+                   {% if attrs.readonly %}readonly{% endif %}
+                   {% if attrs.name %}name="{{ attrs.name }}"{% endif %}
+                   {% if attrs.id %}id="{{ attrs.id }}"{% endif %}
+                   {% if attrs.placeholder %}placeholder="{{ attrs.placeholder }}"{% endif %}
+                   {% if attrs.autocomplete %}autocomplete="{{ attrs.autocomplete }}"{% endif %}
+                   {% if attrs.value is not None %}value="{{ attrs.value }}"{% endif %}
+                   type="{{ attrs.type }}"
+                   class="{{ attrs.class|default:"input input-bordered w-full" }}">
+        {% endif %}
+        {% if slots.help_text %}
+            <div class="field-help text-base-content/50 mt-1.5 text-xs leading-relaxed [&_ul]:list-none [&_ul]:p-0 [&_li]:mt-0.5">
+                {% slot help_text %}
+                {% endslot %}
+            </div>
+        {% endif %}
+        {% for error in attrs.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+{% endif %}
