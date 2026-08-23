@@ -1,11 +1,12 @@
 {% extends "account/base_entrance.html" %}
 {% load allauth i18n %}
 {% block head_title %}
-    {% trans "Signup" %}
+    {% translate "Signup" %}
 {% endblock head_title %}
+
 {% block content %}
     {% element h1 %}
-        {% trans "Sign Up" %}
+        {% translate "Sign Up" %}
     {% endelement %}
     {% if not SOCIALACCOUNT_ONLY %}
         {% url 'account_signup' as action_url %}
@@ -18,7 +19,7 @@
             {% endslot %}
             {% slot actions %}
                 {% element button tags="prominent,signup" type="submit" %}
-                    {% trans "Sign Up" %}
+                    {% translate "Sign Up" %}
                 {% endelement %}
             {% endslot %}
         {% endelement %}
@@ -36,7 +37,7 @@
         {% element hr %}
         {% endelement %}
         {% element button href=signup_by_passkey_url tags="prominent,signup,outline,primary" %}
-            {% trans "Sign up using a passkey" %}
+            {% translate "Sign up using a passkey" %}
         {% endelement %}
     {% endif %}
     {% if SOCIALACCOUNT_ENABLED %}

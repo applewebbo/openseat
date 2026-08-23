@@ -77,6 +77,8 @@ omit = [
 ]
 
 [tool.djlint]
+# allauth's element-system tags, opaque to djlint without this
+custom_blocks = "element,slot,setvar"
 ignore = "T002,H006"
 profile = "django"
 

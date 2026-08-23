@@ -1,0 +1,10 @@
+{% load i18n %}{% autoescape off %}{% translate "You're in" %}
+
+{% translate "Your account has been approved. You can now sign in." %}
+
+{% translate "Sign In" %}:
+{{ login_url }}
+
+--
+{{ association.name }}
+{% endautoescape %}

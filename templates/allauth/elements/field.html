@@ -55,7 +55,7 @@
                    class="{{ attrs.class|default:"input input-bordered w-full" }}">
         {% endif %}
         {% if slots.help_text %}
-            <div class="field-help text-base-content/50 mt-1.5 text-xs leading-relaxed [&_ul]:list-none [&_ul]:p-0 [&_li]:mt-0.5">
+            <div class="field-help text-base-content/50 mt-1.5 text-xs leading-relaxed [&_li]:mt-0.5 [&_ul]:list-none [&_ul]:p-0">
                 {% slot help_text %}
                 {% endslot %}
             </div>

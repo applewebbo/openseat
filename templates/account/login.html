@@ -1,11 +1,12 @@
 {% extends "account/base_entrance.html" %}
 {% load allauth i18n %}
 {% block head_title %}
-    {% trans "Sign In" %}
+    {% translate "Sign In" %}
 {% endblock head_title %}
+
 {% block content %}
     {% element h1 %}
-        {% trans "Sign In" %}
+        {% translate "Sign In" %}
     {% endelement %}
     {% if not SOCIALACCOUNT_ONLY %}
         {% url 'account_login' as login_url %}
@@ -18,7 +19,7 @@
             {% endslot %}
             {% slot actions %}
                 {% element button type="submit" tags="prominent,login" %}
-                    {% trans "Sign In" %}
+                    {% translate "Sign In" %}
                 {% endelement %}
             {% endslot %}
         {% endelement %}
@@ -38,12 +39,12 @@
         {% element button_group vertical=True %}
             {% if PASSKEY_LOGIN_ENABLED %}
                 {% element button type="submit" form="mfa_login" id="passkey_login" tags="prominent,login,outline,primary" %}
-                    {% trans "Sign in with a passkey" %}
+                    {% translate "Sign in with a passkey" %}
                 {% endelement %}
             {% endif %}
             {% if LOGIN_BY_CODE_ENABLED %}
                 {% element button href=request_login_code_url tags="prominent,login,outline,primary" %}
-                    {% trans "Send me a sign-in code" %}
+                    {% translate "Send me a sign-in code" %}
                 {% endelement %}
             {% endif %}
         {% endelement %}
@@ -52,9 +53,10 @@
         {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
     {% endif %}
 {% endblock content %}
+
 {% block extra_body %}
     {{ block.super }}
     {% if PASSKEY_LOGIN_ENABLED %}
         {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
     {% endif %}
-{% endblock %}
+{% endblock extra_body %}

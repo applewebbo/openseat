@@ -1,0 +1,12 @@
+{% load i18n %}{% autoescape off %}{% translate "Waiting for approval" %}
+
+{% translate "Somebody signed up and their email is verified. They cannot sign in until you approve the account." %}
+
+{{ pending_user.email }}
+
+{% translate "Review in the admin" %}:
+{{ admin_url }}
+
+--
+{{ association.name }}
+{% endautoescape %}

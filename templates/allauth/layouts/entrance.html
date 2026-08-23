@@ -5,14 +5,15 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="robots" content="noindex" />
+        <meta name="description" content="{{ association.name|default:"OpenSeat" }}" />
         <title>
-            {% block head_title %}{% endblock head_title %}
+            {% block head_title %}{% endblock %}
             {% if association %}— {{ association.name }}{% endif %}
         </title>
         {% tailwind_css %}
         <link rel="stylesheet" href="{% url 'theme-css-current' %}" />
         <link rel="stylesheet" href="{% static 'css/custom.css' %}" />
-        {% block extra_head %}{% endblock extra_head %}
+        {% block extra_head %}{% endblock %}
     </head>
     <body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'
           class="text-base-content bg-base-200 flex min-h-screen flex-col antialiased">
@@ -41,7 +42,7 @@
                 {% endif %}
                 <div class="account-card card bg-base-100 border-base-300 border shadow-sm">
                     <div class="card-body gap-4">
-                        {% block content %}{% endblock content %}
+                        {% block content %}{% endblock %}
                     </div>
                 </div>
             </main>
@@ -51,6 +52,6 @@
         <script src="{% static 'js/alpine-collapse.min.js' %}" defer></script>
         <script src="{% static 'js/alpine-focus.min.js' %}" defer></script>
         <script src="{% static 'js/alpine.min.js' %}" defer></script>
-        {% block extra_body %}{% endblock extra_body %}
+        {% block extra_body %}{% endblock %}
     </body>
 </html>

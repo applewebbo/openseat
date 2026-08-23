@@ -7,3 +7,6 @@ class AccountsConfig(AppConfig):
     name = "accounts"
     # What the admin sidebar calls this app: volunteers read it, not developers.
     verbose_name = _("Back-office users")
+
+    def ready(self):
+        from accounts import signals  # noqa: F401  (registers the approval gate)

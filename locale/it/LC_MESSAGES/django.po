@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-23 07:02+0200\n"
+"POT-Creation-Date: 2026-08-23 07:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,15 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: accounts/admin.py:15
+#: accounts/admin.py:16
+msgid "Approve selected users"
+msgstr "Approva gli utenti selezionati"
+
+#: accounts/admin.py:24
 msgid "Personal info"
 msgstr "Dati personali"
 
-#: accounts/admin.py:17
+#: accounts/admin.py:26
 msgid "Permissions"
 msgstr "Permessi"
 
-#: accounts/admin.py:28
+#: accounts/admin.py:37
 msgid "Important dates"
 msgstr "Date importanti"
 
@@ -58,6 +62,15 @@ msgstr "utente"
 #: accounts/models.py:47
 msgid "users"
 msgstr "utenti"
+
+#: accounts/notifications.py:36
+#, python-format
+msgid "New sign-up waiting for approval: %(email)s"
+msgstr "Nuova registrazione in attesa di approvazione: %(email)s"
+
+#: accounts/notifications.py:61 templates/account/mail/account_approved.html:5
+msgid "Your account has been approved"
+msgstr "Il tuo account è stato approvato"
 
 #: core/settings.py:197
 msgid "Italian"
@@ -774,6 +787,19 @@ msgstr "attivo"
 msgid "members"
 msgstr "soci"
 
+#: templates/account/account_inactive.html:4
+#: templates/account/account_inactive.html:7
+msgid "Pending approval"
+msgstr "In attesa di approvazione"
+
+#: templates/account/account_inactive.html:9
+msgid ""
+"Your email is verified. A volunteer still needs to approve the account "
+"before you can sign in - you'll get an email as soon as that happens."
+msgstr ""
+"La tua email è verificata. Un volontario deve ancora approvare l'account "
+"prima che tu possa accedere: riceverai un'email non appena succede."
+
 #: templates/account/hub.html:4 templates/account/hub.html:8
 #: templates/admin/base_site.html:42 templates/admin/base_site.html:44
 #: templates/allauth/layouts/manage.html:52 templates/home.html:25
@@ -798,6 +824,8 @@ msgstr "Imposta una nuova password."
 
 #: templates/account/login.html:4 templates/account/login.html:8
 #: templates/account/login.html:21
+#: templates/account/mail/account_approved.html:23
+#: templates/account/mail/account_approved.txt:5
 msgid "Sign In"
 msgstr "Accedi"
 
@@ -816,6 +844,39 @@ msgstr "Accedi con una passkey"
 #: templates/account/login.html:46
 msgid "Send me a sign-in code"
 msgstr "Inviami un codice di accesso"
+
+#: templates/account/mail/account_approved.html:15
+#: templates/account/mail/account_approved.txt:1
+msgid "You're in"
+msgstr "Sei dentro"
+
+#: templates/account/mail/account_approved.html:18
+#: templates/account/mail/account_approved.txt:3
+msgid "Your account has been approved. You can now sign in."
+msgstr "Il tuo account è stato approvato. Ora puoi accedere."
+
+#: templates/account/mail/approval_request.html:5
+msgid "New sign-up"
+msgstr "Nuova registrazione"
+
+#: templates/account/mail/approval_request.html:12
+#: templates/account/mail/approval_request.txt:1
+msgid "Waiting for approval"
+msgstr "In attesa di approvazione"
+
+#: templates/account/mail/approval_request.html:16
+#: templates/account/mail/approval_request.txt:3
+msgid ""
+"Somebody signed up and their email is verified. They cannot sign in until "
+"you approve the account."
+msgstr ""
+"Qualcuno si è registrato e la sua email è verificata. Non potrà accedere "
+"finché non approvi l'account."
+
+#: templates/account/mail/approval_request.html:21
+#: templates/account/mail/approval_request.txt:7
+msgid "Review in the admin"
+msgstr "Vai all'amministrazione"
 
 #: templates/account/signup.html:4
 msgid "Signup"
