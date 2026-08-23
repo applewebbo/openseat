@@ -17,6 +17,7 @@
     </head>
     <body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'
           class="bg-base-100 text-base-content min-h-screen">
+        <div id="messages">{% include "includes/messages.html" %}</div>
         {% block content %}{% endblock %}
         {% htmx_script %}
         <!-- main.js must load before Alpine to register its alpine:init listener -->

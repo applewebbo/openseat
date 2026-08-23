@@ -33,7 +33,8 @@ def deliver_approval_request(user_pk):
         "admin_url": absolute_url("admin:accounts_customuser_change", user.pk),
     }
     message = EmailMultiAlternatives(
-        subject=_("New sign-up waiting for approval: %(email)s") % {"email": user.email},
+        subject=_("New sign-up waiting for approval: %(email)s")
+        % {"email": user.email},
         body=render_to_string("account/mail/approval_request.txt", context),
         from_email=settings.DEFAULT_FROM_EMAIL,
         to=[recipient.email for recipient in recipients],

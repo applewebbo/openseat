@@ -7,9 +7,8 @@ for the address (Google, with VERIFIED_EMAIL) skip that stage entirely, so
 `user_signed_up` is where their email first shows up verified.
 """
 
-from django.dispatch import receiver
-
 from allauth.account.signals import email_confirmed, user_signed_up
+from django.dispatch import receiver
 
 from accounts.notifications import send_approval_request
 

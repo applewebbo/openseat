@@ -1,0 +1,19 @@
+{% load i18n %}
+<div class="toast toast-top toast-center z-50">
+    {% for message in messages %}
+        <div role="alert"
+             class="alert alert-soft {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-error{% elif message.tags == 'warning' %}alert-warning{% else %}alert-info{% endif %}"
+             x-data="{ show: true }"
+             x-show="show"
+             x-init="setTimeout(() => show = false, 4000)"
+             x-cloak>
+            <span class="text-sm">{{ message }}</span>
+            <button type="button"
+                    class="btn btn-ghost btn-xs btn-circle"
+                    @click="show = false"
+                    aria-label="{% translate 'Close' %}">
+                ✕
+            </button>
+        </div>
+    {% endfor %}
+</div>
