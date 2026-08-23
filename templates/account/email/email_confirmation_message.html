@@ -1,0 +1,27 @@
+{% extends "account/email/base_message.html" %}
+{% load account i18n %}
+{% block title %}
+    {% translate "Confirm your email address" %}
+{% endblock title %}
+{% block content %}
+    {% user_display user as user_display %}
+    <h1 style="margin:16px 0 0;font-size:20px;line-height:1.25;font-weight:700">
+        {% translate "Confirm your email address" %}
+    </h1>
+    <p style="margin:10px 0 0;font-size:14px;color:rgba(31,33,36,.7)">
+        {% blocktranslate with site_domain=current_site.domain %}You're receiving this email because user {{ user_display }} has given your email address to register an account on {{ site_domain }}.{% endblocktranslate %}
+    </p>
+    {% if code %}
+        <p style="margin:24px 0 0;font-size:14px">
+            {% translate "Your email verification code is listed below. Please enter it in your open browser window." %}
+        </p>
+        <p style="margin:8px 0 0;font-size:28px;font-weight:700;letter-spacing:2px">{{ code }}</p>
+    {% else %}
+        <p style="margin:28px 0 0">
+            <a href="{{ activate_url }}"
+               style="display:inline-block;padding:12px 22px;border-radius:12px;background:{{ association.colour_primary|default:"#ED5C08" }};color:#ffffff;font-size:15px;font-weight:600;text-decoration:none">
+                {% translate "Confirm Email Address" %}
+            </a>
+        </p>
+    {% endif %}
+{% endblock content %}

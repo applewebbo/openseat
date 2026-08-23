@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-23 07:29+0200\n"
+"POT-Creation-Date: 2026-08-23 07:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,15 +22,15 @@ msgstr ""
 msgid "Approve selected users"
 msgstr ""
 
-#: accounts/admin.py:24
+#: accounts/admin.py:25
 msgid "Personal info"
 msgstr "Personal info"
 
-#: accounts/admin.py:26
+#: accounts/admin.py:27
 msgid "Permissions"
 msgstr "Permissions"
 
-#: accounts/admin.py:37
+#: accounts/admin.py:38
 msgid "Important dates"
 msgstr "Important dates"
 
@@ -68,7 +68,7 @@ msgstr "users"
 msgid "New sign-up waiting for approval: %(email)s"
 msgstr ""
 
-#: accounts/notifications.py:61 templates/account/mail/account_approved.html:5
+#: accounts/notifications.py:62 templates/account/mail/account_approved.html:5
 msgid "Your account has been approved"
 msgstr ""
 
@@ -115,7 +115,7 @@ msgid "The one the association writes to."
 msgstr ""
 
 #: events/forms.py:26 templates/home.html:138
-#: templates/intake/base-intake.html:63
+#: templates/intake/base-intake.html:65
 msgid "Tax code"
 msgstr ""
 
@@ -594,6 +594,7 @@ msgid "submitted at"
 msgstr ""
 
 #: intake/models.py:264 intake/models.py:366
+#: templates/account/email/base_notification.html:14
 msgid "IP address"
 msgstr ""
 
@@ -764,57 +765,196 @@ msgid "members"
 msgstr ""
 
 #: templates/account/account_inactive.html:4
-#: templates/account/account_inactive.html:7
+#: templates/account/account_inactive.html:8
 msgid "Pending approval"
 msgstr ""
 
-#: templates/account/account_inactive.html:9
+#: templates/account/account_inactive.html:10
 msgid ""
 "Your email is verified. A volunteer still needs to approve the account "
 "before you can sign in - you'll get an email as soon as that happens."
 msgstr ""
 
-#: templates/account/hub.html:4 templates/account/hub.html:8
+#: templates/account/email/account_already_exists_message.html:4
+#: templates/account/email/account_already_exists_message.html:8
+msgid "An account already exists"
+msgstr ""
+
+#: templates/account/email/account_already_exists_message.html:11
+#, python-format
+msgid ""
+"You are receiving this email because you, or someone else, tried to sign up "
+"for an account using the email address %(email)s. An account with that "
+"address already exists."
+msgstr ""
+
+#: templates/account/email/account_already_exists_message.html:14
+msgid ""
+"If you have forgotten about this, use the link below to recover the account."
+msgstr ""
+
+#: templates/account/email/account_already_exists_message.html:19
+#: templates/account/email/password_reset_key_message.html:16
+msgid "Reset Password"
+msgstr ""
+
+#: templates/account/email/base_notification.html:8
+msgid ""
+"If you do not recognise this change, please secure your account immediately."
+msgstr ""
+
+#: templates/account/email/base_notification.html:20
+msgid "Browser"
+msgstr ""
+
+#: templates/account/email/base_notification.html:26
+msgid "Date"
+msgstr ""
+
+#: templates/account/email/email_changed_message.html:4
+msgid "Your email has been changed"
+msgstr ""
+
+#: templates/account/email/email_changed_message.html:7
+#, python-format
+msgid "Your email has been changed from %(from_email)s to %(to_email)s."
+msgstr ""
+
+#: templates/account/email/email_confirmation_message.html:4
+#: templates/account/email/email_confirmation_message.html:9
+#, fuzzy
+#| msgid "email address"
+msgid "Confirm your email address"
+msgstr "email address"
+
+#: templates/account/email/email_confirmation_message.html:12
+#, python-format
+msgid ""
+"You're receiving this email because user %(user_display)s has given your "
+"email address to register an account on %(site_domain)s."
+msgstr ""
+
+#: templates/account/email/email_confirmation_message.html:16
+msgid ""
+"Your email verification code is listed below. Please enter it in your open "
+"browser window."
+msgstr ""
+
+#: templates/account/email/email_confirmation_message.html:23
+#, fuzzy
+#| msgid "email address"
+msgid "Confirm Email Address"
+msgstr "email address"
+
+#: templates/account/email/email_deleted_message.html:4
+#, fuzzy
+#| msgid "The email address is required"
+msgid "An email address was removed"
+msgstr "The email address is required"
+
+#: templates/account/email/email_deleted_message.html:7
+#, python-format
+msgid "Email address %(deleted_email)s has been removed from your account."
+msgstr ""
+
+#: templates/account/email/password_changed_message.html:4
+msgid "Your password has been changed"
+msgstr ""
+
+#: templates/account/email/password_changed_message.html:7
+msgid "Your password has been changed."
+msgstr ""
+
+#: templates/account/email/password_reset_key_message.html:4
+#: templates/account/email/password_reset_key_message.html:8
+msgid "Reset your password"
+msgstr ""
+
+#: templates/account/email/password_reset_key_message.html:11
+msgid ""
+"You're receiving this email because you or someone else has requested a "
+"password reset for your user account. It can be safely ignored if you did "
+"not request it."
+msgstr ""
+
+#: templates/account/email/password_reset_key_message.html:21
+#, python-format
+msgid "In case you forgot, your username is %(username)s."
+msgstr ""
+
+#: templates/account/email/password_set_message.html:4
+msgid "Your password has been set"
+msgstr ""
+
+#: templates/account/email/password_set_message.html:7
+msgid "Your password has been set."
+msgstr ""
+
+#: templates/account/email/unknown_account_message.html:4
+#: templates/account/email/unknown_account_message.html:8
+msgid "No account found"
+msgstr ""
+
+#: templates/account/email/unknown_account_message.html:11
+#, python-format
+msgid ""
+"You are receiving this email because you, or someone else, tried to access "
+"an account with email %(email)s. However, we do not have any record of such "
+"an account."
+msgstr ""
+
+#: templates/account/email/unknown_account_message.html:14
+msgid ""
+"This mail can be safely ignored if you did not initiate this action. If it "
+"was you, you can sign up for an account below."
+msgstr ""
+
+#: templates/account/email/unknown_account_message.html:19
+#: templates/account/signup.html:9 templates/account/signup.html:22
+msgid "Sign Up"
+msgstr ""
+
+#: templates/account/hub.html:4 templates/account/hub.html:10
 #: templates/admin/base_site.html:42 templates/admin/base_site.html:44
-#: templates/allauth/layouts/manage.html:52 templates/home.html:25
+#: templates/allauth/layouts/manage.html:44 templates/home.html:25
 msgid "Account"
 msgstr ""
 
-#: templates/account/hub.html:12
+#: templates/account/hub.html:14
 msgid "Email"
 msgstr ""
 
-#: templates/account/hub.html:14
+#: templates/account/hub.html:16
 msgid "Change the address you sign in with."
 msgstr ""
 
-#: templates/account/hub.html:19
+#: templates/account/hub.html:21
 msgid "Password"
 msgstr ""
 
-#: templates/account/hub.html:20
+#: templates/account/hub.html:22
 msgid "Set a new password."
 msgstr ""
 
-#: templates/account/login.html:4 templates/account/login.html:8
-#: templates/account/login.html:21
+#: templates/account/login.html:4 templates/account/login.html:9
+#: templates/account/login.html:22
 #: templates/account/mail/account_approved.html:23
 #: templates/account/mail/account_approved.txt:5
 msgid "Sign In"
 msgstr ""
 
-#: templates/account/login.html:32
+#: templates/account/login.html:33
 #, python-format
 msgid ""
 "If you have not created an account yet, then please %(link)ssign "
 "up%(end_link)s first."
 msgstr ""
 
-#: templates/account/login.html:41
+#: templates/account/login.html:42
 msgid "Sign in with a passkey"
 msgstr ""
 
-#: templates/account/login.html:46
+#: templates/account/login.html:47
 msgid "Send me a sign-in code"
 msgstr ""
 
@@ -853,16 +993,12 @@ msgstr ""
 msgid "Signup"
 msgstr ""
 
-#: templates/account/signup.html:8 templates/account/signup.html:21
-msgid "Sign Up"
-msgstr ""
-
-#: templates/account/signup.html:32
+#: templates/account/signup.html:33
 #, python-format
 msgid "Already have an account? Then please %(link)ssign in%(end_link)s."
 msgstr ""
 
-#: templates/account/signup.html:39
+#: templates/account/signup.html:40
 msgid "Sign up using a passkey"
 msgstr ""
 
@@ -902,7 +1038,7 @@ msgstr ""
 msgid "or"
 msgstr ""
 
-#: templates/allauth/layouts/manage.html:32 templates/home.html:28
+#: templates/allauth/layouts/manage.html:34 templates/home.html:28
 msgid "Sign out"
 msgstr ""
 
@@ -987,6 +1123,7 @@ msgstr ""
 #: templates/events/booked.html:66 templates/events/booked.html:98
 #: templates/events/booked.html:103 templates/events/mine.html:65
 #: templates/events/mine.html:98 templates/events/mine.html:103
+#: templates/includes/messages.html:14
 msgid "Close"
 msgstr ""
 
@@ -1154,7 +1291,7 @@ msgid ""
 msgstr ""
 
 #: templates/events/recover-sent.html:32 templates/home.html:144
-#: templates/intake/base-intake.html:69
+#: templates/intake/base-intake.html:71
 msgid "Contact us"
 msgstr ""
 
@@ -1219,7 +1356,7 @@ msgstr ""
 msgid "Other open dates"
 msgstr ""
 
-#: templates/home.html:150 templates/intake/base-intake.html:75
+#: templates/home.html:150 templates/intake/base-intake.html:77
 msgid "Statute"
 msgstr ""
 

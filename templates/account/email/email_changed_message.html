@@ -1,0 +1,8 @@
+{% extends "account/email/base_notification.html" %}
+{% load i18n %}
+{% block title %}
+    {% translate "Your email has been changed" %}
+{% endblock title %}
+{% block notification_message %}
+    {% blocktranslate %}Your email has been changed from {{ from_email }} to {{ to_email }}.{% endblocktranslate %}
+{% endblock notification_message %}

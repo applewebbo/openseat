@@ -1,0 +1,22 @@
+{% extends "account/email/base_message.html" %}
+{% load i18n %}
+{% block title %}
+    {% translate "An account already exists" %}
+{% endblock title %}
+{% block content %}
+    <h1 style="margin:16px 0 0;font-size:20px;line-height:1.25;font-weight:700">
+        {% translate "An account already exists" %}
+    </h1>
+    <p style="margin:10px 0 0;font-size:14px;color:rgba(31,33,36,.7)">
+        {% blocktranslate %}You are receiving this email because you, or someone else, tried to sign up for an account using the email address {{ email }}. An account with that address already exists.{% endblocktranslate %}
+    </p>
+    <p style="margin:10px 0 0;font-size:14px;color:rgba(31,33,36,.7)">
+        {% translate "If you have forgotten about this, use the link below to recover the account." %}
+    </p>
+    <p style="margin:28px 0 0">
+        <a href="{{ password_reset_url }}"
+           style="display:inline-block;padding:12px 22px;border-radius:12px;background:{{ association.colour_primary|default:"#ED5C08" }};color:#ffffff;font-size:15px;font-weight:600;text-decoration:none">
+            {% translate "Reset Password" %}
+        </a>
+    </p>
+{% endblock content %}

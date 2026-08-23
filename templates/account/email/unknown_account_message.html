@@ -1,0 +1,22 @@
+{% extends "account/email/base_message.html" %}
+{% load i18n %}
+{% block title %}
+    {% translate "No account found" %}
+{% endblock title %}
+{% block content %}
+    <h1 style="margin:16px 0 0;font-size:20px;line-height:1.25;font-weight:700">
+        {% translate "No account found" %}
+    </h1>
+    <p style="margin:10px 0 0;font-size:14px;color:rgba(31,33,36,.7)">
+        {% blocktranslate %}You are receiving this email because you, or someone else, tried to access an account with email {{ email }}. However, we do not have any record of such an account.{% endblocktranslate %}
+    </p>
+    <p style="margin:10px 0 0;font-size:14px;color:rgba(31,33,36,.7)">
+        {% translate "This mail can be safely ignored if you did not initiate this action. If it was you, you can sign up for an account below." %}
+    </p>
+    <p style="margin:28px 0 0">
+        <a href="{{ signup_url }}"
+           style="display:inline-block;padding:12px 22px;border-radius:12px;background:{{ association.colour_primary|default:"#ED5C08" }};color:#ffffff;font-size:15px;font-weight:600;text-decoration:none">
+            {% translate "Sign Up" %}
+        </a>
+    </p>
+{% endblock content %}
