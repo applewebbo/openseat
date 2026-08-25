@@ -4,15 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('events', '0004_event_form'),
+        ("events", "0004_event_form"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='event',
-            name='checkin_started_at',
-            field=models.DateTimeField(blank=True, help_text='Set by an editor at the door. Closes public bookings until cleared.', null=True, verbose_name='check-in started at'),
+            model_name="event",
+            name="checkin_started_at",
+            field=models.DateTimeField(
+                blank=True,
+                help_text="Set by an editor at the door. Closes public bookings until cleared.",
+                null=True,
+                verbose_name="check-in started at",
+            ),
         ),
     ]

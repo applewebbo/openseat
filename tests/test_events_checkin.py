@@ -30,7 +30,9 @@ def test_an_editor_sees_the_checkin_controls(editor_client, event):
     response = editor_client.get(event.get_absolute_url())
 
     assert response.context["can_manage_checkin"] is True
-    assert reverse("events:checkin-open", args=[event.slug]).encode() in response.content
+    assert (
+        reverse("events:checkin-open", args=[event.slug]).encode() in response.content
+    )
 
 
 # --- opening check-in ---------------------------------------------------------

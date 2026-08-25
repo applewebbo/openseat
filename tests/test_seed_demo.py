@@ -2,8 +2,9 @@ import pytest
 from django.core.management import call_command
 from django.utils import timezone
 
-from events.models import Event
+from events.models import Booking, Event
 from intake.models import Association, PublicForm, SectionKey
+from members.models import Member
 
 
 @pytest.fixture
@@ -66,6 +67,9 @@ def test_text_somebody_already_wrote_is_left_alone(association):
 
 @pytest.mark.django_db
 def test_running_it_twice_changes_nothing(seeded):
+    member_count = Member.objects.count()
+    booking_count = Booking.objects.count()
+
     call_command("seed_demo", verbosity=0)
 
     assert Association.objects.count() == 1
@@ -73,3 +77,32 @@ def test_running_it_twice_changes_nothing(seeded):
     assert Event.objects.count() == 5
     # The sections are installed once, not stacked on the second run.
     assert PublicForm.objects.get().sections.count() == len(SectionKey.values)
+    assert Member.objects.count() == member_count
+    assert Booking.objects.count() == booking_count
+
+
+@pytest.mark.django_db
+def test_every_event_gets_a_realistic_roster(seeded):
+    for event in Event.objects.all():
+        assert 10 <= event.bookings.active().count() <= 15
+
+
+@pytest.mark.django_db
+def test_the_roster_has_a_mix_of_confirmed_and_pending(seeded):
+    event = Event.objects.first()
+
+    assert event.bookings.filter(confirmed_on__isnull=False).exists()
+    assert event.bookings.unconfirmed().exists()
+
+
+@pytest.mark.django_db
+def test_confirmed_bookings_carry_a_fee(seeded):
+    booking = Booking.objects.filter(confirmed_on__isnull=False).first()
+
+    assert booking.fee_amount is not None
+    assert booking.fee_method == "cash"
+
+
+@pytest.mark.django_db
+def test_members_are_shared_across_events_not_duplicated_per_event(seeded):
+    assert Member.objects.count() < Booking.objects.count()
