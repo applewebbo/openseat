@@ -17,7 +17,7 @@
 {% block content %}
     {% if can_manage_checkin %}
         <div role="status"
-             class="alert border-base-300 bg-base-200 mb-8 flex-col items-stretch gap-3 rounded-2xl border sm:flex-row sm:items-center sm:justify-between">
+             class="alert alert-vertical border-base-300 bg-base-200 mb-8 items-stretch justify-items-start rounded-2xl border text-left">
             {% if event.is_checkin_open %}
                 <span class="text-sm font-medium">
                     <span class="badge badge-primary badge-outline mr-2">{% translate "Check-in open" %}</span>
@@ -25,7 +25,9 @@
                 </span>
                 <form method="post" action="{% url 'events:checkin-close' event.slug %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-outline btn-sm rounded-lg">{% translate "Close check-in" %}</button>
+                    <button type="submit" class="btn btn-soft btn-sm w-full rounded-lg">
+                        {% translate "Reopen bookings" %}
+                    </button>
                 </form>
             {% else %}
                 <span class="text-base-content/70 text-sm font-medium">
@@ -33,7 +35,9 @@
                 </span>
                 <form method="post" action="{% url 'events:checkin-open' event.slug %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-primary btn-sm rounded-lg">{% translate "Open check-in" %}</button>
+                    <button type="submit" class="btn btn-primary btn-sm w-full rounded-lg">
+                        {% translate "Open check-in" %}
+                    </button>
                 </form>
             {% endif %}
         </div>

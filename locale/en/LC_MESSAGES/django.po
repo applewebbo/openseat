@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 11:42+0200\n"
+"POT-Creation-Date: 2026-08-25 13:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,7 +115,7 @@ msgid "The one the association writes to."
 msgstr ""
 
 #: events/forms.py:26 templates/home.html:142
-#: templates/intake/base-intake.html:65
+#: templates/intake/base-intake.html:66
 msgid "Tax code"
 msgstr ""
 
@@ -1056,8 +1056,9 @@ msgid "Who is coming"
 msgstr ""
 
 #: templates/events/book.html:10 templates/events/booked.html:10
-#: templates/events/landing.html:10 templates/events/mine.html:10
-#: templates/events/recover-sent.html:10 templates/events/recover.html:10
+#: templates/events/checkin.html:12 templates/events/landing.html:10
+#: templates/events/mine.html:10 templates/events/recover-sent.html:10
+#: templates/events/recover.html:10
 msgid "Home"
 msgstr ""
 
@@ -1095,8 +1096,8 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: templates/events/booked.html:36 templates/events/landing.html:76
-#: templates/events/landing.html:81 templates/events/mine.html:33
+#: templates/events/booked.html:36 templates/events/landing.html:80
+#: templates/events/landing.html:85 templates/events/mine.html:33
 msgid "Cancel"
 msgstr ""
 
@@ -1143,71 +1144,100 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: templates/events/landing.html:23
+#: templates/events/checkin-roster-partial.html:14
+#, python-format
+msgid "No one matches “%(query)s”."
+msgstr ""
+
+#: templates/events/checkin-roster-partial.html:16
+msgid "No one has booked yet."
+msgstr ""
+
+#: templates/events/checkin-row-partial.html:10
+msgid "Checked in"
+msgstr ""
+
+#: templates/events/checkin-row-partial.html:17
+msgid "Undo"
+msgstr ""
+
+#: templates/events/checkin-row-partial.html:26
+msgid "Check in"
+msgstr ""
+
+#: templates/events/checkin.html:4
+msgid "Check-in"
+msgstr ""
+
+#: templates/events/checkin.html:22 templates/events/landing.html:23
 msgid "Check-in open"
+msgstr ""
+
+#: templates/events/checkin.html:27 templates/events/landing.html:29
+msgid "Reopen bookings"
+msgstr ""
+
+#: templates/events/checkin.html:34
+msgid "Search by name"
 msgstr ""
 
 #: templates/events/landing.html:24
 msgid "Public bookings are closed while check-in is running."
 msgstr ""
 
-#: templates/events/landing.html:28
-msgid "Close check-in"
-msgstr ""
-
-#: templates/events/landing.html:32
+#: templates/events/landing.html:34
 msgid ""
 "Open check-in when the event starts to switch to the roster and close public "
 "bookings."
 msgstr ""
 
-#: templates/events/landing.html:36
+#: templates/events/landing.html:39
 msgid "Open check-in"
 msgstr ""
 
-#: templates/events/landing.html:57 templates/home.html:106
+#: templates/events/landing.html:61 templates/home.html:106
 msgid "Book"
 msgstr ""
 
-#: templates/events/landing.html:61
+#: templates/events/landing.html:65
 msgid "Already a member?"
 msgstr ""
 
-#: templates/events/landing.html:61
+#: templates/events/landing.html:65
 msgid "Book by clicking"
 msgstr ""
 
-#: templates/events/landing.html:62
+#: templates/events/landing.html:66
 msgid "here"
 msgstr ""
 
-#: templates/events/landing.html:71
+#: templates/events/landing.html:75
 msgid "Already a member"
 msgstr ""
 
-#: templates/events/landing.html:77
+#: templates/events/landing.html:81
 msgid "Book a place"
 msgstr ""
 
-#: templates/events/landing.html:86
+#: templates/events/landing.html:90
 msgid "This date has already been"
 msgstr ""
 
-#: templates/events/landing.html:88
+#: templates/events/landing.html:92
 msgid ""
 "The booking cannot be changed any more. Thank you for coming — the next "
 "dates are on the home page."
 msgstr ""
 
-#: templates/events/landing.html:91 templates/events/mine.html:44
+#: templates/events/landing.html:95 templates/events/mine.html:44
 msgid "The next dates"
 msgstr ""
 
-#: templates/events/landing.html:93
+#: templates/events/landing.html:97
 msgid "Bookings are closed"
 msgstr ""
 
-#: templates/events/landing.html:95
+#: templates/events/landing.html:99
 #, python-format
 msgid ""
 "This event is no longer taking bookings. Write to %(email)s if you need to "
@@ -1321,7 +1351,7 @@ msgid ""
 msgstr ""
 
 #: templates/events/recover-sent.html:32 templates/home.html:148
-#: templates/intake/base-intake.html:71
+#: templates/intake/base-intake.html:72
 msgid "Contact us"
 msgstr ""
 
@@ -1386,7 +1416,7 @@ msgstr ""
 msgid "Other open dates"
 msgstr ""
 
-#: templates/home.html:154 templates/intake/base-intake.html:77
+#: templates/home.html:154 templates/intake/base-intake.html:78
 msgid "Statute"
 msgstr ""
 

@@ -1,0 +1,30 @@
+{% load i18n %}
+<li id="booking-{{ booking.pk }}" class="list-row items-center gap-3">
+    <div class="min-w-0">
+        <p class="truncate font-medium">{{ booking.full_name }}</p>
+        <p class="text-base-content/60 truncate text-xs">{{ booking.contact_email }}</p>
+    </div>
+    <div></div>
+    <div class="flex items-center gap-2">
+        {% if booking.is_confirmed %}
+            <span class="badge badge-success badge-outline">{% translate "Checked in" %}</span>
+            <form method="post"
+                  action="{% url 'events:checkin-undo' event.slug booking.pk %}"
+                  hx-post="{% url 'events:checkin-undo' event.slug booking.pk %}"
+                  hx-target="#booking-{{ booking.pk }}"
+                  hx-swap="outerHTML">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-ghost btn-xs rounded-lg">{% translate "Undo" %}</button>
+            </form>
+        {% else %}
+            <form method="post"
+                  action="{% url 'events:checkin-confirm' event.slug booking.pk %}"
+                  hx-post="{% url 'events:checkin-confirm' event.slug booking.pk %}"
+                  hx-target="#booking-{{ booking.pk }}"
+                  hx-swap="outerHTML">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-sm rounded-lg">{% translate "Check in" %}</button>
+            </form>
+        {% endif %}
+    </div>
+</li>

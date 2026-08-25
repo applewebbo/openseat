@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_not_required, permission_required
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -6,7 +7,7 @@ from django.views.decorators.http import require_POST
 
 from events.access import email_from_contact_token, email_from_token
 from events.forms import BookingContactForm, IdentifyForm, RecoverForm
-from events.models import Booking, Event
+from events.models import Booking, Event, FeeMethod
 from events.notifications import send_booking_confirmation, send_booking_links
 from events.throttle import claim_send
 from intake.models import Association, PublicForm, SectionKey, Submission
@@ -39,10 +40,41 @@ def _own_booking(request, event, pk):
     return event.bookings.active().for_contact(email).filter(pk=pk).first()
 
 
+def _matching(bookings, query):
+    if not query:
+        return bookings
+    return bookings.filter(
+        Q(first_name__icontains=query)
+        | Q(last_name__icontains=query)
+        | Q(contact_name__icontains=query)
+    )
+
+
 @login_not_required
 def landing(request, slug):
-    """The event, and the two ways in: already a member, or not yet."""
+    """The event, and the two ways in: already a member, or not yet.
+
+    For an editor once check-in has opened, this is the door: the same page
+    becomes the roster, filtered live by the search box through htmx."""
     event = _open_event(slug)
+    can_manage_checkin = request.user.is_authenticated and request.user.has_perm(
+        "events.change_event"
+    )
+    if can_manage_checkin and event.is_checkin_open:
+        query = request.GET.get("q", "").strip()
+        context = {
+            "event": event,
+            "association": event.association,
+            "bookings": _matching(event.bookings.active(), query),
+            "query": query,
+        }
+        template = (
+            "events/checkin-roster-partial.html"
+            if request.htmx
+            else "events/checkin.html"
+        )
+        return render(request, template, context)
+
     return render(
         request,
         "events/landing.html",
@@ -50,8 +82,7 @@ def landing(request, slug):
             "event": event,
             "association": event.association,
             "form": IdentifyForm(association=event.association),
-            "can_manage_checkin": request.user.is_authenticated
-            and request.user.has_perm("events.change_event"),
+            "can_manage_checkin": can_manage_checkin,
         },
     )
 
@@ -75,6 +106,47 @@ def checkin_close(request, slug):
     if event.checkin_started_at is not None:
         event.checkin_started_at = None
         event.save(update_fields=["checkin_started_at"])
+    return redirect("events:landing", slug=event.slug)
+
+
+@permission_required("events.change_booking", raise_exception=True)
+@require_POST
+def checkin_confirm(request, slug, pk):
+    """Checking in at the door is how a booking is confirmed — there is no
+    online payment yet, so the fee is always the membership fee, in cash."""
+    event = _open_event(slug)
+    booking = get_object_or_404(event.bookings.active(), pk=pk)
+    if booking.confirmed_on is None:
+        booking.confirmed_on = timezone.localdate()
+        booking.fee_amount = event.association.membership_fee
+        booking.fee_method = FeeMethod.CASH
+        booking.save(update_fields=["confirmed_on", "fee_amount", "fee_method"])
+    if request.htmx:
+        return render(
+            request,
+            "events/checkin-row-partial.html",
+            {"event": event, "booking": booking},
+        )
+    return redirect("events:landing", slug=event.slug)
+
+
+@permission_required("events.change_booking", raise_exception=True)
+@require_POST
+def checkin_undo(request, slug, pk):
+    """A mistake at the door — checked in the wrong person, or too soon."""
+    event = _open_event(slug)
+    booking = get_object_or_404(event.bookings.active(), pk=pk)
+    if booking.confirmed_on is not None:
+        booking.confirmed_on = None
+        booking.fee_amount = None
+        booking.fee_method = ""
+        booking.save(update_fields=["confirmed_on", "fee_amount", "fee_method"])
+    if request.htmx:
+        return render(
+            request,
+            "events/checkin-row-partial.html",
+            {"event": event, "booking": booking},
+        )
     return redirect("events:landing", slug=event.slug)
 
 

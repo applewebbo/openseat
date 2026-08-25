@@ -1,4 +1,5 @@
 import pytest
+from django.test import Client
 from django.urls import reverse
 
 pytestmark = pytest.mark.django_db
@@ -109,3 +110,176 @@ def test_check_in_closes_the_public_booking_cta(client, event, editor_client):
     response = client.get(event.get_absolute_url())
 
     assert response.context["event"].is_open is False
+
+
+# --- the roster replaces the landing page for an editor ------------------------
+
+
+@pytest.fixture
+def checked_in_event(event, editor_client):
+    editor_client.post(reverse("events:checkin-open", args=[event.slug]))
+    return event
+
+
+def test_the_roster_shows_active_bookings(
+    editor_client, checked_in_event, booking_factory
+):
+    booking = booking_factory(event=checked_in_event)
+
+    response = editor_client.get(checked_in_event.get_absolute_url())
+
+    assert response.templates[0].name == "events/checkin.html"
+    assert booking.full_name in response.content.decode()
+
+
+def test_the_roster_hides_a_cancelled_booking(
+    editor_client, checked_in_event, booking_factory
+):
+    booking = booking_factory(event=checked_in_event)
+    booking.cancel()
+
+    response = editor_client.get(checked_in_event.get_absolute_url())
+
+    assert booking.full_name not in response.content.decode()
+
+
+def test_a_public_visitor_sees_no_roster_once_checkin_is_open(
+    checked_in_event, booking_factory
+):
+    # A genuinely anonymous client: the `client` fixture would alias
+    # `editor_client`'s session when both are requested in the same test.
+    booking = booking_factory(event=checked_in_event)
+
+    response = Client().get(checked_in_event.get_absolute_url())
+
+    assert response.templates[0].name == "events/landing.html"
+    assert booking.full_name not in response.content.decode()
+    assert booking.contact_email not in response.content.decode()
+
+
+def test_search_narrows_the_roster(editor_client, checked_in_event, booking_factory):
+    match = booking_factory(
+        event=checked_in_event, first_name="Giulia", last_name="Bianchi"
+    )
+    other = booking_factory(
+        event=checked_in_event, first_name="Marco", last_name="Rossi"
+    )
+
+    response = editor_client.get(checked_in_event.get_absolute_url(), {"q": "Giulia"})
+
+    content = response.content.decode()
+    assert match.full_name in content
+    assert other.full_name not in content
+
+
+def test_an_htmx_search_returns_only_the_roster_fragment(
+    editor_client, checked_in_event, booking_factory
+):
+    booking_factory(event=checked_in_event)
+
+    response = editor_client.get(
+        checked_in_event.get_absolute_url(), HTTP_HX_REQUEST="true"
+    )
+
+    assert response.templates[0].name == "events/checkin-roster-partial.html"
+    assert b"<html" not in response.content
+
+
+# --- checking a booking in ------------------------------------------------------
+
+
+def test_an_editor_checks_a_booking_in(
+    editor_client, checked_in_event, booking_factory
+):
+    booking = booking_factory(event=checked_in_event)
+
+    response = editor_client.post(
+        reverse("events:checkin-confirm", args=[checked_in_event.slug, booking.pk])
+    )
+
+    booking.refresh_from_db()
+    assert booking.is_confirmed
+    assert booking.fee_amount == checked_in_event.association.membership_fee
+    assert booking.fee_method == "cash"
+    assert response.status_code == 302
+
+
+def test_checking_in_twice_keeps_the_first_confirmation(
+    editor_client, checked_in_event, booking_factory
+):
+    booking = booking_factory(event=checked_in_event)
+
+    editor_client.post(
+        reverse("events:checkin-confirm", args=[checked_in_event.slug, booking.pk])
+    )
+    booking.refresh_from_db()
+    first = booking.confirmed_on
+
+    editor_client.post(
+        reverse("events:checkin-confirm", args=[checked_in_event.slug, booking.pk])
+    )
+    booking.refresh_from_db()
+
+    assert booking.confirmed_on == first
+
+
+def test_an_htmx_checkin_returns_the_row_fragment(
+    editor_client, checked_in_event, booking_factory
+):
+    booking = booking_factory(event=checked_in_event)
+
+    response = editor_client.post(
+        reverse("events:checkin-confirm", args=[checked_in_event.slug, booking.pk]),
+        HTTP_HX_REQUEST="true",
+    )
+
+    assert response.templates[0].name == "events/checkin-row-partial.html"
+    assert f'id="booking-{booking.pk}"'.encode() in response.content
+
+
+def test_an_editor_undoes_a_checkin(editor_client, checked_in_event, booking_factory):
+    booking = booking_factory(event=checked_in_event)
+    editor_client.post(
+        reverse("events:checkin-confirm", args=[checked_in_event.slug, booking.pk])
+    )
+
+    response = editor_client.post(
+        reverse("events:checkin-undo", args=[checked_in_event.slug, booking.pk])
+    )
+
+    booking.refresh_from_db()
+    assert booking.is_confirmed is False
+    assert booking.fee_amount is None
+    assert response.status_code == 302
+
+
+def test_a_visitor_without_permission_cannot_check_a_booking_in(
+    checked_in_event, booking_factory, user_factory
+):
+    booking = booking_factory(event=checked_in_event)
+    outsider = user_factory(is_staff=True)
+    outsider_client = Client()
+    outsider_client.force_login(outsider)
+
+    response = outsider_client.post(
+        reverse("events:checkin-confirm", args=[checked_in_event.slug, booking.pk])
+    )
+
+    assert response.status_code == 403
+    booking.refresh_from_db()
+    assert booking.is_confirmed is False
+
+
+def test_checking_in_a_booking_from_another_event_is_not_found(
+    editor_client, checked_in_event, event_factory, booking_factory
+):
+    other_event = event_factory()
+    other_booking = booking_factory(event=other_event)
+
+    response = editor_client.post(
+        reverse(
+            "events:checkin-confirm", args=[checked_in_event.slug, other_booking.pk]
+        )
+    )
+
+    assert response.status_code == 404

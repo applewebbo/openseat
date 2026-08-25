@@ -1,0 +1,20 @@
+{% load i18n %}
+{% if bookings %}
+    <ul id="roster" class="list bg-base-100 border-base-300 rounded-2xl border">
+        {% for booking in bookings %}
+            {% include "events/checkin-row-partial.html" %}
+        {% endfor %}
+    </ul>
+{% else %}
+    <div id="roster"
+         role="status"
+         class="border-base-300 bg-base-200 rounded-2xl border py-10 text-center">
+        <p class="text-base-content/60 text-sm">
+            {% if query %}
+                {% blocktranslate %}No one matches “{{ query }}”.{% endblocktranslate %}
+            {% else %}
+                {% translate "No one has booked yet." %}
+            {% endif %}
+        </p>
+    </div>
+{% endif %}
