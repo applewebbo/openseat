@@ -73,7 +73,7 @@ update_icons:
     set -euo pipefail
     STATIC_DIR="static/img/icons"
     VERSION_FILE="$STATIC_DIR/.phosphor-version"
-    ICONS=(plus pencil-simple trash eye eye-slash calendar-blank clock user armchair)
+    ICONS=(plus pencil-simple trash eye eye-slash calendar-blank clock user armchair check)
     WEIGHT="bold"
 
     LATEST=$(curl -sf https://registry.npmjs.org/@phosphor-icons/core/latest \

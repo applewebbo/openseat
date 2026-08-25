@@ -1,6 +1,6 @@
 {% load i18n %}
 {% if bookings %}
-    <ul id="roster" class="list bg-base-100 border-base-300 rounded-2xl border">
+    <ul id="roster" class="bg-base-100 border-base-300 list rounded-2xl border">
         {% for booking in bookings %}
             {% include "events/checkin-row-partial.html" %}
         {% endfor %}
