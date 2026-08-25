@@ -2,6 +2,7 @@ import pytest
 from allauth.account.models import EmailAddress, EmailConfirmationHMAC
 from allauth.account.signals import email_confirmed, user_signed_up
 from django.core import mail
+from django.core.cache import cache
 from django.urls import reverse
 
 from accounts.models import CustomUser
@@ -12,6 +13,7 @@ from accounts.notifications import deliver_account_approved, deliver_approval_re
 def test_confirming_a_signup_deactivates_the_user_and_notifies_superusers(
     client, user_factory
 ):
+    cache.clear()
     user_factory(email="root@example.com", is_superuser=True, is_staff=True)
     client.post(
         reverse("account_signup"),
@@ -41,6 +43,7 @@ def test_an_inactive_user_sees_the_pending_approval_page(client, user):
         user=user, email=user.email, verified=True, primary=True
     )
 
+    cache.clear()
     response = client.post(
         reverse("account_login"),
         {"login": user.email, "password": "password"},
