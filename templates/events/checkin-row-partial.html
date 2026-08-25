@@ -17,27 +17,29 @@
             <p class="text-base-content/60 truncate text-xs">{{ booking.contact_email }}</p>
         </div>
     </div>
-    <div class="flex items-center gap-2">
-        {% if booking.is_confirmed %}
-            <form method="post"
-                  action="{% url 'events:checkin-undo' event.slug booking.pk %}"
-                  hx-post="{% url 'events:checkin-undo' event.slug booking.pk %}"
-                  hx-target="#booking-{{ booking.pk }}"
-                  hx-swap="outerHTML">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-soft btn-error btn-xs rounded-lg">
-                    {% translate "Undo" %}
-                </button>
-            </form>
-        {% else %}
-            <form method="post"
-                  action="{% url 'events:checkin-confirm' event.slug booking.pk %}"
-                  hx-post="{% url 'events:checkin-confirm' event.slug booking.pk %}"
-                  hx-target="#booking-{{ booking.pk }}"
-                  hx-swap="outerHTML">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary btn-sm rounded-lg">{% translate "Check in" %}</button>
-            </form>
-        {% endif %}
-    </div>
+    {% if not event.is_open %}
+        <div class="flex items-center gap-2">
+            {% if booking.is_confirmed %}
+                <form method="post"
+                      action="{% url 'events:checkin-undo' event.slug booking.pk %}"
+                      hx-post="{% url 'events:checkin-undo' event.slug booking.pk %}"
+                      hx-target="#booking-{{ booking.pk }}"
+                      hx-swap="outerHTML">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-soft btn-error btn-xs rounded-lg">
+                        {% translate "Undo" %}
+                    </button>
+                </form>
+            {% else %}
+                <form method="post"
+                      action="{% url 'events:checkin-confirm' event.slug booking.pk %}"
+                      hx-post="{% url 'events:checkin-confirm' event.slug booking.pk %}"
+                      hx-target="#booking-{{ booking.pk }}"
+                      hx-swap="outerHTML">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-sm rounded-lg">{% translate "Check in" %}</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endif %}
 </li>

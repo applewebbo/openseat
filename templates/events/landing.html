@@ -15,34 +15,6 @@
 {% endblock breadcrumbs %}
 
 {% block content %}
-    {% if can_manage_checkin %}
-        <div role="status"
-             class="alert alert-vertical border-base-300 bg-base-200 mb-8 items-stretch justify-items-start rounded-2xl border text-left">
-            {% if event.is_checkin_open %}
-                <span class="text-sm font-medium">
-                    <span class="badge badge-primary badge-outline mr-2">{% translate "Check-in open" %}</span>
-                    {% translate "Public bookings are closed while check-in is running." %}
-                </span>
-                <form method="post" action="{% url 'events:checkin-close' event.slug %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-soft btn-sm w-full rounded-lg">
-                        {% translate "Reopen bookings" %}
-                    </button>
-                </form>
-            {% else %}
-                <span class="text-base-content/70 text-sm font-medium">
-                    {% translate "Open check-in when the event starts to switch to the roster and close public bookings." %}
-                </span>
-                <form method="post" action="{% url 'events:checkin-open' event.slug %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary btn-sm w-full rounded-lg">
-                        {% translate "Open check-in" %}
-                    </button>
-                </form>
-            {% endif %}
-        </div>
-    {% endif %}
-
     <img src="{{ event.wide_url }}"
          alt="{{ event.title }}"
          width="1600"

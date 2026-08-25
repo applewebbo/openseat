@@ -1,6 +1,10 @@
+from datetime import datetime, time
+
 import pytest
+import time_machine
 from django.test import Client
 from django.urls import reverse
+from django.utils import timezone
 
 pytestmark = pytest.mark.django_db
 
@@ -36,7 +40,80 @@ def test_an_editor_sees_the_checkin_controls(editor_client, event):
     )
 
 
+# --- the editor's bookings list, open or closed --------------------------------
+
+
+def test_an_editor_always_sees_the_bookings_list(editor_client, event, booking_factory):
+    booking = booking_factory(event=event)
+
+    response = editor_client.get(event.get_absolute_url())
+
+    assert response.templates[0].name == "events/checkin.html"
+    assert booking.full_name in response.content.decode()
+
+
+def test_no_checkin_button_shows_while_bookings_are_still_open(
+    editor_client, event, booking_factory
+):
+    booking = booking_factory(event=event)
+
+    response = editor_client.get(event.get_absolute_url())
+
+    assert response.status_code == 200
+    assert (
+        reverse("events:checkin-confirm", args=[event.slug, booking.pk]).encode()
+        not in response.content
+    )
+
+
+def test_checkin_button_shows_once_check_in_is_open(
+    editor_client, event, booking_factory
+):
+    editor_client.post(reverse("events:checkin-open", args=[event.slug]))
+    booking = booking_factory(event=event)
+
+    response = editor_client.get(event.get_absolute_url())
+
+    assert (
+        reverse("events:checkin-confirm", args=[event.slug, booking.pk]).encode()
+        in response.content
+    )
+
+
+def test_checking_in_is_refused_while_bookings_are_still_open(
+    editor_client, event, booking_factory
+):
+    booking = booking_factory(event=event)
+
+    response = editor_client.post(
+        reverse("events:checkin-confirm", args=[event.slug, booking.pk])
+    )
+
+    assert response.status_code == 404
+    booking.refresh_from_db()
+    assert booking.is_confirmed is False
+
+
+def test_a_public_visitor_still_sees_the_landing_page_once_auto_closed(event):
+    midnight = timezone.make_aware(datetime.combine(event.starts_at.date(), time.min))
+    with time_machine.travel(midnight, tick=False):
+        response = Client().get(event.get_absolute_url())
+
+        assert response.templates[0].name == "events/landing.html"
+        assert event.title in response.content.decode()
+
+
 # --- opening check-in ---------------------------------------------------------
+
+
+def test_reopen_bookings_is_disabled_past_the_automatic_cutoff(editor_client, event):
+    editor_client.post(reverse("events:checkin-open", args=[event.slug]))
+    midnight = timezone.make_aware(datetime.combine(event.starts_at.date(), time.min))
+
+    with time_machine.travel(midnight, tick=False):
+        response = editor_client.get(event.get_absolute_url())
+
+    assert b"disabled" in response.content
 
 
 def test_an_editor_opens_check_in(editor_client, event):

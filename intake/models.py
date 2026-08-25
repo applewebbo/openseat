@@ -16,6 +16,12 @@ hex_colour = RegexValidator(
 )
 
 
+class BookingCloseMode(models.TextChoices):
+    MANUAL = "manual", _("Manual only, at check-in")
+    MIDNIGHT_BEFORE = "midnight_before", _("Automatically, at midnight before")
+    START_TIME = "start_time", _("Automatically, at the event's start time")
+
+
 class SubjectType(models.TextChoices):
     SELF = "self", _("For myself")
     MINOR = "minor", _("For a minor child")
@@ -67,6 +73,16 @@ class Association(models.Model):
     statute_url = models.URLField(_("statute link"), blank=True)
     membership_fee = models.DecimalField(
         _("annual membership fee"), max_digits=7, decimal_places=2, default=0
+    )
+    booking_close_mode = models.CharField(
+        _("close bookings"),
+        max_length=16,
+        choices=BookingCloseMode,
+        default=BookingCloseMode.MIDNIGHT_BEFORE,
+        help_text=_(
+            "When public bookings stop, on top of an editor closing them "
+            "manually at check-in."
+        ),
     )
     logo = models.ImageField(_("logo"), upload_to="associations/", blank=True)
     colour_primary = models.CharField(

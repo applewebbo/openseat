@@ -19,15 +19,37 @@
 {% block content %}
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <span class="badge badge-primary badge-outline mb-2">{% translate "Check-in open" %}</span>
+            {% if event.is_checkin_open %}
+                <span class="badge badge-primary badge-outline mb-2">{% translate "Check-in open" %}</span>
+            {% elif not event.is_open %}
+                <span class="badge badge-neutral badge-outline mb-2">{% translate "Bookings closed" %}</span>
+            {% else %}
+                <span class="badge badge-outline mb-2">{% translate "Bookings open" %}</span>
+            {% endif %}
             <h1 class="text-2xl font-bold tracking-tight">{{ event.title }}</h1>
         </div>
-        <form method="post"
-              action="{% url 'events:checkin-close' event.slug %}"
-              class="shrink-0">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-soft btn-sm rounded-lg">{% translate "Reopen bookings" %}</button>
-        </form>
+        {% if event.is_checkin_open %}
+            <form method="post"
+                  action="{% url 'events:checkin-close' event.slug %}"
+                  class="shrink-0">
+                {% csrf_token %}
+                <button type="submit"
+                        class="btn btn-soft btn-sm rounded-lg"
+                        {% if not event.can_reopen_bookings %}
+                            disabled
+                            title="{% translate 'Bookings are past their automatic cutoff and cannot reopen.' %}"
+                        {% endif %}>
+                    {% translate "Reopen bookings" %}
+                </button>
+            </form>
+        {% elif event.is_open %}
+            <form method="post"
+                  action="{% url 'events:checkin-open' event.slug %}"
+                  class="shrink-0">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-sm rounded-lg">{% translate "Open check-in" %}</button>
+            </form>
+        {% endif %}
     </div>
 
     <input type="search"

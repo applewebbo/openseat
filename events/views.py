@@ -54,19 +54,21 @@ def _matching(bookings, query):
 def landing(request, slug):
     """The event, and the two ways in: already a member, or not yet.
 
-    For an editor once check-in has opened, this is the door: the same page
-    becomes the roster, filtered live by the search box through htmx."""
+    An editor never sees the public page: this is always the bookings list
+    for them, filtered live by the search box through htmx. Check-in actions
+    on it only light up once bookings are closed."""
     event = _open_event(slug)
     can_manage_checkin = request.user.is_authenticated and request.user.has_perm(
         "events.change_event"
     )
-    if can_manage_checkin and event.is_checkin_open:
+    if can_manage_checkin:
         query = request.GET.get("q", "").strip()
         context = {
             "event": event,
             "association": event.association,
             "bookings": _matching(event.bookings.active(), query),
             "query": query,
+            "can_manage_checkin": can_manage_checkin,
         }
         template = (
             "events/checkin-roster-partial.html"
@@ -115,6 +117,8 @@ def checkin_confirm(request, slug, pk):
     """Checking in at the door is how a booking is confirmed — there is no
     online payment yet, so the fee is always the membership fee, in cash."""
     event = _open_event(slug)
+    if event.is_open:
+        raise Http404
     booking = get_object_or_404(event.bookings.active(), pk=pk)
     if booking.confirmed_on is None:
         booking.confirmed_on = timezone.localdate()
@@ -135,6 +139,8 @@ def checkin_confirm(request, slug, pk):
 def checkin_undo(request, slug, pk):
     """A mistake at the door — checked in the wrong person, or too soon."""
     event = _open_event(slug)
+    if event.is_open:
+        raise Http404
     booking = get_object_or_404(event.bookings.active(), pk=pk)
     if booking.confirmed_on is not None:
         booking.confirmed_on = None

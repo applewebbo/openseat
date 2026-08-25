@@ -1,3 +1,5 @@
+from datetime import datetime, time
+
 from django.db import models
 from django.templatetags.static import static
 from django.urls import reverse
@@ -5,7 +7,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from events.images import square_from, square_name
-from intake.models import Association, PublicForm, Submission
+from intake.models import Association, BookingCloseMode, PublicForm, Submission
 from members.models import Member
 
 DEFAULT_WIDE = "img/event-default-wide.jpg"
@@ -142,18 +144,46 @@ class Event(models.Model):
         return self.image_square.url if self.image_square else static(DEFAULT_SQUARE)
 
     @property
+    def _clock_still_allows_booking(self):
+        """The clock's own verdict, ignoring check-in entirely.
+
+        The cutoff is the association's `booking_close_mode`: manual mode has
+        no cutoff, so the clock never closes anything on its own.
+        """
+        mode = self.association.booking_close_mode
+        if mode == BookingCloseMode.MANUAL:
+            return True
+        if mode == BookingCloseMode.START_TIME:
+            cutoff = self.starts_at
+        else:
+            cutoff = timezone.make_aware(
+                datetime.combine(self.starts_at.date(), time.min)
+            )
+        return timezone.now() < cutoff
+
+    @property
     def is_open(self):
         """No capacity limit: what closes bookings is the clock, or an editor
         opening check-in at the door — whichever comes first."""
         return (
             self.is_published
             and self.checkin_started_at is None
-            and timezone.now() < self.starts_at
+            and self._clock_still_allows_booking
         )
 
     @property
     def is_checkin_open(self):
         return self.checkin_started_at is not None
+
+    @property
+    def can_reopen_bookings(self):
+        """Whether clearing check-in would actually let bookings resume.
+
+        Once the clock's own cutoff has passed, clearing checkin_started_at
+        would not reopen anything — the button offering that action should
+        say so rather than pretend to work.
+        """
+        return self.is_checkin_open and self._clock_still_allows_booking
 
 
 class FeeMethod(models.TextChoices):

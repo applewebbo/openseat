@@ -42,6 +42,10 @@ class AssociationAdmin(admin.ModelAdmin):
             {"fields": ("statute_url", "membership_fee")},
         ),
         (
+            _("Bookings"),
+            {"fields": ("booking_close_mode",)},
+        ),
+        (
             _("Colours"),
             {
                 "classes": ["collapse"],

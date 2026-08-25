@@ -1,10 +1,11 @@
-from datetime import timedelta
+from datetime import datetime, time, timedelta
 
 import pytest
 import time_machine
 from django.utils import timezone
 
 from events.models import Booking
+from intake.models import BookingCloseMode
 
 pytestmark = pytest.mark.django_db
 
@@ -18,9 +19,52 @@ def test_bookings_are_open_before_the_event(event):
     assert event.is_open is True
 
 
-def test_bookings_close_once_the_event_has_started(event):
-    with time_machine.travel(event.starts_at + timedelta(minutes=1), tick=False):
+def test_bookings_close_at_midnight_before_the_event(event):
+    midnight = timezone.make_aware(datetime.combine(event.starts_at.date(), time.min))
+    with time_machine.travel(midnight, tick=False):
         assert event.is_open is False
+
+
+def test_bookings_stay_open_up_to_the_last_minute_before_midnight(event):
+    midnight = timezone.make_aware(datetime.combine(event.starts_at.date(), time.min))
+    with time_machine.travel(midnight - timedelta(minutes=1), tick=False):
+        assert event.is_open is True
+
+
+def test_manual_mode_never_closes_bookings_on_the_clock(event):
+    event.association.booking_close_mode = BookingCloseMode.MANUAL
+    event.association.save()
+
+    with time_machine.travel(event.starts_at + timedelta(days=1), tick=False):
+        assert event.is_open is True
+
+
+def test_start_time_mode_closes_bookings_at_the_event_start(event):
+    event.association.booking_close_mode = BookingCloseMode.START_TIME
+    event.association.save()
+
+    with time_machine.travel(event.starts_at, tick=False):
+        assert event.is_open is False
+    with time_machine.travel(event.starts_at - timedelta(minutes=1), tick=False):
+        assert event.is_open is True
+
+
+def test_reopening_bookings_is_offered_before_the_cutoff(event):
+    event.checkin_started_at = timezone.now()
+
+    assert event.can_reopen_bookings is True
+
+
+def test_reopening_bookings_is_refused_past_the_cutoff(event):
+    midnight = timezone.make_aware(datetime.combine(event.starts_at.date(), time.min))
+    with time_machine.travel(midnight, tick=False):
+        event.checkin_started_at = timezone.now()
+
+        assert event.can_reopen_bookings is False
+
+
+def test_reopening_is_moot_when_check_in_was_never_opened(event):
+    assert event.can_reopen_bookings is False
 
 
 def test_an_unpublished_event_takes_no_bookings(event):
