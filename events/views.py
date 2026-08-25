@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_not_required, permission_required
 from django.db.models import Q
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
@@ -50,6 +51,49 @@ def _matching(bookings, query):
     )
 
 
+def _booking_summary(event):
+    """Counts for the editor's summary card: total, confirmed, and a per-age
+    bracket breakdown of all active bookings — an unknown-age bucket catches
+    bookings with no birth_date on record."""
+    active = list(event.bookings.active())
+    brackets = list(event.association.age_brackets.all())
+    booked = dict.fromkeys((b.pk for b in brackets), 0)
+    unknown_booked = 0
+    confirmed_total = 0
+    for booking in active:
+        if booking.is_confirmed:
+            confirmed_total += 1
+        age = booking.age_at_booking
+        matched = next(
+            (b for b in brackets if age is not None and b.matches(age)), None
+        )
+        if matched is None:
+            unknown_booked += 1
+        else:
+            booked[matched.pk] += 1
+    return {
+        "total": len(active),
+        "confirmed": confirmed_total,
+        "brackets": [(b, booked[b.pk]) for b in brackets],
+        "unknown_booked": unknown_booked,
+    }
+
+
+def _row_and_summary(request, event, booking):
+    """The row swap plus an out-of-band refresh of the summary card."""
+    row = render_to_string(
+        "events/checkin-row-partial.html",
+        {"event": event, "booking": booking},
+        request=request,
+    )
+    summary = render_to_string(
+        "events/checkin-summary-partial.html",
+        {"summary": _booking_summary(event), "oob": True},
+        request=request,
+    )
+    return HttpResponse(row + summary)
+
+
 @login_not_required
 def landing(request, slug):
     """The event, and the two ways in: already a member, or not yet.
@@ -70,11 +114,11 @@ def landing(request, slug):
             "query": query,
             "can_manage_checkin": can_manage_checkin,
         }
-        template = (
-            "events/checkin-roster-partial.html"
-            if request.htmx
-            else "events/checkin.html"
-        )
+        if request.htmx:
+            template = "events/checkin-roster-partial.html"
+        else:
+            template = "events/checkin.html"
+            context["summary"] = _booking_summary(event)
         return render(request, template, context)
 
     return render(
@@ -126,11 +170,7 @@ def checkin_confirm(request, slug, pk):
         booking.fee_method = FeeMethod.CASH
         booking.save(update_fields=["confirmed_on", "fee_amount", "fee_method"])
     if request.htmx:
-        return render(
-            request,
-            "events/checkin-row-partial.html",
-            {"event": event, "booking": booking},
-        )
+        return _row_and_summary(request, event, booking)
     return redirect("events:landing", slug=event.slug)
 
 
@@ -148,11 +188,7 @@ def checkin_undo(request, slug, pk):
         booking.fee_method = ""
         booking.save(update_fields=["confirmed_on", "fee_amount", "fee_method"])
     if request.htmx:
-        return render(
-            request,
-            "events/checkin-row-partial.html",
-            {"event": event, "booking": booking},
-        )
+        return _row_and_summary(request, event, booking)
     return redirect("events:landing", slug=event.slug)
 
 

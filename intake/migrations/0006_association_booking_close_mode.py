@@ -4,15 +4,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('intake', '0005_alter_association_options'),
+        ("intake", "0005_alter_association_options"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='association',
-            name='booking_close_mode',
-            field=models.CharField(choices=[('manual', 'Manual only, at check-in'), ('midnight_before', 'Automatically, at midnight before'), ('start_time', "Automatically, at the event's start time")], default='midnight_before', help_text='When public bookings stop, on top of an editor closing them manually at check-in.', max_length=16, verbose_name='close bookings'),
+            model_name="association",
+            name="booking_close_mode",
+            field=models.CharField(
+                choices=[
+                    ("manual", "Manual only, at check-in"),
+                    ("midnight_before", "Automatically, at midnight before"),
+                    ("start_time", "Automatically, at the event's start time"),
+                ],
+                default="midnight_before",
+                help_text="When public bookings stop, on top of an editor closing them manually at check-in.",
+                max_length=16,
+                verbose_name="close bookings",
+            ),
         ),
     ]

@@ -14,6 +14,51 @@ def test_public_form_str_joins_association_and_title(public_form):
 
 
 @pytest.mark.django_db
+def test_an_age_bracket_reads_as_its_label(age_bracket):
+    age_bracket.label = "18-64"
+    assert str(age_bracket) == "18-64"
+
+
+@pytest.mark.django_db
+def test_a_bracket_with_no_bounds_matches_any_age(age_bracket_factory):
+    bracket = age_bracket_factory(min_age=None, max_age=None)
+
+    assert bracket.matches(0) is True
+    assert bracket.matches(120) is True
+
+
+@pytest.mark.django_db
+def test_a_bracket_matches_within_its_inclusive_bounds(age_bracket_factory):
+    bracket = age_bracket_factory(min_age=13, max_age=17)
+
+    assert bracket.matches(13) is True
+    assert bracket.matches(17) is True
+    assert bracket.matches(12) is False
+    assert bracket.matches(18) is False
+
+
+@pytest.mark.django_db
+def test_a_bracket_with_only_a_lower_bound_is_open_ended(age_bracket_factory):
+    bracket = age_bracket_factory(min_age=65, max_age=None)
+
+    assert bracket.matches(65) is True
+    assert bracket.matches(200) is True
+    assert bracket.matches(64) is False
+
+
+@pytest.mark.django_db
+def test_subject_birth_date_is_the_applicants_for_a_self_application(
+    adult_submission,
+):
+    assert adult_submission.subject_birth_date == adult_submission.applicant_birth_date
+
+
+@pytest.mark.django_db
+def test_subject_birth_date_is_the_members_for_someone_else(minor_submission):
+    assert minor_submission.subject_birth_date == minor_submission.member_birth_date
+
+
+@pytest.mark.django_db
 def test_membership_form_ships_the_full_section_catalogue(public_form):
     assert [section.key for section in public_form.sections.all()] == [
         SectionKey.SUBJECT,

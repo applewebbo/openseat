@@ -1,7 +1,14 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from intake.models import Association, PublicForm, Section, Submission, Subscription
+from intake.models import (
+    AgeBracket,
+    Association,
+    PublicForm,
+    Section,
+    Submission,
+    Subscription,
+)
 
 
 class SectionInline(admin.TabularInline):
@@ -10,6 +17,12 @@ class SectionInline(admin.TabularInline):
     model = Section
     extra = 0
     fields = ("key", "order", "is_enabled")
+
+
+class AgeBracketInline(admin.TabularInline):
+    model = AgeBracket
+    extra = 0
+    fields = ("label", "min_age", "max_age", "order")
 
 
 @admin.register(Association)
@@ -23,6 +36,7 @@ class AssociationAdmin(admin.ModelAdmin):
 
     list_display = ("name", "city", "membership_fee")
     prepopulated_fields = {"slug": ("name",)}
+    inlines = [AgeBracketInline]
     fieldsets = [
         (
             _("Home page"),

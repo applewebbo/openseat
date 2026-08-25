@@ -93,26 +93,126 @@ EVENTS = [
 # A pool wide enough that each event's roster overlaps but is not identical —
 # the same regulars turning up to different dates, as a real register would show.
 MEMBERS = [
-    {"first_name": "Giulia", "last_name": "Bianchi", "tax_code": "BNCGLI85M41H501Z"},
-    {"first_name": "Marco", "last_name": "Rossi", "tax_code": "RSSMRC79A01F205W"},
-    {"first_name": "Chiara", "last_name": "Ferrari", "tax_code": "FRRCHR90D55D969X"},
-    {"first_name": "Luca", "last_name": "Colombo", "tax_code": "CLMLCU82P15F704Y"},
-    {"first_name": "Sara", "last_name": "Ricci", "tax_code": "RCCSRA93T50G273K"},
-    {"first_name": "Davide", "last_name": "Marino", "tax_code": "MRNDVD88C12L219H"},
-    {"first_name": "Elena", "last_name": "Greco", "tax_code": "GRCLNE91R41E958J"},
-    {"first_name": "Andrea", "last_name": "Bruno", "tax_code": "BRNNDR84L05B157G"},
-    {"first_name": "Francesca", "last_name": "Gallo", "tax_code": "GLLFNC87S45L840F"},
-    {"first_name": "Simone", "last_name": "Conti", "tax_code": "CNTSMN80A19A944D"},
-    {"first_name": "Valentina", "last_name": "De Luca", "tax_code": "DLCVNT94M52F839E"},
-    {"first_name": "Matteo", "last_name": "Costa", "tax_code": "CSTMTT86H09D542C"},
-    {"first_name": "Alessia", "last_name": "Fontana", "tax_code": "FNTLSS92B60G478B"},
-    {"first_name": "Riccardo", "last_name": "Barbieri", "tax_code": "BRBRCR81T25H501A"},
-    {"first_name": "Martina", "last_name": "Santoro", "tax_code": "SNTMTN95C46F205V"},
-    {"first_name": "Nicola", "last_name": "Mariani", "tax_code": "MRNNCL83D14L219U"},
-    {"first_name": "Alice", "last_name": "Rinaldi", "tax_code": "RNLLCA89E48E958T"},
-    {"first_name": "Federico", "last_name": "Caruso", "tax_code": "CRSFRC77M22B157S"},
-    {"first_name": "Silvia", "last_name": "Ferrara", "tax_code": "FRRSLV96A54D969R"},
-    {"first_name": "Tommaso", "last_name": "Longo", "tax_code": "LNGTMS90P03F704Q"},
+    {
+        "first_name": "Giulia",
+        "last_name": "Bianchi",
+        "tax_code": "BNCGLI85M41H501Z",
+        "birth_date": "1985-08-01",
+    },
+    {
+        "first_name": "Marco",
+        "last_name": "Rossi",
+        "tax_code": "RSSMRC79A01F205W",
+        "birth_date": "1979-01-01",
+    },
+    {
+        "first_name": "Chiara",
+        "last_name": "Ferrari",
+        "tax_code": "FRRCHR90D55D969X",
+        "birth_date": "1990-04-15",
+    },
+    {
+        "first_name": "Luca",
+        "last_name": "Colombo",
+        "tax_code": "CLMLCU82P15F704Y",
+        "birth_date": "1982-09-15",
+    },
+    {
+        "first_name": "Sara",
+        "last_name": "Ricci",
+        "tax_code": "RCCSRA93T50G273K",
+        "birth_date": "1993-12-10",
+    },
+    {
+        "first_name": "Davide",
+        "last_name": "Marino",
+        "tax_code": "MRNDVD88C12L219H",
+        "birth_date": "1988-03-12",
+    },
+    {
+        "first_name": "Elena",
+        "last_name": "Greco",
+        "tax_code": "GRCLNE91R41E958J",
+        "birth_date": "1991-10-01",
+    },
+    {
+        "first_name": "Andrea",
+        "last_name": "Bruno",
+        "tax_code": "BRNNDR84L05B157G",
+        "birth_date": "1984-07-05",
+    },
+    {
+        "first_name": "Francesca",
+        "last_name": "Gallo",
+        "tax_code": "GLLFNC87S45L840F",
+        "birth_date": "1987-11-05",
+    },
+    {
+        "first_name": "Simone",
+        "last_name": "Conti",
+        "tax_code": "CNTSMN80A19A944D",
+        "birth_date": "1980-01-19",
+    },
+    {
+        "first_name": "Valentina",
+        "last_name": "De Luca",
+        "tax_code": "DLCVNT94M52F839E",
+        "birth_date": "1994-05-12",
+    },
+    {
+        "first_name": "Matteo",
+        "last_name": "Costa",
+        "tax_code": "CSTMTT86H09D542C",
+        "birth_date": "1986-06-09",
+    },
+    {
+        "first_name": "Alessia",
+        "last_name": "Fontana",
+        "tax_code": "FNTLSS92B60G478B",
+        "birth_date": "1962-02-20",
+    },
+    {
+        "first_name": "Riccardo",
+        "last_name": "Barbieri",
+        "tax_code": "BRBRCR81T25H501A",
+        "birth_date": "1958-10-25",
+    },
+    {
+        "first_name": "Martina",
+        "last_name": "Santoro",
+        "tax_code": "SNTMTN95C46F205V",
+        "birth_date": "1995-03-06",
+    },
+    {
+        "first_name": "Nicola",
+        "last_name": "Mariani",
+        "tax_code": "MRNNCL83D14L219U",
+        "birth_date": "1955-04-14",
+    },
+    {
+        "first_name": "Alice",
+        "last_name": "Rinaldi",
+        "tax_code": "RNLLCA89E48E958T",
+        "birth_date": "2012-08-08",
+    },
+    {
+        "first_name": "Federico",
+        "last_name": "Caruso",
+        "tax_code": "CRSFRC77M22B157S",
+        "birth_date": "2010-01-22",
+    },
+    {
+        "first_name": "Silvia",
+        "last_name": "Ferrara",
+        "tax_code": "FRRSLV96A54D969R",
+        "birth_date": "2009-01-04",
+    },
+    {
+        "first_name": "Tommaso",
+        "last_name": "Longo",
+        "tax_code": "LNGTMS90P03F704Q",
+        "birth_date": "2011-03-03",
+    },
 ]
 
 
@@ -165,11 +265,15 @@ class Command(BaseCommand):
                 defaults={
                     "first_name": spec["first_name"],
                     "last_name": spec["last_name"],
+                    "birth_date": spec["birth_date"],
                     "contact_name": f"{spec['first_name']} {spec['last_name']}",
                     "contact_email": email,
                     "contact_phone": "3331234567",
                 },
             )
+            if member.birth_date is None:
+                member.birth_date = spec["birth_date"]
+                member.save(update_fields=["birth_date"])
             members.append(member)
         self.stdout.write(f"kept: {len(members)} demo members")
 

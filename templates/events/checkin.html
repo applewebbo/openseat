@@ -3,10 +3,10 @@
 
 {% block title %}{% translate "Check-in" %} — {{ event.title }}{% endblock %}
 
-{% block main_width %}max-w-4xl{% endblock %}
+{% block main_width %}max-w-5xl{% endblock %}
 
 {% block breadcrumbs %}
-    <nav class="breadcrumbs mx-auto max-w-4xl px-4 pt-4 text-sm">
+    <nav class="breadcrumbs mx-auto max-w-5xl px-4 pt-4 text-sm">
         <ul>
             <li>
                 <a href="{% url 'home' %}" class="link link-hover">{% translate "Home" %}</a>
@@ -52,16 +52,22 @@
         {% endif %}
     </div>
 
-    <input type="search"
-           name="q"
-           value="{{ query }}"
-           placeholder="{% translate 'Search by name' %}"
-           class="input mb-6 w-full"
-           hx-get="{% url 'events:landing' event.slug %}"
-           hx-trigger="input changed delay:300ms, search"
-           hx-target="#roster"
-           hx-swap="outerHTML"
-           hx-push-url="false" />
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+        {% include "events/checkin-summary-partial.html" %}
 
-    {% include "events/checkin-roster-partial.html" %}
+        <div class="sm:order-1 sm:col-span-2">
+            <input type="search"
+                   name="q"
+                   value="{{ query }}"
+                   placeholder="{% translate 'Search by name' %}"
+                   class="input mb-6 w-full"
+                   hx-get="{% url 'events:landing' event.slug %}"
+                   hx-trigger="input changed delay:300ms, search"
+                   hx-target="#roster"
+                   hx-swap="outerHTML"
+                   hx-push-url="false" />
+
+            {% include "events/checkin-roster-partial.html" %}
+        </div>
+    </div>
 {% endblock content %}

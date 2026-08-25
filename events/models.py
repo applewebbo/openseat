@@ -228,6 +228,7 @@ class BookingQuerySet(models.QuerySet):
             defaults={
                 "first_name": member.first_name,
                 "last_name": member.last_name,
+                "birth_date": member.birth_date,
                 "contact_name": member.contact_name,
                 "contact_email": member.contact_email,
                 "contact_phone": member.contact_phone,
@@ -249,6 +250,7 @@ class BookingQuerySet(models.QuerySet):
             submission=submission,
             first_name=submission.subject_first_name,
             last_name=submission.subject_last_name,
+            birth_date=submission.subject_birth_date,
             contact_name=submission.applicant_name,
             contact_email=submission.applicant_email,
             contact_phone=submission.applicant_phone,
@@ -290,6 +292,15 @@ class Booking(models.Model):
 
     first_name = models.CharField(_("first name"), max_length=100)
     last_name = models.CharField(_("last name"), max_length=100)
+    birth_date = models.DateField(
+        _("date of birth"),
+        null=True,
+        blank=True,
+        help_text=_(
+            "A snapshot taken when the booking was made — it is not "
+            "recalculated later, not even against the event date."
+        ),
+    )
     contact_name = models.CharField(_("contact"), max_length=200, blank=True)
     contact_email = models.EmailField(_("contact email"))
     contact_phone = models.CharField(_("contact phone"), max_length=20, blank=True)
@@ -336,6 +347,21 @@ class Booking(models.Model):
     @property
     def is_confirmed(self):
         return self.confirmed_on is not None
+
+    @property
+    def age_at_booking(self):
+        """Age on the day the booking was made — a fixed snapshot.
+
+        None when birth_date was never captured, e.g. a legacy row or one
+        added by hand in the admin without it.
+        """
+        if self.birth_date is None:
+            return None
+        as_of = self.created_at.date()
+        years = as_of.year - self.birth_date.year
+        if (as_of.month, as_of.day) < (self.birth_date.month, self.birth_date.day):
+            years -= 1
+        return years
 
     def save(self, *args, **kwargs):
         """Confirming attendance is joining: the register entry is made here.

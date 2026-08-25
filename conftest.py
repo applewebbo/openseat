@@ -5,6 +5,7 @@ from pytest_factoryboy import register
 from accounts.groups import ensure_editor_group
 from tests.factories import (
     AdultSubmissionFactory,
+    AgeBracketFactory,
     AssociationFactory,
     BookingFactory,
     EventFactory,
@@ -27,6 +28,7 @@ register(AdultSubmissionFactory, "adult_submission")
 register(MemberFactory, "member")
 register(EventFactory, "event")
 register(BookingFactory, "booking")
+register(AgeBracketFactory, "age_bracket")
 
 
 @pytest.fixture

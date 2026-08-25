@@ -6,6 +6,7 @@ from django.utils import timezone
 
 from events.models import Booking, Event
 from intake.models import (
+    AgeBracket,
     Association,
     PublicForm,
     SectionKey,
@@ -111,6 +112,7 @@ class MinorSubmissionFactory(SubmissionFactory):
 
 __all__ = [
     "AdultSubmissionFactory",
+    "AgeBracketFactory",
     "AssociationFactory",
     "BookingFactory",
     "EventFactory",
@@ -179,6 +181,16 @@ class BookingFactory(factory.django.DjangoModelFactory):
     member = factory.SubFactory(MemberFactory)
     first_name = factory.SelfAttribute("member.first_name")
     last_name = factory.SelfAttribute("member.last_name")
+    birth_date = factory.SelfAttribute("member.birth_date")
     contact_name = factory.SelfAttribute("member.contact_name")
     contact_email = factory.SelfAttribute("member.contact_email")
     contact_phone = factory.SelfAttribute("member.contact_phone")
+
+
+class AgeBracketFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = AgeBracket
+
+    association = factory.SubFactory(AssociationFactory)
+    label = factory.Sequence(lambda n: f"fascia-{n}")
+    order = 0

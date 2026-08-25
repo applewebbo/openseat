@@ -262,6 +262,83 @@ def test_an_htmx_search_returns_only_the_roster_fragment(
     assert b"<html" not in response.content
 
 
+# --- the bookings summary card --------------------------------------------------
+
+
+def test_the_summary_counts_bookings_and_confirmed(
+    editor_client, event, booking_factory
+):
+    booking_factory(event=event, confirmed_on=timezone.localdate())
+    booking_factory(event=event)
+
+    response = editor_client.get(event.get_absolute_url())
+
+    content = response.content.decode()
+    assert 'id="booking-summary"' in content
+    assert response.context["summary"]["total"] == 2
+    assert response.context["summary"]["confirmed"] == 1
+
+
+def test_the_summary_breaks_bookings_down_by_age_bracket(
+    editor_client, event, booking_factory, age_bracket_factory
+):
+    young = age_bracket_factory(
+        association=event.association, label="0-17", min_age=0, max_age=17
+    )
+    old = age_bracket_factory(
+        association=event.association, label="18+", min_age=18, max_age=None
+    )
+    booking_factory(
+        event=event,
+        confirmed_on=timezone.localdate(),
+        birth_date=timezone.localdate().replace(year=timezone.localdate().year - 10),
+    )
+    booking_factory(
+        event=event,
+        confirmed_on=None,
+        birth_date=timezone.localdate().replace(year=timezone.localdate().year - 40),
+    )
+    booking_factory(
+        event=event,
+        confirmed_on=None,
+        birth_date=timezone.localdate().replace(year=timezone.localdate().year - 10),
+    )
+
+    response = editor_client.get(event.get_absolute_url())
+
+    summary = response.context["summary"]
+    counts = dict(summary["brackets"])
+    assert counts[young] == 2
+    assert counts[old] == 1
+    assert summary["unknown_booked"] == 0
+
+
+def test_a_booking_with_no_birth_date_is_unknown_age(
+    editor_client, event, booking_factory
+):
+    booking_factory(event=event, birth_date=None)
+    booking_factory(event=event, birth_date=None)
+
+    response = editor_client.get(event.get_absolute_url())
+
+    assert response.context["summary"]["unknown_booked"] == 2
+
+
+def test_the_summary_card_updates_via_the_htmx_oob_swap(
+    editor_client, checked_in_event, booking_factory
+):
+    booking = booking_factory(event=checked_in_event)
+
+    response = editor_client.post(
+        reverse("events:checkin-confirm", args=[checked_in_event.slug, booking.pk]),
+        HTTP_HX_REQUEST="true",
+    )
+
+    content = response.content.decode()
+    assert 'id="booking-summary"' in content
+    assert 'hx-swap-oob="true"' in content
+
+
 # --- checking a booking in ------------------------------------------------------
 
 

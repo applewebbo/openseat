@@ -124,6 +124,42 @@ class Association(models.Model):
         super().save(*args, **kwargs)
 
 
+class AgeBracket(models.Model):
+    """One row of the age breakdown on the bookings summary card.
+
+    Editable from the admin so a volunteer can change the ranges without a
+    deploy. Bounds are inclusive; either can be left empty for an open end.
+    """
+
+    association = models.ForeignKey(
+        Association,
+        verbose_name=_("association"),
+        related_name="age_brackets",
+        on_delete=models.CASCADE,
+    )
+    label = models.CharField(_("label"), max_length=20)
+    min_age = models.PositiveSmallIntegerField(
+        _("from age"), null=True, blank=True, help_text=_("Empty: no lower bound.")
+    )
+    max_age = models.PositiveSmallIntegerField(
+        _("to age"), null=True, blank=True, help_text=_("Empty: no upper bound.")
+    )
+    order = models.PositiveSmallIntegerField(_("order"), default=0)
+
+    class Meta:
+        verbose_name = _("age bracket")
+        verbose_name_plural = _("age brackets")
+        ordering = ("order", "min_age")
+
+    def __str__(self):
+        return self.label
+
+    def matches(self, age):
+        return (self.min_age is None or age >= self.min_age) and (
+            self.max_age is None or age <= self.max_age
+        )
+
+
 class PublicForm(models.Model):
     """A public, login-free form: a membership application or an event booking."""
 
@@ -305,6 +341,12 @@ class Submission(models.Model):
         if self.subject_type and self.subject_type != SubjectType.SELF:
             return self.member_last_name
         return self.applicant_last_name
+
+    @property
+    def subject_birth_date(self):
+        if self.subject_type and self.subject_type != SubjectType.SELF:
+            return self.member_birth_date
+        return self.applicant_birth_date
 
     @property
     def applicant_name(self):

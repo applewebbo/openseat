@@ -97,6 +97,23 @@ def test_an_event_has_no_capacity_limit(event, booking_factory, member_factory):
     assert event.is_open is True
 
 
+def test_age_at_booking_is_a_snapshot_at_created_at(booking):
+    booking.birth_date = datetime(2000, 6, 15).date()
+    booking.created_at = timezone.make_aware(datetime(2026, 6, 14))
+
+    assert booking.age_at_booking == 25
+
+    booking.created_at = timezone.make_aware(datetime(2026, 6, 15))
+
+    assert booking.age_at_booking == 26
+
+
+def test_age_at_booking_is_none_without_a_birth_date(booking):
+    booking.birth_date = None
+
+    assert booking.age_at_booking is None
+
+
 def test_a_booking_names_who_is_coming(booking):
     assert booking.member.full_name in str(booking)
 
@@ -106,6 +123,23 @@ def test_cancelling_takes_a_booking_off_the_list(event, booking):
 
     assert booking.cancelled_at is not None
     assert event.bookings.active().count() == 0
+
+
+def test_booking_a_member_snapshots_their_birth_date(event, member):
+    member.birth_date = datetime(1990, 3, 2).date()
+    member.save()
+
+    booking = Booking.objects.book(event, member)
+
+    assert booking.birth_date == member.birth_date
+
+
+def test_booking_an_application_snapshots_the_subjects_birth_date(
+    event, minor_submission
+):
+    booking = Booking.objects.book_application(event, minor_submission)
+
+    assert booking.birth_date == minor_submission.member_birth_date
 
 
 def test_the_same_member_is_not_booked_twice(event, member, booking_factory):

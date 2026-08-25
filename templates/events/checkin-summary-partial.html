@@ -1,0 +1,36 @@
+{% load i18n %}
+<div id="booking-summary"
+     {% if oob %}hx-swap-oob="true"{% endif %}
+     class="bg-base-100 border-base-300 sm:order-2 rounded-2xl border p-5">
+    <h2 class="text-sm font-semibold tracking-tight">{% translate "Summary" %}</h2>
+    <dl class="divide-base-300 mt-4 divide-y">
+        <div class="flex items-center justify-between py-2">
+            <dt class="text-base-content/70 text-sm">{% translate "Bookings" %}</dt>
+            <dd class="font-medium">{{ summary.total }}</dd>
+        </div>
+        <div class="flex items-center justify-between py-2">
+            <dt class="text-base-content/70 text-sm">{% translate "Confirmed" %}</dt>
+            <dd class="font-medium">{{ summary.confirmed }}</dd>
+        </div>
+    </dl>
+
+    <div class="mt-4">
+        <p class="text-base-content/70 text-xs">
+            {% translate "Bookings by age bracket, regardless of check-in." %}
+        </p>
+        <dl class="divide-base-300 mt-2 divide-y">
+            {% for bracket, booked in summary.brackets %}
+                <div class="flex items-center justify-between py-2">
+                    <dt class="text-base-content/70 text-sm">{{ bracket.label }}</dt>
+                    <dd class="font-medium">{{ booked }}</dd>
+                </div>
+            {% endfor %}
+            {% if summary.unknown_booked %}
+                <div class="flex items-center justify-between py-2">
+                    <dt class="text-base-content/70 text-sm">{% translate "Age unknown" %}</dt>
+                    <dd class="font-medium">{{ summary.unknown_booked }}</dd>
+                </div>
+            {% endif %}
+        </dl>
+    </div>
+</div>
