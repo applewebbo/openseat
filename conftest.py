@@ -2,6 +2,7 @@ import pytest
 from django.utils.translation import override
 from pytest_factoryboy import register
 
+from accounts.groups import ensure_editor_group
 from tests.factories import (
     AdultSubmissionFactory,
     AssociationFactory,
@@ -47,4 +48,19 @@ def staff_client(client, user):
     user.is_staff = user.is_superuser = True
     user.save()
     client.force_login(user)
+    return client
+
+
+@pytest.fixture
+def editor(user):
+    """A volunteer who may publish events and nothing else."""
+    user.is_staff = True
+    user.save()
+    user.groups.add(ensure_editor_group())
+    return user
+
+
+@pytest.fixture
+def editor_client(client, editor):
+    client.force_login(editor)
     return client

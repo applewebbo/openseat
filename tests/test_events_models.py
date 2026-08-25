@@ -30,6 +30,18 @@ def test_an_unpublished_event_takes_no_bookings(event):
     assert event.is_open is False
 
 
+def test_check_in_closes_bookings_regardless_of_the_clock(event):
+    event.checkin_started_at = timezone.now()
+
+    assert event.is_open is False
+    assert event.is_checkin_open is True
+
+
+def test_an_event_with_no_check_in_yet_is_not_in_check_in(event):
+    assert event.checkin_started_at is None
+    assert event.is_checkin_open is False
+
+
 def test_an_event_has_no_capacity_limit(event, booking_factory, member_factory):
     """The association caps nothing: the count is for the organiser, not a gate."""
     for _ in range(50):

@@ -1,6 +1,7 @@
-from django.contrib.auth.decorators import login_not_required
+from django.contrib.auth.decorators import login_not_required, permission_required
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from events.access import email_from_contact_token, email_from_token
@@ -49,8 +50,32 @@ def landing(request, slug):
             "event": event,
             "association": event.association,
             "form": IdentifyForm(association=event.association),
+            "can_manage_checkin": request.user.is_authenticated
+            and request.user.has_perm("events.change_event"),
         },
     )
+
+
+@permission_required("events.change_event", raise_exception=True)
+@require_POST
+def checkin_open(request, slug):
+    """An editor at the door: from here on the clock no longer decides."""
+    event = _open_event(slug)
+    if event.checkin_started_at is None:
+        event.checkin_started_at = timezone.now()
+        event.save(update_fields=["checkin_started_at"])
+    return redirect("events:landing", slug=event.slug)
+
+
+@permission_required("events.change_event", raise_exception=True)
+@require_POST
+def checkin_close(request, slug):
+    """Undoes checkin_open — a mistake at the door should not need the admin."""
+    event = _open_event(slug)
+    if event.checkin_started_at is not None:
+        event.checkin_started_at = None
+        event.save(update_fields=["checkin_started_at"])
+    return redirect("events:landing", slug=event.slug)
 
 
 @login_not_required

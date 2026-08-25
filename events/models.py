@@ -85,6 +85,14 @@ class Event(models.Model):
     checklist_sent_at = models.DateTimeField(
         _("checklist sent at"), null=True, blank=True
     )
+    checkin_started_at = models.DateTimeField(
+        _("check-in started at"),
+        null=True,
+        blank=True,
+        help_text=_(
+            "Set by an editor at the door. Closes public bookings until cleared."
+        ),
+    )
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
 
     objects = EventQuerySet.as_manager()
@@ -127,8 +135,17 @@ class Event(models.Model):
 
     @property
     def is_open(self):
-        """No capacity limit: the only thing that closes bookings is the clock."""
-        return self.is_published and timezone.now() < self.starts_at
+        """No capacity limit: what closes bookings is the clock, or an editor
+        opening check-in at the door — whichever comes first."""
+        return (
+            self.is_published
+            and self.checkin_started_at is None
+            and timezone.now() < self.starts_at
+        )
+
+    @property
+    def is_checkin_open(self):
+        return self.checkin_started_at is not None
 
 
 class FeeMethod(models.TextChoices):

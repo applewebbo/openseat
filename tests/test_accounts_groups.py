@@ -8,21 +8,6 @@ from accounts.groups import EDITORS, ensure_editor_group
 pytestmark = pytest.mark.django_db
 
 
-@pytest.fixture
-def editor(user):
-    """A volunteer who may publish events and nothing else."""
-    user.is_staff = True
-    user.save()
-    user.groups.add(ensure_editor_group())
-    return user
-
-
-@pytest.fixture
-def editor_client(client, editor):
-    client.force_login(editor)
-    return client
-
-
 def codenames(group):
     return set(group.permissions.values_list("codename", flat=True))
 

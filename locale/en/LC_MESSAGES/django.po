@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-23 07:43+0200\n"
+"POT-Creation-Date: 2026-08-25 11:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -106,7 +106,7 @@ msgid "Bookings for %(event)s"
 msgstr ""
 
 #: events/forms.py:19 events/forms.py:73 intake/forms.py:285
-#: templates/home.html:119
+#: templates/home.html:123
 msgid "Email address"
 msgstr ""
 
@@ -114,7 +114,7 @@ msgstr ""
 msgid "The one the association writes to."
 msgstr ""
 
-#: events/forms.py:26 templates/home.html:138
+#: events/forms.py:26 templates/home.html:142
 #: templates/intake/base-intake.html:65
 msgid "Tax code"
 msgstr ""
@@ -188,98 +188,106 @@ msgstr ""
 msgid "checklist sent at"
 msgstr ""
 
-#: events/models.py:88 intake/models.py:124 intake/models.py:265
+#: events/models.py:89
+msgid "check-in started at"
+msgstr ""
+
+#: events/models.py:93
+msgid "Set by an editor at the door. Closes public bookings until cleared."
+msgstr ""
+
+#: events/models.py:96 intake/models.py:124 intake/models.py:265
 msgid "created at"
 msgstr ""
 
-#: events/models.py:93 events/models.py:214
+#: events/models.py:101 events/models.py:231
 msgid "event"
 msgstr ""
 
-#: events/models.py:94
+#: events/models.py:102
 msgid "events"
 msgstr ""
 
-#: events/models.py:135
+#: events/models.py:152
 msgid "Cash"
 msgstr ""
 
-#: events/models.py:136
+#: events/models.py:153
 msgid "Bank transfer"
 msgstr ""
 
-#: events/models.py:137
+#: events/models.py:154
 msgid "Other"
 msgstr ""
 
-#: events/models.py:220 members/models.py:70
+#: events/models.py:237 members/models.py:70
 msgid "member"
 msgstr ""
 
-#: events/models.py:225
+#: events/models.py:242
 msgid "Filled in when the booking is confirmed."
 msgstr ""
 
-#: events/models.py:229 members/models.py:33
+#: events/models.py:246 members/models.py:33
 msgid "application"
 msgstr ""
 
-#: events/models.py:236 intake/models.py:208 intake/models.py:222
+#: events/models.py:253 intake/models.py:208 intake/models.py:222
 #: intake/models.py:240 members/models.py:41
 msgid "first name"
 msgstr ""
 
-#: events/models.py:237 intake/models.py:209 intake/models.py:223
+#: events/models.py:254 intake/models.py:209 intake/models.py:223
 #: intake/models.py:243 members/models.py:42
 msgid "last name"
 msgstr ""
 
-#: events/models.py:238 members/models.py:54
+#: events/models.py:255 members/models.py:54
 #: templates/events/mail/checklist.txt:7
 msgid "contact"
 msgstr ""
 
-#: events/models.py:239 members/models.py:55
+#: events/models.py:256 members/models.py:55
 msgid "contact email"
 msgstr ""
 
-#: events/models.py:240 members/models.py:56
+#: events/models.py:257 members/models.py:56
 msgid "contact phone"
 msgstr ""
 
-#: events/models.py:242
+#: events/models.py:259
 msgid "note"
 msgstr ""
 
-#: events/models.py:245
+#: events/models.py:262
 msgid "confirmed on"
 msgstr ""
 
-#: events/models.py:248
+#: events/models.py:265
 msgid "The day they turned up and paid the fee."
 msgstr ""
 
-#: events/models.py:251
+#: events/models.py:268
 msgid "fee paid"
 msgstr ""
 
-#: events/models.py:254
+#: events/models.py:271
 msgid "paid by"
 msgstr ""
 
-#: events/models.py:257
+#: events/models.py:274
 msgid "booked at"
 msgstr ""
 
-#: events/models.py:258
+#: events/models.py:275
 msgid "cancelled at"
 msgstr ""
 
-#: events/models.py:263
+#: events/models.py:280
 msgid "booking"
 msgstr ""
 
-#: events/models.py:264
+#: events/models.py:281
 msgid "bookings"
 msgstr ""
 
@@ -776,11 +784,11 @@ msgid ""
 msgstr ""
 
 #: templates/account/email/account_already_exists_message.html:4
-#: templates/account/email/account_already_exists_message.html:8
+#: templates/account/email/account_already_exists_message.html:9
 msgid "An account already exists"
 msgstr ""
 
-#: templates/account/email/account_already_exists_message.html:11
+#: templates/account/email/account_already_exists_message.html:12
 #, python-format
 msgid ""
 "You are receiving this email because you, or someone else, tried to sign up "
@@ -788,13 +796,13 @@ msgid ""
 "address already exists."
 msgstr ""
 
-#: templates/account/email/account_already_exists_message.html:14
+#: templates/account/email/account_already_exists_message.html:15
 msgid ""
 "If you have forgotten about this, use the link below to recover the account."
 msgstr ""
 
-#: templates/account/email/account_already_exists_message.html:19
-#: templates/account/email/password_reset_key_message.html:16
+#: templates/account/email/account_already_exists_message.html:20
+#: templates/account/email/password_reset_key_message.html:17
 msgid "Reset Password"
 msgstr ""
 
@@ -815,32 +823,32 @@ msgstr ""
 msgid "Your email has been changed"
 msgstr ""
 
-#: templates/account/email/email_changed_message.html:7
+#: templates/account/email/email_changed_message.html:8
 #, python-format
 msgid "Your email has been changed from %(from_email)s to %(to_email)s."
 msgstr ""
 
 #: templates/account/email/email_confirmation_message.html:4
-#: templates/account/email/email_confirmation_message.html:9
+#: templates/account/email/email_confirmation_message.html:10
 #, fuzzy
 #| msgid "email address"
 msgid "Confirm your email address"
 msgstr "email address"
 
-#: templates/account/email/email_confirmation_message.html:12
+#: templates/account/email/email_confirmation_message.html:13
 #, python-format
 msgid ""
 "You're receiving this email because user %(user_display)s has given your "
 "email address to register an account on %(site_domain)s."
 msgstr ""
 
-#: templates/account/email/email_confirmation_message.html:16
+#: templates/account/email/email_confirmation_message.html:17
 msgid ""
 "Your email verification code is listed below. Please enter it in your open "
 "browser window."
 msgstr ""
 
-#: templates/account/email/email_confirmation_message.html:23
+#: templates/account/email/email_confirmation_message.html:24
 #, fuzzy
 #| msgid "email address"
 msgid "Confirm Email Address"
@@ -852,7 +860,7 @@ msgstr "email address"
 msgid "An email address was removed"
 msgstr "The email address is required"
 
-#: templates/account/email/email_deleted_message.html:7
+#: templates/account/email/email_deleted_message.html:8
 #, python-format
 msgid "Email address %(deleted_email)s has been removed from your account."
 msgstr ""
@@ -861,23 +869,23 @@ msgstr ""
 msgid "Your password has been changed"
 msgstr ""
 
-#: templates/account/email/password_changed_message.html:7
+#: templates/account/email/password_changed_message.html:8
 msgid "Your password has been changed."
 msgstr ""
 
 #: templates/account/email/password_reset_key_message.html:4
-#: templates/account/email/password_reset_key_message.html:8
+#: templates/account/email/password_reset_key_message.html:9
 msgid "Reset your password"
 msgstr ""
 
-#: templates/account/email/password_reset_key_message.html:11
+#: templates/account/email/password_reset_key_message.html:12
 msgid ""
 "You're receiving this email because you or someone else has requested a "
 "password reset for your user account. It can be safely ignored if you did "
 "not request it."
 msgstr ""
 
-#: templates/account/email/password_reset_key_message.html:21
+#: templates/account/email/password_reset_key_message.html:22
 #, python-format
 msgid "In case you forgot, your username is %(username)s."
 msgstr ""
@@ -886,16 +894,16 @@ msgstr ""
 msgid "Your password has been set"
 msgstr ""
 
-#: templates/account/email/password_set_message.html:7
+#: templates/account/email/password_set_message.html:8
 msgid "Your password has been set."
 msgstr ""
 
 #: templates/account/email/unknown_account_message.html:4
-#: templates/account/email/unknown_account_message.html:8
+#: templates/account/email/unknown_account_message.html:9
 msgid "No account found"
 msgstr ""
 
-#: templates/account/email/unknown_account_message.html:11
+#: templates/account/email/unknown_account_message.html:12
 #, python-format
 msgid ""
 "You are receiving this email because you, or someone else, tried to access "
@@ -903,13 +911,13 @@ msgid ""
 "an account."
 msgstr ""
 
-#: templates/account/email/unknown_account_message.html:14
+#: templates/account/email/unknown_account_message.html:15
 msgid ""
 "This mail can be safely ignored if you did not initiate this action. If it "
 "was you, you can sign up for an account below."
 msgstr ""
 
-#: templates/account/email/unknown_account_message.html:19
+#: templates/account/email/unknown_account_message.html:20
 #: templates/account/signup.html:9 templates/account/signup.html:22
 msgid "Sign Up"
 msgstr ""
@@ -1087,8 +1095,8 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: templates/events/booked.html:36 templates/events/landing.html:52
-#: templates/events/landing.html:57 templates/events/mine.html:33
+#: templates/events/booked.html:36 templates/events/landing.html:76
+#: templates/events/landing.html:81 templates/events/mine.html:33
 msgid "Cancel"
 msgstr ""
 
@@ -1135,49 +1143,71 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: templates/events/landing.html:33 templates/home.html:103
+#: templates/events/landing.html:23
+msgid "Check-in open"
+msgstr ""
+
+#: templates/events/landing.html:24
+msgid "Public bookings are closed while check-in is running."
+msgstr ""
+
+#: templates/events/landing.html:28
+msgid "Close check-in"
+msgstr ""
+
+#: templates/events/landing.html:32
+msgid ""
+"Open check-in when the event starts to switch to the roster and close public "
+"bookings."
+msgstr ""
+
+#: templates/events/landing.html:36
+msgid "Open check-in"
+msgstr ""
+
+#: templates/events/landing.html:57 templates/home.html:106
 msgid "Book"
 msgstr ""
 
-#: templates/events/landing.html:37
+#: templates/events/landing.html:61
 msgid "Already a member?"
 msgstr ""
 
-#: templates/events/landing.html:37
+#: templates/events/landing.html:61
 msgid "Book by clicking"
 msgstr ""
 
-#: templates/events/landing.html:38
+#: templates/events/landing.html:62
 msgid "here"
 msgstr ""
 
-#: templates/events/landing.html:47
+#: templates/events/landing.html:71
 msgid "Already a member"
 msgstr ""
 
-#: templates/events/landing.html:53
+#: templates/events/landing.html:77
 msgid "Book a place"
 msgstr ""
 
-#: templates/events/landing.html:62
+#: templates/events/landing.html:86
 msgid "This date has already been"
 msgstr ""
 
-#: templates/events/landing.html:64
+#: templates/events/landing.html:88
 msgid ""
 "The booking cannot be changed any more. Thank you for coming — the next "
 "dates are on the home page."
 msgstr ""
 
-#: templates/events/landing.html:67 templates/events/mine.html:44
+#: templates/events/landing.html:91 templates/events/mine.html:44
 msgid "The next dates"
 msgstr ""
 
-#: templates/events/landing.html:69
+#: templates/events/landing.html:93
 msgid "Bookings are closed"
 msgstr ""
 
-#: templates/events/landing.html:71
+#: templates/events/landing.html:95
 #, python-format
 msgid ""
 "This event is no longer taking bookings. Write to %(email)s if you need to "
@@ -1235,7 +1265,7 @@ msgstr[1] ""
 
 #: templates/events/mail/bookings.html:33 templates/events/recover.html:4
 #: templates/events/recover.html:21 templates/events/recover.html:26
-#: templates/home.html:111
+#: templates/home.html:115
 msgid "Manage your bookings"
 msgstr ""
 
@@ -1290,7 +1320,7 @@ msgid ""
 "have passed. Write to us and we will look it up."
 msgstr ""
 
-#: templates/events/recover-sent.html:32 templates/home.html:144
+#: templates/events/recover-sent.html:32 templates/home.html:148
 #: templates/intake/base-intake.html:71
 msgid "Contact us"
 msgstr ""
@@ -1305,13 +1335,13 @@ msgid ""
 "one below."
 msgstr ""
 
-#: templates/events/recover.html:28 templates/home.html:113
+#: templates/events/recover.html:28 templates/home.html:117
 msgid ""
 "Enter the address you booked with and we will send you the link to change or "
 "cancel."
 msgstr ""
 
-#: templates/events/recover.html:36 templates/home.html:127
+#: templates/events/recover.html:36 templates/home.html:131
 msgid "Manage"
 msgstr ""
 
@@ -1356,7 +1386,7 @@ msgstr ""
 msgid "Other open dates"
 msgstr ""
 
-#: templates/home.html:150 templates/intake/base-intake.html:77
+#: templates/home.html:154 templates/intake/base-intake.html:77
 msgid "Statute"
 msgstr ""
 

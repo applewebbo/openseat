@@ -13,6 +13,10 @@ urlpatterns = [
     path("evento/<slug:slug>/edit/<int:pk>/", views.edit, name="edit"),
     path("evento/<slug:slug>/prenotazione/<str:token>/", views.manage, name="manage"),
     path("evento/<slug:slug>/join/", views.join, name="join"),
+    path("evento/<slug:slug>/checkin/apri/", views.checkin_open, name="checkin-open"),
+    path(
+        "evento/<slug:slug>/checkin/chiudi/", views.checkin_close, name="checkin-close"
+    ),
     path("prenotazioni/", views.recover, name="recover"),
     path("prenotazioni/inviato/", views.recover_sent, name="recover-sent"),
     path("prenotazioni/<str:token>/", views.mine, name="mine"),

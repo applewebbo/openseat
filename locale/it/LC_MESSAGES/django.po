@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-23 07:43+0200\n"
+"POT-Creation-Date: 2026-08-25 11:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -106,7 +106,7 @@ msgid "Bookings for %(event)s"
 msgstr "Prenotazioni per %(event)s"
 
 #: events/forms.py:19 events/forms.py:73 intake/forms.py:285
-#: templates/home.html:119
+#: templates/home.html:123
 msgid "Email address"
 msgstr "Indirizzo email"
 
@@ -114,7 +114,7 @@ msgstr "Indirizzo email"
 msgid "The one the association writes to."
 msgstr "Quello a cui scrive l’associazione."
 
-#: events/forms.py:26 templates/home.html:138
+#: events/forms.py:26 templates/home.html:142
 #: templates/intake/base-intake.html:65
 msgid "Tax code"
 msgstr "Codice fiscale"
@@ -194,98 +194,108 @@ msgstr "pubblicato"
 msgid "checklist sent at"
 msgstr "lista inviata il"
 
-#: events/models.py:88 intake/models.py:124 intake/models.py:265
+#: events/models.py:89
+msgid "check-in started at"
+msgstr "check-in avviato il"
+
+#: events/models.py:93
+msgid "Set by an editor at the door. Closes public bookings until cleared."
+msgstr ""
+"Impostato da un editor all'ingresso. Chiude le prenotazioni pubbliche finché "
+"non viene azzerato."
+
+#: events/models.py:96 intake/models.py:124 intake/models.py:265
 msgid "created at"
 msgstr "creato il"
 
-#: events/models.py:93 events/models.py:214
+#: events/models.py:101 events/models.py:231
 msgid "event"
 msgstr "evento"
 
-#: events/models.py:94
+#: events/models.py:102
 msgid "events"
 msgstr "eventi"
 
-#: events/models.py:135
+#: events/models.py:152
 msgid "Cash"
 msgstr "Contanti"
 
-#: events/models.py:136
+#: events/models.py:153
 msgid "Bank transfer"
 msgstr "Bonifico"
 
-#: events/models.py:137
+#: events/models.py:154
 msgid "Other"
 msgstr "Altro"
 
-#: events/models.py:220 members/models.py:70
+#: events/models.py:237 members/models.py:70
 msgid "member"
 msgstr "socio"
 
-#: events/models.py:225
+#: events/models.py:242
 msgid "Filled in when the booking is confirmed."
 msgstr "Compilato quando la prenotazione viene confermata."
 
-#: events/models.py:229 members/models.py:33
+#: events/models.py:246 members/models.py:33
 msgid "application"
 msgstr "domanda di adesione"
 
-#: events/models.py:236 intake/models.py:208 intake/models.py:222
+#: events/models.py:253 intake/models.py:208 intake/models.py:222
 #: intake/models.py:240 members/models.py:41
 msgid "first name"
 msgstr "nome"
 
-#: events/models.py:237 intake/models.py:209 intake/models.py:223
+#: events/models.py:254 intake/models.py:209 intake/models.py:223
 #: intake/models.py:243 members/models.py:42
 msgid "last name"
 msgstr "cognome"
 
-#: events/models.py:238 members/models.py:54
+#: events/models.py:255 members/models.py:54
 #: templates/events/mail/checklist.txt:7
 msgid "contact"
 msgstr "contatto"
 
-#: events/models.py:239 members/models.py:55
+#: events/models.py:256 members/models.py:55
 msgid "contact email"
 msgstr "email di contatto"
 
-#: events/models.py:240 members/models.py:56
+#: events/models.py:257 members/models.py:56
 msgid "contact phone"
 msgstr "telefono di contatto"
 
-#: events/models.py:242
+#: events/models.py:259
 msgid "note"
 msgstr "nota"
 
-#: events/models.py:245
+#: events/models.py:262
 msgid "confirmed on"
 msgstr "confermato il"
 
-#: events/models.py:248
+#: events/models.py:265
 msgid "The day they turned up and paid the fee."
 msgstr "Il giorno in cui si sono presentati e hanno pagato la quota."
 
-#: events/models.py:251
+#: events/models.py:268
 msgid "fee paid"
 msgstr "quota versata"
 
-#: events/models.py:254
+#: events/models.py:271
 msgid "paid by"
 msgstr "pagato con"
 
-#: events/models.py:257
+#: events/models.py:274
 msgid "booked at"
 msgstr "prenotato il"
 
-#: events/models.py:258
+#: events/models.py:275
 msgid "cancelled at"
 msgstr "annullata il"
 
-#: events/models.py:263
+#: events/models.py:280
 msgid "booking"
 msgstr "prenotazione"
 
-#: events/models.py:264
+#: events/models.py:281
 msgid "bookings"
 msgstr "prenotazioni"
 
@@ -802,11 +812,11 @@ msgstr ""
 "prima che tu possa accedere: riceverai un'email non appena succede."
 
 #: templates/account/email/account_already_exists_message.html:4
-#: templates/account/email/account_already_exists_message.html:8
+#: templates/account/email/account_already_exists_message.html:9
 msgid "An account already exists"
 msgstr "Esiste già un account"
 
-#: templates/account/email/account_already_exists_message.html:11
+#: templates/account/email/account_already_exists_message.html:12
 #, python-format
 msgid ""
 "You are receiving this email because you, or someone else, tried to sign up "
@@ -816,14 +826,14 @@ msgstr ""
 "Ricevi questa email perché tu, o qualcun altro, ha provato a registrare un "
 "account con l'indirizzo %(email)s. Esiste già un account con quell'indirizzo."
 
-#: templates/account/email/account_already_exists_message.html:14
+#: templates/account/email/account_already_exists_message.html:15
 msgid ""
 "If you have forgotten about this, use the link below to recover the account."
 msgstr ""
 "Se te ne fossi dimenticato, usa il link qui sotto per recuperare l'account."
 
-#: templates/account/email/account_already_exists_message.html:19
-#: templates/account/email/password_reset_key_message.html:16
+#: templates/account/email/account_already_exists_message.html:20
+#: templates/account/email/password_reset_key_message.html:17
 msgid "Reset Password"
 msgstr "Reimposta la password"
 
@@ -846,17 +856,17 @@ msgstr "Data"
 msgid "Your email has been changed"
 msgstr "La tua email è stata cambiata"
 
-#: templates/account/email/email_changed_message.html:7
+#: templates/account/email/email_changed_message.html:8
 #, python-format
 msgid "Your email has been changed from %(from_email)s to %(to_email)s."
 msgstr "La tua email è stata cambiata da %(from_email)s a %(to_email)s."
 
 #: templates/account/email/email_confirmation_message.html:4
-#: templates/account/email/email_confirmation_message.html:9
+#: templates/account/email/email_confirmation_message.html:10
 msgid "Confirm your email address"
 msgstr "Conferma il tuo indirizzo email"
 
-#: templates/account/email/email_confirmation_message.html:12
+#: templates/account/email/email_confirmation_message.html:13
 #, python-format
 msgid ""
 "You're receiving this email because user %(user_display)s has given your "
@@ -865,7 +875,7 @@ msgstr ""
 "Ricevi questa email perché l'utente %(user_display)s ha indicato il tuo "
 "indirizzo per registrare un account su %(site_domain)s."
 
-#: templates/account/email/email_confirmation_message.html:16
+#: templates/account/email/email_confirmation_message.html:17
 msgid ""
 "Your email verification code is listed below. Please enter it in your open "
 "browser window."
@@ -873,7 +883,7 @@ msgstr ""
 "Il tuo codice di verifica è indicato qui sotto. Inseriscilo nella finestra "
 "del browser aperta."
 
-#: templates/account/email/email_confirmation_message.html:23
+#: templates/account/email/email_confirmation_message.html:24
 msgid "Confirm Email Address"
 msgstr "Conferma indirizzo email"
 
@@ -881,7 +891,7 @@ msgstr "Conferma indirizzo email"
 msgid "An email address was removed"
 msgstr "Un indirizzo email è stato rimosso"
 
-#: templates/account/email/email_deleted_message.html:7
+#: templates/account/email/email_deleted_message.html:8
 #, python-format
 msgid "Email address %(deleted_email)s has been removed from your account."
 msgstr "L'indirizzo %(deleted_email)s è stato rimosso dal tuo account."
@@ -890,25 +900,26 @@ msgstr "L'indirizzo %(deleted_email)s è stato rimosso dal tuo account."
 msgid "Your password has been changed"
 msgstr "La tua password è stata cambiata"
 
-#: templates/account/email/password_changed_message.html:7
+#: templates/account/email/password_changed_message.html:8
 msgid "Your password has been changed."
 msgstr "La tua password è stata cambiata."
 
 #: templates/account/email/password_reset_key_message.html:4
-#: templates/account/email/password_reset_key_message.html:8
+#: templates/account/email/password_reset_key_message.html:9
 msgid "Reset your password"
 msgstr "Reimposta la tua password"
 
-#: templates/account/email/password_reset_key_message.html:11
+#: templates/account/email/password_reset_key_message.html:12
 msgid ""
 "You're receiving this email because you or someone else has requested a "
 "password reset for your user account. It can be safely ignored if you did "
 "not request it."
 msgstr ""
-"Ricevi questa email perché tu, o qualcun altro, ha richiesto la reimpostazione "
-"della password del tuo account. Puoi ignorarla se non l'hai richiesta tu."
+"Ricevi questa email perché tu, o qualcun altro, ha richiesto la "
+"reimpostazione della password del tuo account. Puoi ignorarla se non l'hai "
+"richiesta tu."
 
-#: templates/account/email/password_reset_key_message.html:21
+#: templates/account/email/password_reset_key_message.html:22
 #, python-format
 msgid "In case you forgot, your username is %(username)s."
 msgstr "Nel caso te ne fossi dimenticato, il tuo nome utente è %(username)s."
@@ -917,16 +928,16 @@ msgstr "Nel caso te ne fossi dimenticato, il tuo nome utente è %(username)s."
 msgid "Your password has been set"
 msgstr "La tua password è stata impostata"
 
-#: templates/account/email/password_set_message.html:7
+#: templates/account/email/password_set_message.html:8
 msgid "Your password has been set."
 msgstr "La tua password è stata impostata."
 
 #: templates/account/email/unknown_account_message.html:4
-#: templates/account/email/unknown_account_message.html:8
+#: templates/account/email/unknown_account_message.html:9
 msgid "No account found"
 msgstr "Nessun account trovato"
 
-#: templates/account/email/unknown_account_message.html:11
+#: templates/account/email/unknown_account_message.html:12
 #, python-format
 msgid ""
 "You are receiving this email because you, or someone else, tried to access "
@@ -937,7 +948,7 @@ msgstr ""
 "account con l'indirizzo %(email)s. Non risulta però nessun account di questo "
 "tipo."
 
-#: templates/account/email/unknown_account_message.html:14
+#: templates/account/email/unknown_account_message.html:15
 msgid ""
 "This mail can be safely ignored if you did not initiate this action. If it "
 "was you, you can sign up for an account below."
@@ -945,7 +956,7 @@ msgstr ""
 "Puoi ignorare questa email se non sei stato tu. Se sei stato tu, puoi "
 "registrare un account qui sotto."
 
-#: templates/account/email/unknown_account_message.html:19
+#: templates/account/email/unknown_account_message.html:20
 #: templates/account/signup.html:9 templates/account/signup.html:22
 msgid "Sign Up"
 msgstr "Registrati"
@@ -1127,8 +1138,8 @@ msgstr "Annullata"
 msgid "Edit"
 msgstr "Modifica"
 
-#: templates/events/booked.html:36 templates/events/landing.html:52
-#: templates/events/landing.html:57 templates/events/mine.html:33
+#: templates/events/booked.html:36 templates/events/landing.html:76
+#: templates/events/landing.html:81 templates/events/mine.html:33
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -1179,35 +1190,59 @@ msgstr "Da qui puoi cambiare solo i tuoi recapiti e una nota."
 msgid "Save"
 msgstr "Salva"
 
-#: templates/events/landing.html:33 templates/home.html:103
+#: templates/events/landing.html:23
+msgid "Check-in open"
+msgstr "Check-in aperto"
+
+#: templates/events/landing.html:24
+msgid "Public bookings are closed while check-in is running."
+msgstr "Le prenotazioni pubbliche sono chiuse finché il check-in è in corso."
+
+#: templates/events/landing.html:28
+msgid "Close check-in"
+msgstr "Chiudi check-in"
+
+#: templates/events/landing.html:32
+msgid ""
+"Open check-in when the event starts to switch to the roster and close public "
+"bookings."
+msgstr ""
+"Apri il check-in all'inizio dell'evento per passare all'elenco iscritti e "
+"chiudere le prenotazioni pubbliche."
+
+#: templates/events/landing.html:36
+msgid "Open check-in"
+msgstr "Apri check-in"
+
+#: templates/events/landing.html:57 templates/home.html:106
 msgid "Book"
 msgstr "Prenota"
 
-#: templates/events/landing.html:37
+#: templates/events/landing.html:61
 msgid "Already a member?"
 msgstr "Sei già socio?"
 
-#: templates/events/landing.html:37
+#: templates/events/landing.html:61
 msgid "Book by clicking"
 msgstr "Prenota cliccando"
 
-#: templates/events/landing.html:38
+#: templates/events/landing.html:62
 msgid "here"
 msgstr "qui"
 
-#: templates/events/landing.html:47
+#: templates/events/landing.html:71
 msgid "Already a member"
 msgstr "Sei già socio"
 
-#: templates/events/landing.html:53
+#: templates/events/landing.html:77
 msgid "Book a place"
 msgstr "Prenota un posto"
 
-#: templates/events/landing.html:62
+#: templates/events/landing.html:86
 msgid "This date has already been"
 msgstr "Questo appuntamento è già passato"
 
-#: templates/events/landing.html:64
+#: templates/events/landing.html:88
 msgid ""
 "The booking cannot be changed any more. Thank you for coming — the next "
 "dates are on the home page."
@@ -1215,15 +1250,15 @@ msgstr ""
 "La prenotazione non è più modificabile. Grazie di essere venuto: i prossimi "
 "appuntamenti sono nella home."
 
-#: templates/events/landing.html:67 templates/events/mine.html:44
+#: templates/events/landing.html:91 templates/events/mine.html:44
 msgid "The next dates"
 msgstr "I prossimi appuntamenti"
 
-#: templates/events/landing.html:69
+#: templates/events/landing.html:93
 msgid "Bookings are closed"
 msgstr "Le prenotazioni sono chiuse"
 
-#: templates/events/landing.html:71
+#: templates/events/landing.html:95
 #, python-format
 msgid ""
 "This event is no longer taking bookings. Write to %(email)s if you need to "
@@ -1289,7 +1324,7 @@ msgstr[1] "Hai %(counter)s prenotazioni in arrivo."
 
 #: templates/events/mail/bookings.html:33 templates/events/recover.html:4
 #: templates/events/recover.html:21 templates/events/recover.html:26
-#: templates/home.html:111
+#: templates/home.html:115
 msgid "Manage your bookings"
 msgstr "Gestisci le tue prenotazioni"
 
@@ -1350,7 +1385,7 @@ msgstr ""
 "Non è arrivato nulla? La prenotazione potrebbe essere su un altro indirizzo, "
 "oppure la data potrebbe essere passata. Scrivici e la cerchiamo noi."
 
-#: templates/events/recover-sent.html:32 templates/home.html:144
+#: templates/events/recover-sent.html:32 templates/home.html:148
 #: templates/intake/base-intake.html:71
 msgid "Contact us"
 msgstr "Contattaci"
@@ -1367,7 +1402,7 @@ msgstr ""
 "I link durano pochi giorni, quindi uno vecchio non apre più nulla. "
 "Richiedine uno nuovo qui sotto."
 
-#: templates/events/recover.html:28 templates/home.html:113
+#: templates/events/recover.html:28 templates/home.html:117
 msgid ""
 "Enter the address you booked with and we will send you the link to change or "
 "cancel."
@@ -1375,7 +1410,7 @@ msgstr ""
 "Inserisci l'indirizzo con cui hai prenotato e ti mandiamo il link per "
 "modificare o annullare."
 
-#: templates/events/recover.html:36 templates/home.html:127
+#: templates/events/recover.html:36 templates/home.html:131
 msgid "Manage"
 msgstr "Gestisci"
 
@@ -1424,7 +1459,7 @@ msgstr ""
 msgid "Other open dates"
 msgstr "Altre date aperte"
 
-#: templates/home.html:150 templates/intake/base-intake.html:77
+#: templates/home.html:154 templates/intake/base-intake.html:77
 msgid "Statute"
 msgstr "Statuto"
 
