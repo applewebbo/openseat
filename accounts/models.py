@@ -1,3 +1,4 @@
+from allauth.account.models import EmailAddress
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -28,7 +29,14 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_("A superuser must have is_staff=True"))
         if extra_fields.get("is_superuser") is not True:
             raise ValueError(_("A superuser must have is_superuser=True"))
-        return self._create_user(email, password, **extra_fields)
+        user = self._create_user(email, password, **extra_fields)
+        # createsuperuser never goes through allauth's signup flow, so nothing
+        # would otherwise verify the address — without this it is stuck behind
+        # both mandatory email verification and the superuser-approval gate.
+        EmailAddress.objects.update_or_create(
+            user=user, email=user.email, defaults={"verified": True, "primary": True}
+        )
+        return user
 
 
 class CustomUser(AbstractUser):

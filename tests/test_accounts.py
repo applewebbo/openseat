@@ -32,6 +32,25 @@ def test_create_superuser():
 
 
 @pytest.mark.django_db
+def test_create_superuser_is_active_and_needs_no_approval():
+    user = User.objects.create_superuser(email="root@example.com", password="pwd")
+
+    assert user.is_active
+
+
+@pytest.mark.django_db
+def test_create_superuser_gets_a_verified_primary_email():
+    from allauth.account.models import EmailAddress
+
+    user = User.objects.create_superuser(email="root@example.com", password="pwd")
+
+    address = EmailAddress.objects.get(user=user)
+    assert address.email == "root@example.com"
+    assert address.verified is True
+    assert address.primary is True
+
+
+@pytest.mark.django_db
 def test_create_superuser_requires_is_staff(english):
     with pytest.raises(ValueError, match="is_staff=True"):
         User.objects.create_superuser(
