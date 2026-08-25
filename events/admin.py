@@ -32,7 +32,7 @@ class BookingInline(admin.TabularInline):
 class EventAdmin(admin.ModelAdmin):
     # No association column or filter: one installation holds one, so the same
     # name on every row only takes space away from the title.
-    list_display = ("title", "starts_on", "booked", "sent_on")
+    list_display = ("title", "starts_on", "booked", "cost", "sent_on")
     list_filter = ("is_published",)
     date_hierarchy = "starts_at"
     prepopulated_fields = {"slug": ("title",)}

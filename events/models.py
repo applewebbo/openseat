@@ -93,6 +93,14 @@ class Event(models.Model):
             "Set by an editor at the door. Closes public bookings until cleared."
         ),
     )
+    cost = models.DecimalField(
+        _("suggested cost"),
+        max_digits=7,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text=_("Not shown to the public yet."),
+    )
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
 
     objects = EventQuerySet.as_manager()
