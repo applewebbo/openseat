@@ -5,26 +5,60 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('intake', '0006_association_booking_close_mode'),
+        ("intake", "0006_association_booking_close_mode"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='AgeBracket',
+            name="AgeBracket",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('label', models.CharField(max_length=20, verbose_name='label')),
-                ('min_age', models.PositiveSmallIntegerField(blank=True, help_text='Empty: no lower bound.', null=True, verbose_name='from age')),
-                ('max_age', models.PositiveSmallIntegerField(blank=True, help_text='Empty: no upper bound.', null=True, verbose_name='to age')),
-                ('order', models.PositiveSmallIntegerField(default=0, verbose_name='order')),
-                ('association', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='age_brackets', to='intake.association', verbose_name='association')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("label", models.CharField(max_length=20, verbose_name="label")),
+                (
+                    "min_age",
+                    models.PositiveSmallIntegerField(
+                        blank=True,
+                        help_text="Empty: no lower bound.",
+                        null=True,
+                        verbose_name="from age",
+                    ),
+                ),
+                (
+                    "max_age",
+                    models.PositiveSmallIntegerField(
+                        blank=True,
+                        help_text="Empty: no upper bound.",
+                        null=True,
+                        verbose_name="to age",
+                    ),
+                ),
+                (
+                    "order",
+                    models.PositiveSmallIntegerField(default=0, verbose_name="order"),
+                ),
+                (
+                    "association",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="age_brackets",
+                        to="intake.association",
+                        verbose_name="association",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'age bracket',
-                'verbose_name_plural': 'age brackets',
-                'ordering': ('order', 'min_age'),
+                "verbose_name": "age bracket",
+                "verbose_name_plural": "age brackets",
+                "ordering": ("order", "min_age"),
             },
         ),
     ]

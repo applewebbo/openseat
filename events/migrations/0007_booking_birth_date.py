@@ -4,15 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('events', '0006_event_cost'),
+        ("events", "0006_event_cost"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='booking',
-            name='birth_date',
-            field=models.DateField(blank=True, help_text='A snapshot taken when the booking was made — it is not recalculated later, not even against the event date.', null=True, verbose_name='date of birth'),
+            model_name="booking",
+            name="birth_date",
+            field=models.DateField(
+                blank=True,
+                help_text="A snapshot taken when the booking was made — it is not recalculated later, not even against the event date.",
+                null=True,
+                verbose_name="date of birth",
+            ),
         ),
     ]
