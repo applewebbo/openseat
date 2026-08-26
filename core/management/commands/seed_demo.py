@@ -11,8 +11,7 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 
 from events.models import Booking, Event, FeeMethod
-from intake.models import Association, PublicForm
-from members.models import Member
+from intake.models import AgeBracket, Association, PublicForm, SubjectType, Submission
 
 ASSOCIATION = {
     "slug": "lontano-la-ca-di-asu",
@@ -90,128 +89,160 @@ EVENTS = [
     },
 ]
 
-# A pool wide enough that each event's roster overlaps but is not identical —
-# the same regulars turning up to different dates, as a real register would show.
-MEMBERS = [
+# The register mirrors real bookings: applying for a child, the association's
+# actual majority, so most of the pool is a parent-and-child pair. Confirming
+# the booking is what enrols the child — exactly the production path, not a
+# shortcut — so a booking left unconfirmed never creates a register entry.
+FAMILIES = [
     {
-        "first_name": "Giulia",
-        "last_name": "Bianchi",
-        "tax_code": "BNCGLI85M41H501Z",
-        "birth_date": "1985-08-01",
+        "parent_first_name": "Giulia",
+        "parent_last_name": "Bianchi",
+        "parent_email": "giulia.bianchi@example.com",
+        "child_first_name": "Sofia",
+        "child_last_name": "Bianchi",
+        "child_birth_date": "2019-05-11",
     },
     {
-        "first_name": "Marco",
-        "last_name": "Rossi",
-        "tax_code": "RSSMRC79A01F205W",
-        "birth_date": "1979-01-01",
+        "parent_first_name": "Marco",
+        "parent_last_name": "Rossi",
+        "parent_email": "marco.rossi@example.com",
+        "child_first_name": "Leonardo",
+        "child_last_name": "Rossi",
+        "child_birth_date": "2013-02-20",
     },
     {
-        "first_name": "Chiara",
-        "last_name": "Ferrari",
-        "tax_code": "FRRCHR90D55D969X",
-        "birth_date": "1990-04-15",
+        "parent_first_name": "Chiara",
+        "parent_last_name": "Ferrari",
+        "parent_email": "chiara.ferrari@example.com",
+        "child_first_name": "Emma",
+        "child_last_name": "Ferrari",
+        "child_birth_date": "2016-09-03",
     },
     {
-        "first_name": "Luca",
-        "last_name": "Colombo",
-        "tax_code": "CLMLCU82P15F704Y",
-        "birth_date": "1982-09-15",
+        "parent_first_name": "Luca",
+        "parent_last_name": "Colombo",
+        "parent_email": "luca.colombo@example.com",
+        "child_first_name": "Tommaso",
+        "child_last_name": "Colombo",
+        "child_birth_date": "2011-12-14",
     },
     {
-        "first_name": "Sara",
-        "last_name": "Ricci",
-        "tax_code": "RCCSRA93T50G273K",
-        "birth_date": "1993-12-10",
+        "parent_first_name": "Sara",
+        "parent_last_name": "Ricci",
+        "parent_email": "sara.ricci@example.com",
+        "child_first_name": "Giorgia",
+        "child_last_name": "Ricci",
+        "child_birth_date": "2012-07-27",
     },
     {
-        "first_name": "Davide",
-        "last_name": "Marino",
-        "tax_code": "MRNDVD88C12L219H",
-        "birth_date": "1988-03-12",
+        "parent_first_name": "Davide",
+        "parent_last_name": "Marino",
+        "parent_email": "davide.marino@example.com",
+        "child_first_name": "Riccardo",
+        "child_last_name": "Marino",
+        "child_birth_date": "2014-04-18",
     },
     {
-        "first_name": "Elena",
-        "last_name": "Greco",
-        "tax_code": "GRCLNE91R41E958J",
-        "birth_date": "1991-10-01",
+        "parent_first_name": "Elena",
+        "parent_last_name": "Greco",
+        "parent_email": "elena.greco@example.com",
+        "child_first_name": "Alice",
+        "child_last_name": "Greco",
+        "child_birth_date": "2017-10-09",
     },
     {
-        "first_name": "Andrea",
-        "last_name": "Bruno",
-        "tax_code": "BRNNDR84L05B157G",
-        "birth_date": "1984-07-05",
+        "parent_first_name": "Andrea",
+        "parent_last_name": "Bruno",
+        "parent_email": "andrea.bruno@example.com",
+        "child_first_name": "Matteo",
+        "child_last_name": "Bruno",
+        "child_birth_date": "2013-01-30",
     },
     {
-        "first_name": "Francesca",
-        "last_name": "Gallo",
-        "tax_code": "GLLFNC87S45L840F",
-        "birth_date": "1987-11-05",
+        "parent_first_name": "Francesca",
+        "parent_last_name": "Gallo",
+        "parent_email": "francesca.gallo@example.com",
+        "child_first_name": "Vittoria",
+        "child_last_name": "Gallo",
+        "child_birth_date": "2015-06-06",
     },
     {
-        "first_name": "Simone",
-        "last_name": "Conti",
-        "tax_code": "CNTSMN80A19A944D",
-        "birth_date": "1980-01-19",
+        "parent_first_name": "Simone",
+        "parent_last_name": "Conti",
+        "parent_email": "simone.conti@example.com",
+        "child_first_name": "Francesco",
+        "child_last_name": "Conti",
+        "child_birth_date": "2012-08-22",
     },
     {
-        "first_name": "Valentina",
-        "last_name": "De Luca",
-        "tax_code": "DLCVNT94M52F839E",
-        "birth_date": "1994-05-12",
+        "parent_first_name": "Valentina",
+        "parent_last_name": "De Luca",
+        "parent_email": "valentina.deluca@example.com",
+        "child_first_name": "Aurora",
+        "child_last_name": "De Luca",
+        "child_birth_date": "2010-03-15",
     },
     {
-        "first_name": "Matteo",
-        "last_name": "Costa",
-        "tax_code": "CSTMTT86H09D542C",
-        "birth_date": "1986-06-09",
+        "parent_first_name": "Matteo",
+        "parent_last_name": "Costa",
+        "parent_email": "matteo.costa@example.com",
+        "child_first_name": "Diego",
+        "child_last_name": "Costa",
+        "child_birth_date": "2018-11-02",
     },
     {
-        "first_name": "Alessia",
-        "last_name": "Fontana",
-        "tax_code": "FNTLSS92B60G478B",
-        "birth_date": "1962-02-20",
+        "parent_first_name": "Alessia",
+        "parent_last_name": "Fontana",
+        "parent_email": "alessia.fontana@example.com",
+        "child_first_name": "Beatrice",
+        "child_last_name": "Fontana",
+        "child_birth_date": "2014-09-19",
     },
     {
-        "first_name": "Riccardo",
-        "last_name": "Barbieri",
-        "tax_code": "BRBRCR81T25H501A",
-        "birth_date": "1958-10-25",
+        "parent_first_name": "Riccardo",
+        "parent_last_name": "Barbieri",
+        "parent_email": "riccardo.barbieri@example.com",
+        "child_first_name": "Gabriele",
+        "child_last_name": "Barbieri",
+        "child_birth_date": "2020-01-25",
     },
     {
-        "first_name": "Martina",
-        "last_name": "Santoro",
-        "tax_code": "SNTMTN95C46F205V",
-        "birth_date": "1995-03-06",
+        "parent_first_name": "Martina",
+        "parent_last_name": "Santoro",
+        "parent_email": "martina.santoro@example.com",
+        "child_first_name": "Camilla",
+        "child_last_name": "Santoro",
+        "child_birth_date": "2016-05-08",
     },
     {
-        "first_name": "Nicola",
-        "last_name": "Mariani",
-        "tax_code": "MRNNCL83D14L219U",
-        "birth_date": "1955-04-14",
+        "parent_first_name": "Nicola",
+        "parent_last_name": "Mariani",
+        "parent_email": "nicola.mariani@example.com",
+        "child_first_name": "Pietro",
+        "child_last_name": "Mariani",
+        "child_birth_date": "2021-03-30",
     },
-    {
-        "first_name": "Alice",
-        "last_name": "Rinaldi",
-        "tax_code": "RNLLCA89E48E958T",
-        "birth_date": "2012-08-08",
-    },
+]
+
+# A handful of adults booking for themselves, so the roster is not all minors.
+SELF_ADULTS = [
     {
         "first_name": "Federico",
         "last_name": "Caruso",
-        "tax_code": "CRSFRC77M22B157S",
-        "birth_date": "2010-01-22",
+        "email": "federico.caruso@example.com",
+        "birth_date": "1996-01-22",
     },
     {
         "first_name": "Silvia",
         "last_name": "Ferrara",
-        "tax_code": "FRRSLV96A54D969R",
-        "birth_date": "2009-01-04",
+        "email": "silvia.ferrara@example.com",
+        "birth_date": "1978-04-04",
     },
     {
         "first_name": "Tommaso",
         "last_name": "Longo",
-        "tax_code": "LNGTMS90P03F704Q",
-        "birth_date": "2011-03-03",
+        "email": "tommaso.longo@example.com",
+        "birth_date": "1962-03-03",
     },
 ]
 
@@ -240,6 +271,33 @@ class Command(BaseCommand):
                 + (f" (filled in {', '.join(missing)})" if missing else "")
             )
 
+        # The migration that seeds these only runs against associations that
+        # already existed at migrate time — a fresh DB has none yet, so this
+        # command must not assume the bookings summary card has anything to
+        # group by.
+        if not association.age_brackets.exists():
+            AgeBracket.objects.bulk_create(
+                [
+                    AgeBracket(
+                        association=association,
+                        label=label,
+                        min_age=lo,
+                        max_age=hi,
+                        order=order,
+                    )
+                    for order, (label, lo, hi) in enumerate(
+                        [
+                            ("0-5", 0, 5),
+                            ("6-9", 6, 9),
+                            ("10-14", 10, 14),
+                            ("15-17", 15, 17),
+                            ("18+", 18, None),
+                        ]
+                    )
+                ]
+            )
+            self.stdout.write("created: default age brackets")
+
         public_form, created = PublicForm.objects.get_or_create(
             association=association,
             slug="adesione",
@@ -255,27 +313,36 @@ class Command(BaseCommand):
             public_form.install_sections()
         self.stdout.write(f"{'created' if created else 'kept'}: {public_form.title}")
 
-        members = []
-        for spec in MEMBERS:
-            slug = spec["tax_code"]
-            email = f"{spec['first_name']}.{spec['last_name']}@example.com".lower()
-            member, _created = Member.objects.get_or_create(
-                association=association,
-                tax_code=slug,
-                defaults={
-                    "first_name": spec["first_name"],
-                    "last_name": spec["last_name"],
-                    "birth_date": spec["birth_date"],
-                    "contact_name": f"{spec['first_name']} {spec['last_name']}",
-                    "contact_email": email,
-                    "contact_phone": "3331234567",
-                },
+        # Normalised so the booking loop below does not care whether a slot is
+        # a parent applying for a child or an adult applying for themselves.
+        pool = []
+        for index_, family in enumerate(FAMILIES):
+            pool.append(
+                {
+                    "is_minor": True,
+                    "first_name": family["child_first_name"],
+                    "last_name": family["child_last_name"],
+                    "birth_date": family["child_birth_date"],
+                    "applicant_first_name": family["parent_first_name"],
+                    "applicant_last_name": family["parent_last_name"],
+                    "email": family["parent_email"],
+                }
             )
-            if member.birth_date is None:
-                member.birth_date = spec["birth_date"]
-                member.save(update_fields=["birth_date"])
-            members.append(member)
-        self.stdout.write(f"kept: {len(members)} demo members")
+            # One self-adult sprinkled in every sixth slot: minors stay a
+            # comfortable majority (well over 80%) of any roster slice.
+            if SELF_ADULTS and (index_ + 1) % 6 == 0:
+                adult = SELF_ADULTS[(index_ + 1) // 6 % len(SELF_ADULTS)]
+                pool.append(
+                    {
+                        "is_minor": False,
+                        "first_name": adult["first_name"],
+                        "last_name": adult["last_name"],
+                        "birth_date": adult["birth_date"],
+                        "applicant_first_name": adult["first_name"],
+                        "applicant_last_name": adult["last_name"],
+                        "email": adult["email"],
+                    }
+                )
 
         midnight = timezone.localtime().replace(
             hour=0, minute=0, second=0, microsecond=0
@@ -302,21 +369,52 @@ class Command(BaseCommand):
             # A different, overlapping slice of the pool per event, the way the
             # same regulars turn up to different dates.
             roster_size = 10 + (index % 6)
-            start = (index * 4) % len(members)
+            start = (index * 4) % len(pool)
             roster = [
-                members[(start + offset) % len(members)]
-                for offset in range(roster_size)
+                pool[(start + offset) % len(pool)] for offset in range(roster_size)
             ]
             booked = 0
-            for position, member in enumerate(roster):
-                booking = Booking.objects.book(event, member)
-                # Roughly a third already confirmed and paid, so the check-in
-                # roster shows a realistic mix rather than an all-or-nothing list.
-                if position % 3 == 0 and booking.confirmed_on is None:
-                    booking.confirmed_on = starts_at.date()
-                    booking.fee_amount = association.membership_fee
-                    booking.fee_method = FeeMethod.CASH
-                    booking.save(
+            for position, spec_ in enumerate(roster):
+                existing = Booking.objects.filter(
+                    event=event,
+                    first_name=spec_["first_name"],
+                    last_name=spec_["last_name"],
+                ).first()
+                if existing is None:
+                    submission = Submission.objects.create(
+                        form=public_form,
+                        state=Submission.State.SUBMITTED,
+                        submitted_at=starts_at - datetime.timedelta(days=10),
+                        subject_type=(
+                            SubjectType.MINOR if spec_["is_minor"] else SubjectType.SELF
+                        ),
+                        applicant_first_name=spec_["applicant_first_name"],
+                        applicant_last_name=spec_["applicant_last_name"],
+                        applicant_birth_date=(
+                            None if spec_["is_minor"] else spec_["birth_date"]
+                        ),
+                        applicant_email=spec_["email"],
+                        applicant_phone="3331234567",
+                        member_first_name=(
+                            spec_["first_name"] if spec_["is_minor"] else ""
+                        ),
+                        member_last_name=(
+                            spec_["last_name"] if spec_["is_minor"] else ""
+                        ),
+                        member_birth_date=(
+                            spec_["birth_date"] if spec_["is_minor"] else None
+                        ),
+                        accepts_statute=True,
+                        sole_holder=True if spec_["is_minor"] else None,
+                    )
+                    existing = Booking.objects.book_application(event, submission)
+                # A fifth already confirmed and paid — most check-ins still
+                # happen at the door, not ahead of time.
+                if position % 5 == 0 and existing.confirmed_on is None:
+                    existing.confirmed_on = starts_at.date()
+                    existing.fee_amount = association.membership_fee
+                    existing.fee_method = FeeMethod.CASH
+                    existing.save(
                         update_fields=["confirmed_on", "fee_amount", "fee_method"]
                     )
                 booked += 1

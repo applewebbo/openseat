@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 21:33+0200\n"
+"POT-Creation-Date: 2026-08-26 08:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,28 +38,28 @@ msgstr "Important dates"
 msgid "Back-office users"
 msgstr ""
 
-#: accounts/models.py:13
+#: accounts/models.py:14
 msgid "The email address is required"
 msgstr "The email address is required"
 
-#: accounts/models.py:28
+#: accounts/models.py:29
 msgid "A superuser must have is_staff=True"
 msgstr "A superuser must have is_staff=True"
 
-#: accounts/models.py:30
+#: accounts/models.py:31
 msgid "A superuser must have is_superuser=True"
 msgstr "A superuser must have is_superuser=True"
 
-#: accounts/models.py:38 intake/models.py:72 intake/models.py:272
+#: accounts/models.py:46 intake/models.py:72 intake/models.py:272
 #: intake/models.py:297 intake/models.py:413 members/models.py:50
 msgid "email address"
 msgstr "email address"
 
-#: accounts/models.py:46
+#: accounts/models.py:54
 msgid "user"
 msgstr "user"
 
-#: accounts/models.py:47
+#: accounts/models.py:55
 msgid "users"
 msgstr "users"
 
@@ -337,8 +337,8 @@ msgstr ""
 msgid "Statute and fee"
 msgstr ""
 
-#: intake/admin.py:59 templates/events/checkin-summary-partial.html:8
-#: templates/events/recover-sent.html:12 templates/events/recover.html:12
+#: intake/admin.py:59 templates/events/recover-sent.html:12
+#: templates/events/recover.html:12
 msgid "Bookings"
 msgstr ""
 
@@ -1233,6 +1233,10 @@ msgstr ""
 
 #: templates/events/checkin-summary-partial.html:5
 msgid "Summary"
+msgstr ""
+
+#: templates/events/checkin-summary-partial.html:8
+msgid "People booked"
 msgstr ""
 
 #: templates/events/checkin-summary-partial.html:12

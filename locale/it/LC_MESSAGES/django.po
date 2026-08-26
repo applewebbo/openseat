@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 21:33+0200\n"
+"POT-Creation-Date: 2026-08-26 08:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,28 +38,28 @@ msgstr "Date importanti"
 msgid "Back-office users"
 msgstr "Utenti del gestionale"
 
-#: accounts/models.py:13
+#: accounts/models.py:14
 msgid "The email address is required"
 msgstr "L'indirizzo email è obbligatorio"
 
-#: accounts/models.py:28
+#: accounts/models.py:29
 msgid "A superuser must have is_staff=True"
 msgstr "Un superuser deve avere is_staff=True"
 
-#: accounts/models.py:30
+#: accounts/models.py:31
 msgid "A superuser must have is_superuser=True"
 msgstr "Un superuser deve avere is_superuser=True"
 
-#: accounts/models.py:38 intake/models.py:72 intake/models.py:272
+#: accounts/models.py:46 intake/models.py:72 intake/models.py:272
 #: intake/models.py:297 intake/models.py:413 members/models.py:50
 msgid "email address"
 msgstr "indirizzo email"
 
-#: accounts/models.py:46
+#: accounts/models.py:54
 msgid "user"
 msgstr "utente"
 
-#: accounts/models.py:47
+#: accounts/models.py:55
 msgid "users"
 msgstr "utenti"
 
@@ -348,8 +348,8 @@ msgstr "Dati anagrafici dell'associazione"
 msgid "Statute and fee"
 msgstr "Statuto e quota"
 
-#: intake/admin.py:59 templates/events/checkin-summary-partial.html:8
-#: templates/events/recover-sent.html:12 templates/events/recover.html:12
+#: intake/admin.py:59 templates/events/recover-sent.html:12
+#: templates/events/recover.html:12
 msgid "Bookings"
 msgstr "Prenotazioni"
 
@@ -540,8 +540,8 @@ msgid ""
 "When public bookings stop, on top of an editor closing them manually at "
 "check-in."
 msgstr ""
-"Quando si chiudono le prenotazioni pubbliche, oltre alla chiusura manuale "
-"da parte di un editor al check-in."
+"Quando si chiudono le prenotazioni pubbliche, oltre alla chiusura manuale da "
+"parte di un editor al check-in."
 
 #: intake/models.py:87
 msgid "logo"
@@ -1286,9 +1286,13 @@ msgstr "Check-in"
 msgid "Summary"
 msgstr "Riepilogo"
 
+#: templates/events/checkin-summary-partial.html:8
+msgid "People booked"
+msgstr "Prenotati"
+
 #: templates/events/checkin-summary-partial.html:12
 msgid "Confirmed"
-msgstr "Confermate"
+msgstr "Confermati"
 
 #: templates/events/checkin-summary-partial.html:19
 msgid "Bookings by age bracket, regardless of check-in."
@@ -1316,7 +1320,8 @@ msgstr "Prenotazioni aperte"
 
 #: templates/events/checkin.html:40
 msgid "Bookings are past their automatic cutoff and cannot reopen."
-msgstr "Il termine automatico è già passato: le prenotazioni non possono riaprire."
+msgstr ""
+"Il termine automatico è già passato: le prenotazioni non possono riaprire."
 
 #: templates/events/checkin.html:42
 msgid "Reopen bookings"
