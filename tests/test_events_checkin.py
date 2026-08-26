@@ -407,6 +407,54 @@ def test_an_editor_undoes_a_checkin(editor_client, checked_in_event, booking_fac
     assert response.status_code == 302
 
 
+def test_undoing_is_a_noop_on_an_already_unconfirmed_booking(
+    editor_client, checked_in_event, booking_factory
+):
+    booking = booking_factory(event=checked_in_event, confirmed_on=None)
+
+    response = editor_client.post(
+        reverse("events:checkin-undo", args=[checked_in_event.slug, booking.pk])
+    )
+
+    booking.refresh_from_db()
+    assert booking.is_confirmed is False
+    assert response.status_code == 302
+
+
+def test_undoing_is_refused_while_bookings_are_still_open(
+    editor_client, event, booking_factory
+):
+    booking = booking_factory(event=event, confirmed_on=timezone.localdate())
+
+    response = editor_client.post(
+        reverse("events:checkin-undo", args=[event.slug, booking.pk])
+    )
+
+    assert response.status_code == 404
+    booking.refresh_from_db()
+    assert booking.is_confirmed is True
+
+
+def test_an_htmx_undo_returns_the_row_fragment_and_the_summary(
+    editor_client, checked_in_event, booking_factory
+):
+    booking = booking_factory(event=checked_in_event)
+    editor_client.post(
+        reverse("events:checkin-confirm", args=[checked_in_event.slug, booking.pk])
+    )
+
+    response = editor_client.post(
+        reverse("events:checkin-undo", args=[checked_in_event.slug, booking.pk]),
+        HTTP_HX_REQUEST="true",
+    )
+
+    assert response.templates[0].name == "events/checkin-row-partial.html"
+    content = response.content.decode()
+    assert f'id="booking-{booking.pk}"' in content
+    assert 'id="booking-summary"' in content
+    assert 'hx-swap-oob="true"' in content
+
+
 def test_a_visitor_without_permission_cannot_check_a_booking_in(
     checked_in_event, booking_factory, user_factory
 ):
