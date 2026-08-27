@@ -28,29 +28,41 @@
             {% endif %}
             <h1 class="text-2xl font-bold tracking-tight">{{ event.title }}</h1>
         </div>
-        {% if event.is_checkin_open %}
-            <form method="post"
-                  action="{% url 'events:checkin-close' event.slug %}"
-                  class="shrink-0">
-                {% csrf_token %}
-                <button type="submit"
-                        class="btn btn-soft btn-sm rounded-lg"
-                        {% if not event.can_reopen_bookings %}
-                            disabled
-                            title="{% translate 'Bookings are past their automatic cutoff and cannot reopen.' %}"
-                        {% endif %}>
-                    {% translate "Reopen bookings" %}
-                </button>
-            </form>
-        {% elif event.is_open %}
-            <form method="post"
-                  action="{% url 'events:checkin-open' event.slug %}"
-                  class="shrink-0">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary btn-sm rounded-lg">{% translate "Open check-in" %}</button>
-            </form>
-        {% endif %}
+        <div class="flex shrink-0 items-center gap-2">
+            <label for="add-booking" class="btn btn-soft btn-sm rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 256 256"
+                     fill="currentColor"
+                     class="h-4 w-4"
+                     aria-hidden="true">
+                    <path d="M234.38,210a123.36,123.36,0,0,0-60.78-53.23,76,76,0,1,0-91.2,0A123.36,123.36,0,0,0,21.62,210a12,12,0,1,0,20.77,12c18.12-31.32,50.12-50,85.61-50s67.49,18.69,85.61,50a12,12,0,0,0,20.77-12ZM76,96a52,52,0,1,1,52,52A52.06,52.06,0,0,1,76,96Z" />
+                </svg>
+                {% translate "Add" %}
+            </label>
+            {% if event.is_checkin_open %}
+                <form method="post"
+                      action="{% url 'events:checkin-close' event.slug %}">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="btn btn-soft btn-sm rounded-lg"
+                            {% if not event.can_reopen_bookings %}
+                                disabled
+                                title="{% translate 'Bookings are past their automatic cutoff and cannot reopen.' %}"
+                            {% endif %}>
+                        {% translate "Reopen bookings" %}
+                    </button>
+                </form>
+            {% elif event.is_open %}
+                <form method="post"
+                      action="{% url 'events:checkin-open' event.slug %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-sm rounded-lg">{% translate "Open check-in" %}</button>
+                </form>
+            {% endif %}
+        </div>
     </div>
+
+    {% include "events/checkin-add-modal-partial.html" %}
 
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
         {% include "events/checkin-summary-partial.html" %}

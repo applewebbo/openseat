@@ -1,0 +1,60 @@
+{% load i18n %}
+<div id="applicant-fields"
+     {% if oob %}hx-swap-oob="true"{% endif %}
+     class="grid grid-cols-1 gap-4 sm:grid-cols-6">
+    <div class="sm:col-span-3">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.applicant_first_name.id_for_label }}">{{ form.applicant_first_name.label }}</label>
+        {{ form.applicant_first_name }}
+        {% for error in form.applicant_first_name.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-3">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.applicant_last_name.id_for_label }}">{{ form.applicant_last_name.label }}</label>
+        {{ form.applicant_last_name }}
+        {% for error in form.applicant_last_name.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-3">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.applicant_birth_date.id_for_label }}">{{ form.applicant_birth_date.label }}</label>
+        {{ form.applicant_birth_date }}
+        {% for error in form.applicant_birth_date.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-3">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.applicant_birth_place.id_for_label }}">{{ form.applicant_birth_place.label }}</label>
+        {{ form.applicant_birth_place }}
+        {% for error in form.applicant_birth_place.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-6">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.applicant_tax_code.id_for_label }}">{{ form.applicant_tax_code.label }}</label>
+        {{ form.applicant_tax_code }}
+        {% for error in form.applicant_tax_code.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-4">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.applicant_street.id_for_label }}">{{ form.applicant_street.label }}</label>
+        {{ form.applicant_street }}
+        {% for error in form.applicant_street.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-2">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.applicant_number.id_for_label }}">{{ form.applicant_number.label }}</label>
+        {{ form.applicant_number }}
+        {% for error in form.applicant_number.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-2">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.applicant_postcode.id_for_label }}">{{ form.applicant_postcode.label }}</label>
+        {{ form.applicant_postcode }}
+        {% for error in form.applicant_postcode.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-4">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.applicant_city.id_for_label }}">{{ form.applicant_city.label }}</label>
+        {{ form.applicant_city }}
+        {% for error in form.applicant_city.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-3">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.applicant_phone.id_for_label }}">{{ form.applicant_phone.label }}</label>
+        {{ form.applicant_phone }}
+        {% for error in form.applicant_phone.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-3">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.applicant_email.id_for_label }}">{{ form.applicant_email.label }}</label>
+        {{ form.applicant_email }}
+        {% for error in form.applicant_email.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+</div>

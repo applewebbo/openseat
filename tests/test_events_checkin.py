@@ -6,7 +6,48 @@ from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 
+from intake.models import Subscription
+
 pytestmark = pytest.mark.django_db
+
+
+def _manual_booking_data(**overrides):
+    data = {
+        "subject_type": "self",
+        "applicant_first_name": "Anna",
+        "applicant_last_name": "Verdi",
+        "applicant_birth_date": "1970-01-05",
+        "applicant_birth_place": "Novara",
+        "applicant_tax_code": "VRDNNA70A45F952I",
+        "applicant_street": "Via Roma",
+        "applicant_number": "1",
+        "applicant_postcode": "28100",
+        "applicant_city": "Novara",
+        "applicant_phone": "3401234567",
+        "applicant_email": "anna.verdi@example.com",
+        "accepts_statute": "on",
+        "sole_holder": "on",
+        "consent_images": "on",
+    }
+    data.update(overrides)
+    return data
+
+
+def _minor_booking_data(**overrides):
+    data = _manual_booking_data(
+        subject_type="minor",
+        member_first_name="Luca",
+        member_last_name="Rossi",
+        member_birth_date="2015-09-03",
+        member_birth_place="Novara",
+        member_tax_code="RSSLCU15P03F952V",
+        member_street="Via Roma",
+        member_number="4",
+        member_city="Novara",
+    )
+    del data["sole_holder"]
+    data.update(overrides)
+    return data
 
 
 # --- who sees the toggle -----------------------------------------------------
@@ -485,3 +526,264 @@ def test_checking_in_a_booking_from_another_event_is_not_found(
     )
 
     assert response.status_code == 404
+
+
+# --- adding a booking by hand ---------------------------------------------------
+
+
+def test_the_add_button_shows_even_while_bookings_are_open(
+    editor_client, event, public_form
+):
+    event.form = public_form
+    event.save()
+
+    response = editor_client.get(event.get_absolute_url())
+
+    assert reverse("events:checkin-add", args=[event.slug]).encode() in response.content
+
+
+def test_an_editor_adds_a_self_booking(editor_client, event, public_form):
+    event.form = public_form
+    event.save()
+
+    response = editor_client.post(
+        reverse("events:checkin-add", args=[event.slug]), _manual_booking_data()
+    )
+
+    assert response.status_code == 302
+    booking = event.bookings.active().get()
+    assert booking.full_name == "Anna Verdi"
+    assert booking.is_confirmed
+    assert booking.fee_amount == event.association.membership_fee
+    assert booking.fee_method == "cash"
+    assert booking.member is not None
+    assert booking.submission.state == booking.submission.State.SUBMITTED
+
+
+def test_the_primary_signature_is_recorded(editor_client, event, public_form):
+    event.form = public_form
+    event.save()
+
+    editor_client.post(
+        reverse("events:checkin-add", args=[event.slug]), _manual_booking_data()
+    )
+
+    booking = event.bookings.active().get()
+    subscription = booking.submission.subscriptions.get(role=Subscription.Role.PRIMARY)
+    assert subscription.state == Subscription.State.SIGNED
+
+
+def test_adding_a_minor_booking_with_a_sole_holder(editor_client, event, public_form):
+    event.form = public_form
+    event.save()
+
+    response = editor_client.post(
+        reverse("events:checkin-add", args=[event.slug]),
+        _minor_booking_data(sole_holder="on"),
+    )
+
+    assert response.status_code == 302
+    booking = event.bookings.active().get()
+    assert booking.full_name == "Luca Rossi"
+    assert booking.member.tax_code == "RSSLCU15P03F952V"
+    assert not booking.submission.subscriptions.filter(
+        role=Subscription.Role.SECOND_PARENT
+    ).exists()
+
+
+def test_adding_a_minor_booking_with_two_holders_signs_the_second_parent(
+    editor_client, event, public_form
+):
+    event.form = public_form
+    event.save()
+
+    editor_client.post(
+        reverse("events:checkin-add", args=[event.slug]),
+        _minor_booking_data(
+            second_parent_first_name="Paolo",
+            second_parent_last_name="Rossi",
+        ),
+    )
+
+    booking = event.bookings.active().get()
+    assert booking.submission.sole_holder is False
+    assert booking.submission.image_consent_active is True
+    second_parent = booking.submission.subscriptions.get(
+        role=Subscription.Role.SECOND_PARENT
+    )
+    assert second_parent.state == Subscription.State.SIGNED
+    assert second_parent.signatory_name == "Paolo Rossi"
+
+
+def test_a_minor_booking_needs_the_members_details(editor_client, event, public_form):
+    event.form = public_form
+    event.save()
+
+    response = editor_client.post(
+        reverse("events:checkin-add", args=[event.slug]),
+        _manual_booking_data(subject_type="minor"),
+    )
+
+    assert response.status_code == 200
+    assert response.context["add_form"].errors
+    assert event.bookings.active().count() == 0
+
+
+def test_a_minor_booking_with_two_holders_needs_the_second_parent(
+    editor_client, event, public_form
+):
+    event.form = public_form
+    event.save()
+
+    response = editor_client.post(
+        reverse("events:checkin-add", args=[event.slug]),
+        _minor_booking_data(),
+    )
+
+    assert response.status_code == 200
+    assert "second_parent_first_name" in response.context["add_form"].errors
+    assert event.bookings.active().count() == 0
+
+
+def test_a_booking_without_the_statute_accepted_is_rejected(
+    editor_client, event, public_form
+):
+    event.form = public_form
+    event.save()
+    data = _manual_booking_data()
+    del data["accepts_statute"]
+
+    response = editor_client.post(
+        reverse("events:checkin-add", args=[event.slug]), data
+    )
+
+    assert response.status_code == 200
+    assert event.bookings.active().count() == 0
+
+
+def test_a_visitor_without_permission_cannot_add_a_booking(
+    checked_in_event, user_factory
+):
+    outsider = user_factory(is_staff=True)
+    outsider_client = Client()
+    outsider_client.force_login(outsider)
+
+    response = outsider_client.post(
+        reverse("events:checkin-add", args=[checked_in_event.slug]),
+        _manual_booking_data(),
+    )
+
+    assert response.status_code == 403
+    assert checked_in_event.bookings.active().count() == 0
+
+
+def test_an_anonymous_visitor_cannot_add_a_booking(event):
+    response = Client().post(
+        reverse("events:checkin-add", args=[event.slug]), _manual_booking_data()
+    )
+
+    assert response.status_code == 302
+    assert response.url.startswith(reverse("account_login"))
+
+
+def test_the_lookup_finds_a_minor_and_prefills_their_own_fields(
+    editor_client, event, member_factory
+):
+    member = member_factory(
+        association=event.association,
+        first_name="Luca",
+        last_name="Rossi",
+        tax_code="RSSLCU15P03F952V",
+        birth_date="2015-09-03",
+        street="Via Roma",
+        number="4",
+        city="Novara",
+    )
+
+    response = editor_client.get(
+        reverse("events:checkin-lookup", args=[event.slug]),
+        {"existing_tax_code": member.tax_code},
+    )
+
+    content = response.content.decode()
+    assert (
+        response.templates[0].name == "events/checkin-add-existing-search-partial.html"
+    )
+    assert "choice = 'minor'" in content
+    assert member.full_name in content
+    assert 'hx-swap-oob="true"' in content
+    assert 'id="member-fields"' in content
+    assert 'value="Luca"' in content
+    assert 'value="Rossi"' in content
+    assert "border-success" in content
+
+
+def test_the_lookup_also_prefills_the_signers_own_details_for_a_minor(
+    editor_client, event, member_factory
+):
+    member_factory(
+        association=event.association,
+        first_name="Luca",
+        last_name="Rossi",
+        tax_code="RSSLCU15P03F952V",
+        birth_date="2015-09-03",
+        contact_name="Maria Rossi",
+        contact_email="maria.rossi@example.com",
+        contact_phone="3401234567",
+        street="Via Roma",
+        number="4",
+        city="Novara",
+    )
+
+    response = editor_client.get(
+        reverse("events:checkin-lookup", args=[event.slug]),
+        {"existing_tax_code": "RSSLCU15P03F952V"},
+    )
+
+    content = response.content.decode()
+    assert 'id="applicant-fields"' in content
+    assert 'value="Maria"' in content
+    assert 'value="Rossi"' in content
+    assert 'value="maria.rossi@example.com"' in content
+    assert 'value="Via Roma"' in content
+
+
+def test_the_lookup_finds_an_adult_and_prefills_their_own_details_only(
+    editor_client, event, member_factory
+):
+    member_factory(
+        association=event.association,
+        first_name="Anna",
+        last_name="Verdi",
+        tax_code="VRDNNA70A45F952I",
+        birth_date="1970-01-05",
+        contact_email="anna.verdi@example.com",
+    )
+
+    response = editor_client.get(
+        reverse("events:checkin-lookup", args=[event.slug]),
+        {"existing_tax_code": "VRDNNA70A45F952I"},
+    )
+
+    content = response.content.decode()
+    assert "choice = 'self'" in content
+    assert 'id="applicant-fields"' in content
+    assert 'value="Anna"' in content
+    assert 'id="member-fields"' not in content
+
+
+def test_the_lookup_with_no_match_shows_a_message_and_keeps_the_typed_code(
+    editor_client, event
+):
+    response = editor_client.get(
+        reverse("events:checkin-lookup", args=[event.slug]),
+        {"existing_tax_code": "VRDNNA70A45F952I"},
+    )
+
+    content = response.content.decode()
+    assert (
+        response.templates[0].name == "events/checkin-add-existing-search-partial.html"
+    )
+    assert 'value="VRDNNA70A45F952I"' in content
+    assert "border-success" not in content
+    assert "Nessun socio trovato" in content

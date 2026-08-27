@@ -1,14 +1,13 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# OpenSeat translations.
+# Copyright (C) 2026 Webbografico
+# This file is distributed under the same license as the OpenSeat package.
+# Enrico Bonardi <e.bonardi@me.com>, 2026.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-26 08:19+0200\n"
+"POT-Creation-Date: 2026-08-26 17:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -105,31 +104,101 @@ msgstr "Eventi e prenotazioni"
 msgid "Bookings for %(event)s"
 msgstr "Prenotazioni per %(event)s"
 
-#: events/forms.py:19 events/forms.py:73 intake/forms.py:285
-#: templates/home.html:123
+#: events/forms.py:25 events/forms.py:79 events/forms.py:174
+#: intake/forms.py:285 templates/home.html:123
 msgid "Email address"
 msgstr "Indirizzo email"
 
-#: events/forms.py:20
+#: events/forms.py:26
 msgid "The one the association writes to."
 msgstr "Quello a cui scrive l’associazione."
 
-#: events/forms.py:26 templates/home.html:142
-#: templates/intake/base-intake.html:66
+#: events/forms.py:32 events/forms.py:147 events/forms.py:202
+#: templates/events/checkin-add-existing-search-partial.html:13
+#: templates/home.html:142 templates/intake/base-intake.html:66
 msgid "Tax code"
 msgstr "Codice fiscale"
 
-#: events/forms.py:27
+#: events/forms.py:33
 msgid "Of one of the members registered at that address."
 msgstr "Di uno dei soci registrati a quell’indirizzo."
 
-#: events/forms.py:54
+#: events/forms.py:60
 msgid ""
 "No member is registered with this pair. Check the tax code, or apply to join "
 "below."
 msgstr ""
 "Nessun socio risulta con questa coppia. Controlla il codice fiscale, oppure "
 "presenta domanda di adesione qui sotto."
+
+#: events/forms.py:127
+msgid "Applying for"
+msgstr "Richiesta per"
+
+#: events/forms.py:134 events/forms.py:179
+msgid "First name"
+msgstr "Nome"
+
+#: events/forms.py:137 events/forms.py:185
+msgid "Last name"
+msgstr "Cognome"
+
+#: events/forms.py:140 events/forms.py:191
+msgid "Date of birth"
+msgstr "Data di nascita"
+
+#: events/forms.py:144 events/forms.py:196
+msgid "Place of birth"
+msgstr "Luogo di nascita"
+
+#: events/forms.py:153 events/forms.py:208
+msgid "Street"
+msgstr "Via"
+
+#: events/forms.py:156 events/forms.py:214
+msgid "Number"
+msgstr "Numero civico"
+
+#: events/forms.py:159
+msgid "Postcode"
+msgstr "CAP"
+
+#: events/forms.py:165 events/forms.py:220
+msgid "City"
+msgstr "Città"
+
+#: events/forms.py:168
+msgid "Phone"
+msgstr "Telefono"
+
+#: events/forms.py:228
+msgid "Form signed"
+msgstr "Modulo firmato"
+
+#: events/forms.py:233
+msgid "Sole holder of parental responsibility"
+msgstr "Unico titolare della responsabilità genitoriale"
+
+#: events/forms.py:237
+msgid "Other parent's first name"
+msgstr "Nome dell’altro genitore"
+
+#: events/forms.py:243
+msgid "Other parent's last name"
+msgstr "Cognome dell’altro genitore"
+
+#: events/forms.py:251 intake/models.py:399
+#: templates/intake/second-parent.html:4
+msgid "Image consent"
+msgstr "Consenso immagini"
+
+#: events/forms.py:256 intake/models.py:300
+msgid "WhatsApp consent"
+msgstr "Consenso WhatsApp"
+
+#: events/forms.py:282 events/forms.py:286 intake/forms.py:241
+msgid "This field is required."
+msgstr "Questo campo è obbligatorio."
 
 #: events/models.py:54 intake/models.py:104 intake/models.py:105
 #: intake/models.py:136 intake/models.py:168 members/models.py:27
@@ -427,10 +496,6 @@ msgstr "Indirizzo email"
 msgid "Used only to ask them about the image consents."
 msgstr "Serve solo per chiedergli i consensi immagine."
 
-#: intake/forms.py:241
-msgid "This field is required."
-msgstr "Questo campo è obbligatorio."
-
 #: intake/forms.py:251
 msgid "Publishing images on the association's website and social channels"
 msgstr ""
@@ -675,10 +740,6 @@ msgstr "unico titolare della responsabilità genitoriale"
 msgid "image consent"
 msgstr "consenso immagine"
 
-#: intake/models.py:300
-msgid "WhatsApp consent"
-msgstr "consenso WhatsApp"
-
 #: intake/models.py:307
 msgid "booked for"
 msgstr "prenotazione per"
@@ -727,10 +788,6 @@ msgstr "Secondo titolare della responsabilità genitoriale"
 #: intake/models.py:398
 msgid "Membership application"
 msgstr "Richiesta di adesione"
-
-#: intake/models.py:399 templates/intake/second-parent.html:4
-msgid "Image consent"
-msgstr "Consenso immagine"
 
 #: intake/models.py:402
 msgid "Awaiting signature"
@@ -1251,9 +1308,12 @@ msgid "Yes, cancel it"
 msgstr "Sì, annulla"
 
 #: templates/events/booked.html:66 templates/events/booked.html:98
-#: templates/events/booked.html:103 templates/events/mine.html:65
-#: templates/events/mine.html:98 templates/events/mine.html:103
-#: templates/includes/messages.html:14
+#: templates/events/booked.html:103
+#: templates/events/checkin-add-modal-partial.html:14
+#: templates/events/checkin-add-modal-partial.html:119
+#: templates/events/checkin-add-modal-partial.html:124
+#: templates/events/mine.html:65 templates/events/mine.html:98
+#: templates/events/mine.html:103 templates/includes/messages.html:14
 msgid "Close"
 msgstr "Chiudi"
 
@@ -1264,6 +1324,51 @@ msgstr "Da qui puoi cambiare solo i tuoi recapiti e una nota."
 #: templates/events/booked.html:99 templates/events/mine.html:99
 msgid "Save"
 msgstr "Salva"
+
+#: templates/events/checkin-add-existing-search-partial.html:8
+#, python-format
+msgid "Found: %(name)s — details filled in below."
+msgstr "Trovato: %(name)s — i dati sono precompilati qui sotto."
+
+#: templates/events/checkin-add-existing-search-partial.html:28
+msgid "Search"
+msgstr "Cerca"
+
+#: templates/events/checkin-add-existing-search-partial.html:35
+msgid "No member found with this tax code."
+msgstr "Nessun socio trovato con questo codice fiscale."
+
+#: templates/events/checkin-add-modal-partial.html:15
+msgid "Add a booking"
+msgstr "Aggiungi una prenotazione"
+
+#: templates/events/checkin-add-modal-partial.html:17
+msgid ""
+"From a paper form signed at the door. The booking is added already confirmed."
+msgstr ""
+"Da un modulo cartaceo firmato all’ingresso. La prenotazione viene aggiunta "
+"già confermata."
+
+#: templates/events/checkin-add-modal-partial.html:47
+#: templates/events/landing.html:47
+msgid "Already a member"
+msgstr "Sei già socio"
+
+#: templates/events/checkin-add-modal-partial.html:57
+msgid "Their own details"
+msgstr "I tuoi dati"
+
+#: templates/events/checkin-add-modal-partial.html:58
+msgid "Details of whoever signs the request"
+msgstr "Dati di chi firma la richiesta"
+
+#: templates/events/checkin-add-modal-partial.html:67
+msgid "Details of who is coming"
+msgstr "Dati di chi partecipa"
+
+#: templates/events/checkin-add-modal-partial.html:120
+msgid "Add, already confirmed"
+msgstr "Aggiungi, già confermata"
 
 #: templates/events/checkin-roster-partial.html:14
 #, python-format
@@ -1319,19 +1424,23 @@ msgid "Bookings open"
 msgstr "Prenotazioni aperte"
 
 #: templates/events/checkin.html:40
+msgid "Add"
+msgstr "Aggiungi"
+
+#: templates/events/checkin.html:50
 msgid "Bookings are past their automatic cutoff and cannot reopen."
 msgstr ""
 "Il termine automatico è già passato: le prenotazioni non possono riaprire."
 
-#: templates/events/checkin.html:42
+#: templates/events/checkin.html:52
 msgid "Reopen bookings"
 msgstr "Riapri le prenotazioni"
 
-#: templates/events/checkin.html:50
+#: templates/events/checkin.html:59
 msgid "Open check-in"
 msgstr "Apri check-in"
 
-#: templates/events/checkin.html:62
+#: templates/events/checkin.html:74
 msgid "Search by name"
 msgstr "Cerca per nome"
 
@@ -1350,10 +1459,6 @@ msgstr "Prenota cliccando"
 #: templates/events/landing.html:38
 msgid "here"
 msgstr "qui"
-
-#: templates/events/landing.html:47
-msgid "Already a member"
-msgstr "Sei già socio"
 
 #: templates/events/landing.html:53
 msgid "Book a place"
@@ -2118,6 +2223,14 @@ msgstr "Le risposte vengono salvate man mano."
 msgid "Save and come back later"
 msgstr "Salva e riprendi più tardi"
 
+#~ msgid "The paper form is signed: statute accepted, fee due"
+#~ msgstr "Il modulo cartaceo è firmato: statuto accettato, quota dovuta"
+
+#~ msgid ""
+#~ "Leave the field to fill the rest from the register, if already a member."
+#~ msgstr ""
+#~ "Compila il campo per completare gli altri dati dal registro, se già socio."
+
 #~ msgid "Checked in"
 #~ msgstr "Check-in fatto"
 
@@ -2135,9 +2248,6 @@ msgstr "Salva e riprendi più tardi"
 #~ msgid "Close check-in"
 #~ msgstr "Chiudi check-in"
 
-#~ msgid "Already done"
-#~ msgstr "Già fatti"
-
 #~ msgid "Cancel the whole booking"
 #~ msgstr "Annulla la prenotazione"
 
@@ -2147,9 +2257,6 @@ msgstr "Salva e riprendi più tardi"
 
 #~ msgid "Nobody is booked."
 #~ msgstr "Non c’è nessun prenotato."
-
-#~ msgid "Change who is coming"
-#~ msgstr "Cambia chi viene"
 
 #~ msgid "Book your place here."
 #~ msgstr "Clicca qui per prenotare l'esperienza."

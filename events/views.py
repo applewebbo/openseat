@@ -7,11 +7,23 @@ from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from events.access import email_from_contact_token, email_from_token
-from events.forms import BookingContactForm, IdentifyForm, RecoverForm
+from events.forms import (
+    BookingContactForm,
+    IdentifyForm,
+    ManualBookingForm,
+    RecoverForm,
+)
 from events.models import Booking, Event, FeeMethod
 from events.notifications import send_booking_confirmation, send_booking_links
 from events.throttle import claim_send
-from intake.models import Association, PublicForm, SectionKey, Submission
+from intake.models import (
+    Association,
+    PublicForm,
+    SectionKey,
+    SubjectType,
+    Submission,
+    Subscription,
+)
 from members.models import Member
 
 CONTACT_SESSION_KEY = "events_contact"
@@ -19,6 +31,20 @@ CONTACT_SESSION_KEY = "events_contact"
 
 def _open_event(slug):
     return get_object_or_404(Event, slug=slug, is_published=True)
+
+
+def _public_form_for(event):
+    """Which form a booking through this event is signed on.
+
+    An organiser can pin one to the event; unset falls back to the
+    association's newest open one. Meta.ordering makes that first().
+    """
+    public_form = event.form
+    if public_form is None or not public_form.is_open:
+        public_form = PublicForm.objects.filter(
+            association=event.association, is_open=True
+        ).first()
+    return public_form
 
 
 def _household(request, event):
@@ -119,6 +145,7 @@ def landing(request, slug):
         else:
             template = "events/checkin.html"
             context["summary"] = _booking_summary(event)
+            context["add_form"] = ManualBookingForm(event=event)
         return render(request, template, context)
 
     return render(
@@ -405,15 +432,243 @@ def mine(request, token):
 def join(request, slug):
     """Not on the register yet: joining is how you book, by the current statute."""
     event = _open_event(slug)
-    # An organiser can say which form an event books through; unset falls back
-    # to the association's newest open one. Meta.ordering makes that first().
-    public_form = event.form
-    if public_form is None or not public_form.is_open:
-        public_form = PublicForm.objects.filter(
-            association=event.association, is_open=True
-        ).first()
+    public_form = _public_form_for(event)
     if public_form is None:
         raise Http404("this association has no open application form")
     submission = Submission.objects.create(form=public_form, event=event)
     request.session["intake_draft"] = str(submission.token)
     return redirect("intake:step", token=submission.token, step=SectionKey.SUBJECT)
+
+
+def _member_initial(member, role):
+    """What a matched register entry offers to prefill a section with."""
+    prefix = f"{role}_"
+    initial = {
+        f"{prefix}first_name": member.first_name,
+        f"{prefix}last_name": member.last_name,
+        f"{prefix}birth_date": member.birth_date,
+        f"{prefix}birth_place": member.birth_place,
+        f"{prefix}tax_code": member.tax_code,
+        f"{prefix}street": member.street,
+        f"{prefix}number": member.number,
+        f"{prefix}city": member.city,
+    }
+    if role == "applicant":
+        initial["applicant_phone"] = member.contact_phone
+        initial["applicant_email"] = member.email or member.contact_email
+    return initial
+
+
+def _applicant_initial_from_contact(member):
+    """A best-effort guess at the parent's own details, from who the
+    register writes to — the register holds no more than that about them.
+
+    The address is the child's own: a parent living elsewhere corrects it,
+    but living together is the common case worth defaulting to.
+    """
+    first_name, _, last_name = member.contact_name.strip().partition(" ")
+    initial = {}
+    if first_name:
+        initial["applicant_first_name"] = first_name
+    if last_name:
+        initial["applicant_last_name"] = last_name
+    if member.contact_email:
+        initial["applicant_email"] = member.contact_email
+    if member.contact_phone:
+        initial["applicant_phone"] = member.contact_phone
+    if member.street:
+        initial["applicant_street"] = member.street
+    if member.number:
+        initial["applicant_number"] = member.number
+    if member.city:
+        initial["applicant_city"] = member.city
+    return initial
+
+
+def _mark_prefilled(form, field_names):
+    """Flag fields filled from the register with a visible green border."""
+    for name in field_names:
+        field = form.fields.get(name)
+        if field:
+            field.widget.attrs["class"] += " border-success! bg-success/5"
+
+
+def _age_today(birth_date):
+    today = timezone.localdate()
+    years = today.year - birth_date.year
+    if (today.month, today.day) < (birth_date.month, birth_date.day):
+        years -= 1
+    return years
+
+
+def _resolved_subject_type(member):
+    """Whether an already-registered member books as themselves or as a minor.
+
+    Their own application, if any, said so exactly. Absent that — an entry
+    made by hand from a paper form — a birth date under 18 is the next best
+    signal; with neither, assume an adult booking for themselves.
+    """
+    if member.submission_id and member.submission.subject_type:
+        return member.submission.subject_type
+    if member.birth_date and _age_today(member.birth_date) < 18:
+        return SubjectType.MINOR
+    return SubjectType.SELF
+
+
+@permission_required("events.add_booking", raise_exception=True)
+def checkin_lookup(request, slug):
+    """The "already a member" search: a tax code checked against the register."""
+    event = _open_event(slug)
+    tax_code = request.GET.get("existing_tax_code", "").strip()
+    match = None
+    if tax_code:
+        match = Member.objects.filter(
+            association=event.association, tax_code__iexact=tax_code
+        ).first()
+    if match is None:
+        return render(
+            request,
+            "events/checkin-add-existing-search-partial.html",
+            {
+                "event": event,
+                "found": False,
+                "tax_code": tax_code,
+                "not_found": bool(tax_code),
+            },
+        )
+
+    resolved_type = _resolved_subject_type(match)
+    applies_for_someone_else = resolved_type != SubjectType.SELF
+
+    html = render_to_string(
+        "events/checkin-add-existing-search-partial.html",
+        {
+            "event": event,
+            "found": True,
+            "resolved_type": resolved_type,
+            "full_name": match.full_name,
+        },
+        request=request,
+    )
+
+    applicant_initial = (
+        _applicant_initial_from_contact(match)
+        if applies_for_someone_else
+        else _member_initial(match, "applicant")
+    )
+    applicant_form = ManualBookingForm(initial=applicant_initial, event=event)
+    _mark_prefilled(applicant_form, applicant_initial.keys())
+    html += render_to_string(
+        "events/checkin-add-applicant-fields-partial.html",
+        {"form": applicant_form, "event": event, "oob": True},
+        request=request,
+    )
+
+    if applies_for_someone_else:
+        member_initial = _member_initial(match, "member")
+        member_form = ManualBookingForm(initial=member_initial, event=event)
+        _mark_prefilled(member_form, member_initial.keys())
+        html += render_to_string(
+            "events/checkin-add-member-fields-partial.html",
+            {"form": member_form, "event": event, "oob": True},
+            request=request,
+        )
+
+    return HttpResponse(html)
+
+
+def _checkin_add_context(event, add_form):
+    return {
+        "event": event,
+        "association": event.association,
+        "bookings": event.bookings.active(),
+        "query": "",
+        "can_manage_checkin": True,
+        "summary": _booking_summary(event),
+        "add_form": add_form,
+    }
+
+
+@permission_required("events.add_booking", raise_exception=True)
+@require_POST
+def checkin_add(request, slug):
+    """A booking taken from a paper form signed at the door — already confirmed."""
+    event = _open_event(slug)
+    form = ManualBookingForm(data=request.POST, event=event)
+    if not form.is_valid():
+        return render(request, "events/checkin.html", _checkin_add_context(event, form))
+
+    public_form = _public_form_for(event)
+    if public_form is None:
+        raise Http404("this association has no open application form")
+
+    data = form.cleaned_data
+    subject_type = data["subject_type"]
+    applies_for_someone_else = subject_type != SubjectType.SELF
+
+    submission = Submission(
+        form=public_form,
+        event=event,
+        subject_type=subject_type,
+        state=Submission.State.SUBMITTED,
+        submitted_at=timezone.now(),
+        accepts_statute=True,
+        sole_holder=data["sole_holder"] if applies_for_someone_else else None,
+        consent_images=data["consent_images"],
+        consent_whatsapp=data["consent_whatsapp"],
+        applicant_first_name=data["applicant_first_name"],
+        applicant_last_name=data["applicant_last_name"],
+        applicant_birth_date=data["applicant_birth_date"],
+        applicant_birth_place=data["applicant_birth_place"],
+        applicant_tax_code=data["applicant_tax_code"],
+        applicant_street=data["applicant_street"],
+        applicant_number=data["applicant_number"],
+        applicant_postcode=data["applicant_postcode"],
+        applicant_city=data["applicant_city"],
+        applicant_phone=data["applicant_phone"],
+        applicant_email=data["applicant_email"],
+    )
+    if applies_for_someone_else:
+        submission.member_first_name = data["member_first_name"]
+        submission.member_last_name = data["member_last_name"]
+        submission.member_birth_date = data["member_birth_date"]
+        submission.member_birth_place = data["member_birth_place"]
+        submission.member_tax_code = data["member_tax_code"]
+        submission.member_street = data["member_street"]
+        submission.member_number = data["member_number"]
+        submission.member_city = data["member_city"]
+        if not data["sole_holder"]:
+            submission.second_parent_first_name = data["second_parent_first_name"]
+            submission.second_parent_last_name = data["second_parent_last_name"]
+    submission.save()
+
+    now = timezone.now()
+    Subscription.objects.create(
+        submission=submission,
+        signatory_name=submission.applicant_name,
+        role=Subscription.Role.PRIMARY,
+        subject=Subscription.Subject.MEMBERSHIP,
+        state=Subscription.State.SIGNED,
+        signed_at=now,
+    )
+    if submission.needs_second_parent and (
+        data["consent_images"] or data["consent_whatsapp"]
+    ):
+        Subscription.objects.create(
+            submission=submission,
+            signatory_name=(
+                f"{data['second_parent_first_name']} {data['second_parent_last_name']}"
+            ).strip(),
+            role=Subscription.Role.SECOND_PARENT,
+            subject=Subscription.Subject.IMAGE_CONSENT,
+            state=Subscription.State.SIGNED,
+            signed_at=now,
+        )
+
+    booking = Booking.objects.book_application(event, submission)
+    booking.confirmed_on = timezone.localdate()
+    booking.fee_amount = event.association.membership_fee
+    booking.fee_method = FeeMethod.CASH
+    booking.save(update_fields=["confirmed_on", "fee_amount", "fee_method", "member"])
+
+    return redirect("events:landing", slug=event.slug)

@@ -27,6 +27,12 @@ urlpatterns = [
         views.checkin_undo,
         name="checkin-undo",
     ),
+    path("evento/<slug:slug>/checkin/aggiungi/", views.checkin_add, name="checkin-add"),
+    path(
+        "evento/<slug:slug>/checkin/aggiungi/cf/",
+        views.checkin_lookup,
+        name="checkin-lookup",
+    ),
     path("prenotazioni/", views.recover, name="recover"),
     path("prenotazioni/inviato/", views.recover_sent, name="recover-sent"),
     path("prenotazioni/<str:token>/", views.mine, name="mine"),

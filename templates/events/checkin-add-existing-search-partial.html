@@ -1,0 +1,39 @@
+{% load i18n %}
+<div id="existing-member-search" class="space-y-3">
+    {% if found %}
+        <div class="border-success bg-success/5 flex items-center gap-2 rounded-xl border p-3 text-sm"
+             x-init="choice = '{{ resolved_type }}'">
+            <span aria-hidden="true">✓</span>
+            <span>
+                {% blocktranslate with name=full_name %}Found: {{ name }} — details filled in below.{% endblocktranslate %}
+            </span>
+        </div>
+    {% else %}
+        <div>
+            <label class="mb-1.5 block text-sm font-medium" for="id_existing_tax_code">{% translate "Tax code" %}</label>
+            <div class="flex items-center gap-2">
+                <input type="text"
+                       id="id_existing_tax_code"
+                       name="existing_tax_code"
+                       value="{{ tax_code|default:'' }}"
+                       autocapitalize="characters"
+                       class="input input-bordered w-full" />
+                <button type="button"
+                        class="btn btn-soft shrink-0"
+                        hx-get="{% url 'events:checkin-lookup' event.slug %}"
+                        hx-include="#id_existing_tax_code"
+                        hx-target="#existing-member-search"
+                        hx-swap="outerHTML"
+                        hx-indicator="#existing-search-spinner">
+                    {% translate "Search" %}
+                </button>
+                <span id="existing-search-spinner"
+                      class="loading loading-spinner loading-sm htmx-indicator"
+                      aria-hidden="true"></span>
+            </div>
+            {% if not_found %}
+                <p class="text-error mt-1.5 text-sm font-medium">{% translate "No member found with this tax code." %}</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

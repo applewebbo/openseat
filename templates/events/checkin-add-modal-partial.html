@@ -1,0 +1,122 @@
+{% load i18n %}
+<input type="checkbox"
+       id="add-booking"
+       class="modal-toggle"
+       {% if add_form.errors %}checked{% endif %} />
+<div class="modal" role="dialog">
+    <div class="modal-box max-w-2xl rounded-2xl"
+         x-data="{
+             choice: '{{ add_form.subject_type.value|default:'minor' }}',
+             soleHolder: {% if add_form.sole_holder.value == False %}false{% else %}true{% endif %}
+         }">
+        <label for="add-booking"
+               class="btn btn-sm btn-circle btn-ghost absolute top-4 right-4"
+               aria-label="{% translate 'Close' %}">✕</label>
+        <h2 class="text-base font-semibold tracking-tight">{% translate "Add a booking" %}</h2>
+        <p class="text-base-content/70 mt-2 text-sm leading-relaxed">
+            {% translate "From a paper form signed at the door. The booking is added already confirmed." %}
+        </p>
+        <form method="post"
+              action="{% url 'events:checkin-add' event.slug %}"
+              class="mt-5 space-y-6">
+            {% csrf_token %}
+            {% if add_form.non_field_errors %}
+                <div role="alert" class="border-error/30 bg-error/5 rounded-xl border p-4 text-sm">
+                    {% for error in add_form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+                </div>
+            {% endif %}
+
+            <fieldset class="space-y-2">
+                <legend class="mb-2 text-sm font-semibold tracking-tight">{{ add_form.subject_type.label }}</legend>
+                {% for radio in add_form.subject_type %}
+                    <label class="hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5 flex cursor-pointer items-start gap-3 rounded-xl border border-base-300 p-3 transition-colors duration-200 ease-in-out">
+                        <input type="radio"
+                               name="{{ add_form.subject_type.html_name }}"
+                               value="{{ radio.data.value }}"
+                               x-model="choice"
+                               class="radio radio-primary mt-0.5"
+                               {% if radio.data.selected %}checked{% endif %} />
+                        <span class="text-sm leading-relaxed">{{ radio.choice_label }}</span>
+                    </label>
+                {% endfor %}
+                <label class="hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5 flex cursor-pointer items-start gap-3 rounded-xl border border-base-300 p-3 transition-colors duration-200 ease-in-out">
+                    <input type="radio"
+                           x-model="choice"
+                           value="existing"
+                           class="radio radio-primary mt-0.5" />
+                    <span class="text-sm leading-relaxed">{% translate "Already a member" %}</span>
+                </label>
+            </fieldset>
+
+            <div x-show="choice === 'existing'" x-collapse x-cloak>
+                {% include "events/checkin-add-existing-search-partial.html" with event=event found=False tax_code="" not_found=False %}
+            </div>
+
+            <div x-show="choice !== 'existing'" x-collapse x-cloak>
+                <h3 class="text-sm font-semibold tracking-tight">
+                    <span x-show="choice === 'self'">{% translate "Their own details" %}</span>
+                    <span x-show="choice !== 'self'" x-cloak>{% translate "Details of whoever signs the request" %}</span>
+                </h3>
+                <div class="mt-3">
+                    {% include "events/checkin-add-applicant-fields-partial.html" with form=add_form %}
+                </div>
+            </div>
+
+            <div x-show="choice !== 'self' && choice !== 'existing'" x-collapse x-cloak class="space-y-6">
+                <div>
+                    <h3 class="text-sm font-semibold tracking-tight">{% translate "Details of who is coming" %}</h3>
+                    <div class="mt-3">
+                        {% include "events/checkin-add-member-fields-partial.html" with form=add_form %}
+                    </div>
+                </div>
+
+                <div>
+                    <label class="has-[:checked]:border-primary has-[:checked]:bg-primary/5 flex cursor-pointer items-start gap-3 rounded-xl border border-base-300 p-3 transition-colors duration-200 ease-in-out">
+                        <input type="checkbox"
+                               name="{{ add_form.sole_holder.html_name }}"
+                               x-model="soleHolder"
+                               class="checkbox checkbox-primary mt-0.5 [--radius-selector:0.25rem]"
+                               {% if add_form.sole_holder.value != False %}checked{% endif %} />
+                        <span class="text-sm leading-relaxed">{{ add_form.sole_holder.label }}</span>
+                    </label>
+                    {% for error in add_form.sole_holder.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+                </div>
+
+                <div x-show="!soleHolder" x-collapse x-cloak class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                        <label class="mb-1.5 block text-sm font-medium" for="{{ add_form.second_parent_first_name.id_for_label }}">{{ add_form.second_parent_first_name.label }}</label>
+                        {{ add_form.second_parent_first_name }}
+                        {% for error in add_form.second_parent_first_name.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="mb-1.5 block text-sm font-medium" for="{{ add_form.second_parent_last_name.id_for_label }}">{{ add_form.second_parent_last_name.label }}</label>
+                        {{ add_form.second_parent_last_name }}
+                        {% for error in add_form.second_parent_last_name.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label class="has-[:checked]:border-primary has-[:checked]:bg-primary/5 flex cursor-pointer items-start gap-3 rounded-xl border border-base-300 p-3 transition-colors duration-200 ease-in-out">
+                    {{ add_form.accepts_statute }}
+                    <span class="text-sm leading-relaxed">{{ add_form.accepts_statute.label }}</span>
+                </label>
+                {% for error in add_form.accepts_statute.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+                <label class="has-[:checked]:border-primary has-[:checked]:bg-primary/5 flex cursor-pointer items-start gap-3 rounded-xl border border-base-300 p-3 transition-colors duration-200 ease-in-out">
+                    {{ add_form.consent_images }}
+                    <span class="text-sm leading-relaxed">{{ add_form.consent_images.label }}</span>
+                </label>
+                <label class="has-[:checked]:border-primary has-[:checked]:bg-primary/5 flex cursor-pointer items-start gap-3 rounded-xl border border-base-300 p-3 transition-colors duration-200 ease-in-out">
+                    {{ add_form.consent_whatsapp }}
+                    <span class="text-sm leading-relaxed">{{ add_form.consent_whatsapp.label }}</span>
+                </label>
+            </div>
+
+            <div class="modal-action">
+                <label for="add-booking" class="btn btn-ghost rounded-xl">{% translate "Close" %}</label>
+                <button type="submit" class="btn btn-primary rounded-xl">{% translate "Add, already confirmed" %}</button>
+            </div>
+        </form>
+    </div>
+    <label class="modal-backdrop" for="add-booking">{% translate "Close" %}</label>
+</div>

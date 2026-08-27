@@ -1,0 +1,45 @@
+{% load i18n %}
+<div id="member-fields"
+     {% if oob %}hx-swap-oob="true"{% endif %}
+     class="grid grid-cols-1 gap-4 sm:grid-cols-6">
+    <div class="sm:col-span-3">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.member_first_name.id_for_label }}">{{ form.member_first_name.label }}</label>
+        {{ form.member_first_name }}
+        {% for error in form.member_first_name.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-3">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.member_last_name.id_for_label }}">{{ form.member_last_name.label }}</label>
+        {{ form.member_last_name }}
+        {% for error in form.member_last_name.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-3">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.member_birth_date.id_for_label }}">{{ form.member_birth_date.label }}</label>
+        {{ form.member_birth_date }}
+        {% for error in form.member_birth_date.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-3">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.member_birth_place.id_for_label }}">{{ form.member_birth_place.label }}</label>
+        {{ form.member_birth_place }}
+        {% for error in form.member_birth_place.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-6">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.member_tax_code.id_for_label }}">{{ form.member_tax_code.label }}</label>
+        {{ form.member_tax_code }}
+        {% for error in form.member_tax_code.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-4">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.member_street.id_for_label }}">{{ form.member_street.label }}</label>
+        {{ form.member_street }}
+        {% for error in form.member_street.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-2">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.member_number.id_for_label }}">{{ form.member_number.label }}</label>
+        {{ form.member_number }}
+        {% for error in form.member_number.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="sm:col-span-6">
+        <label class="mb-1.5 block text-sm font-medium" for="{{ form.member_city.id_for_label }}">{{ form.member_city.label }}</label>
+        {{ form.member_city }}
+        {% for error in form.member_city.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
+    </div>
+</div>
