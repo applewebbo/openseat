@@ -1,15 +1,39 @@
 from datetime import date
 
+from django import forms
 from django.contrib import admin
-from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
+from import_export.admin import ImportExportActionModelAdmin
+from import_export.formats.base_formats import CSV, XLSX
+from import_export.forms import ConfirmImportForm, ImportForm
 
-from members.export import write_csv
 from members.models import Member
+from members.resources import MemberResource
+
+
+class MemberImportForm(ImportForm):
+    mode = forms.ChoiceField(
+        label=_("If the tax code already exists on the register"),
+        choices=[
+            ("overwrite", _("Overwrite the existing member")),
+            ("append", _("Always add as a new member")),
+        ],
+        initial="overwrite",
+    )
+
+
+class MemberConfirmImportForm(ConfirmImportForm):
+    mode = forms.CharField(widget=forms.HiddenInput())
 
 
 @admin.register(Member)
-class MemberAdmin(admin.ModelAdmin):
+class MemberAdmin(ImportExportActionModelAdmin):
+    resource_classes = [MemberResource]
+    import_form_class = MemberImportForm
+    confirm_form_class = MemberConfirmImportForm
+    import_formats = [CSV, XLSX]
+    export_formats = [CSV, XLSX]
+
     list_display = (
         "last_name",
         "first_name",
@@ -23,17 +47,24 @@ class MemberAdmin(admin.ModelAdmin):
     # Needed by the booking inline in events, which picks members by name.
     date_hierarchy = "joined_on"
     readonly_fields = ("submission", "joined_on")
-    actions = ["export_selected", "mark_ratified"]
+    actions = ["mark_ratified"]
 
-    @admin.action(description=_("Export the selected members to CSV"))
-    def export_selected(self, request, queryset):
-        """Filter the list by joining date first, then select all and export."""
-        response = HttpResponse(content_type="text/csv")
-        response["Content-Disposition"] = (
-            f'attachment; filename="soci-{date.today().isoformat()}.csv"'
-        )
-        write_csv(response, queryset)
-        return response
+    def get_confirm_form_initial(self, request, import_form):
+        initial = super().get_confirm_form_initial(request, import_form)
+        if import_form is not None:
+            initial["mode"] = import_form.cleaned_data["mode"]
+        return initial
+
+    def get_import_resource_kwargs(self, request, **kwargs):
+        resource_kwargs = super().get_import_resource_kwargs(request, **kwargs)
+        form = kwargs.get("form")
+        if (
+            form is not None
+            and hasattr(form, "cleaned_data")
+            and "mode" in form.cleaned_data
+        ):
+            resource_kwargs["mode"] = form.cleaned_data["mode"]
+        return resource_kwargs
 
     @admin.action(description=_("Record the board's ratification today"))
     def mark_ratified(self, request, queryset):

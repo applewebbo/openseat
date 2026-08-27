@@ -133,37 +133,6 @@ def test_the_command_says_how_many_it_wrote(
     assert "1" in capsys.readouterr().out
 
 
-# --- from the admin --------------------------------------------------------
-
-
-def test_the_organiser_can_export_the_members_they_selected(
-    staff_client, member_factory, association
-):
-    member = member_factory(association=association, first_name="Luca")
-
-    response = staff_client.post(
-        reverse("admin:members_member_changelist"),
-        {"action": "export_selected", "_selected_action": [str(member.pk)]},
-    )
-
-    assert response.status_code == 200
-    assert response["Content-Type"] == "text/csv"
-    assert b"Luca" in response.content
-
-
-def test_the_exported_file_is_named_for_the_day_it_was_made(
-    staff_client, member_factory, association
-):
-    member = member_factory(association=association)
-
-    response = staff_client.post(
-        reverse("admin:members_member_changelist"),
-        {"action": "export_selected", "_selected_action": [str(member.pk)]},
-    )
-
-    assert date.today().isoformat() in response["Content-Disposition"]
-
-
 def test_the_register_can_be_filtered_by_when_people_joined(
     staff_client, member_factory, association
 ):

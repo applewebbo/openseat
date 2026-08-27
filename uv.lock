@@ -398,6 +398,15 @@ wheels = [
 ]
 
 [[package]]
+name = "diff-match-patch"
+sdist = {url = "https://files.pythonhosted.org/packages/0e/ad/32e1777dd57d8e85fa31e3a243af66c538245b8d64b7265bec9a61f2ca33/diff_match_patch-20241021.tar.gz", hash = "sha256:beae57a99fa48084532935ee2968b8661db861862ec82c6f21f4acdd6d835073", size = 39962, upload-time = "2024-10-21T19:41:21.094Z"}
+source = {registry = "https://pypi.org/simple"}
+version = "20241021"
+wheels = [
+  {url = "https://files.pythonhosted.org/packages/f7/bb/2aa9b46a01197398b901e458974c20ed107935c26e44e37ad5b0e5511e44/diff_match_patch-20241021-py3-none-any.whl", hash = "sha256:93cea333fb8b2bc0d181b0de5e16df50dd344ce64828226bda07728818936782", size = 43252, upload-time = "2024-10-21T19:41:19.914Z"}
+]
+
+[[package]]
 name = "distlib"
 sdist = {url = "https://files.pythonhosted.org/packages/c9/02/bd72be9134d25ed783ecbbc38a539ffaefbf90c78418c7fb7229600dbac7/distlib-0.4.3.tar.gz", hash = "sha256:f152097224a0ae24be5a0f6bae1b9359af82133bce63f98a95f86cae1aede9ed", size = 615141, upload-time = "2026-06-12T08:04:52.847Z"}
 source = {registry = "https://pypi.org/simple"}
@@ -629,6 +638,20 @@ wheels = [
 
 [[package]]
 dependencies = [
+  {name = "diff-match-patch"},
+  {name = "django"},
+  {name = "tablib"}
+]
+name = "django-import-export"
+sdist = {url = "https://files.pythonhosted.org/packages/92/32/5b83cc46a70ac94c1d17144097bf8aee7d9bb401d0863652c8d5ce1d2e50/django_import_export-4.4.1.tar.gz", hash = "sha256:165dc7fdcd56a6356342eef3f88f3f3682b64b6f67e9a259a137e8b57aeff10c", size = 2238690, upload-time = "2026-05-05T12:42:44.295Z"}
+source = {registry = "https://pypi.org/simple"}
+version = "4.4.1"
+wheels = [
+  {url = "https://files.pythonhosted.org/packages/91/d1/110aeb2acffea56d4222861b5678c2643f0bda00081e40d687077348bb7c/django_import_export-4.4.1-py3-none-any.whl", hash = "sha256:8be2782e505ae303ccb02070a1b4c528995922126fca9ee449eb28666835dd4b", size = 157691, upload-time = "2026-05-05T12:42:42.554Z"}
+]
+
+[[package]]
+dependencies = [
   {name = "django"}
 ]
 name = "django-picklefield"
@@ -818,6 +841,15 @@ source = {registry = "https://pypi.org/simple"}
 version = "0.17.1"
 wheels = [
   {url = "https://files.pythonhosted.org/packages/96/fd/a40c621ff207f3ce8e484aa0fc8ba4eb6e3ecf52e15b42ba764b457a9550/editorconfig-0.17.1-py3-none-any.whl", hash = "sha256:1eda9c2c0db8c16dbd50111b710572a5e6de934e39772de1959d41f64fc17c82", size = 16360, upload-time = "2025-06-09T08:21:35.654Z"}
+]
+
+[[package]]
+name = "et-xmlfile"
+sdist = {url = "https://files.pythonhosted.org/packages/d3/38/af70d7ab1ae9d4da450eeec1fa3918940a5fafb9055e934af8d6eb0c2313/et_xmlfile-2.0.0.tar.gz", hash = "sha256:dab3f4764309081ce75662649be815c4c9081e88f0837825f90fd28317d4da54", size = 17234, upload-time = "2024-10-25T17:25:40.039Z"}
+source = {registry = "https://pypi.org/simple"}
+version = "2.0.0"
+wheels = [
+  {url = "https://files.pythonhosted.org/packages/c1/8b/5fe2cc11fee489817272089c4203e679c63b570a5aaeb18d852ae3cbba6a/et_xmlfile-2.0.0-py3-none-any.whl", hash = "sha256:7a91720bc756843502c3b7504c77b8fe44217c85c537d85037f0f536151b2caa", size = 18059, upload-time = "2024-10-25T17:25:39.051Z"}
 ]
 
 [[package]]
@@ -1096,6 +1128,18 @@ wheels = [
 
 [[package]]
 dependencies = [
+  {name = "et-xmlfile"}
+]
+name = "openpyxl"
+sdist = {url = "https://files.pythonhosted.org/packages/3d/f9/88d94a75de065ea32619465d2f77b29a0469500e99012523b91cc4141cd1/openpyxl-3.1.5.tar.gz", hash = "sha256:cf0e3cf56142039133628b5acffe8ef0c12bc902d2aadd3e0fe5878dc08d1050", size = 186464, upload-time = "2024-06-28T14:03:44.161Z"}
+source = {registry = "https://pypi.org/simple"}
+version = "3.1.5"
+wheels = [
+  {url = "https://files.pythonhosted.org/packages/c0/da/977ded879c29cbd04de313843e76868e6e13408a94ed6b987245dc7c8506/openpyxl-3.1.5-py2.py3-none-any.whl", hash = "sha256:5282c12b107bffeef825f4617dc029afaf41d0ea60823bbb665ef3079dc79de2", size = 250910, upload-time = "2024-06-28T14:03:41.161Z"}
+]
+
+[[package]]
+dependencies = [
   {name = "crispy-tailwind"},
   {name = "dj-database-url"},
   {name = "django"},
@@ -1109,6 +1153,7 @@ dependencies = [
   {name = "django-environ"},
   {name = "django-extensions"},
   {name = "django-htmx"},
+  {name = "django-import-export"},
   {name = "django-pwa"},
   {name = "django-q2"},
   {name = "django-redis"},
@@ -1116,6 +1161,7 @@ dependencies = [
   {name = "django-tailwind-cli"},
   {name = "granian", extra = ["pname"]},
   {name = "nh3"},
+  {name = "openpyxl"},
   {name = "pillow"},
   {name = "psycopg", extra = ["binary"]},
   {name = "redis"},
@@ -1165,6 +1211,7 @@ requires-dist = [
   {name = "django-environ"},
   {name = "django-extensions"},
   {name = "django-htmx"},
+  {name = "django-import-export", specifier = ">=4.4.1"},
   {name = "django-pwa"},
   {name = "django-q2"},
   {name = "django-redis"},
@@ -1172,6 +1219,7 @@ requires-dist = [
   {name = "django-tailwind-cli"},
   {name = "granian", extras = ["pname"]},
   {name = "nh3", specifier = ">=0.3.6"},
+  {name = "openpyxl", specifier = ">=3.1.5"},
   {name = "pillow"},
   {name = "psycopg", extras = ["binary"]},
   {name = "redis"},
@@ -1694,6 +1742,15 @@ source = {registry = "https://pypi.org/simple"}
 version = "0.6.0"
 wheels = [
   {url = "https://files.pythonhosted.org/packages/d9/50/f00935da0ec7cbf325f8dc4f772ae46fbc7b672dd62876e73f0a94adda57/sqlparse-0.6.0-py3-none-any.whl", hash = "sha256:b861c0288ce2fa56209a9a6412d2e066ac664b3873b89c26c9d8415e8e32996f", size = 50070, upload-time = "2026-08-13T19:16:04.062Z"}
+]
+
+[[package]]
+name = "tablib"
+sdist = {url = "https://files.pythonhosted.org/packages/96/b9/59d9c8b9c34642e7a718e8a1a7a91af3eb9b48f79bac794263702d41519c/tablib-3.10.0.tar.gz", hash = "sha256:781cfa9a42de8f33c52aff857fd0a04e483de4fd1c53eaaa9a6aeac62bad11de", size = 127128, upload-time = "2026-07-31T17:30:15.577Z"}
+source = {registry = "https://pypi.org/simple"}
+version = "3.10.0"
+wheels = [
+  {url = "https://files.pythonhosted.org/packages/fc/0f/3ae17545ff976687f679ed3a101df7017135ee04769e858a4ccea0cc3f3e/tablib-3.10.0-py3-none-any.whl", hash = "sha256:5721bf3a52d491f8f843628a3a3200db164f6ad9e92fb6eaa64dc3f945f30ad9", size = 50170, upload-time = "2026-07-31T17:30:04.925Z"}
 ]
 
 [[package]]

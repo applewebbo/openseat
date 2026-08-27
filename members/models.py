@@ -47,6 +47,7 @@ class Member(models.Model):
     number = models.CharField(_("number"), max_length=10, blank=True)
     postcode = models.CharField(_("postcode"), max_length=5, blank=True)
     city = models.CharField(_("city"), max_length=100, blank=True)
+    province = models.CharField(_("province"), max_length=2, blank=True)
     email = models.EmailField(_("email address"), blank=True)
 
     # Who the association actually writes to: the member when of age, the parent

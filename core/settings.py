@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "django_htmx",
     "django_q",
     "django_tailwind_cli",
+    "import_export",
     "pwa",
     "storages",
     # INTERNAL
