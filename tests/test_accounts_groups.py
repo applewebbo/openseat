@@ -3,7 +3,12 @@ from django.contrib.auth.models import Group, Permission
 from django.core.management import call_command
 from django.urls import reverse
 
-from accounts.groups import EDITORS, ensure_editor_group
+from accounts.groups import (
+    EDITORS,
+    SENIOR_EDITORS,
+    ensure_editor_group,
+    ensure_senior_editor_group,
+)
 
 pytestmark = pytest.mark.django_db
 
@@ -50,6 +55,30 @@ class TestTheGroup:
 
         assert Group.objects.filter(name=EDITORS).exists()
         assert EDITORS in capsys.readouterr().out
+
+    def test_plain_editors_cannot_export_members(self):
+        assert "export_members" not in codenames(ensure_editor_group())
+
+
+class TestTheSeniorEditorGroup:
+    def test_it_has_everything_an_editor_has_plus_export(self):
+        editor_codenames = codenames(ensure_editor_group())
+        senior_codenames = codenames(ensure_senior_editor_group())
+
+        assert editor_codenames <= senior_codenames
+        assert "export_members" in senior_codenames
+
+    def test_running_it_again_leaves_one_group(self):
+        ensure_senior_editor_group()
+        ensure_senior_editor_group()
+
+        assert Group.objects.filter(name=SENIOR_EDITORS).count() == 1
+
+    def test_the_command_creates_it_too(self, capsys):
+        call_command("accounts_groups")
+
+        assert Group.objects.filter(name=SENIOR_EDITORS).exists()
+        assert SENIOR_EDITORS in capsys.readouterr().out
 
 
 class TestWhatAnEditorSees:

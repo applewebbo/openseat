@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-27 18:35+0200\n"
+"POT-Creation-Date: 2026-08-27 18:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -285,7 +285,7 @@ msgstr "Non ancora visibile al pubblico."
 msgid "created at"
 msgstr "creato il"
 
-#: events/models.py:111 events/models.py:271
+#: events/models.py:111 events/models.py:274
 msgid "event"
 msgstr "evento"
 
@@ -293,46 +293,50 @@ msgstr "evento"
 msgid "events"
 msgstr "eventi"
 
-#: events/models.py:190
+#: events/models.py:115
+msgid "Can export the members acquired at an event"
+msgstr "Può esportare i soci acquisiti a un evento"
+
+#: events/models.py:193
 msgid "Cash"
 msgstr "Contanti"
 
-#: events/models.py:191
+#: events/models.py:194
 msgid "Bank transfer"
 msgstr "Bonifico"
 
-#: events/models.py:192
+#: events/models.py:195
 msgid "Other"
 msgstr "Altro"
 
-#: events/models.py:277 members/models.py:71
+#: events/models.py:280 members/models.py:71
 msgid "member"
 msgstr "socio"
 
-#: events/models.py:282
+#: events/models.py:285
 msgid "Filled in when the booking is confirmed."
 msgstr "Compilato quando la prenotazione viene confermata."
 
-#: events/models.py:286 members/models.py:33
+#: events/models.py:289 members/models.py:33
 msgid "application"
 msgstr "domanda di adesione"
 
-#: events/models.py:293 intake/models.py:260 intake/models.py:274
+#: events/models.py:296 intake/models.py:260 intake/models.py:274
 #: intake/models.py:292 members/models.py:41
 msgid "first name"
 msgstr "nome"
 
-#: events/models.py:294 intake/models.py:261 intake/models.py:275
+#: events/models.py:297 intake/models.py:261 intake/models.py:275
 #: intake/models.py:295 members/models.py:42
 msgid "last name"
 msgstr "cognome"
 
-#: events/models.py:296 intake/models.py:262 intake/models.py:276
+#: events/models.py:299 intake/models.py:262 intake/models.py:276
 #: members/models.py:43
 msgid "date of birth"
 msgstr "data di nascita"
 
-#: events/models.py:300
+#: events/models.py:303
 msgid ""
 "A snapshot taken when the booking was made — it is not recalculated later, "
 "not even against the event date."
@@ -340,52 +344,52 @@ msgstr ""
 "Uno scatto preso al momento della prenotazione — non viene ricalcolato in "
 "seguito, nemmeno rispetto alla data dell'evento."
 
-#: events/models.py:304 members/models.py:55
+#: events/models.py:307 members/models.py:55
 #: templates/events/mail/checklist.txt:7
 msgid "contact"
 msgstr "contatto"
 
-#: events/models.py:305 members/models.py:56
+#: events/models.py:308 members/models.py:56
 msgid "contact email"
 msgstr "email di contatto"
 
-#: events/models.py:306 members/models.py:57
+#: events/models.py:309 members/models.py:57
 msgid "contact phone"
 msgstr "telefono di contatto"
 
-#: events/models.py:308
+#: events/models.py:311
 msgid "note"
 msgstr "nota"
 
-#: events/models.py:311
+#: events/models.py:314
 msgid "confirmed on"
 msgstr "confermato il"
 
-#: events/models.py:314
+#: events/models.py:317
 msgid "The day they turned up and paid the fee."
 msgstr "Il giorno in cui si sono presentati e hanno pagato la quota."
 
-#: events/models.py:317
+#: events/models.py:320
 msgid "fee paid"
 msgstr "quota versata"
 
-#: events/models.py:320
+#: events/models.py:323
 msgid "paid by"
 msgstr "pagato con"
 
-#: events/models.py:323
+#: events/models.py:326
 msgid "booked at"
 msgstr "prenotato il"
 
-#: events/models.py:324
+#: events/models.py:327
 msgid "cancelled at"
 msgstr "annullata il"
 
-#: events/models.py:329
+#: events/models.py:332
 msgid "booking"
 msgstr "prenotazione"
 
-#: events/models.py:330
+#: events/models.py:333
 msgid "bookings"
 msgstr "prenotazioni"
 
@@ -1441,20 +1445,24 @@ msgstr "Prenotazioni aperte"
 msgid "Add"
 msgstr "Aggiungi"
 
-#: templates/events/checkin.html:50
+#: templates/events/checkin.html:45
+msgid "Export"
+msgstr "Esporta"
+
+#: templates/events/checkin.html:65
 msgid "Bookings are past their automatic cutoff and cannot reopen."
 msgstr ""
 "Il termine automatico è già passato: le prenotazioni non possono riaprire."
 
-#: templates/events/checkin.html:52
+#: templates/events/checkin.html:67
 msgid "Reopen bookings"
 msgstr "Riapri le prenotazioni"
 
-#: templates/events/checkin.html:59
+#: templates/events/checkin.html:74
 msgid "Open check-in"
 msgstr "Apri check-in"
 
-#: templates/events/checkin.html:74
+#: templates/events/checkin.html:89
 msgid "Search by name"
 msgstr "Cerca per nome"
 

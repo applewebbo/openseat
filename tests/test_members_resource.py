@@ -95,6 +95,21 @@ def test_columns_with_no_home_on_the_register_are_always_blank(
         assert row[column] == ""
 
 
+def test_email_falls_back_to_the_contact_for_a_minor_with_none_of_their_own(
+    member_factory, association
+):
+    member_factory(
+        association=association,
+        email="",
+        contact_email="genitore@example.com",
+    )
+
+    dataset = MemberResource().export()
+    row = dict(zip(dataset.headers, dataset[0], strict=True))
+
+    assert row["EMAIL"] == "genitore@example.com"
+
+
 def test_note_carries_the_event_the_member_joined_through(
     member_factory, submission, booking_factory, event_factory
 ):

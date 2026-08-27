@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.views.decorators.http import require_POST
+from import_export.formats.base_formats import CSV, XLSX
 
 from events.access import email_from_contact_token, email_from_token
 from events.forms import (
@@ -25,8 +26,11 @@ from intake.models import (
     Subscription,
 )
 from members.models import Member
+from members.resources import MemberResource
 
 CONTACT_SESSION_KEY = "events_contact"
+
+EXPORT_FORMATS = {"csv": CSV(), "xlsx": XLSX()}
 
 
 def _open_event(slug):
@@ -180,6 +184,27 @@ def checkin_close(request, slug):
         event.checkin_started_at = None
         event.save(update_fields=["checkin_started_at"])
     return redirect("events:landing", slug=event.slug)
+
+
+@permission_required("events.export_members", raise_exception=True)
+def export_members(request, slug):
+    """The register on the external tracciato, but only who joined here.
+
+    "Acquired at this event" means a first-time member: their submission's
+    only booking is this one. Someone who joined earlier and simply rebooked
+    is already on the register, so they are not counted again here.
+    """
+    event = _open_event(slug)
+    export_format = EXPORT_FORMATS.get(request.GET.get("format"))
+    if export_format is None:
+        raise Http404
+    members = Member.objects.filter(submission__booking__event=event)
+    dataset = MemberResource().export(members)
+    data = export_format.export_data(dataset)
+    response = HttpResponse(data, content_type=export_format.get_content_type())
+    filename = f"soci-{event.slug}.{export_format.get_extension()}"
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return response
 
 
 @permission_required("events.change_booking", raise_exception=True)

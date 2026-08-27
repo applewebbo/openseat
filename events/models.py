@@ -111,6 +111,9 @@ class Event(models.Model):
         verbose_name = _("event")
         verbose_name_plural = _("events")
         ordering = ("starts_at",)
+        permissions = [
+            ("export_members", _("Can export the members acquired at an event")),
+        ]
 
     def __str__(self):
         return f"{self.title} — {self.starts_at.strftime('%d/%m/%Y')}"

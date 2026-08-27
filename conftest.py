@@ -2,7 +2,7 @@ import pytest
 from django.utils.translation import override
 from pytest_factoryboy import register
 
-from accounts.groups import ensure_editor_group
+from accounts.groups import ensure_editor_group, ensure_senior_editor_group
 from tests.factories import (
     AdultSubmissionFactory,
     AgeBracketFactory,
@@ -65,4 +65,19 @@ def editor(user):
 @pytest.fixture
 def editor_client(client, editor):
     client.force_login(editor)
+    return client
+
+
+@pytest.fixture
+def senior_editor(user):
+    """An editor who may also export the register acquired at events."""
+    user.is_staff = True
+    user.save()
+    user.groups.add(ensure_senior_editor_group())
+    return user
+
+
+@pytest.fixture
+def senior_editor_client(client, senior_editor):
+    client.force_login(senior_editor)
     return client

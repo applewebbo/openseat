@@ -1,4 +1,5 @@
 import pytest
+from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from django.utils import timezone
 
@@ -79,6 +80,30 @@ def test_running_it_twice_changes_nothing(seeded):
     assert PublicForm.objects.get().sections.count() == len(SectionKey.values)
     assert Member.objects.count() == member_count
     assert Booking.objects.count() == booking_count
+
+
+@pytest.mark.django_db
+def test_it_creates_test_users_for_the_two_editor_roles(seeded):
+    User = get_user_model()
+
+    editor = User.objects.get(email="editor@example.com")
+    senior = User.objects.get(email="senior-editor@example.com")
+
+    assert editor.check_password("1234")
+    assert editor.is_staff
+    assert editor.emailaddress_set.get().verified
+    assert {g.name for g in editor.groups.all()} == {"Editor"}
+    assert {g.name for g in senior.groups.all()} == {"Editor+"}
+
+
+@pytest.mark.django_db
+def test_running_it_twice_keeps_one_row_per_test_user(seeded):
+    User = get_user_model()
+
+    call_command("seed_demo", verbosity=0)
+
+    assert User.objects.filter(email="editor@example.com").count() == 1
+    assert User.objects.filter(email="senior-editor@example.com").count() == 1
 
 
 @pytest.mark.django_db

@@ -7,12 +7,20 @@ the contact details are made up. Nothing in here belongs in production.
 
 import datetime
 
+from allauth.account.models import EmailAddress
+from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
+from accounts.groups import ensure_editor_group, ensure_senior_editor_group
 from events.models import Booking, Event, FeeMethod
 from intake.models import AgeBracket, Association, PublicForm, SubjectType, Submission
 from members.models import Member
+
+TEST_USERS = (
+    ("editor@example.com", ensure_editor_group),
+    ("senior-editor@example.com", ensure_senior_editor_group),
+)
 
 ASSOCIATION = {
     "slug": "lontano-la-ca-di-asu",
@@ -356,16 +364,16 @@ STANDALONE_LAST_NAMES = [
     "Terraneo",
 ]
 STANDALONE_ADDRESSES = [
-    ("Via Trieste", "4", "28100", "Novara"),
-    ("Via Divisione Julia", "22", "28100", "Novara"),
-    ("Corso Cavallotti", "9", "28100", "Novara"),
-    ("Via Solaroli", "15", "28100", "Novara"),
-    ("Piazza Cavour", "3", "28100", "Novara"),
-    ("Via Perrone", "40", "28047", "Oleggio"),
-    ("Via Roma", "18", "28069", "Trecate"),
-    ("Via Novara", "56", "28053", "Galliate"),
-    ("Via Cameri", "7", "28062", "Cameri"),
-    ("Via Boniperti", "11", "28100", "Olengo"),
+    ("Via Trieste", "4", "28100", "Novara", "NO"),
+    ("Via Divisione Julia", "22", "28100", "Novara", "NO"),
+    ("Corso Cavallotti", "9", "28100", "Novara", "NO"),
+    ("Via Solaroli", "15", "28100", "Novara", "NO"),
+    ("Piazza Cavour", "3", "28100", "Novara", "NO"),
+    ("Via Perrone", "40", "28047", "Oleggio", "NO"),
+    ("Via Roma", "18", "28069", "Trecate", "NO"),
+    ("Via Novara", "56", "28053", "Galliate", "NO"),
+    ("Via Cameri", "7", "28062", "Cameri", "NO"),
+    ("Via Boniperti", "11", "28100", "Olengo", "NO"),
 ]
 
 
@@ -373,7 +381,7 @@ def _standalone_members(association, today):
     for index, (first_name, last_name) in enumerate(
         zip(STANDALONE_FIRST_NAMES, STANDALONE_LAST_NAMES, strict=True)
     ):
-        street, number, postcode, city = STANDALONE_ADDRESSES[
+        street, number, postcode, city, province = STANDALONE_ADDRESSES[
             index % len(STANDALONE_ADDRESSES)
         ]
         birth_year = 1950 + (index * 3) % 55
@@ -390,6 +398,7 @@ def _standalone_members(association, today):
             "number": number,
             "postcode": postcode,
             "city": city,
+            "province": province,
             "email": f"socio{index + 1}@example.com",
             "contact_name": f"{first_name} {last_name}",
             "contact_phone": f"333{1000000 + index:07d}",
@@ -468,6 +477,9 @@ class Command(BaseCommand):
         # a parent applying for a child or an adult applying for themselves.
         pool = []
         for index_, family in enumerate(FAMILIES):
+            street, number, postcode, city, _province = STANDALONE_ADDRESSES[
+                index_ % len(STANDALONE_ADDRESSES)
+            ]
             pool.append(
                 {
                     "is_minor": True,
@@ -477,6 +489,10 @@ class Command(BaseCommand):
                     "applicant_first_name": family["parent_first_name"],
                     "applicant_last_name": family["parent_last_name"],
                     "email": family["parent_email"],
+                    "street": street,
+                    "number": number,
+                    "postcode": postcode,
+                    "city": city,
                 }
             )
             # One self-adult sprinkled in every sixth slot: minors stay a
@@ -492,6 +508,10 @@ class Command(BaseCommand):
                         "applicant_first_name": adult["first_name"],
                         "applicant_last_name": adult["last_name"],
                         "email": adult["email"],
+                        "street": street,
+                        "number": number,
+                        "postcode": postcode,
+                        "city": city,
                     }
                 )
 
@@ -546,6 +566,10 @@ class Command(BaseCommand):
                         ),
                         applicant_email=spec_["email"],
                         applicant_phone="3331234567",
+                        applicant_street=spec_["street"],
+                        applicant_number=spec_["number"],
+                        applicant_postcode=spec_["postcode"],
+                        applicant_city=spec_["city"],
                         member_first_name=(
                             spec_["first_name"] if spec_["is_minor"] else ""
                         ),
@@ -555,6 +579,9 @@ class Command(BaseCommand):
                         member_birth_date=(
                             spec_["birth_date"] if spec_["is_minor"] else None
                         ),
+                        member_street=(spec_["street"] if spec_["is_minor"] else ""),
+                        member_number=(spec_["number"] if spec_["is_minor"] else ""),
+                        member_city=(spec_["city"] if spec_["is_minor"] else ""),
                         accepts_statute=True,
                         sole_holder=True if spec_["is_minor"] else None,
                     )
@@ -584,6 +611,22 @@ class Command(BaseCommand):
                 Member.objects.filter(pk=_member.pk).update(joined_on=joined_on)
                 added += 1
         self.stdout.write(f"members on the register directly: {added} added")
+
+        User = get_user_model()
+        for email, ensure_group in TEST_USERS:
+            user, created = User.objects.get_or_create(
+                email=email, defaults={"is_staff": True}
+            )
+            if created:
+                user.set_password("1234")
+                user.save(update_fields=["password"])
+                EmailAddress.objects.update_or_create(
+                    user=user,
+                    email=user.email,
+                    defaults={"verified": True, "primary": True},
+                )
+            user.groups.set([ensure_group()])
+        self.stdout.write(f"test users ready: {', '.join(e for e, _ in TEST_USERS)}")
 
         self.stdout.write(
             self.style.SUCCESS("demo content ready — this is example data")

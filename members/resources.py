@@ -94,6 +94,14 @@ class MemberResource(resources.ModelResource):
     def dehydrate_SIGLA_NAZIONE(self, member):
         return FIXED_COUNTRY
 
+    def dehydrate_EMAIL(self, member):
+        """A minor carries no email of their own — only the signing contact's.
+
+        Falls back to contact_email on export so the tracciato never shows a
+        blank cell for someone the register does have an address for.
+        """
+        return member.email or member.contact_email
+
     def dehydrate_NOTE(self, member):
         """The event the member joined through, blank for a hand-entered row."""
         submission = member.submission

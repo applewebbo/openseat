@@ -18,6 +18,11 @@ urlpatterns = [
         "evento/<slug:slug>/checkin/chiudi/", views.checkin_close, name="checkin-close"
     ),
     path(
+        "evento/<slug:slug>/soci/esporta/",
+        views.export_members,
+        name="export-members",
+    ),
+    path(
         "evento/<slug:slug>/checkin/<int:pk>/conferma/",
         views.checkin_confirm,
         name="checkin-confirm",
