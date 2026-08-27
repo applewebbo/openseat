@@ -4,14 +4,20 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('events', '0008_backfill_booking_birth_date'),
+        ("events", "0008_backfill_booking_birth_date"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='event',
-            options={'ordering': ('starts_at',), 'permissions': [('export_members', 'Can export the members acquired at an event')], 'verbose_name': 'event', 'verbose_name_plural': 'events'},
+            name="event",
+            options={
+                "ordering": ("starts_at",),
+                "permissions": [
+                    ("export_members", "Can export the members acquired at an event")
+                ],
+                "verbose_name": "event",
+                "verbose_name_plural": "events",
+            },
         ),
     ]

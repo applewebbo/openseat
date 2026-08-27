@@ -113,6 +113,16 @@ def test_every_event_gets_a_realistic_roster(seeded):
 
 
 @pytest.mark.django_db
+def test_members_acquired_at_an_event_carry_a_tax_code_and_address(seeded):
+    """A realistic roster, so the export it feeds has something to check."""
+    member = Member.objects.filter(submission__isnull=False).first()
+
+    assert member.tax_code
+    assert member.street
+    assert member.city
+
+
+@pytest.mark.django_db
 def test_the_roster_has_a_mix_of_confirmed_and_pending(seeded):
     event = Event.objects.first()
 

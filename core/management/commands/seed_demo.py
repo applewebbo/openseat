@@ -493,12 +493,14 @@ class Command(BaseCommand):
                     "number": number,
                     "postcode": postcode,
                     "city": city,
+                    "tax_code": f"CHD{index_:02d}A01H501{index_ % 10}",
                 }
             )
             # One self-adult sprinkled in every sixth slot: minors stay a
             # comfortable majority (well over 80%) of any roster slice.
             if SELF_ADULTS and (index_ + 1) % 6 == 0:
-                adult = SELF_ADULTS[(index_ + 1) // 6 % len(SELF_ADULTS)]
+                adult_index = (index_ + 1) // 6
+                adult = SELF_ADULTS[adult_index % len(SELF_ADULTS)]
                 pool.append(
                     {
                         "is_minor": False,
@@ -512,6 +514,7 @@ class Command(BaseCommand):
                         "number": number,
                         "postcode": postcode,
                         "city": city,
+                        "tax_code": f"ADU{adult_index:02d}A01H501{adult_index % 10}",
                     }
                 )
 
@@ -570,6 +573,9 @@ class Command(BaseCommand):
                         applicant_number=spec_["number"],
                         applicant_postcode=spec_["postcode"],
                         applicant_city=spec_["city"],
+                        applicant_tax_code=(
+                            "" if spec_["is_minor"] else spec_["tax_code"]
+                        ),
                         member_first_name=(
                             spec_["first_name"] if spec_["is_minor"] else ""
                         ),
@@ -582,6 +588,9 @@ class Command(BaseCommand):
                         member_street=(spec_["street"] if spec_["is_minor"] else ""),
                         member_number=(spec_["number"] if spec_["is_minor"] else ""),
                         member_city=(spec_["city"] if spec_["is_minor"] else ""),
+                        member_tax_code=(
+                            spec_["tax_code"] if spec_["is_minor"] else ""
+                        ),
                         accepts_statute=True,
                         sole_holder=True if spec_["is_minor"] else None,
                     )

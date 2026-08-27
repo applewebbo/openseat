@@ -56,7 +56,12 @@ def test_only_first_time_joiners_are_included(
 
 
 def test_a_member_acquired_at_another_event_is_not_included(
-    senior_editor_client, event, event_factory, submission, booking_factory, member_factory
+    senior_editor_client,
+    event,
+    event_factory,
+    submission,
+    booking_factory,
+    member_factory,
 ):
     other_event = event_factory(slug="altro-evento")
     booking_factory(event=other_event, submission=submission)
