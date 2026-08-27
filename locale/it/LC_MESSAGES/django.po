@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-26 17:21+0200\n"
+"POT-Creation-Date: 2026-08-27 09:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1310,8 +1310,8 @@ msgstr "Sì, annulla"
 #: templates/events/booked.html:66 templates/events/booked.html:98
 #: templates/events/booked.html:103
 #: templates/events/checkin-add-modal-partial.html:14
-#: templates/events/checkin-add-modal-partial.html:119
-#: templates/events/checkin-add-modal-partial.html:124
+#: templates/events/checkin-add-modal-partial.html:116
+#: templates/events/checkin-add-modal-partial.html:121
 #: templates/events/mine.html:65 templates/events/mine.html:98
 #: templates/events/mine.html:103 templates/includes/messages.html:14
 msgid "Close"
@@ -1366,7 +1366,7 @@ msgstr "Dati di chi firma la richiesta"
 msgid "Details of who is coming"
 msgstr "Dati di chi partecipa"
 
-#: templates/events/checkin-add-modal-partial.html:120
+#: templates/events/checkin-add-modal-partial.html:117
 msgid "Add, already confirmed"
 msgstr "Aggiungi, già confermata"
 
@@ -1449,8 +1449,8 @@ msgid "Book"
 msgstr "Prenota"
 
 #: templates/events/landing.html:37
-msgid "Already a member?"
-msgstr "Sei già socio?"
+msgid "Already taken part in one of our events?"
+msgstr "Hai già partecipato ai nostri eventi?"
 
 #: templates/events/landing.html:37
 msgid "Book by clicking"
@@ -2222,6 +2222,9 @@ msgstr "Le risposte vengono salvate man mano."
 #: templates/intake/step.html:53
 msgid "Save and come back later"
 msgstr "Salva e riprendi più tardi"
+
+#~ msgid "Already a member?"
+#~ msgstr "Sei già socio?"
 
 #~ msgid "The paper form is signed: statute accepted, fee due"
 #~ msgstr "Il modulo cartaceo è firmato: statuto accettato, quota dovuta"

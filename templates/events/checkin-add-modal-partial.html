@@ -29,7 +29,7 @@
             <fieldset class="space-y-2">
                 <legend class="mb-2 text-sm font-semibold tracking-tight">{{ add_form.subject_type.label }}</legend>
                 {% for radio in add_form.subject_type %}
-                    <label class="hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5 flex cursor-pointer items-start gap-3 rounded-xl border border-base-300 p-3 transition-colors duration-200 ease-in-out">
+                    <label class="hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5 border-base-300 flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-colors duration-200 ease-in-out">
                         <input type="radio"
                                name="{{ add_form.subject_type.html_name }}"
                                value="{{ radio.data.value }}"
@@ -39,7 +39,7 @@
                         <span class="text-sm leading-relaxed">{{ radio.choice_label }}</span>
                     </label>
                 {% endfor %}
-                <label class="hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5 flex cursor-pointer items-start gap-3 rounded-xl border border-base-300 p-3 transition-colors duration-200 ease-in-out">
+                <label class="hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5 border-base-300 flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-colors duration-200 ease-in-out">
                     <input type="radio"
                            x-model="choice"
                            value="existing"
@@ -71,7 +71,7 @@
                 </div>
 
                 <div>
-                    <label class="has-[:checked]:border-primary has-[:checked]:bg-primary/5 flex cursor-pointer items-start gap-3 rounded-xl border border-base-300 p-3 transition-colors duration-200 ease-in-out">
+                    <label class="has-[:checked]:border-primary has-[:checked]:bg-primary/5 border-base-300 flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-colors duration-200 ease-in-out">
                         <input type="checkbox"
                                name="{{ add_form.sole_holder.html_name }}"
                                x-model="soleHolder"
@@ -97,16 +97,16 @@
             </div>
 
             <div class="space-y-2">
-                <label class="has-[:checked]:border-primary has-[:checked]:bg-primary/5 flex cursor-pointer items-start gap-3 rounded-xl border border-base-300 p-3 transition-colors duration-200 ease-in-out">
+                <label class="has-[:checked]:border-primary has-[:checked]:bg-primary/5 border-base-300 flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-colors duration-200 ease-in-out">
                     {{ add_form.accepts_statute }}
                     <span class="text-sm leading-relaxed">{{ add_form.accepts_statute.label }}</span>
                 </label>
                 {% for error in add_form.accepts_statute.errors %}<p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>{% endfor %}
-                <label class="has-[:checked]:border-primary has-[:checked]:bg-primary/5 flex cursor-pointer items-start gap-3 rounded-xl border border-base-300 p-3 transition-colors duration-200 ease-in-out">
+                <label class="has-[:checked]:border-primary has-[:checked]:bg-primary/5 border-base-300 flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-colors duration-200 ease-in-out">
                     {{ add_form.consent_images }}
                     <span class="text-sm leading-relaxed">{{ add_form.consent_images.label }}</span>
                 </label>
-                <label class="has-[:checked]:border-primary has-[:checked]:bg-primary/5 flex cursor-pointer items-start gap-3 rounded-xl border border-base-300 p-3 transition-colors duration-200 ease-in-out">
+                <label class="has-[:checked]:border-primary has-[:checked]:bg-primary/5 border-base-300 flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-colors duration-200 ease-in-out">
                     {{ add_form.consent_whatsapp }}
                     <span class="text-sm leading-relaxed">{{ add_form.consent_whatsapp.label }}</span>
                 </label>
