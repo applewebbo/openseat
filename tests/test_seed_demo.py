@@ -105,4 +105,18 @@ def test_confirmed_bookings_carry_a_fee(seeded):
 
 @pytest.mark.django_db
 def test_members_are_shared_across_events_not_duplicated_per_event(seeded):
-    assert Member.objects.count() < Booking.objects.count()
+    assert (
+        Member.objects.filter(submission__isnull=False).count()
+        < Booking.objects.count()
+    )
+
+
+@pytest.mark.django_db
+def test_it_seeds_a_realistic_register_for_export(seeded):
+    standalone = Member.objects.filter(submission__isnull=True)
+
+    assert standalone.count() == 50
+    assert standalone.exclude(tax_code="").count() < standalone.count()
+    assert standalone.filter(ratified_on__isnull=True).exists()
+    assert standalone.filter(ratified_on__isnull=False).exists()
+    assert standalone.values_list("joined_on", flat=True).distinct().count() > 1

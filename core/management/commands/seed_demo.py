@@ -12,6 +12,7 @@ from django.utils import timezone
 
 from events.models import Booking, Event, FeeMethod
 from intake.models import AgeBracket, Association, PublicForm, SubjectType, Submission
+from members.models import Member
 
 ASSOCIATION = {
     "slug": "lontano-la-ca-di-asu",
@@ -247,6 +248,156 @@ SELF_ADULTS = [
 ]
 
 
+# Fifty members entered directly on the register, the way years of paper
+# admissions predating this app would look once typed in: no submission or
+# booking behind them, a export CSV/xlsx exercised at a realistic size.
+STANDALONE_FIRST_NAMES = [
+    "Anna",
+    "Paolo",
+    "Laura",
+    "Giovanni",
+    "Elisa",
+    "Roberto",
+    "Federica",
+    "Stefano",
+    "Michela",
+    "Antonio",
+    "Cristina",
+    "Fabio",
+    "Serena",
+    "Massimo",
+    "Ilaria",
+    "Claudio",
+    "Barbara",
+    "Enrico",
+    "Monica",
+    "Giorgio",
+    "Patrizia",
+    "Alberto",
+    "Daniela",
+    "Vincenzo",
+    "Silvia",
+    "Renato",
+    "Paola",
+    "Gianluca",
+    "Rosa",
+    "Emanuele",
+    "Lucia",
+    "Marco",
+    "Simona",
+    "Pietro",
+    "Giovanna",
+    "Sergio",
+    "Manuela",
+    "Franco",
+    "Alessandra",
+    "Carlo",
+    "Teresa",
+    "Angelo",
+    "Raffaella",
+    "Mauro",
+    "Lorena",
+    "Domenico",
+    "Wanda",
+    "Alessandro",
+    "Ornella",
+    "Gabriele",
+]
+STANDALONE_LAST_NAMES = [
+    "Riva",
+    "Motta",
+    "Vitali",
+    "Sala",
+    "Pirola",
+    "Cattaneo",
+    "Beretta",
+    "Villa",
+    "Brambilla",
+    "Meroni",
+    "Colombo",
+    "Locatelli",
+    "Vismara",
+    "Galbiati",
+    "Redaelli",
+    "Pozzi",
+    "Bonetti",
+    "Arosio",
+    "Consonni",
+    "Riboldi",
+    "Perego",
+    "Citterio",
+    "Vergani",
+    "Longoni",
+    "Panzeri",
+    "Corti",
+    "Casati",
+    "Mauri",
+    "Sironi",
+    "Tagliabue",
+    "Nava",
+    "Colnaghi",
+    "Frigerio",
+    "Rota",
+    "Valsecchi",
+    "Airoldi",
+    "Gerosa",
+    "Spreafico",
+    "Ripamonti",
+    "Radaelli",
+    "Fumagalli",
+    "Confalonieri",
+    "Bertani",
+    "Pagani",
+    "Molteni",
+    "Sangalli",
+    "Oggioni",
+    "Crippa",
+    "Barzaghi",
+    "Terraneo",
+]
+STANDALONE_ADDRESSES = [
+    ("Via Trieste", "4", "28100", "Novara"),
+    ("Via Divisione Julia", "22", "28100", "Novara"),
+    ("Corso Cavallotti", "9", "28100", "Novara"),
+    ("Via Solaroli", "15", "28100", "Novara"),
+    ("Piazza Cavour", "3", "28100", "Novara"),
+    ("Via Perrone", "40", "28047", "Oleggio"),
+    ("Via Roma", "18", "28069", "Trecate"),
+    ("Via Novara", "56", "28053", "Galliate"),
+    ("Via Cameri", "7", "28062", "Cameri"),
+    ("Via Boniperti", "11", "28100", "Olengo"),
+]
+
+
+def _standalone_members(association, today):
+    for index, (first_name, last_name) in enumerate(
+        zip(STANDALONE_FIRST_NAMES, STANDALONE_LAST_NAMES, strict=True)
+    ):
+        street, number, postcode, city = STANDALONE_ADDRESSES[
+            index % len(STANDALONE_ADDRESSES)
+        ]
+        birth_year = 1950 + (index * 3) % 55
+        joined_on = today - datetime.timedelta(days=(index * 23) % 1800)
+        yield {
+            "contact_email": f"socio{index + 1}@example.com",
+            "first_name": first_name,
+            "last_name": last_name,
+            "birth_date": datetime.date(birth_year, 1 + index % 12, 1 + index % 28),
+            "tax_code": (
+                "" if index % 5 == 0 else f"MBR{index:02d}A01H501{index % 10}"
+            ),
+            "street": street,
+            "number": number,
+            "postcode": postcode,
+            "city": city,
+            "email": f"socio{index + 1}@example.com",
+            "contact_name": f"{first_name} {last_name}",
+            "contact_phone": f"333{1000000 + index:07d}",
+            "joined_on": joined_on,
+            "ratified_on": None if index % 3 == 0 else joined_on,
+        }
+
+
 class Command(BaseCommand):
     help = "Create example association, form and events for development"
 
@@ -419,6 +570,20 @@ class Command(BaseCommand):
                     )
                 booked += 1
             self.stdout.write(f"  booked: {booked} places")
+
+        today = timezone.localdate()
+        added = 0
+        for fields in _standalone_members(association, today):
+            joined_on = fields.pop("joined_on")
+            _member, created = Member.objects.get_or_create(
+                association=association,
+                contact_email=fields.pop("contact_email"),
+                defaults=fields,
+            )
+            if created:
+                Member.objects.filter(pk=_member.pk).update(joined_on=joined_on)
+                added += 1
+        self.stdout.write(f"members on the register directly: {added} added")
 
         self.stdout.write(
             self.style.SUCCESS("demo content ready — this is example data")
