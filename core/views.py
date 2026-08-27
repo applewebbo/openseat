@@ -28,6 +28,14 @@ def home(request):
         return render(request, "home-unconfigured.html", {"association": None})
 
     upcoming = list(Event.objects.filter(association=association).upcoming())
+    can_manage_checkin = request.user.is_authenticated and request.user.has_perm(
+        "events.change_event"
+    )
+    archive = (
+        Event.objects.filter(association=association).past()
+        if can_manage_checkin
+        else []
+    )
     return render(
         request,
         "home.html",
@@ -36,6 +44,7 @@ def home(request):
             # The soonest date carries the page; the others are dates, not news.
             "featured": upcoming[0] if upcoming else None,
             "upcoming": upcoming[1:],
+            "archive": archive,
         },
     )
 

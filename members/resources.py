@@ -21,9 +21,7 @@ class MemberResource(resources.ModelResource):
     COGNOME = fields.Field(
         attribute="last_name", column_name="COGNOME", widget=CharWidget()
     )
-    NOME = fields.Field(
-        attribute="first_name", column_name="NOME", widget=CharWidget()
-    )
+    NOME = fields.Field(attribute="first_name", column_name="NOME", widget=CharWidget())
     SETTORE_ISTITUZIONALE_ENTE = fields.Field(
         column_name="SETTORE_ISTITUZIONALE_ENTE", readonly=True
     )
@@ -41,9 +39,7 @@ class MemberResource(resources.ModelResource):
     INDIRIZZO = fields.Field(
         attribute="street", column_name="INDIRIZZO", widget=CharWidget()
     )
-    CIVICO = fields.Field(
-        attribute="number", column_name="CIVICO", widget=CharWidget()
-    )
+    CIVICO = fields.Field(attribute="number", column_name="CIVICO", widget=CharWidget())
     CAP = fields.Field(attribute="postcode", column_name="CAP", widget=CharWidget())
     COMUNE = fields.Field(attribute="city", column_name="COMUNE", widget=CharWidget())
     SIGLA_PROVINCIA = fields.Field(
@@ -130,4 +126,6 @@ class MemberResource(resources.ModelResource):
         if not instance.contact_email:
             instance.contact_email = instance.email
         if not instance.contact_name:
-            instance.contact_name = f"{instance.first_name} {instance.last_name}".strip()
+            instance.contact_name = (
+                f"{instance.first_name} {instance.last_name}".strip()
+            )

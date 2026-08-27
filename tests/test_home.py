@@ -106,6 +106,37 @@ class TestEventSections:
         assert 'id="prossime"' not in content
         assert 'id="archivio"' not in content
 
+    def test_editors_see_past_events_in_an_archive(
+        self, editor_client, association, event_factory
+    ):
+        gone = event_factory(
+            association=association, title="Già passato", starts_at=past(2)
+        )
+
+        response = editor_client.get(reverse("home"))
+
+        assert list(response.context["archive"]) == [gone]
+        assert gone.title in response.content.decode()
+        assert 'id="archivio"' in response.content.decode()
+
+    def test_visitors_never_see_the_archive(self, client, association, event_factory):
+        event_factory(association=association, title="Già passato", starts_at=past(2))
+
+        response = client.get(reverse("home"))
+
+        assert not response.context["archive"]
+        assert 'id="archivio"' not in response.content.decode()
+
+    def test_a_logged_in_non_editor_never_sees_the_archive(
+        self, logged_client, association, event_factory
+    ):
+        event_factory(association=association, title="Già passato", starts_at=past(2))
+
+        response = logged_client.get(reverse("home"))
+
+        assert not response.context["archive"]
+        assert 'id="archivio"' not in response.content.decode()
+
     def test_unpublished_events_are_invisible(self, client, association, event_factory):
         event_factory(association=association, is_published=False, starts_at=future(3))
 

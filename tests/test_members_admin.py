@@ -38,7 +38,9 @@ def test_the_organiser_can_export_the_members_they_selected(
     )
     assert picker.status_code == 200
     export_form = picker.context["form"]
-    field_choices = {name: True for name in export_form.fields if name.startswith("memberresource_")}
+    field_choices = {
+        name: True for name in export_form.fields if name.startswith("memberresource_")
+    }
 
     response = staff_client.post(
         reverse("admin:members_member_export"),
@@ -58,7 +60,11 @@ def test_import_page_loads(staff_client, association):
 
 
 def test_a_full_import_round_trip_creates_a_member(staff_client, association):
-    csv_content = HEADERS + "\n" + _csv_row(COGNOME="Verdi", NOME="Anna", EMAIL="anna@example.com")
+    csv_content = (
+        HEADERS
+        + "\n"
+        + _csv_row(COGNOME="Verdi", NOME="Anna", EMAIL="anna@example.com")
+    )
     upload = io.BytesIO(csv_content.encode("utf-8"))
     upload.name = "soci.csv"
 

@@ -100,7 +100,9 @@ def test_note_carries_the_event_the_member_joined_through(
 ):
     event = event_factory(title="Una giornata con gli asini")
     booking_factory(event=event, submission=submission)
-    member = member_factory(association=submission.form.association, submission=submission)
+    member = member_factory(
+        association=submission.form.association, submission=submission
+    )
 
     dataset = MemberResource().export(Member.objects.filter(pk=member.pk))
     row = dict(zip(dataset.headers, dataset[0], strict=True))
@@ -148,9 +150,7 @@ def test_import_append_always_creates_a_new_row(member_factory, association):
     assert Member.objects.filter(association=association).count() == 2
 
 
-def test_import_with_a_blank_tax_code_is_always_a_new_row(
-    member_factory, association
-):
+def test_import_with_a_blank_tax_code_is_always_a_new_row(member_factory, association):
     member_factory(association=association, tax_code="")
     row = ["" for _ in HEADERS]
     row[HEADERS.index("COGNOME")] = "Verdi"
