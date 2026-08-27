@@ -90,6 +90,7 @@ class MinorSubmissionFactory(SubmissionFactory):
     applicant_number = "4"
     applicant_postcode = "28100"
     applicant_city = "Novara"
+    applicant_province = "NO"
     applicant_phone = "3401234567"
     applicant_email = "maria.rossi@example.com"
     member_first_name = "Luca"
@@ -100,6 +101,7 @@ class MinorSubmissionFactory(SubmissionFactory):
     member_street = "Via Roma 4"
     member_number = "4"
     member_city = "Novara"
+    member_province = "NO"
     accepts_statute = True
     sole_holder = False
     second_parent_first_name = "Paolo"
@@ -139,6 +141,7 @@ class AdultSubmissionFactory(SubmissionFactory):
     applicant_number = "1"
     applicant_postcode = "28100"
     applicant_city = "Novara"
+    applicant_province = "NO"
     applicant_phone = "3401234567"
     applicant_email = "anna.verdi@example.com"
     accepts_statute = True

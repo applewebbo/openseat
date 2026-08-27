@@ -149,6 +149,7 @@ def _applicant_form(submission, **overrides):
         "applicant_street": "Via Roma",
         "applicant_number": "4",
         "applicant_postcode": "28100",
+        "applicant_province": "NO",
         "applicant_city": "Novara",
         "applicant_phone": "340 1234567",
         "applicant_email": "maria.rossi@example.com",
@@ -163,6 +164,57 @@ def test_a_tax_code_of_the_wrong_length_is_refused(submission, english):
 
     assert not form.is_valid()
     assert "16" in str(form.errors["applicant_tax_code"])
+
+
+@pytest.mark.django_db
+def test_a_comune_from_a_different_province_is_refused(submission):
+    """Milano is a real comune, just not one of Novara's."""
+    form = _applicant_form(submission, applicant_province="NO", applicant_city="Milano")
+
+    assert not form.is_valid()
+    assert "applicant_city" in form.errors
+
+
+@pytest.mark.django_db
+def test_a_missing_province_is_refused(submission):
+    form = _applicant_form(submission, applicant_province="")
+
+    assert not form.is_valid()
+    assert "applicant_province" in form.errors
+
+
+@pytest.mark.django_db
+def test_reopening_a_draft_keeps_its_comune_selectable(submission):
+    """The comune choices are rebuilt from the province already on file, so a
+    returning visitor's own city still validates without resubmitting it."""
+    submission.applicant_province = "NO"
+    submission.applicant_city = "Trecate"
+    submission.save()
+
+    form = _applicant_form(submission)
+
+    assert ("Trecate", "Trecate") in form.fields["applicant_city"].choices
+
+
+@pytest.mark.django_db
+def test_the_member_section_scopes_its_own_comune_by_its_own_province(submission):
+    from intake.forms import MemberForm
+
+    data = {
+        "member_first_name": "Luca",
+        "member_last_name": "Rossi",
+        "member_birth_date": "03/09/2015",
+        "member_birth_place": "Novara",
+        "member_tax_code": "RSSLCU15P03F952V",
+        "member_street": "Via Roma",
+        "member_number": "4",
+        "member_province": "NO",
+        "member_city": "Novara",
+    }
+
+    form = MemberForm(data=data, instance=submission)
+
+    assert form.is_valid(), form.errors
 
 
 @pytest.mark.django_db

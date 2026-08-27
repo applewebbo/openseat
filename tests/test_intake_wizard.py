@@ -330,6 +330,7 @@ def test_signing_for_oneself_records_no_parental_declaration(client, submission)
     submission.applicant_number = "1"
     submission.applicant_postcode = "28100"
     submission.applicant_city = "Novara"
+    submission.applicant_province = "NO"
     submission.applicant_phone = "3401234567"
     submission.applicant_email = "anna.verdi@example.com"
     submission.accepts_statute = True

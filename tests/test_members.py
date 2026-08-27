@@ -27,6 +27,20 @@ def test_submitting_puts_the_child_on_the_register(client, minor_submission):
     assert member.tax_code == "RSSLCU15P03F952V"
 
 
+def test_the_register_carries_the_province_the_child_lives_in(client, minor_submission):
+    _submit(client, minor_submission)
+
+    member = Member.objects.get()
+    assert member.province == "NO"
+
+
+def test_the_register_carries_the_applicant_own_province(client, adult_submission):
+    _submit(client, adult_submission)
+
+    member = Member.objects.get()
+    assert member.province == "NO"
+
+
 def test_the_parent_is_the_contact_for_a_child(client, minor_submission):
     """The child is the member; the parent is who the association writes to."""
     _submit(client, minor_submission)

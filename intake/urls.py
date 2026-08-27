@@ -7,6 +7,7 @@ app_name = "intake"
 # The two named request routes are declared before the catch-all step route, or
 # "submit" and "done" would be read as section names.
 urlpatterns = [
+    path("comuni/", views.comuni_options, name="comuni-options"),
     path("modulo/<slug:slug>/", views.landing, name="landing"),
     path("modulo/<slug:slug>/start/", views.begin, name="begin"),
     path("richiesta/<uuid:token>/save/", views.save, name="save"),

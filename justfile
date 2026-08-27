@@ -114,6 +114,61 @@ update_icons:
     echo "$LATEST $WEIGHT" > "$VERSION_FILE"
     echo "✓ Phosphor $LATEST ($WEIGHT): ${ICONS[*]} in $STATIC_DIR"
 
+# The province/comuni pair for the address selects: ISTAT's own "Elenco dei
+# comuni italiani", under IODL 2.0 — vendored once, refreshed by hand, never
+# fetched live from a page visitor's browser.
+[group('setup')]
+update_comuni:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    DATA_DIR="intake/data"
+    SOURCE="https://www.istat.it/storage/codici-unita-amministrative/Elenco-comuni-italiani.csv"
+    TMP_CSV=$(mktemp)
+    trap "rm -f $TMP_CSV" EXIT
+
+    curl -sfL --retry 3 "$SOURCE" -o "$TMP_CSV"
+
+    mkdir -p "$DATA_DIR"
+    uv run python3 - "$TMP_CSV" "$DATA_DIR/comuni.json" <<'PY'
+    import csv
+    import json
+    import sys
+    from collections import defaultdict
+
+    source, destination = sys.argv[1], sys.argv[2]
+    province = {}
+    comuni = defaultdict(set)
+
+    with open(source, encoding="latin-1") as f:
+        for row in csv.DictReader(f, delimiter=";"):
+            sigla = (row.get("Sigla automobilistica") or "").strip()
+            nome_provincia = (
+                row.get(
+                    "Denominazione dell'Unità territoriale sovracomunale \n"
+                    "(valida a fini statistici)"
+                )
+                or ""
+            ).strip()
+            nome_comune = (row.get("Denominazione in italiano") or "").strip()
+            if not sigla or not nome_comune:
+                continue
+            province[sigla] = nome_provincia
+            comuni[sigla].add(nome_comune)
+
+    data = {
+        "province": sorted(
+            ({"sigla": s, "nome": n} for s, n in province.items()),
+            key=lambda p: p["sigla"],
+        ),
+        "comuni": {sigla: sorted(names) for sigla, names in comuni.items()},
+    }
+    with open(destination, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
+        f.write("\n")
+
+    print(f"✓ {len(data['province'])} province, {sum(len(v) for v in data['comuni'].values())} comuni")
+    PY
+
 # ---------- development ----------
 
 [group('development')]

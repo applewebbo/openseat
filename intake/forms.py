@@ -1,6 +1,8 @@
 from django import forms
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from intake.geo import comune_choices, province_choices
 from intake.models import SubjectType, Submission
 from intake.validators import (
     validate_phone,
@@ -62,6 +64,8 @@ class SectionForm(forms.ModelForm):
                 )
             elif isinstance(widget, forms.RadioSelect):
                 widget.attrs.setdefault("class", "radio radio-primary mt-0.5")
+            elif isinstance(widget, forms.Select):
+                widget.attrs.setdefault("class", "select w-full")
             else:
                 widget.attrs.setdefault("class", "input input-bordered w-full")
 
@@ -115,7 +119,38 @@ class PersonForm(SectionForm):
                     attrs={"type": "date", "class": "input input-bordered w-full"},
                     format="%Y-%m-%d",
                 )
+            if name.endswith("_province"):
+                self.fields[name] = forms.ChoiceField(
+                    label=field.label,
+                    choices=[("", "—")] + province_choices(),
+                )
+            if name.endswith("_city"):
+                # The comuni list depends on the province chosen alongside it,
+                # so it is rebuilt here rather than declared as a class
+                # attribute — an htmx request swaps it in again when the
+                # province select changes.
+                prefix = name.removesuffix("_city")
+                province_value = self.data.get(f"{prefix}_province") or getattr(
+                    self.instance, f"{prefix}_province", ""
+                )
+                self.fields[name] = forms.ChoiceField(
+                    label=field.label,
+                    choices=[("", "—")] + comune_choices(province_value),
+                    widget=forms.Select(
+                        attrs={
+                            "hx-get": reverse("intake:comuni-options"),
+                            "hx-trigger": f"change from:#id_{prefix}_province",
+                            "hx-include": f"#id_{prefix}_province",
+                            "hx-target": "this",
+                            "hx-swap": "innerHTML",
+                        }
+                    ),
+                )
+        for field in self.fields.values():
             field.required = True
+        # The province/city fields above are built fresh, after style_widgets()
+        # already ran once in SectionForm.__init__ — so they missed it.
+        self.style_widgets()
 
     def clean(self):
         cleaned = super().clean()
@@ -137,7 +172,11 @@ class ApplicantForm(PersonForm):
         ],
         [("applicant_tax_code", "sm:col-span-6")],
         [("applicant_street", "sm:col-span-4"), ("applicant_number", "sm:col-span-2")],
-        [("applicant_postcode", "sm:col-span-2"), ("applicant_city", "sm:col-span-4")],
+        [
+            ("applicant_postcode", "sm:col-span-2"),
+            ("applicant_province", "sm:col-span-2"),
+            ("applicant_city", "sm:col-span-2"),
+        ],
         [("applicant_phone", "sm:col-span-3"), ("applicant_email", "sm:col-span-3")],
     ]
 
@@ -151,6 +190,7 @@ class ApplicantForm(PersonForm):
             "applicant_street",
             "applicant_number",
             "applicant_postcode",
+            "applicant_province",
             "applicant_city",
             "applicant_phone",
             "applicant_email",
@@ -166,7 +206,10 @@ class MemberForm(PersonForm):
         ],
         [("member_tax_code", "sm:col-span-6")],
         [("member_street", "sm:col-span-4"), ("member_number", "sm:col-span-2")],
-        [("member_city", "sm:col-span-6")],
+        [
+            ("member_province", "sm:col-span-2"),
+            ("member_city", "sm:col-span-4"),
+        ],
     ]
 
     class Meta(SectionForm.Meta):
@@ -178,6 +221,7 @@ class MemberForm(PersonForm):
             "member_tax_code",
             "member_street",
             "member_number",
+            "member_province",
             "member_city",
         ]
 

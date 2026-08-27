@@ -7,6 +7,7 @@ from django.views.decorators.http import require_POST
 from events.models import Booking
 from events.notifications import send_booking_confirmation
 from intake.forms import ResumeLinkForm, ReviewForm
+from intake.geo import comune_choices
 from intake.models import PublicForm, SectionKey, Submission, Subscription
 from intake.notifications import (
     notify_second_parent,
@@ -54,6 +55,26 @@ def client_ip(request):
     if forwarded:
         return forwarded.split(",")[0].strip()
     return request.META.get("REMOTE_ADDR")
+
+
+@login_not_required
+def comuni_options(request):
+    """The comuni for whichever province an address select just picked.
+
+    Reads any `*_province` query parameter rather than a fixed name, so both
+    the applicant's and the member's province select can point the same
+    endpoint at their own city select without the view knowing which one it
+    is.
+    """
+    sigla = next(
+        (value for key, value in request.GET.items() if key.endswith("_province")),
+        "",
+    )
+    return render(
+        request,
+        "intake/forms/comune-options-partial.html",
+        {"comuni": comune_choices(sigla)},
+    )
 
 
 @login_not_required

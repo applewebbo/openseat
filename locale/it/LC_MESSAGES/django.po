@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-27 18:46+0200\n"
+"POT-Creation-Date: 2026-08-27 19:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,8 +49,8 @@ msgstr "Un superuser deve avere is_staff=True"
 msgid "A superuser must have is_superuser=True"
 msgstr "Un superuser deve avere is_superuser=True"
 
-#: accounts/models.py:46 intake/models.py:72 intake/models.py:272
-#: intake/models.py:297 intake/models.py:413 members/models.py:51
+#: accounts/models.py:46 intake/models.py:72 intake/models.py:273
+#: intake/models.py:299 intake/models.py:415 members/models.py:51
 msgid "email address"
 msgstr "indirizzo email"
 
@@ -105,7 +105,7 @@ msgid "Bookings for %(event)s"
 msgstr "Prenotazioni per %(event)s"
 
 #: events/forms.py:25 events/forms.py:79 events/forms.py:174
-#: intake/forms.py:285 templates/home.html:146
+#: intake/forms.py:329 templates/home.html:146
 msgid "Email address"
 msgstr "Indirizzo email"
 
@@ -187,16 +187,16 @@ msgstr "Nome dell’altro genitore"
 msgid "Other parent's last name"
 msgstr "Cognome dell’altro genitore"
 
-#: events/forms.py:251 intake/models.py:399
+#: events/forms.py:251 intake/models.py:401
 #: templates/intake/second-parent.html:4
 msgid "Image consent"
 msgstr "Consenso immagini"
 
-#: events/forms.py:256 intake/models.py:300
+#: events/forms.py:256 intake/models.py:302
 msgid "WhatsApp consent"
 msgstr "Consenso WhatsApp"
 
-#: events/forms.py:282 events/forms.py:286 intake/forms.py:241
+#: events/forms.py:282 events/forms.py:286 intake/forms.py:285
 msgid "This field is required."
 msgstr "Questo campo è obbligatorio."
 
@@ -281,7 +281,7 @@ msgstr "costo consigliato"
 msgid "Not shown to the public yet."
 msgstr "Non ancora visibile al pubblico."
 
-#: events/models.py:106 intake/models.py:176 intake/models.py:317
+#: events/models.py:106 intake/models.py:176 intake/models.py:319
 msgid "created at"
 msgstr "creato il"
 
@@ -321,17 +321,17 @@ msgstr "Compilato quando la prenotazione viene confermata."
 msgid "application"
 msgstr "domanda di adesione"
 
-#: events/models.py:296 intake/models.py:260 intake/models.py:274
-#: intake/models.py:292 members/models.py:41
+#: events/models.py:296 intake/models.py:260 intake/models.py:275
+#: intake/models.py:294 members/models.py:41
 msgid "first name"
 msgstr "nome"
 
-#: events/models.py:297 intake/models.py:261 intake/models.py:275
-#: intake/models.py:295 members/models.py:42
+#: events/models.py:297 intake/models.py:261 intake/models.py:276
+#: intake/models.py:297 members/models.py:42
 msgid "last name"
 msgstr "cognome"
 
-#: events/models.py:299 intake/models.py:262 intake/models.py:276
+#: events/models.py:299 intake/models.py:262 intake/models.py:277
 #: members/models.py:43
 msgid "date of birth"
 msgstr "data di nascita"
@@ -443,15 +443,15 @@ msgstr "immagini"
 msgid "Association and applications"
 msgstr "Associazione e domande"
 
-#: intake/forms.py:14
+#: intake/forms.py:16
 msgid "I give my consent"
 msgstr "Presto il consenso"
 
-#: intake/forms.py:14 templates/intake/second-parent.html:42
+#: intake/forms.py:16 templates/intake/second-parent.html:42
 msgid "I do not consent"
 msgstr "Non presto il consenso"
 
-#: intake/forms.py:20
+#: intake/forms.py:22
 msgid ""
 "I sign on behalf of the other parent too, in agreement with them (artt. 316 "
 "and 337-ter of the Civil Code)"
@@ -459,20 +459,20 @@ msgstr ""
 "Sottoscrivo anche in nome dell’altro genitore, in accordo con lui/lei (artt. "
 "316 e 337-ter c.c.)"
 
-#: intake/forms.py:24
+#: intake/forms.py:26
 msgid "I am the sole holder of parental responsibility"
 msgstr "Sono unico titolare della responsabilità genitoriale"
 
-#: intake/forms.py:196
+#: intake/forms.py:240
 msgid "I accept the statute and undertake to pay the annual membership fee"
 msgstr ""
 "Accetto lo statuto e mi impegno al versamento della quota associativa annuale"
 
-#: intake/forms.py:199 templates/intake/partials/review-partial.html:66
+#: intake/forms.py:243 templates/intake/partials/review-partial.html:66
 msgid "Parental responsibility"
 msgstr "Responsabilità genitoriale"
 
-#: intake/forms.py:202
+#: intake/forms.py:246
 msgid ""
 "Being separated or divorced does not make you the sole holder: under shared "
 "custody both parents remain holders. You are the sole holder with exclusive "
@@ -484,32 +484,32 @@ msgstr ""
 "esclusivo, dopo il decesso dell’altro genitore, o quando sei l’unico "
 "genitore che ha riconosciuto il figlio."
 
-#: intake/forms.py:225
+#: intake/forms.py:269
 msgid "Their first name"
 msgstr "Nome"
 
-#: intake/forms.py:226
+#: intake/forms.py:270
 msgid "Their last name"
 msgstr "Cognome"
 
-#: intake/forms.py:227
+#: intake/forms.py:271
 msgid "Their email address"
 msgstr "Indirizzo email"
 
-#: intake/forms.py:229
+#: intake/forms.py:273
 msgid "Used only to ask them about the image consents."
 msgstr "Serve solo per chiedergli i consensi immagine."
 
-#: intake/forms.py:251
+#: intake/forms.py:295
 msgid "Publishing images on the association's website and social channels"
 msgstr ""
 "Pubblicazione delle immagini sul sito e sui canali social dell’associazione"
 
-#: intake/forms.py:254
+#: intake/forms.py:298
 msgid "Sending photos and videos through the WhatsApp broadcast list"
 msgstr "Invio di fotografie e filmati tramite la lista broadcast WhatsApp"
 
-#: intake/forms.py:265
+#: intake/forms.py:309
 msgid ""
 "I declare that the information above is true and I ask to be admitted as a "
 "member"
@@ -517,7 +517,7 @@ msgstr ""
 "Dichiaro che quanto sopra è veritiero e chiedo di essere ammesso/a come "
 "socio/a"
 
-#: intake/forms.py:286
+#: intake/forms.py:330
 msgid "We send the link to come back to, and nothing else."
 msgstr "Ti mandiamo il link per riprendere, nient’altro."
 
@@ -573,7 +573,7 @@ msgstr "Consensi immagine"
 msgid "Review and subscription"
 msgstr "Riepilogo e sottoscrizione"
 
-#: intake/models.py:68 intake/models.py:267 intake/models.py:281
+#: intake/models.py:68 intake/models.py:267 intake/models.py:282
 #: members/models.py:46
 msgid "street"
 msgstr "via"
@@ -582,12 +582,12 @@ msgstr "via"
 msgid "postcode"
 msgstr "CAP"
 
-#: intake/models.py:70 intake/models.py:270 intake/models.py:283
+#: intake/models.py:70 intake/models.py:270 intake/models.py:284
 #: members/models.py:49
 msgid "city"
 msgstr "comune"
 
-#: intake/models.py:71 intake/models.py:266 intake/models.py:280
+#: intake/models.py:71 intake/models.py:266 intake/models.py:281
 #: members/models.py:45
 msgid "tax code"
 msgstr "codice fiscale"
@@ -708,11 +708,11 @@ msgstr "Bozza"
 msgid "Submitted"
 msgstr "Inviata"
 
-#: intake/models.py:251 intake/models.py:420
+#: intake/models.py:251 intake/models.py:422
 msgid "token"
 msgstr "token"
 
-#: intake/models.py:254 intake/models.py:417
+#: intake/models.py:254 intake/models.py:419
 msgid "state"
 msgstr "stato"
 
@@ -720,116 +720,120 @@ msgstr "stato"
 msgid "applying for"
 msgstr "richiesta per"
 
-#: intake/models.py:264 intake/models.py:278 members/models.py:44
+#: intake/models.py:264 intake/models.py:279 members/models.py:44
 msgid "place of birth"
 msgstr "luogo di nascita"
 
-#: intake/models.py:268 intake/models.py:282 members/models.py:47
+#: intake/models.py:268 intake/models.py:283 members/models.py:47
 msgid "number"
 msgstr "numero civico"
 
-#: intake/models.py:271
+#: intake/models.py:271 intake/models.py:285 members/models.py:50
+msgid "province"
+msgstr "provincia"
+
+#: intake/models.py:272
 msgid "phone"
 msgstr "telefono"
 
-#: intake/models.py:285
+#: intake/models.py:287
 msgid "accepts the statute"
 msgstr "accetta lo statuto"
 
-#: intake/models.py:289
+#: intake/models.py:291
 msgid "sole holder of parental responsibility"
 msgstr "unico titolare della responsabilità genitoriale"
 
-#: intake/models.py:299
+#: intake/models.py:301
 msgid "image consent"
 msgstr "consenso immagine"
 
-#: intake/models.py:307
+#: intake/models.py:309
 msgid "booked for"
 msgstr "prenotazione per"
 
-#: intake/models.py:313
+#: intake/models.py:315
 msgid "reminded at"
 msgstr "sollecitata il"
 
-#: intake/models.py:314
+#: intake/models.py:316
 msgid "place"
 msgstr "luogo"
 
-#: intake/models.py:315
+#: intake/models.py:317
 msgid "submitted at"
 msgstr "inviata il"
 
-#: intake/models.py:316 intake/models.py:424
+#: intake/models.py:318 intake/models.py:426
 #: templates/account/email/base_notification.html:14
 msgid "IP address"
 msgstr "indirizzo IP"
 
-#: intake/models.py:318
+#: intake/models.py:320
 msgid "updated at"
 msgstr "aggiornata il"
 
-#: intake/models.py:321 intake/models.py:408
+#: intake/models.py:323 intake/models.py:410
 msgid "submission"
 msgstr "richiesta"
 
-#: intake/models.py:322
+#: intake/models.py:324
 msgid "submissions"
 msgstr "richieste"
 
-#: intake/models.py:326
+#: intake/models.py:328
 msgid "draft"
 msgstr "bozza"
 
-#: intake/models.py:394
+#: intake/models.py:396
 msgid "Applicant"
 msgstr "Richiedente"
 
-#: intake/models.py:395
+#: intake/models.py:397
 msgid "Second holder of parental responsibility"
 msgstr "Secondo titolare della responsabilità genitoriale"
 
-#: intake/models.py:398
+#: intake/models.py:400
 msgid "Membership application"
 msgstr "Richiesta di adesione"
 
-#: intake/models.py:402
+#: intake/models.py:404
 msgid "Awaiting signature"
 msgstr "In attesa di firma"
 
-#: intake/models.py:403
+#: intake/models.py:405
 msgid "Signed"
 msgstr "Firmato"
 
-#: intake/models.py:404
+#: intake/models.py:406
 msgid "Declined"
 msgstr "Rifiutato"
 
-#: intake/models.py:412
+#: intake/models.py:414
 msgid "signatory"
 msgstr "sottoscrittore"
 
-#: intake/models.py:414
+#: intake/models.py:416
 msgid "role"
 msgstr "ruolo"
 
-#: intake/models.py:415
+#: intake/models.py:417
 msgid "subject"
 msgstr "oggetto"
 
-#: intake/models.py:422
+#: intake/models.py:424
 msgid "declaration"
 msgstr "dichiarazione"
 
-#: intake/models.py:423
+#: intake/models.py:425
 msgid "signed at"
 msgstr "firmato il"
 
-#: intake/models.py:427
+#: intake/models.py:429
 msgid "subscription"
 msgstr "sottoscrizione"
 
-#: intake/models.py:428
+#: intake/models.py:430
 msgid "subscriptions"
 msgstr "sottoscrizioni"
 
@@ -870,7 +874,7 @@ msgstr "Il CAP è di cinque cifre."
 msgid "Write the number with digits, spaces or a plus sign."
 msgstr "Scrivi il numero con cifre, spazi o il segno più."
 
-#: intake/views.py:315
+#: intake/views.py:336
 #, python-format
 msgid ""
 "Application for membership of %(association)s, accepting its statute and "
@@ -879,12 +883,12 @@ msgstr ""
 "Richiesta di adesione a %(association)s, con accettazione dello statuto e "
 "impegno al versamento della quota annuale."
 
-#: intake/views.py:322
+#: intake/views.py:343
 msgid "Signed as sole holder of parental responsibility."
 msgstr ""
 "Sottoscritta in qualità di unico titolare della responsabilità genitoriale."
 
-#: intake/views.py:326
+#: intake/views.py:347
 msgid ""
 "Signed on behalf of the other parent too, in agreement with them, under "
 "artt. 316 and 337-ter of the Civil Code."
@@ -922,10 +926,6 @@ msgstr "Registro soci"
 #: members/models.py:38
 msgid "Empty for members entered by hand from a paper form."
 msgstr "Vuoto per i soci inseriti a mano da un modulo cartaceo."
-
-#: members/models.py:50
-msgid "province"
-msgstr ""
 
 #: members/models.py:59
 msgid "joined on"
@@ -1445,24 +1445,24 @@ msgstr "Prenotazioni aperte"
 msgid "Add"
 msgstr "Aggiungi"
 
-#: templates/events/checkin.html:45
+#: templates/events/checkin.html:52
 msgid "Export"
 msgstr "Esporta"
 
-#: templates/events/checkin.html:65
+#: templates/events/checkin.html:72
 msgid "Bookings are past their automatic cutoff and cannot reopen."
 msgstr ""
 "Il termine automatico è già passato: le prenotazioni non possono riaprire."
 
-#: templates/events/checkin.html:67
+#: templates/events/checkin.html:74
 msgid "Reopen bookings"
 msgstr "Riapri le prenotazioni"
 
-#: templates/events/checkin.html:74
+#: templates/events/checkin.html:81
 msgid "Open check-in"
 msgstr "Apri check-in"
 
-#: templates/events/checkin.html:89
+#: templates/events/checkin.html:96
 msgid "Search by name"
 msgstr "Cerca per nome"
 

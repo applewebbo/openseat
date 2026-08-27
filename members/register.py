@@ -29,6 +29,7 @@ def enrol(submission):
             # who enrols them is not a case this association has.
             "postcode": submission.applicant_postcode,
             "city": submission.member_city,
+            "province": submission.member_province,
             "email": "",
         }
     else:
@@ -42,6 +43,7 @@ def enrol(submission):
             "number": submission.applicant_number,
             "postcode": submission.applicant_postcode,
             "city": submission.applicant_city,
+            "province": submission.applicant_province,
             "email": submission.applicant_email,
         }
 

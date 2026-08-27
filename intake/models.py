@@ -268,6 +268,7 @@ class Submission(models.Model):
     applicant_number = models.CharField(_("number"), max_length=10, blank=True)
     applicant_postcode = models.CharField(_("postcode"), max_length=5, blank=True)
     applicant_city = models.CharField(_("city"), max_length=100, blank=True)
+    applicant_province = models.CharField(_("province"), max_length=2, blank=True)
     applicant_phone = models.CharField(_("phone"), max_length=20, blank=True)
     applicant_email = models.EmailField(_("email address"), blank=True)
 
@@ -281,6 +282,7 @@ class Submission(models.Model):
     member_street = models.CharField(_("street"), max_length=200, blank=True)
     member_number = models.CharField(_("number"), max_length=10, blank=True)
     member_city = models.CharField(_("city"), max_length=100, blank=True)
+    member_province = models.CharField(_("province"), max_length=2, blank=True)
 
     accepts_statute = models.BooleanField(_("accepts the statute"), default=False)
     # None until the declaration step is reached; the two answers are not
