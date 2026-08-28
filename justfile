@@ -282,9 +282,17 @@ issue-reopen number:
     gh issue reopen {{ number }} -R {{ github_repo }}
 
 # --force updates the colour when the label is already there
+# a pastel colour is picked at random from a fixed palette when none is given
 [group('github')]
-label-create name color="0E8A16":
-    gh label create "{{ name }}" -R {{ github_repo }} --color "{{ color }}" --force
+label-create name color="":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    color="{{ color }}"
+    if [ -z "$color" ]; then
+        palette=(FFADAD FFD6A5 FDFFB6 CAFFBF 9BF6FF A0C4FF BDB2FF FFC6FF FFB4A2 B5EAD7 C7CEEA E2F0CB FFDAC1 FF9AA2)
+        color="${palette[$RANDOM % ${#palette[@]}]}"
+    fi
+    gh label create "{{ name }}" -R {{ github_repo }} --color "$color" --force
 
 [group('github')]
 issue-label number *labels:
