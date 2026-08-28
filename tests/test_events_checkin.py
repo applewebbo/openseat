@@ -787,3 +787,73 @@ def test_the_lookup_with_no_match_shows_a_message_and_keeps_the_typed_code(
     assert 'value="VRDNNA70A45F952I"' in content
     assert "border-success" not in content
     assert "Nessun socio trovato" in content
+
+
+def test_the_lookup_trusts_the_subject_type_the_member_applied_with(
+    editor_client, event, member_factory, minor_submission
+):
+    """A submission's own answer beats the birth-date guess, even when the
+    member is old enough that the guess alone would say otherwise."""
+    member = member_factory(
+        association=event.association,
+        tax_code="RSSLCU15P03F952V",
+        birth_date="1970-01-05",
+        submission=minor_submission,
+    )
+
+    response = editor_client.get(
+        reverse("events:checkin-lookup", args=[event.slug]),
+        {"existing_tax_code": member.tax_code},
+    )
+
+    assert "choice = 'minor'" in response.content.decode()
+
+
+def test_the_lookup_skips_blank_contact_details(editor_client, event, member_factory):
+    """Nothing on file about the parent means nothing prefilled for them —
+    no crash, no empty-string values."""
+    member_factory(
+        association=event.association,
+        tax_code="RSSLCU15P03F952V",
+        birth_date="2015-09-03",
+        contact_name="",
+        contact_email="",
+        contact_phone="",
+        street="",
+        number="",
+        city="",
+    )
+
+    response = editor_client.get(
+        reverse("events:checkin-lookup", args=[event.slug]),
+        {"existing_tax_code": "RSSLCU15P03F952V"},
+    )
+
+    assert response.status_code == 200
+
+
+def test_the_lookup_with_a_blank_tax_code_finds_nobody(editor_client, event):
+    response = editor_client.get(
+        reverse("events:checkin-lookup", args=[event.slug]), {"existing_tax_code": ""}
+    )
+
+    content = response.content.decode()
+    assert "Nessun socio trovato" not in content
+    assert "border-success" not in content
+
+
+def test_adding_a_booking_with_no_open_form_is_not_found(editor_client, event):
+    response = editor_client.post(
+        reverse("events:checkin-add", args=[event.slug]), _manual_booking_data()
+    )
+
+    assert response.status_code == 404
+
+
+def test_mark_prefilled_skips_a_name_the_form_does_not_have(event):
+    from events.forms import ManualBookingForm
+    from events.views import _mark_prefilled
+
+    form = ManualBookingForm(event=event)
+
+    _mark_prefilled(form, ["applicant_province"])
