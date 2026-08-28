@@ -1,3 +1,4 @@
+import asyncio
 import re
 
 from django.contrib.auth.decorators import login_not_required
@@ -88,7 +89,17 @@ class SiteHealthCheckView(HealthCheckView):
     Deliberately checks only the database: a broken migration or a crashed
     process are what a deploy probe needs to catch, and adding Redis/mail/
     storage would fail the probe on a dependency the web process itself
-    doesn't need to serve a request.
+    doesn't need to serve a request. Always answers JSON: Coolify's health
+    check path field takes a bare path, with no room for a `?format=json`
+    query string to steer content negotiation.
     """
 
     checks = (Database,)
+
+    async def get(self, request, *args, **kwargs):
+        with self.get_executor() as executor:
+            self.results = await asyncio.gather(
+                *(check.get_result(executor) for check in self.get_checks())
+            )
+        has_errors = any(result.error for result in self.results)
+        return self.render_to_response_json(500 if has_errors else 200)
