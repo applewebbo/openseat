@@ -898,17 +898,15 @@ msgstr ""
 
 #: members/admin.py:16
 msgid "If the tax code already exists on the register"
-msgstr ""
+msgstr "Se il codice fiscale è già presente nel registro"
 
 #: members/admin.py:18
 msgid "Overwrite the existing member"
-msgstr ""
+msgstr "Sovrascrivi il socio esistente"
 
 #: members/admin.py:19
-#, fuzzy
-#| msgid "Already a member"
 msgid "Always add as a new member"
-msgstr "Sei già socio"
+msgstr "Aggiungi sempre come nuovo socio"
 
 #: members/admin.py:69
 msgid "Record the board's ratification today"
@@ -1215,19 +1213,19 @@ msgstr "Esci"
 
 #: templates/admin/change_list.html:8
 msgid "Filter"
-msgstr ""
+msgstr "Filtra"
 
 #: templates/admin/change_list.html:14
 msgid "Hide counts"
-msgstr ""
+msgstr "Nascondi i conteggi"
 
 #: templates/admin/change_list.html:16
 msgid "Show counts"
-msgstr ""
+msgstr "Mostra i conteggi"
 
 #: templates/admin/change_list.html:22
 msgid "Clear all filters"
-msgstr ""
+msgstr "Cancella tutti i filtri"
 
 #: templates/admin/date_hierarchy.html:6
 msgid "By date"
@@ -1598,8 +1596,8 @@ msgstr "Prenotazioni per %(title)s"
 #, python-format
 msgid "One person has booked."
 msgid_plural "%(counter)s people have booked."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ha prenotato una persona."
+msgstr[1] "Hanno prenotato %(counter)s persone."
 
 #: templates/events/mail/checklist.txt:10
 msgid "Nobody has booked a place."
@@ -2249,6 +2247,19 @@ msgstr "Le risposte vengono salvate man mano."
 #: templates/intake/step.html:53
 msgid "Save and come back later"
 msgstr "Salva e riprendi più tardi"
+
+#. Overrides django-import-export's own (incomplete/mistranslated) Italian
+#. catalog: LOCALE_PATHS gives this project's locale/ the higher precedence.
+msgid "Select all"
+msgstr "Seleziona tutti"
+
+msgid "Export %(len)s selected item."
+msgid_plural "Export %(len)s selected items."
+msgstr[0] "Esporta %(len)s elemento selezionato."
+msgstr[1] "Esporta %(len)s elementi selezionati."
+
+msgid "This exporter will export the following fields: "
+msgstr "Verranno esportati i seguenti campi: "
 
 #~ msgid "Export the selected members to CSV"
 #~ msgstr "Esporta in CSV i soci selezionati"
