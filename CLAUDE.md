@@ -108,7 +108,10 @@ The `deploy` job in `.github/workflows/ci.yml` runs only after `quality` passes 
 `COOLIFY_TOKEN` from the repository secrets. Automatic Deployment stays **off** in
 the Coolify application, otherwise a push deploys twice and skips the suite.
 
-Coolify then builds the `Dockerfile` and gates on its own health check.
+Coolify then builds the `Dockerfile` and gates on its own health check, pointed at
+`/health/?format=json` — a `django-health-check` view (`core.views.SiteHealthCheckView`)
+checking only the database, so a crashed process or a broken migration fails the
+probe without also failing it on an unrelated Redis/mail hiccup.
 `entrypoint.sh` runs migrate → compilemessages → tailwind build → collectstatic, then
 hands over to hivemind with the `Procfile` (`web` + `worker`). `set -eu` means a
 failing step aborts the boot, so a broken migration never becomes healthy.

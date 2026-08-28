@@ -6,12 +6,13 @@ from django.urls import include, path, re_path
 from pwa.views import manifest, offline, service_worker
 
 from accounts.views import hub
-from core.views import home, theme_css
+from core.views import SiteHealthCheckView, home, theme_css
 
 # The PWA endpoints must stay reachable anonymously, so they are declared here with
 # login_not_required instead of including pwa.urls behind LoginRequiredMiddleware.
 urlpatterns = [
     path("", home, name="home"),
+    path("health/", SiteHealthCheckView.as_view(), name="health-check"),
     path("theme/<slug:slug>.css", theme_css, name="theme-css"),
     # The admin belongs to the installation rather than to a form, so it asks
     # for the palette without naming an association.

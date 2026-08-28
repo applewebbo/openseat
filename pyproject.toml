@@ -36,6 +36,7 @@ dependencies = [
   "django-dbbackup",
   "django-environ",
   "django-extensions",
+  "django-health-check[redis]>=4.5.1",
   "django-htmx",
   "django-import-export>=4.4.1",
   "django-pwa",

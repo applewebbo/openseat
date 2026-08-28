@@ -2,7 +2,10 @@ import re
 
 from django.contrib.auth.decorators import login_not_required
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_control
+from health_check.checks import Database
+from health_check.views import HealthCheckView
 
 from events.models import Event
 from intake.models import Association
@@ -76,3 +79,16 @@ def theme_css(request, slug=None):
         {"association": colours},
         content_type="text/css",
     )
+
+
+@method_decorator(login_not_required, name="dispatch")
+class SiteHealthCheckView(HealthCheckView):
+    """Whether the web process can reach the database, for Coolify's probe.
+
+    Deliberately checks only the database: a broken migration or a crashed
+    process are what a deploy probe needs to catch, and adding Redis/mail/
+    storage would fail the probe on a dependency the web process itself
+    doesn't need to serve a request.
+    """
+
+    checks = (Database,)

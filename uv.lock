@@ -625,6 +625,24 @@ wheels = [
 
 [[package]]
 dependencies = [
+  {name = "django"},
+  {name = "dnspython"}
+]
+name = "django-health-check"
+sdist = {url = "https://files.pythonhosted.org/packages/ab/ef/860ae4fc7d5cf02ad7a823fb78e65c043af07a5b39251e8668f8f2294d75/django_health_check-4.5.1.tar.gz", hash = "sha256:759c0bdad4c135d5e4cb43b0b98612e8d1cbd81c3ed1ce6698298ff0740bac44", size = 22037, upload-time = "2026-08-21T21:03:00.257Z"}
+source = {registry = "https://pypi.org/simple"}
+version = "4.5.1"
+wheels = [
+  {url = "https://files.pythonhosted.org/packages/06/03/1e677c3bba390a0a940d2e96fd741d8b4f8c2acd1715cca813bfa42d94c3/django_health_check-4.5.1-py3-none-any.whl", hash = "sha256:82a6329c0f1589143bd0767e16b7ceae6cadd0889c42f25d4ea63b5289cb1390", size = 27139, upload-time = "2026-08-21T21:02:59.172Z"}
+]
+
+[package.optional-dependencies]
+redis = [
+  {name = "redis"}
+]
+
+[[package]]
+dependencies = [
   {name = "asgiref"},
   {name = "django"}
 ]
@@ -832,6 +850,15 @@ wheels = [
   {url = "https://files.pythonhosted.org/packages/6f/d1/9b16c37e19f1d4671e36af8e977b63c7117371bfc119c0926a3055162858/djlint-1.44.2-cp315-cp315t-win_amd64.whl", hash = "sha256:eca7fefb7562db7adc7697b6b4afe63580b5f2f5cdd0e9ba696503e56f36f793", size = 749603, upload-time = "2026-08-08T15:55:59.716Z"},
   {url = "https://files.pythonhosted.org/packages/2c/37/d035049d165a301f246c017e7c9ddbbfadb509ad54cf10440f1fd1c5bdb0/djlint-1.44.2-cp315-cp315t-win_arm64.whl", hash = "sha256:bcfcb30a8929622b9f00994a61080b63a7a37ab1dec2933656641d6d0f8d910f", size = 666220, upload-time = "2026-08-08T15:56:01.103Z"},
   {url = "https://files.pythonhosted.org/packages/82/90/175b20b73e2915224c3d337b1b3329e20c7e6656d565e2d3c8818ca4b768/djlint-1.44.2-py3-none-any.whl", hash = "sha256:34c024c039ac39f7244335aaac92ae24d17eaedb7866d8e7160d1a2150afb320", size = 98848, upload-time = "2026-08-08T15:56:02.355Z"}
+]
+
+[[package]]
+name = "dnspython"
+sdist = {url = "https://files.pythonhosted.org/packages/8c/8b/57666417c0f90f08bcafa776861060426765fdb422eb10212086fb811d26/dnspython-2.8.0.tar.gz", hash = "sha256:181d3c6996452cb1189c4046c61599b84a5a86e099562ffde77d26984ff26d0f", size = 368251, upload-time = "2025-09-07T18:58:00.022Z"}
+source = {registry = "https://pypi.org/simple"}
+version = "2.8.0"
+wheels = [
+  {url = "https://files.pythonhosted.org/packages/ba/5a/18ad964b0086c6e62e2e7500f7edc89e3faa45033c71c1893d34eed2b2de/dnspython-2.8.0-py3-none-any.whl", hash = "sha256:01d9bbc4a2d76bf0db7c1f729812ded6d912bd318d3b1cf81d30c0f845dbf3af", size = 331094, upload-time = "2025-09-07T18:57:58.071Z"}
 ]
 
 [[package]]
@@ -1152,6 +1179,7 @@ dependencies = [
   {name = "django-dbbackup"},
   {name = "django-environ"},
   {name = "django-extensions"},
+  {name = "django-health-check", extra = ["redis"]},
   {name = "django-htmx"},
   {name = "django-import-export"},
   {name = "django-pwa"},
@@ -1210,6 +1238,7 @@ requires-dist = [
   {name = "django-dbbackup"},
   {name = "django-environ"},
   {name = "django-extensions"},
+  {name = "django-health-check", extras = ["redis"], specifier = ">=4.5.1"},
   {name = "django-htmx"},
   {name = "django-import-export", specifier = ">=4.4.1"},
   {name = "django-pwa"},
