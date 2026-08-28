@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('intake', '0008_seed_default_age_brackets'),
+        ("intake", "0008_seed_default_age_brackets"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='submission',
-            name='applicant_province',
-            field=models.CharField(blank=True, max_length=2, verbose_name='province'),
+            model_name="submission",
+            name="applicant_province",
+            field=models.CharField(blank=True, max_length=2, verbose_name="province"),
         ),
         migrations.AddField(
-            model_name='submission',
-            name='member_province',
-            field=models.CharField(blank=True, max_length=2, verbose_name='province'),
+            model_name="submission",
+            name="member_province",
+            field=models.CharField(blank=True, max_length=2, verbose_name="province"),
         ),
     ]

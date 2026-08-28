@@ -218,6 +218,87 @@ def test_the_member_section_scopes_its_own_comune_by_its_own_province(submission
 
 
 @pytest.mark.django_db
+def test_the_member_form_copies_the_applicants_address_when_the_member_has_none(
+    submission,
+):
+    from intake.forms import MemberForm
+
+    submission.applicant_street = "Via Roma"
+    submission.applicant_number = "4"
+    submission.applicant_province = "NO"
+    submission.applicant_city = "Novara"
+    submission.save()
+
+    form = MemberForm(instance=submission)
+
+    assert form["member_street"].value() == "Via Roma"
+    assert form["member_number"].value() == "4"
+    assert form["member_province"].value() == "NO"
+    assert form["member_city"].value() == "Novara"
+
+
+@pytest.mark.django_db
+def test_it_never_overwrites_an_address_the_member_already_has(submission):
+    from intake.forms import MemberForm
+
+    submission.applicant_street = "Via Roma"
+    submission.applicant_province = "NO"
+    submission.applicant_city = "Novara"
+    submission.member_street = "Via Torino"
+    submission.member_province = "MI"
+    submission.member_city = "Milano"
+    submission.save()
+
+    form = MemberForm(instance=submission)
+
+    assert form["member_street"].value() == "Via Torino"
+    assert form["member_province"].value() == "MI"
+    assert form["member_city"].value() == "Milano"
+
+
+@pytest.mark.django_db
+def test_a_bound_resubmission_never_triggers_a_fresh_autofill(submission):
+    from intake.forms import MemberForm
+
+    submission.applicant_street = "Via Roma"
+    submission.applicant_province = "NO"
+    submission.applicant_city = "Novara"
+    submission.save()
+
+    data = {
+        "member_first_name": "Luca",
+        "member_last_name": "Rossi",
+        "member_birth_date": "03/09/2015",
+        "member_birth_place": "Novara",
+        "member_tax_code": "RSSLCU15P03F952V",
+        "member_street": "",
+        "member_number": "",
+        "member_province": "",
+        "member_city": "",
+    }
+
+    form = MemberForm(data=data, instance=submission)
+
+    assert not form.is_valid()
+    assert submission.member_street == ""
+
+
+@pytest.mark.django_db
+def test_autofilled_fields_carry_the_alpine_attrs_for_the_green_border(submission):
+    from intake.forms import MemberForm
+
+    submission.applicant_street = "Via Roma"
+    submission.applicant_province = "NO"
+    submission.applicant_city = "Novara"
+    submission.save()
+
+    form = MemberForm(instance=submission)
+
+    assert "x-data" in form.fields["member_street"].widget.attrs
+    assert "x-data" not in form.fields["member_first_name"].widget.attrs
+
+
+@pytest.mark.django_db
 def test_the_opening_question_offers_no_blank_fourth_answer(submission):
     """A model field with blank=True would hand the form an empty first choice."""
     form = SubjectTypeForm(instance=submission)

@@ -198,6 +198,16 @@ class ApplicantForm(PersonForm):
 
 
 class MemberForm(PersonForm):
+    # The two people almost always live together, so the member's own address
+    # starts out copied from the applicant's — never overwriting a value the
+    # member section already has of its own.
+    AUTOFILL_FROM_APPLICANT = {
+        "member_street": "applicant_street",
+        "member_number": "applicant_number",
+        "member_province": "applicant_province",
+        "member_city": "applicant_city",
+    }
+
     ROWS = [
         [("member_first_name", "sm:col-span-3"), ("member_last_name", "sm:col-span-3")],
         [
@@ -224,6 +234,29 @@ class MemberForm(PersonForm):
             "member_province",
             "member_city",
         ]
+
+    def __init__(self, *args, **kwargs):
+        instance = kwargs.get("instance")
+        # A fresh, unbound render only: a submitted POST re-renders whatever
+        # was actually typed, never a fresh copy of the applicant's address.
+        autofilled = set()
+        if instance is not None and not kwargs.get("data"):
+            for member_name, applicant_name in self.AUTOFILL_FROM_APPLICANT.items():
+                if getattr(instance, member_name, ""):
+                    continue
+                applicant_value = getattr(instance, applicant_name, "")
+                if applicant_value:
+                    setattr(instance, member_name, applicant_value)
+                    autofilled.add(member_name)
+
+        super().__init__(*args, **kwargs)
+
+        for name in autofilled:
+            attrs = self.fields[name].widget.attrs
+            attrs["x-data"] = "{ autofilled: true }"
+            attrs[":class"] = "{ 'border-success': autofilled }"
+            attrs["@input"] = "autofilled = false"
+            attrs["@change"] = "autofilled = false"
 
 
 class StatuteForm(SectionForm):
