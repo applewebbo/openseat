@@ -1,6 +1,6 @@
 {% load django_htmx i18n static tailwind_cli %}
 <!DOCTYPE html>
-<html lang="it" data-theme="light">
+<html lang="it">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,6 +18,9 @@
     <body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'
           class="bg-base-100 text-base-content min-h-screen">
         <div id="messages">{% include "includes/messages.html" %}</div>
+        <header class="border-base-content/5 bg-base-100/95 border-b">
+            <c-navbar />
+        </header>
         {% block content %}{% endblock %}
         {% htmx_script %}
         <!-- main.js must load before Alpine to register its alpine:init listener -->

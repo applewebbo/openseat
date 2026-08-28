@@ -15,13 +15,13 @@
 {% endblock breadcrumbs %}
 
 {% block content %}
-    <div class="rounded-2xl border border-black/5 bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.15)] sm:p-8">
+    <div class="border-base-content/5 bg-base-100 rounded-2xl border p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.15)] sm:p-8">
         <p class="text-accent-strong text-sm font-medium">{% translate "Check your inbox" %}</p>
         <h1 class="mt-2 text-3xl font-bold tracking-tight text-balance sm:text-4xl">
             {% translate "If this address matches an active booking, we have sent you a link to manage it" %}
         </h1>
 
-        <div class="mt-8 border-t border-black/5 pt-6">
+        <div class="border-base-content/5 mt-8 border-t pt-6">
             <p class="text-base-content/70 max-w-prose text-sm leading-relaxed">
                 {% translate "Nothing arrived? The booking may be under another address, or the date may have passed. Write to us and we will look it up." %}
             </p>

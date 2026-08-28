@@ -3,7 +3,7 @@
     <p class="text-base-content/70 mb-4 max-w-prose text-sm leading-relaxed">
         {% translate "Read this before the next step: it explains what the association does with the data you have just given, and it is what the consents on the next page refer to." %}
     </p>
-    <div class="max-h-96 overflow-y-auto rounded-xl border border-black/10 bg-[#f6f4f1] p-5 text-sm leading-relaxed [&_h2]:mt-5 [&_h2]:mb-1.5 [&_h2]:font-semibold [&_h2:first-child]:mt-0 [&_p]:mb-3 [&_p:last-child]:mb-0">
+    <div class="border-base-content/10 max-h-96 overflow-y-auto rounded-xl border bg-[#f6f4f1] p-5 text-sm leading-relaxed [&_h2]:mt-5 [&_h2]:mb-1.5 [&_h2]:font-semibold [&_h2:first-child]:mt-0 [&_p]:mb-3 [&_p:last-child]:mb-0">
         <h2>{% translate "Data controller" %}</h2>
         <p>
             {% blocktranslate with name=association.name street=association.street postcode=association.postcode city=association.city email=association.email %}The controller is {{ name }}, {{ street }}, {{ postcode }} {{ city }}, email {{ email }}.{% endblocktranslate %}

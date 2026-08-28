@@ -11,3 +11,21 @@
     --color-accent-content: #fff;
     --color-base-content: {{ association.colour_neutral }};
 }
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --color-primary: color-mix(in oklab, {{ association.colour_primary }} 82%, #fff6ea);
+        --color-primary-content: #1a1103;
+        --color-accent: color-mix(in oklab, {{ association.colour_accent }} 82%, #fff6ea);
+        --color-accent-content: #05100a;
+        --color-base-content: #e7e5e2;
+    }
+}
+
+:root[data-theme="dark"] {
+    --color-primary: color-mix(in oklab, {{ association.colour_primary }} 82%, #fff6ea);
+    --color-primary-content: #1a1103;
+    --color-accent: color-mix(in oklab, {{ association.colour_accent }} 82%, #fff6ea);
+    --color-accent-content: #05100a;
+    --color-base-content: #e7e5e2;
+}

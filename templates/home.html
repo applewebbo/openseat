@@ -13,30 +13,6 @@
         {% translate "Skip to the events" %}
     </a>
 
-    <header class="border-b border-black/5 bg-white/95">
-        <div class="mx-auto flex max-w-3xl items-center gap-3 px-4 py-3">
-            {% if association.logo %}
-                <img src="{{ association.logo.url }}" alt="" class="h-10 w-auto shrink-0" />
-            {% endif %}
-            <p class="min-w-0 truncate text-sm font-semibold tracking-tight">{{ association.name }}</p>
-            {% if request.user.is_authenticated %}
-                <div class="text-base-content/70 ml-auto flex shrink-0 items-center gap-3 text-sm">
-                    <a href="{% url 'account-hub' %}" class="link link-hover">
-                        {% translate "Account" %}
-                    </a>
-                    <a href="{% url 'account_logout' %}" class="link link-hover">
-                        {% translate "Sign out" %}
-                    </a>
-                </div>
-            {% else %}
-                <a href="{% url 'account_login' %}"
-                   class="link link-hover text-base-content/70 ml-auto shrink-0 text-sm">
-                    {% translate "Login" %}
-                </a>
-            {% endif %}
-        </div>
-    </header>
-
     <main class="mx-auto w-full max-w-3xl px-4 pt-10 pb-24 sm:pt-16">
         {% if association.home_title %}
             <h1 class="text-4xl font-bold tracking-tight text-balance sm:text-5xl">{{ association.home_title }}</h1>
@@ -52,7 +28,7 @@
 
         <section id="eventi" class="mt-14">
             {% if featured %}
-                <article class="rounded-2xl border border-black/5 bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.15)] sm:flex sm:items-start sm:gap-8 sm:p-8">
+                <article class="border-base-content/5 bg-base-100 rounded-2xl border p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.15)] sm:flex sm:items-start sm:gap-8 sm:p-8">
                     <img src="{{ featured.square_url }}"
                          alt="{{ featured.title }}"
                          width="800"
@@ -76,7 +52,7 @@
                     </div>
                 </article>
             {% else %}
-                <div role="status" class="rounded-2xl border border-black/10 bg-white p-6 sm:p-8">
+                <div role="status" class="border-base-content/10 bg-base-100 rounded-2xl border p-6 sm:p-8">
                     <h2 class="text-base font-semibold tracking-tight">{% translate "No date is open right now" %}</h2>
                     <p class="text-base-content/70 mt-2 max-w-prose text-sm leading-relaxed">
                         {% blocktranslate with email=association.email %}The next dates are published here. Write to {{ email }} to be told when one opens.{% endblocktranslate %}
@@ -90,7 +66,7 @@
                     {% for event in upcoming %}
                         <li>
                             <a href="{{ event.get_absolute_url }}"
-                               class="flex flex-col gap-3 rounded-xl border border-black/5 bg-white p-3 transition-all duration-200 ease-in-out hover:border-black/15 sm:flex-row sm:items-center sm:gap-4">
+                               class="border-base-content/5 bg-base-100 hover:border-base-content/15 flex flex-col gap-3 rounded-xl border p-3 transition-all duration-200 ease-in-out sm:flex-row sm:items-center sm:gap-4">
                                 <span class="flex items-center gap-4">
                                     <img src="{{ event.square_url }}"
                                          alt=""
@@ -117,7 +93,7 @@
                     {% for event in archive %}
                         <li>
                             <a href="{{ event.get_absolute_url }}"
-                               class="flex items-center gap-4 rounded-xl border border-black/5 bg-white p-3 transition-all duration-200 ease-in-out hover:border-black/15">
+                               class="border-base-content/5 bg-base-100 hover:border-base-content/15 flex items-center gap-4 rounded-xl border p-3 transition-all duration-200 ease-in-out">
                                 <img src="{{ event.square_url }}"
                                      alt=""
                                      width="800"
@@ -134,7 +110,7 @@
                 </ul>
             {% endif %}
 
-            <div class="bg-base-200 mt-14 rounded-2xl border border-black/5 p-6 sm:p-8">
+            <div class="bg-base-200 border-base-content/5 mt-14 rounded-2xl border p-6 sm:p-8">
                 <h2 class="text-lg font-semibold tracking-tight">{% translate "Manage your bookings" %}</h2>
                 <p class="text-base-content/70 mt-2 max-w-prose text-sm leading-relaxed">
                     {% translate "Enter the address you booked with and we will send you the link to change or cancel." %}
@@ -158,7 +134,7 @@
     </main>
 
     <footer class="mx-auto max-w-3xl px-4 pb-10">
-        <div class="text-base-content/60 grid grid-cols-1 gap-6 border-t border-black/5 pt-6 text-xs leading-relaxed sm:grid-cols-2">
+        <div class="text-base-content/60 border-base-content/5 grid grid-cols-1 gap-6 border-t pt-6 text-xs leading-relaxed sm:grid-cols-2">
             <div>
                 <p class="text-base-content/80 font-semibold">{{ association.name }}</p>
                 <p class="mt-1">{{ association.street }}, {{ association.postcode }} {{ association.city }}</p>

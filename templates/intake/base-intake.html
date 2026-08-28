@@ -1,6 +1,6 @@
 {% load django_htmx i18n intake_extras static tailwind_cli %}
 <!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE|default:'it' }}" data-theme="light">
+<html lang="{{ LANGUAGE_CODE|default:'it' }}">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,15 +38,8 @@
 
         <div id="messages">{% include "includes/messages.html" %}</div>
 
-        <header class="sticky top-0 z-30 border-b border-black/5 bg-white/95 backdrop-blur-sm">
-            <div class="mx-auto flex max-w-2xl items-center gap-3 px-4 py-2.5">
-                {% if association.logo %}
-                    <img src="{{ association.logo.url }}"
-                         alt=""
-                         class="h-8 w-auto shrink-0" />
-                {% endif %}
-                <p class="min-w-0 truncate text-sm font-semibold tracking-tight">{{ association.name }}</p>
-            </div>
+        <header class="border-base-content/5 bg-base-100/95 sticky top-0 z-30 border-b backdrop-blur-sm">
+            <c-navbar max_width="max-w-2xl" />
             {% block progress %}{% endblock %}
         </header>
 
@@ -59,7 +52,7 @@
 
         <footer class="mx-auto max-w-2xl px-4 pb-10">
             {% block footer %}
-                <div class="text-base-content/60 grid grid-cols-1 gap-6 border-t border-black/5 pt-6 text-xs leading-relaxed sm:grid-cols-2">
+                <div class="text-base-content/60 border-base-content/5 grid grid-cols-1 gap-6 border-t pt-6 text-xs leading-relaxed sm:grid-cols-2">
                     <div>
                         <p class="text-base-content/80 font-semibold">{{ association.name }}</p>
                         <p class="mt-1">{{ association.street }}, {{ association.postcode }} {{ association.city }}</p>
