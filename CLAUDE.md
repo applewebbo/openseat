@@ -113,7 +113,11 @@ Coolify then builds the `Dockerfile` and gates on its own health check, pointed 
 always answers JSON (Coolify's health check path field takes a bare path, with no
 room for a `?format=json` query string) and checks only the database, so a crashed
 process or a broken migration fails the probe without also failing it on an
-unrelated Redis/mail hiccup.
+unrelated Redis/mail hiccup. Use `curl -f http://localhost/health/` as the health
+check command — the image has no `wget`, which is what Coolify's own default
+tries first. Set the **start period to at least 90s**: migrate → compilemessages →
+tailwind build → collectstatic run before hivemind is even listening, and a shorter
+start period fails the first attempt on boot time alone, not a real problem.
 `entrypoint.sh` runs migrate → compilemessages → tailwind build → collectstatic, then
 hands over to hivemind with the `Procfile` (`web` + `worker`). `set -eu` means a
 failing step aborts the boot, so a broken migration never becomes healthy.
