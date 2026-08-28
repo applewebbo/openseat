@@ -46,5 +46,5 @@ jobs:
         COOLIFY_WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_URL }}
         COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
       run: |
-        curl -fsS "$COOLIFY_WEBHOOK_URL" \
+        curl -fsS -X POST "$COOLIFY_WEBHOOK_URL" \
           -H "Authorization: Bearer $COOLIFY_TOKEN"
