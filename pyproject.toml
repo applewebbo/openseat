@@ -59,7 +59,7 @@ license-files = ["LICENSE"]
 name = "openseat"
 readme = "README.md"
 requires-python = ">=3.14"
-version = "2026.1.3"
+version = "2026.1.4"
 
 [tool.bandit]
 exclude_dirs = ["tests"]  # fixture credentials are not secrets
