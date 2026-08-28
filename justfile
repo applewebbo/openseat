@@ -16,7 +16,7 @@ default:
 [group('setup')]
 @update_all: lock update_alpine update_icons
     uv sync --all-extras --upgrade
-    uvx --with pre-commit-uv prek auto-update
+    uvx --with pre-commit-uv prek update
 
 [group('setup')]
 @update *args:
