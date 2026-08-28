@@ -1,11 +1,35 @@
 import pytest
 
-from intake.models import SectionKey, SubjectType
+from intake.models import Association, SectionKey, SubjectType
 
 
 @pytest.mark.django_db
 def test_association_str_is_its_name(association):
     assert str(association) == association.name
+
+
+@pytest.mark.django_db
+def test_current_is_cached_across_calls(association, django_assert_num_queries):
+    Association.current()  # warms the cache
+
+    with django_assert_num_queries(0):
+        for _ in range(3):
+            Association.current()
+
+
+@pytest.mark.django_db
+def test_current_cache_is_invalidated_on_save(association):
+    Association.current()
+
+    association.name = "Nuovo nome"
+    association.save()
+
+    assert Association.current().name == "Nuovo nome"
+
+
+@pytest.mark.django_db
+def test_current_returns_none_before_any_association_exists(db):
+    assert Association.current() is None
 
 
 @pytest.mark.django_db

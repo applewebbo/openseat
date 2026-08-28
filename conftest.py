@@ -1,4 +1,5 @@
 import pytest
+from django.core.cache import cache
 from django.utils.translation import override
 from pytest_factoryboy import register
 
@@ -29,6 +30,15 @@ register(MemberFactory, "member")
 register(EventFactory, "event")
 register(BookingFactory, "booking")
 register(AgeBracketFactory, "age_bracket")
+
+
+@pytest.fixture(autouse=True)
+def _clear_cache():
+    # The default LocMemCache backend lives for the whole test process, so a
+    # value cached by one test (e.g. Association.current()) would otherwise
+    # leak into the next.
+    yield
+    cache.clear()
 
 
 @pytest.fixture

@@ -1,6 +1,8 @@
 import datetime
 
 import pytest
+from django.db import connection
+from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 from django.utils import timezone
 
@@ -68,6 +70,34 @@ def test_the_columns_are_named_in_italian(staff_client, spring_event):
 
     assert ">Data</a>" in content
     assert ">Inviata</a>" in content
+
+
+def test_booked_column_shows_only_active_bookings(
+    staff_client, spring_event, booking_factory
+):
+    booking_factory(event=spring_event, cancelled_at=None)
+    booking_factory(event=spring_event, cancelled_at=timezone.now())
+
+    content = _changelist(staff_client)
+
+    assert ">1<" in content.split('class="field-booked"')[1][:20]
+
+
+def test_changelist_query_count_is_stable_with_more_events(
+    staff_client, association, event_factory, booking_factory
+):
+    one = event_factory(association=association)
+    booking_factory(event=one)
+    with CaptureQueriesContext(connection) as ctx:
+        _changelist(staff_client)
+    baseline = len(ctx.captured_queries)
+
+    for _ in range(9):
+        booking_factory(event=event_factory(association=association))
+    with CaptureQueriesContext(connection) as ctx:
+        _changelist(staff_client)
+
+    assert len(ctx.captured_queries) == baseline
 
 
 def test_only_open_forms_are_offered_for_the_event(

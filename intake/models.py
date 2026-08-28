@@ -2,6 +2,7 @@ import uuid
 from datetime import timedelta
 
 from django.conf import settings
+from django.core.cache import cache
 from django.core.validators import RegexValidator
 from django.db import models
 from django.urls import reverse
@@ -14,6 +15,13 @@ from intake.sanitize import clean_rich_text
 hex_colour = RegexValidator(
     r"^#[0-9A-Fa-f]{6}$", _("Use a six-digit hex colour, for example #ED5C08")
 )
+
+# Every request resolves the association at least once — the view and the
+# `association` context processor both call `current()` — so an uncached
+# lookup means two identical queries per page. `_unset` (not `None`) marks a
+# cold cache, since `None` is itself a valid cached value before first setup.
+_ASSOCIATION_CACHE_KEY = "intake:association:current"
+_unset = object()
 
 
 class BookingCloseMode(models.TextChoices):
@@ -113,15 +121,23 @@ class Association(models.Model):
         """The association this installation belongs to, or None before setup.
 
         By creation order, not by the alphabetical Meta ordering: a row added
-        later must never quietly take over the public pages.
+        later must never quietly take over the public pages. Cached, since the
+        view and the `association` context processor both call this on every
+        request.
         """
-        return cls.objects.order_by("pk").first()
+        cached = cache.get(_ASSOCIATION_CACHE_KEY, _unset)
+        if cached is not _unset:
+            return cached
+        instance = cls.objects.order_by("pk").first()
+        cache.set(_ASSOCIATION_CACHE_KEY, instance)
+        return instance
 
     def save(self, *args, **kwargs):
         # Cleaned here rather than at render: what the register holds is then
         # exactly what the page shows, and no template can forget the filter.
         self.home_description = clean_rich_text(self.home_description)
         super().save(*args, **kwargs)
+        cache.delete(_ASSOCIATION_CACHE_KEY)
 
 
 class AgeBracket(models.Model):
@@ -365,16 +381,22 @@ class Submission(models.Model):
 
     @property
     def image_consent_active(self):
-        """Diffusion is off until every holder has said yes. In doubt, do not publish."""
+        """Diffusion is off until every holder has said yes. In doubt, do not publish.
+
+        Checks `.all()` rather than `.filter().exists()` so a caller that has
+        prefetched `subscriptions` (the admin changelist) reuses that cache
+        instead of paying for one query per submission shown.
+        """
         if not self.consent_images:
             return False
         if not self.needs_second_parent:
             return True
-        return self.subscriptions.filter(
-            role=Subscription.Role.SECOND_PARENT,
-            subject=Subscription.Subject.IMAGE_CONSENT,
-            state=Subscription.State.SIGNED,
-        ).exists()
+        return any(
+            s.role == Subscription.Role.SECOND_PARENT
+            and s.subject == Subscription.Subject.IMAGE_CONSENT
+            and s.state == Subscription.State.SIGNED
+            for s in self.subscriptions.all()
+        )
 
     @property
     def expires_at(self):

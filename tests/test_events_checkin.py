@@ -2,7 +2,9 @@ from datetime import datetime, time
 
 import pytest
 import time_machine
+from django.db import connection
 from django.test import Client
+from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 from django.utils import timezone
 
@@ -91,6 +93,19 @@ def test_an_editor_always_sees_the_bookings_list(editor_client, event, booking_f
 
     assert response.templates[0].name == "events/checkin.html"
     assert booking.full_name in response.content.decode()
+
+
+def test_the_roster_and_summary_share_one_bookings_query(
+    editor_client, event, booking_factory
+):
+    """The list and the summary card both need the active bookings — sharing
+    one fetch instead of two is what keeps this query count from growing."""
+    booking_factory(event=event)
+    with CaptureQueriesContext(connection) as ctx:
+        editor_client.get(event.get_absolute_url())
+    booking_queries = [q for q in ctx.captured_queries if "events_booking" in q["sql"]]
+
+    assert len(booking_queries) == 1
 
 
 def test_no_checkin_button_shows_while_bookings_are_still_open(

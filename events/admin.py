@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models import Count, Q
 from django.utils import formats, timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -44,6 +45,19 @@ class EventAdmin(admin.ModelAdmin):
             kwargs["queryset"] = PublicForm.objects.filter(is_open=True)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+    def get_queryset(self, request):
+        # One annotated count instead of one `.count()` query per row — the
+        # changelist would otherwise pay for an extra query per event shown.
+        return (
+            super()
+            .get_queryset(request)
+            .annotate(
+                booked_count=Count(
+                    "bookings", filter=Q(bookings__cancelled_at__isnull=True)
+                )
+            )
+        )
+
     @admin.display(description=_("date"), ordering="starts_at")
     def starts_on(self, obj):
         """The short format: a list is scanned, and the weekday is noise in it."""
@@ -53,10 +67,10 @@ class EventAdmin(admin.ModelAdmin):
     def sent_on(self, obj):
         return _short(obj.checklist_sent_at)
 
-    @admin.display(description=_("booked"))
+    @admin.display(description=_("booked"), ordering="booked_count")
     def booked(self, obj):
         """Confirmed places, cancellations excluded. Never a capacity gate."""
-        return obj.bookings.active().count()
+        return obj.booked_count
 
 
 @admin.register(Booking)

@@ -81,11 +81,14 @@ def _matching(bookings, query):
     )
 
 
-def _booking_summary(event):
+def _booking_summary(event, bookings):
     """Counts for the editor's summary card: total, confirmed, and a per-age
     bracket breakdown of all active bookings — an unknown-age bucket catches
-    bookings with no birth_date on record."""
-    active = list(event.bookings.active())
+    bookings with no birth_date on record.
+
+    Takes the already-fetched active bookings rather than querying its own
+    copy, so a caller that also lists them pays for one query, not two."""
+    active = list(bookings)
     brackets = list(event.association.age_brackets.all())
     booked = dict.fromkeys((b.pk for b in brackets), 0)
     unknown_booked = 0
@@ -118,7 +121,7 @@ def _row_and_summary(request, event, booking):
     )
     summary = render_to_string(
         "events/checkin-summary-partial.html",
-        {"summary": _booking_summary(event), "oob": True},
+        {"summary": _booking_summary(event, event.bookings.active()), "oob": True},
         request=request,
     )
     return HttpResponse(row + summary)
@@ -137,10 +140,11 @@ def landing(request, slug):
     )
     if can_manage_checkin:
         query = request.GET.get("q", "").strip()
+        active_bookings = event.bookings.active()
         context = {
             "event": event,
             "association": event.association,
-            "bookings": _matching(event.bookings.active(), query),
+            "bookings": _matching(active_bookings, query),
             "query": query,
             "can_manage_checkin": can_manage_checkin,
         }
@@ -148,7 +152,7 @@ def landing(request, slug):
             template = "events/checkin-roster-partial.html"
         else:
             template = "events/checkin.html"
-            context["summary"] = _booking_summary(event)
+            context["summary"] = _booking_summary(event, active_bookings)
             context["add_form"] = ManualBookingForm(event=event)
         return render(request, template, context)
 
@@ -603,13 +607,14 @@ def checkin_lookup(request, slug):
 
 
 def _checkin_add_context(event, add_form):
+    active_bookings = event.bookings.active()
     return {
         "event": event,
         "association": event.association,
-        "bookings": event.bookings.active(),
+        "bookings": active_bookings,
         "query": "",
         "can_manage_checkin": True,
-        "summary": _booking_summary(event),
+        "summary": _booking_summary(event, active_bookings),
         "add_form": add_form,
     }
 

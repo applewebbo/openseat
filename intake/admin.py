@@ -84,6 +84,7 @@ class AssociationAdmin(admin.ModelAdmin):
 class PublicFormAdmin(admin.ModelAdmin):
     list_display = ("title", "association", "is_open", "created_at")
     list_filter = ("is_open", "association")
+    list_select_related = ("association",)
     prepopulated_fields = {"slug": ("title",)}
     inlines = [SectionInline]
 
@@ -95,12 +96,42 @@ class SubscriptionInline(admin.TabularInline):
     readonly_fields = fields
 
 
+class FormFilter(admin.SimpleListFilter):
+    """The stock FK filter builds its choices with `str(form)` per row, and
+    that string pulls in `form.association` — one query per form listed. Only
+    matters once a few seasons of forms pile up, but `select_related` here
+    keeps that constant instead of linear in form count."""
+
+    title = _("form")
+    parameter_name = "form"
+
+    def lookups(self, request, model_admin):
+        forms = PublicForm.objects.select_related("association")
+        return [(form.pk, str(form)) for form in forms]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(form_id=self.value())
+        return queryset
+
+
 @admin.register(Submission)
 class SubmissionAdmin(admin.ModelAdmin):
     list_display = ("member_display", "form", "state", "image_consent", "submitted_at")
-    list_filter = ("state", "form", "subject_type")
+    list_filter = ("state", FormFilter, "subject_type")
     search_fields = ("applicant_last_name", "member_last_name", "applicant_email")
     inlines = [SubscriptionInline]
+
+    def get_queryset(self, request):
+        # `form` is shown as a column and its `__str__` reads `association`,
+        # `image_consent` reads `subscriptions` — without these every row
+        # shown would cost one or two extra queries each.
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("form__association")
+            .prefetch_related("subscriptions")
+        )
 
     @admin.display(description=_("images"), boolean=True)
     def image_consent(self, obj):

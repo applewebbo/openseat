@@ -342,6 +342,7 @@ if ENVIRONMENT == "dev":
     INTERNAL_IPS = ["127.0.0.1"]
     # Dev-only dependency: importing it in prod would fail, the wheel isn't there.
     INSTALLED_APPS += ["django_crawl"]
+    MIDDLEWARE.insert(1, "django_devbar.middleware.DevBarMiddleware")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",

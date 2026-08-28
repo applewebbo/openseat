@@ -1,4 +1,6 @@
 import pytest
+from django.db import connection
+from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 
 from intake.models import Submission
@@ -11,6 +13,21 @@ def test_the_roster_lists_submissions(staff_client, minor_submission):
 
     assert response.status_code == 200
     assert b"Luca Rossi" in response.content
+
+
+def test_changelist_query_count_is_stable_with_more_submissions(
+    staff_client, minor_submission_factory
+):
+    minor_submission_factory()
+    with CaptureQueriesContext(connection) as ctx:
+        staff_client.get(reverse("admin:intake_submission_changelist"))
+    baseline = len(ctx.captured_queries)
+
+    minor_submission_factory.create_batch(9)
+    with CaptureQueriesContext(connection) as ctx:
+        staff_client.get(reverse("admin:intake_submission_changelist"))
+
+    assert len(ctx.captured_queries) == baseline
 
 
 def test_the_roster_reports_whether_images_may_be_published(
