@@ -1,0 +1,54 @@
+{% load i18n %}
+{% if form.non_field_errors %}
+    <div role="alert" class="border-error/30 bg-error/5 mb-6 rounded-xl border p-4 text-sm">
+        {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+    </div>
+{% endif %}
+<div class="space-y-7">
+    {% for field in form %}
+        {% if field.name == "starts_time" %}
+        {% elif field.name == "starts_date" %}
+            <div class="flex flex-row gap-4">
+                <div class="flex-1">
+                    <label class="mb-1.5 block text-sm font-medium" for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+                    {% for error in field.errors %}
+                        <p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                <div class="flex-1">
+                    <label class="mb-1.5 block text-sm font-medium"
+                           for="{{ form.starts_time.id_for_label }}">{{ form.starts_time.label }}</label>
+                    {{ form.starts_time }}
+                    {% for error in form.starts_time.errors %}
+                        <p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        {% elif field.field.widget.input_type == "checkbox" %}
+            <label class="has-[:checked]:border-primary has-[:checked]:bg-primary/5 border-base-content/10 bg-base-100 flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition-colors duration-200 ease-in-out">
+                {{ field }}
+                <span class="text-sm leading-relaxed">
+                    {{ field.label }}
+                    {% if field.help_text %}<span class="text-base-content/70 mt-1 block">{{ field.help_text }}</span>{% endif %}
+                </span>
+            </label>
+            {% for error in field.errors %}<p class="text-error text-sm font-medium">{{ error }}</p>{% endfor %}
+        {% else %}
+            <div>
+                <label class="mb-1.5 block text-sm font-medium" for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                </label>
+                {{ field }}
+                {% if field.help_text %}
+                    <p class="text-base-content/70 mt-1.5 max-w-prose text-sm leading-relaxed">{{ field.help_text }}</p>
+                {% endif %}
+                {% for error in field.errors %}
+                    <p class="text-error mt-1.5 text-sm font-medium">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>

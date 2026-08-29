@@ -4,7 +4,7 @@ import pytest
 import time_machine
 from django.utils import timezone
 
-from events.models import Booking
+from events.models import Booking, Event
 from intake.models import BookingCloseMode
 
 pytestmark = pytest.mark.django_db
@@ -13,6 +13,50 @@ pytestmark = pytest.mark.django_db
 def test_an_event_reads_as_its_title_and_day(event):
     assert event.title in str(event)
     assert event.starts_at.strftime("%d/%m/%Y") in str(event)
+
+
+def test_the_slug_is_generated_from_the_title(association):
+    event = Event.objects.create(
+        association=association,
+        title="Una giornata con gli asini",
+        starts_at=timezone.now() + timedelta(days=7),
+    )
+
+    assert event.slug == "una-giornata-con-gli-asini"
+
+
+def test_a_colliding_slug_gets_a_numeric_suffix(association):
+    Event.objects.create(
+        association=association, title="Festa", starts_at=timezone.now()
+    )
+
+    second = Event.objects.create(
+        association=association, title="Festa", starts_at=timezone.now()
+    )
+
+    assert second.slug == "festa-2"
+
+
+def test_the_slug_never_changes_once_set(event):
+    original_slug = event.slug
+
+    event.title = "Un titolo completamente diverso"
+    event.save()
+
+    assert event.slug == original_slug
+
+
+def test_a_script_in_the_description_never_reaches_the_page(association):
+    event = Event.objects.create(
+        association=association,
+        title="Evento",
+        starts_at=timezone.now(),
+        description="<p>Ciao</p><script>alert(1)</script>",
+    )
+
+    event.refresh_from_db()
+    assert "<script>" not in event.description
+    assert "<p>Ciao</p>" in event.description
 
 
 def test_bookings_are_open_before_the_event(event):

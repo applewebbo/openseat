@@ -5,6 +5,7 @@ from events import views
 app_name = "events"
 
 urlpatterns = [
+    path("eventi/nuovo/", views.create, name="create"),
     path("evento/<slug:slug>/", views.landing, name="landing"),
     path("evento/<slug:slug>/identify/", views.identify, name="identify"),
     path("evento/<slug:slug>/book/", views.book, name="book"),

@@ -7,6 +7,18 @@
         <span class="min-w-0 truncate text-sm font-semibold tracking-tight">{{ association.name|default:"OpenSeat" }}</span>
     </a>
     <div class="text-base-content/70 ml-auto flex shrink-0 items-center gap-3 text-sm">
+        {% if perms.events.add_event %}
+            <a href="{% url 'events:create' %}" class="btn btn-primary btn-xs gap-1 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 256 256"
+                     fill="currentColor"
+                     class="h-2.5 w-2.5"
+                     aria-hidden="true">
+                    <path d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z" />
+                </svg>
+                {% translate "Event" %}
+            </a>
+        {% endif %}
         {% if request.user.is_authenticated %}
             <a href="{% url 'account-hub' %}" class="link link-hover">
                 {% translate "Account" %}

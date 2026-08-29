@@ -1,8 +1,11 @@
+from datetime import datetime
+
 from django import forms
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from events.models import Booking
-from intake.models import SubjectType
+from events.models import Booking, Event
+from intake.models import PublicForm, SubjectType
 from intake.validators import validate_phone, validate_postcode, validate_tax_code
 from members.models import Member
 
@@ -285,3 +288,65 @@ class ManualBookingForm(forms.Form):
                     if not cleaned.get(name):
                         self.add_error(name, _("This field is required."))
         return cleaned
+
+
+class EventCreateForm(forms.ModelForm):
+    """An editor's own way in, next to the admin. No slug: that is generated,
+    never typed, and the association is always this installation's own."""
+
+    template_name = "events/create-form.html"
+
+    field_order = [
+        "form",
+        "title",
+        "description",
+        "location",
+        "starts_date",
+        "starts_time",
+        "image",
+        "cost",
+        "is_published",
+    ]
+
+    starts_date = forms.DateField(label=_("Date"), widget=forms.DateInput(attrs=_DATE))
+    starts_time = forms.TimeField(
+        label=_("Time"),
+        input_formats=["%H:%M"],
+        widget=forms.TimeInput(attrs={**_TEXT, "type": "time"}, format="%H:%M"),
+    )
+
+    class Meta:
+        model = Event
+        fields = [
+            "form",
+            "title",
+            "description",
+            "location",
+            "image",
+            "cost",
+            "is_published",
+        ]
+        widgets = {
+            "title": forms.TextInput(attrs=_TEXT),
+            "location": forms.TextInput(attrs=_TEXT),
+            "image": forms.ClearableFileInput(attrs={"class": "file-input w-full"}),
+            "cost": forms.NumberInput(attrs={**_TEXT, "step": "0.01"}),
+            "is_published": forms.CheckboxInput(attrs=_CHECKBOX),
+        }
+
+    def __init__(self, *args, association=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.association = association
+        self.fields["form"].queryset = PublicForm.objects.filter(
+            association=association, is_open=True
+        )
+        self.fields["form"].widget.attrs.update({"class": "select w-full"})
+
+    def save(self, commit=True):
+        self.instance.association = self.association
+        self.instance.starts_at = timezone.make_aware(
+            datetime.combine(
+                self.cleaned_data["starts_date"], self.cleaned_data["starts_time"]
+            )
+        )
+        return super().save(commit=commit)

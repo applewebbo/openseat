@@ -1,0 +1,31 @@
+{% extends "intake/base-intake.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "New event" %} — {{ association.name }}{% endblock %}
+
+{% block extra_head %}
+    {{ form.media }}
+{% endblock extra_head %}
+
+{% block breadcrumbs %}
+    <nav class="breadcrumbs mx-auto max-w-2xl px-4 pt-4 text-sm">
+        <ul>
+            <li>
+                <a href="{% url 'home' %}" class="link link-hover">{% translate "Home" %}</a>
+            </li>
+            <li>{% translate "New event" %}</li>
+        </ul>
+    </nav>
+{% endblock breadcrumbs %}
+
+{% block content %}
+    <h1 class="text-2xl font-bold tracking-tight">{% translate "New event" %}</h1>
+
+    <form method="post" enctype="multipart/form-data" class="mt-6">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit" class="btn btn-primary mt-8 rounded-xl max-sm:w-full sm:px-10">
+            {% translate "Create event" %}
+        </button>
+    </form>
+{% endblock content %}

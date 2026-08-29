@@ -10,6 +10,7 @@ from import_export.formats.base_formats import CSV, XLSX
 from events.access import email_from_contact_token, email_from_token
 from events.forms import (
     BookingContactForm,
+    EventCreateForm,
     IdentifyForm,
     ManualBookingForm,
     RecoverForm,
@@ -125,6 +126,22 @@ def _row_and_summary(request, event, booking):
         request=request,
     )
     return HttpResponse(row + summary)
+
+
+@permission_required("events.add_event", raise_exception=True)
+def create(request):
+    """An editor's own way to add an event, next to the admin."""
+    association = Association.current()
+    if request.method == "POST":
+        form = EventCreateForm(request.POST, request.FILES, association=association)
+        if form.is_valid():
+            event = form.save()
+            return redirect("events:landing", slug=event.slug)
+    else:
+        form = EventCreateForm(association=association)
+    return render(
+        request, "events/create.html", {"form": form, "association": association}
+    )
 
 
 @login_not_required

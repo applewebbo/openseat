@@ -36,7 +36,6 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ("title", "starts_on", "booked", "cost", "sent_on")
     list_filter = ("is_published",)
     date_hierarchy = "starts_at"
-    prepopulated_fields = {"slug": ("title",)}
     readonly_fields = ("checklist_sent_at",)
     inlines = [BookingInline]
 

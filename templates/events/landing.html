@@ -24,7 +24,9 @@
     <h1 class="mt-1 text-4xl font-bold tracking-tight text-balance sm:text-5xl">{{ event.title }}</h1>
     {% if event.location %}<p class="text-base-content/70 mt-3">{{ event.location }}</p>{% endif %}
     {% if event.description %}
-        <p class="text-base-content/80 mt-5 max-w-prose text-lg leading-relaxed">{{ event.description|linebreaksbr }}</p>
+        <div class="rich-text text-base-content/80 mt-5 max-w-prose text-lg leading-relaxed">
+            {{ event.description|safe }}
+        </div>
     {% endif %}
 
     {% if event.is_open %}

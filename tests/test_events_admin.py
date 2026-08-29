@@ -115,3 +115,12 @@ def test_only_open_forms_are_offered_for_the_event(
     options = response.context["adminform"].form.fields["form"].queryset
     assert open_form in options
     assert closed_form not in options
+
+
+def test_the_slug_is_neither_editable_nor_shown(staff_client, spring_event):
+    response = staff_client.get(
+        reverse("admin:events_event_change", args=[spring_event.pk])
+    )
+
+    assert "slug" not in response.context["adminform"].form.fields
+    assert b'name="slug"' not in response.content

@@ -4,10 +4,13 @@ from django.db import models
 from django.templatetags.static import static
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
+from django_ckeditor_5.fields import CKEditor5Field
 
 from events.images import square_from, square_name
 from intake.models import Association, BookingCloseMode, PublicForm, Submission
+from intake.sanitize import clean_rich_text
 from members.models import Member
 
 DEFAULT_WIDE = "img/event-default-wide.jpg"
@@ -67,9 +70,11 @@ class Event(models.Model):
             "newest open form."
         ),
     )
-    slug = models.SlugField(_("slug"), unique=True)
+    # Never a form field: generated from the title on first save and stable
+    # after that, so a bookmarked or shared event link never breaks.
+    slug = models.SlugField(_("slug"), unique=True, editable=False)
     title = models.CharField(_("title"), max_length=200)
-    description = models.TextField(_("description"), blank=True)
+    description = CKEditor5Field(_("description"), blank=True)
     location = models.CharField(_("location"), max_length=200, blank=True)
     starts_at = models.DateTimeField(_("starts at"))
     ends_at = models.DateTimeField(_("ends at"), null=True, blank=True)
@@ -121,8 +126,20 @@ class Event(models.Model):
     def get_absolute_url(self):
         return reverse("events:landing", kwargs={"slug": self.slug})
 
+    def _unique_slug(self):
+        base = slugify(self.title)
+        slug = base
+        suffix = 2
+        while Event.objects.filter(slug=slug).exists():
+            slug = f"{base}-{suffix}"
+            suffix += 1
+        return slug
+
     def save(self, *args, **kwargs):
         """Keep the square picture in step with the wide one it is cut from."""
+        if not self.slug:
+            self.slug = self._unique_slug()
+        self.description = clean_rich_text(self.description)
         super().save(*args, **kwargs)
         if self.image:
             # The name the storage gave the square file may carry a suffix of its
