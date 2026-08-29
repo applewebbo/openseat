@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('intake', '0010_association_default_location_publicform_is_default'),
+        ("intake", "0010_association_default_location_publicform_is_default"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='association',
-            name='slug',
-            field=models.SlugField(editable=False, unique=True, verbose_name='slug'),
+            model_name="association",
+            name="slug",
+            field=models.SlugField(editable=False, unique=True, verbose_name="slug"),
         ),
     ]

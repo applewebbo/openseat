@@ -995,10 +995,8 @@ msgstr ""
 
 #: templates/account/email/email_confirmation_message.html:4
 #: templates/account/email/email_confirmation_message.html:10
-#, fuzzy
-#| msgid "email address"
 msgid "Confirm your email address"
-msgstr "email address"
+msgstr "Confirm your email address"
 
 #: templates/account/email/email_confirmation_message.html:13
 #, python-format
@@ -1014,16 +1012,12 @@ msgid ""
 msgstr ""
 
 #: templates/account/email/email_confirmation_message.html:24
-#, fuzzy
-#| msgid "email address"
 msgid "Confirm Email Address"
-msgstr "email address"
+msgstr "Confirm Email Address"
 
 #: templates/account/email/email_deleted_message.html:4
-#, fuzzy
-#| msgid "The email address is required"
 msgid "An email address was removed"
-msgstr "The email address is required"
+msgstr "An email address was removed"
 
 #: templates/account/email/email_deleted_message.html:8
 #, python-format
@@ -2129,9 +2123,3 @@ msgstr ""
 #: templates/intake/step.html:53
 msgid "Save and come back later"
 msgstr ""
-
-#~ msgid "The project is up and running."
-#~ msgstr "The project is up and running."
-
-#~ msgid "Admin"
-#~ msgstr "Admin"
