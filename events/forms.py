@@ -297,7 +297,6 @@ class EventCreateForm(forms.ModelForm):
     template_name = "events/create-form.html"
 
     field_order = [
-        "form",
         "title",
         "description",
         "location",
@@ -306,6 +305,7 @@ class EventCreateForm(forms.ModelForm):
         "image",
         "cost",
         "is_published",
+        "form",
     ]
 
     starts_date = forms.DateField(label=_("Date"), widget=forms.DateInput(attrs=_DATE))
@@ -337,13 +337,32 @@ class EventCreateForm(forms.ModelForm):
     def __init__(self, *args, association=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.association = association
-        self.fields["form"].queryset = PublicForm.objects.filter(
-            association=association, is_open=True
+        if association and association.default_location:
+            self.fields["location"].initial = association.default_location
+
+        # One open form: assigned automatically, no choice to offer. Several:
+        # a select, deliberately last on the page so it stays a detail rather
+        # than the first thing an editor has to decide.
+        open_forms = list(
+            PublicForm.objects.filter(association=association, is_open=True)
         )
-        self.fields["form"].widget.attrs.update({"class": "select w-full"})
+        self._auto_form = None
+        if len(open_forms) <= 1:
+            self._auto_form = open_forms[0] if open_forms else None
+            del self.fields["form"]
+        else:
+            self.fields["form"].queryset = PublicForm.objects.filter(
+                pk__in=[form.pk for form in open_forms]
+            )
+            self.fields["form"].widget.attrs.update({"class": "select w-full"})
+            default = next((form for form in open_forms if form.is_default), None)
+            if default:
+                self.fields["form"].initial = default.pk
 
     def save(self, commit=True):
         self.instance.association = self.association
+        if self._auto_form is not None:
+            self.instance.form = self._auto_form
         self.instance.starts_at = timezone.make_aware(
             datetime.combine(
                 self.cleaned_data["starts_date"], self.cleaned_data["starts_time"]

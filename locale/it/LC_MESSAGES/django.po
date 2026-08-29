@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-29 08:22+0200\n"
+"POT-Creation-Date: 2026-08-29 08:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,8 +49,8 @@ msgstr "Un superuser deve avere is_staff=True"
 msgid "A superuser must have is_superuser=True"
 msgstr "Un superuser deve avere is_superuser=True"
 
-#: accounts/models.py:46 intake/models.py:80 intake/models.py:289
-#: intake/models.py:315 intake/models.py:437 members/models.py:51
+#: accounts/models.py:46 intake/models.py:80 intake/models.py:310
+#: intake/models.py:336 intake/models.py:458 members/models.py:51
 msgid "email address"
 msgstr "indirizzo email"
 
@@ -187,12 +187,12 @@ msgstr "Nome dell’altro genitore"
 msgid "Other parent's last name"
 msgstr "Cognome dell’altro genitore"
 
-#: events/forms.py:254 intake/models.py:423
+#: events/forms.py:254 intake/models.py:444
 #: templates/intake/second-parent.html:4
 msgid "Image consent"
 msgstr "Consenso immagini"
 
-#: events/forms.py:259 intake/models.py:318
+#: events/forms.py:259 intake/models.py:339
 msgid "WhatsApp consent"
 msgstr "Consenso WhatsApp"
 
@@ -208,8 +208,8 @@ msgstr "Data"
 msgid "Time"
 msgstr "Ora"
 
-#: events/models.py:57 intake/models.py:112 intake/models.py:113
-#: intake/models.py:152 intake/models.py:184 members/models.py:27
+#: events/models.py:57 intake/models.py:118 intake/models.py:119
+#: intake/models.py:158 intake/models.py:190 members/models.py:27
 msgid "association"
 msgstr "associazione"
 
@@ -225,11 +225,11 @@ msgstr ""
 "Se impostato, le prenotazioni passano da qui. Se vuoto, si usa il modulo "
 "aperto più recente dell'associazione."
 
-#: events/models.py:75 intake/models.py:75 intake/models.py:188
+#: events/models.py:75 intake/models.py:75 intake/models.py:194
 msgid "slug"
 msgstr "slug"
 
-#: events/models.py:76 intake/models.py:189
+#: events/models.py:76 intake/models.py:195
 msgid "title"
 msgstr "titolo"
 
@@ -289,7 +289,7 @@ msgstr "costo consigliato"
 msgid "Not shown to the public yet."
 msgstr "Non ancora visibile al pubblico."
 
-#: events/models.py:111 intake/models.py:192 intake/models.py:335
+#: events/models.py:111 intake/models.py:206 intake/models.py:356
 msgid "created at"
 msgstr "creato il"
 
@@ -329,17 +329,17 @@ msgstr "Compilato quando la prenotazione viene confermata."
 msgid "application"
 msgstr "domanda di adesione"
 
-#: events/models.py:313 intake/models.py:276 intake/models.py:291
-#: intake/models.py:310 members/models.py:41
+#: events/models.py:313 intake/models.py:297 intake/models.py:312
+#: intake/models.py:331 members/models.py:41
 msgid "first name"
 msgstr "nome"
 
-#: events/models.py:314 intake/models.py:277 intake/models.py:292
-#: intake/models.py:313 members/models.py:42
+#: events/models.py:314 intake/models.py:298 intake/models.py:313
+#: intake/models.py:334 members/models.py:42
 msgid "last name"
 msgstr "cognome"
 
-#: events/models.py:316 intake/models.py:278 intake/models.py:293
+#: events/models.py:316 intake/models.py:299 intake/models.py:314
 #: members/models.py:43
 msgid "date of birth"
 msgstr "data di nascita"
@@ -443,7 +443,7 @@ msgid "Used across the public pages. Six-digit hex, e.g. #ED5C08."
 msgstr ""
 "Usati in tutte le pagine pubbliche. Esadecimale a sei cifre, es. #ED5C08."
 
-#: intake/admin.py:105 intake/models.py:233 intake/models.py:262
+#: intake/admin.py:105 intake/models.py:254 intake/models.py:283
 msgid "form"
 msgstr "modulo"
 
@@ -585,21 +585,21 @@ msgstr "Consensi immagine"
 msgid "Review and subscription"
 msgstr "Riepilogo e sottoscrizione"
 
-#: intake/models.py:76 intake/models.py:283 intake/models.py:298
+#: intake/models.py:76 intake/models.py:304 intake/models.py:319
 #: members/models.py:46
 msgid "street"
 msgstr "via"
 
-#: intake/models.py:77 intake/models.py:285 members/models.py:48
+#: intake/models.py:77 intake/models.py:306 members/models.py:48
 msgid "postcode"
 msgstr "CAP"
 
-#: intake/models.py:78 intake/models.py:286 intake/models.py:300
+#: intake/models.py:78 intake/models.py:307 intake/models.py:321
 #: members/models.py:49
 msgid "city"
 msgstr "comune"
 
-#: intake/models.py:79 intake/models.py:282 intake/models.py:297
+#: intake/models.py:79 intake/models.py:303 intake/models.py:318
 #: members/models.py:45
 msgid "tax code"
 msgstr "codice fiscale"
@@ -648,200 +648,220 @@ msgstr "titolo della pagina iniziale"
 msgid "home page description"
 msgstr "descrizione della pagina iniziale"
 
-#: intake/models.py:156
+#: intake/models.py:111
+msgid "default event location"
+msgstr "luogo predefinito dell'evento"
+
+#: intake/models.py:114
+msgid "Pre-fills the location field when an editor creates an event."
+msgstr "Precompila il campo luogo quando un editor crea un evento."
+
+#: intake/models.py:162
 msgid "label"
 msgstr "etichetta"
 
-#: intake/models.py:158
+#: intake/models.py:164
 msgid "from age"
 msgstr "da età"
 
-#: intake/models.py:158
+#: intake/models.py:164
 msgid "Empty: no lower bound."
 msgstr "Vuoto: nessun limite inferiore."
 
-#: intake/models.py:161
+#: intake/models.py:167
 msgid "to age"
 msgstr "a età"
 
-#: intake/models.py:161
+#: intake/models.py:167
 msgid "Empty: no upper bound."
 msgstr "Vuoto: nessun limite superiore."
 
-#: intake/models.py:163 intake/models.py:238
+#: intake/models.py:169 intake/models.py:259
 msgid "order"
 msgstr "ordine"
 
-#: intake/models.py:166
+#: intake/models.py:172
 msgid "age bracket"
 msgstr "fascia d'età"
 
-#: intake/models.py:167
+#: intake/models.py:173
 msgid "age brackets"
 msgstr "fasce d'età"
 
-#: intake/models.py:190
+#: intake/models.py:196
 msgid "introduction"
 msgstr "introduzione"
 
-#: intake/models.py:191
+#: intake/models.py:197
 msgid "open"
 msgstr "aperto"
 
-#: intake/models.py:195
+#: intake/models.py:199
+msgid "default"
+msgstr "predefinito"
+
+#: intake/models.py:202
+msgid ""
+"Preselected when an editor creates an event. Only one per association: "
+"marking this one unmarks any other."
+msgstr ""
+"Preselezionato quando un editor crea un evento. Uno solo per associazione: "
+"impostare questo disattiva ogni altro."
+
+#: intake/models.py:209
 msgid "public form"
 msgstr "modulo pubblico"
 
-#: intake/models.py:196
+#: intake/models.py:210
 msgid "public forms"
 msgstr "moduli pubblici"
 
-#: intake/models.py:237 intake/models.py:242
+#: intake/models.py:258 intake/models.py:263
 msgid "section"
 msgstr "sezione"
 
-#: intake/models.py:239
+#: intake/models.py:260
 msgid "enabled"
 msgstr "attiva"
 
-#: intake/models.py:243
+#: intake/models.py:264
 msgid "sections"
 msgstr "sezioni"
 
-#: intake/models.py:257
+#: intake/models.py:278
 msgid "Draft"
 msgstr "Bozza"
 
-#: intake/models.py:258
+#: intake/models.py:279
 msgid "Submitted"
 msgstr "Inviata"
 
-#: intake/models.py:267 intake/models.py:444
+#: intake/models.py:288 intake/models.py:465
 msgid "token"
 msgstr "token"
 
-#: intake/models.py:270 intake/models.py:441
+#: intake/models.py:291 intake/models.py:462
 msgid "state"
 msgstr "stato"
 
-#: intake/models.py:273
+#: intake/models.py:294
 msgid "applying for"
 msgstr "richiesta per"
 
-#: intake/models.py:280 intake/models.py:295 members/models.py:44
+#: intake/models.py:301 intake/models.py:316 members/models.py:44
 msgid "place of birth"
 msgstr "luogo di nascita"
 
-#: intake/models.py:284 intake/models.py:299 members/models.py:47
+#: intake/models.py:305 intake/models.py:320 members/models.py:47
 msgid "number"
 msgstr "numero civico"
 
-#: intake/models.py:287 intake/models.py:301 members/models.py:50
+#: intake/models.py:308 intake/models.py:322 members/models.py:50
 msgid "province"
 msgstr "provincia"
 
-#: intake/models.py:288
+#: intake/models.py:309
 msgid "phone"
 msgstr "telefono"
 
-#: intake/models.py:303
+#: intake/models.py:324
 msgid "accepts the statute"
 msgstr "accetta lo statuto"
 
-#: intake/models.py:307
+#: intake/models.py:328
 msgid "sole holder of parental responsibility"
 msgstr "unico titolare della responsabilità genitoriale"
 
-#: intake/models.py:317
+#: intake/models.py:338
 msgid "image consent"
 msgstr "consenso immagine"
 
-#: intake/models.py:325
+#: intake/models.py:346
 msgid "booked for"
 msgstr "prenotazione per"
 
-#: intake/models.py:331
+#: intake/models.py:352
 msgid "reminded at"
 msgstr "sollecitata il"
 
-#: intake/models.py:332
+#: intake/models.py:353
 msgid "place"
 msgstr "luogo"
 
-#: intake/models.py:333
+#: intake/models.py:354
 msgid "submitted at"
 msgstr "inviata il"
 
-#: intake/models.py:334 intake/models.py:448
+#: intake/models.py:355 intake/models.py:469
 #: templates/account/email/base_notification.html:14
 msgid "IP address"
 msgstr "indirizzo IP"
 
-#: intake/models.py:336
+#: intake/models.py:357
 msgid "updated at"
 msgstr "aggiornata il"
 
-#: intake/models.py:339 intake/models.py:432
+#: intake/models.py:360 intake/models.py:453
 msgid "submission"
 msgstr "richiesta"
 
-#: intake/models.py:340
+#: intake/models.py:361
 msgid "submissions"
 msgstr "richieste"
 
-#: intake/models.py:344
+#: intake/models.py:365
 msgid "draft"
 msgstr "bozza"
 
-#: intake/models.py:418
+#: intake/models.py:439
 msgid "Applicant"
 msgstr "Richiedente"
 
-#: intake/models.py:419
+#: intake/models.py:440
 msgid "Second holder of parental responsibility"
 msgstr "Secondo titolare della responsabilità genitoriale"
 
-#: intake/models.py:422
+#: intake/models.py:443
 msgid "Membership application"
 msgstr "Richiesta di adesione"
 
-#: intake/models.py:426
+#: intake/models.py:447
 msgid "Awaiting signature"
 msgstr "In attesa di firma"
 
-#: intake/models.py:427
+#: intake/models.py:448
 msgid "Signed"
 msgstr "Firmato"
 
-#: intake/models.py:428
+#: intake/models.py:449
 msgid "Declined"
 msgstr "Rifiutato"
 
-#: intake/models.py:436
+#: intake/models.py:457
 msgid "signatory"
 msgstr "sottoscrittore"
 
-#: intake/models.py:438
+#: intake/models.py:459
 msgid "role"
 msgstr "ruolo"
 
-#: intake/models.py:439
+#: intake/models.py:460
 msgid "subject"
 msgstr "oggetto"
 
-#: intake/models.py:446
+#: intake/models.py:467
 msgid "declaration"
 msgstr "dichiarazione"
 
-#: intake/models.py:447
+#: intake/models.py:468
 msgid "signed at"
 msgstr "firmato il"
 
-#: intake/models.py:451
+#: intake/models.py:472
 msgid "subscription"
 msgstr "sottoscrizione"
 
-#: intake/models.py:452
+#: intake/models.py:473
 msgid "subscriptions"
 msgstr "sottoscrizioni"
 
@@ -1113,7 +1133,7 @@ msgid "Sign Up"
 msgstr "Registrati"
 
 #: templates/account/hub.html:4 templates/account/hub.html:10
-#: templates/admin/base_site.html:42 templates/admin/base_site.html:44
+#: templates/admin/base_site.html:43 templates/admin/base_site.html:45
 #: templates/allauth/layouts/manage.html:44 templates/cotton/navbar.html:24
 msgid "Account"
 msgstr "Account"
@@ -1203,15 +1223,15 @@ msgstr "Hai già un account? %(link)sAccedi%(end_link)s."
 msgid "Sign up using a passkey"
 msgstr "Registrati con una passkey"
 
-#: templates/admin/base_site.html:47
+#: templates/admin/base_site.html:48
 msgid "View site"
 msgstr "Vai al sito"
 
-#: templates/admin/base_site.html:49
+#: templates/admin/base_site.html:50
 msgid "Change password"
 msgstr "Cambia password"
 
-#: templates/admin/base_site.html:53
+#: templates/admin/base_site.html:54
 msgid "Log out"
 msgstr "Esci"
 
@@ -1257,7 +1277,7 @@ msgid "Who is coming"
 msgstr "Chi viene"
 
 #: templates/events/book.html:10 templates/events/booked.html:10
-#: templates/events/checkin.html:12 templates/events/create.html:14
+#: templates/events/checkin.html:12 templates/events/create.html:17
 #: templates/events/landing.html:10 templates/events/mine.html:10
 #: templates/events/recover-sent.html:10 templates/events/recover.html:10
 msgid "Home"
@@ -1476,12 +1496,24 @@ msgstr "Apri check-in"
 msgid "Search by name"
 msgstr "Cerca per nome"
 
-#: templates/events/create.html:4 templates/events/create.html:16
-#: templates/events/create.html:22
+#: templates/events/create.html:4 templates/events/create.html:19
+#: templates/events/create.html:25
 msgid "New event"
 msgstr "Nuovo evento"
 
-#: templates/events/create.html:28
+#: templates/events/create.html:30
+msgid ""
+"No membership form is open yet. An event needs one to book into — open one "
+"first."
+msgstr ""
+"Nessun modulo di adesione è ancora aperto. Un evento ne richiede uno a cui "
+"iscriversi: aprine uno prima."
+
+#: templates/events/create.html:33
+msgid "Manage forms"
+msgstr "Gestisci moduli"
+
+#: templates/events/create.html:41
 msgid "Create event"
 msgstr "Crea evento"
 

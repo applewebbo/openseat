@@ -57,7 +57,7 @@ class AssociationAdmin(admin.ModelAdmin):
         ),
         (
             _("Bookings"),
-            {"fields": ("booking_close_mode",)},
+            {"fields": ("booking_close_mode", "default_location")},
         ),
         (
             _("Colours"),
@@ -82,8 +82,8 @@ class AssociationAdmin(admin.ModelAdmin):
 
 @admin.register(PublicForm)
 class PublicFormAdmin(admin.ModelAdmin):
-    list_display = ("title", "association", "is_open", "created_at")
-    list_filter = ("is_open", "association")
+    list_display = ("title", "association", "is_open", "is_default", "created_at")
+    list_filter = ("is_open", "is_default", "association")
     list_select_related = ("association",)
     prepopulated_fields = {"slug": ("title",)}
     inlines = [SectionInline]

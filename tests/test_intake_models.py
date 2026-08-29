@@ -38,6 +38,32 @@ def test_public_form_str_joins_association_and_title(public_form):
 
 
 @pytest.mark.django_db
+def test_marking_a_form_default_unmarks_the_previous_one(
+    association, public_form_factory
+):
+    first = public_form_factory(association=association, is_default=True)
+    second = public_form_factory(association=association, is_default=True)
+
+    first.refresh_from_db()
+    assert first.is_default is False
+    assert second.is_default is True
+
+
+@pytest.mark.django_db
+def test_a_default_form_of_another_association_is_left_alone(
+    association_factory, public_form_factory
+):
+    one, other = association_factory(), association_factory()
+    form_one = public_form_factory(association=one, is_default=True)
+    form_other = public_form_factory(association=other, is_default=True)
+
+    form_one.refresh_from_db()
+    form_other.refresh_from_db()
+    assert form_one.is_default is True
+    assert form_other.is_default is True
+
+
+@pytest.mark.django_db
 def test_an_age_bracket_reads_as_its_label(age_bracket):
     age_bracket.label = "18-64"
     assert str(age_bracket) == "18-64"

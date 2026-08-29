@@ -1,10 +1,13 @@
 {% extends "intake/base-intake.html" %}
-{% load i18n %}
+{% load i18n static %}
 
 {% block title %}{% translate "New event" %} — {{ association.name }}{% endblock %}
 
 {% block extra_head %}
-    {{ form.media }}
+    {% if form %}
+        {{ form.media }}
+        <script src="{% static 'js/ckeditor-word-count.js' %}" defer></script>
+    {% endif %}
 {% endblock extra_head %}
 
 {% block breadcrumbs %}
@@ -21,11 +24,22 @@
 {% block content %}
     <h1 class="text-2xl font-bold tracking-tight">{% translate "New event" %}</h1>
 
-    <form method="post" enctype="multipart/form-data" class="mt-6">
-        {% csrf_token %}
-        {{ form }}
-        <button type="submit" class="btn btn-primary mt-8 rounded-xl max-sm:w-full sm:px-10">
-            {% translate "Create event" %}
-        </button>
-    </form>
+    {% if no_open_forms %}
+        <div role="status" class="border-base-300 bg-base-200 mt-6 rounded-xl border p-6 text-sm leading-relaxed">
+            <p>
+                {% translate "No membership form is open yet. An event needs one to book into — open one first." %}
+            </p>
+            <a href="{% url 'admin:intake_publicform_changelist' %}" class="btn btn-soft btn-sm mt-4 rounded-lg">
+                {% translate "Manage forms" %}
+            </a>
+        </div>
+    {% else %}
+        <form method="post" enctype="multipart/form-data" class="mt-6">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn btn-primary mt-8 rounded-xl max-sm:w-full sm:px-10">
+                {% translate "Create event" %}
+            </button>
+        </form>
+    {% endif %}
 {% endblock content %}

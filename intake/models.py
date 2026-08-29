@@ -107,6 +107,12 @@ class Association(models.Model):
     # the volunteer who edits it should never have to lay a page out.
     home_title = models.CharField(_("home page title"), max_length=200, blank=True)
     home_description = CKEditor5Field(_("home page description"), blank=True)
+    default_location = models.CharField(
+        _("default event location"),
+        max_length=200,
+        blank=True,
+        help_text=_("Pre-fills the location field when an editor creates an event."),
+    )
 
     class Meta:
         verbose_name = _("association")
@@ -189,6 +195,14 @@ class PublicForm(models.Model):
     title = models.CharField(_("title"), max_length=200)
     intro = models.TextField(_("introduction"), blank=True)
     is_open = models.BooleanField(_("open"), default=True)
+    is_default = models.BooleanField(
+        _("default"),
+        default=False,
+        help_text=_(
+            "Preselected when an editor creates an event. Only one per "
+            "association: marking this one unmarks any other."
+        ),
+    )
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
 
     class Meta:
@@ -198,6 +212,13 @@ class PublicForm(models.Model):
 
     def __str__(self):
         return f"{self.association.name} — {self.title}"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.is_default:
+            type(self).objects.filter(
+                association=self.association, is_default=True
+            ).exclude(pk=self.pk).update(is_default=False)
 
     def get_absolute_url(self):
         return reverse("intake:landing", kwargs={"slug": self.slug})

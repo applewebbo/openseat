@@ -130,8 +130,18 @@ def _row_and_summary(request, event, booking):
 
 @permission_required("events.add_event", raise_exception=True)
 def create(request):
-    """An editor's own way to add an event, next to the admin."""
+    """An editor's own way to add an event, next to the admin.
+
+    Nothing to book into without an open membership form, so the page shows
+    a plain notice instead of a form with nothing to submit.
+    """
     association = Association.current()
+    if not PublicForm.objects.filter(association=association, is_open=True).exists():
+        return render(
+            request,
+            "events/create.html",
+            {"association": association, "no_open_forms": True},
+        )
     if request.method == "POST":
         form = EventCreateForm(request.POST, request.FILES, association=association)
         if form.is_valid():
