@@ -302,6 +302,7 @@ class EventCreateForm(forms.ModelForm):
         "location",
         "starts_date",
         "starts_time",
+        "duration_hours",
         "image",
         "cost",
         "is_published",
@@ -322,6 +323,7 @@ class EventCreateForm(forms.ModelForm):
             "title",
             "description",
             "location",
+            "duration_hours",
             "image",
             "cost",
             "is_published",
@@ -329,6 +331,7 @@ class EventCreateForm(forms.ModelForm):
         widgets = {
             "title": forms.TextInput(attrs=_TEXT),
             "location": forms.TextInput(attrs=_TEXT),
+            "duration_hours": forms.NumberInput(attrs={**_TEXT, "min": "1"}),
             "image": forms.ClearableFileInput(attrs={"class": "file-input w-full"}),
             "cost": forms.NumberInput(attrs={**_TEXT, "step": "0.01"}),
             "is_published": forms.CheckboxInput(attrs=_CHECKBOX),

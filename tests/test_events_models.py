@@ -15,6 +15,16 @@ def test_an_event_reads_as_its_title_and_day(event):
     assert event.starts_at.strftime("%d/%m/%Y") in str(event)
 
 
+def test_an_event_has_no_duration_by_default(event):
+    assert event.duration_hours is None
+
+
+def test_an_event_can_carry_an_estimated_duration(event_factory):
+    event = event_factory(duration_hours=3)
+
+    assert event.duration_hours == 3
+
+
 def test_the_slug_is_generated_from_the_title(association):
     event = Event.objects.create(
         association=association,

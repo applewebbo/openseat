@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-29 08:42+0200\n"
+"POT-Creation-Date: 2026-08-29 15:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -198,11 +198,11 @@ msgstr ""
 msgid "This field is required."
 msgstr ""
 
-#: events/forms.py:311 templates/account/email/base_notification.html:26
+#: events/forms.py:312 templates/account/email/base_notification.html:26
 msgid "Date"
 msgstr ""
 
-#: events/forms.py:313
+#: events/forms.py:314
 msgid "Time"
 msgstr ""
 
@@ -241,153 +241,157 @@ msgstr ""
 msgid "starts at"
 msgstr ""
 
-#: events/models.py:80
-msgid "ends at"
+#: events/models.py:81
+msgid "duration (hours)"
 msgstr ""
 
-#: events/models.py:82
+#: events/models.py:84
+msgid "An estimate, shown next to the start time. Leave empty if unknown."
+msgstr ""
+
+#: events/models.py:87
 msgid "image"
 msgstr ""
 
-#: events/models.py:85
+#: events/models.py:90
 msgid "A wide picture, 1200 px or more. The square one is cut from it."
 msgstr ""
 
-#: events/models.py:88
+#: events/models.py:93
 msgid "square image"
 msgstr ""
 
-#: events/models.py:91
+#: events/models.py:96
 msgid "published"
 msgstr ""
 
-#: events/models.py:93
+#: events/models.py:98
 msgid "checklist sent at"
 msgstr ""
 
-#: events/models.py:96
+#: events/models.py:101
 msgid "check-in started at"
 msgstr ""
 
-#: events/models.py:100
+#: events/models.py:105
 msgid "Set by an editor at the door. Closes public bookings until cleared."
 msgstr ""
 
-#: events/models.py:104
+#: events/models.py:109
 msgid "suggested cost"
 msgstr ""
 
-#: events/models.py:109
+#: events/models.py:114
 msgid "Not shown to the public yet."
 msgstr ""
 
-#: events/models.py:111 intake/models.py:220 intake/models.py:370
+#: events/models.py:116 intake/models.py:220 intake/models.py:370
 msgid "created at"
 msgstr ""
 
-#: events/models.py:116 events/models.py:291
+#: events/models.py:121 events/models.py:296
 msgid "event"
 msgstr ""
 
-#: events/models.py:117
+#: events/models.py:122
 msgid "events"
 msgstr ""
 
-#: events/models.py:120
+#: events/models.py:125
 msgid "Can export the members acquired at an event"
 msgstr ""
 
-#: events/models.py:210
+#: events/models.py:215
 msgid "Cash"
 msgstr ""
 
-#: events/models.py:211
+#: events/models.py:216
 msgid "Bank transfer"
 msgstr ""
 
-#: events/models.py:212
+#: events/models.py:217
 msgid "Other"
 msgstr ""
 
-#: events/models.py:297 members/models.py:71
+#: events/models.py:302 members/models.py:71
 msgid "member"
 msgstr ""
 
-#: events/models.py:302
+#: events/models.py:307
 msgid "Filled in when the booking is confirmed."
 msgstr ""
 
-#: events/models.py:306 members/models.py:33
+#: events/models.py:311 members/models.py:33
 msgid "application"
 msgstr ""
 
-#: events/models.py:313 intake/models.py:311 intake/models.py:326
+#: events/models.py:318 intake/models.py:311 intake/models.py:326
 #: intake/models.py:345 members/models.py:41
 msgid "first name"
 msgstr ""
 
-#: events/models.py:314 intake/models.py:312 intake/models.py:327
+#: events/models.py:319 intake/models.py:312 intake/models.py:327
 #: intake/models.py:348 members/models.py:42
 msgid "last name"
 msgstr ""
 
-#: events/models.py:316 intake/models.py:313 intake/models.py:328
+#: events/models.py:321 intake/models.py:313 intake/models.py:328
 #: members/models.py:43
 msgid "date of birth"
 msgstr ""
 
-#: events/models.py:320
+#: events/models.py:325
 msgid ""
 "A snapshot taken when the booking was made — it is not recalculated later, "
 "not even against the event date."
 msgstr ""
 
-#: events/models.py:324 members/models.py:55
+#: events/models.py:329 members/models.py:55
 #: templates/events/mail/checklist.txt:7
 msgid "contact"
 msgstr ""
 
-#: events/models.py:325 members/models.py:56
+#: events/models.py:330 members/models.py:56
 msgid "contact email"
 msgstr ""
 
-#: events/models.py:326 members/models.py:57
+#: events/models.py:331 members/models.py:57
 msgid "contact phone"
 msgstr ""
 
-#: events/models.py:328
+#: events/models.py:333
 msgid "note"
 msgstr ""
 
-#: events/models.py:331
+#: events/models.py:336
 msgid "confirmed on"
 msgstr ""
 
-#: events/models.py:334
+#: events/models.py:339
 msgid "The day they turned up and paid the fee."
 msgstr ""
 
-#: events/models.py:337
+#: events/models.py:342
 msgid "fee paid"
 msgstr ""
 
-#: events/models.py:340
+#: events/models.py:345
 msgid "paid by"
 msgstr ""
 
-#: events/models.py:343
+#: events/models.py:348
 msgid "booked at"
 msgstr ""
 
-#: events/models.py:344
+#: events/models.py:349
 msgid "cancelled at"
 msgstr ""
 
-#: events/models.py:349
+#: events/models.py:354
 msgid "booking"
 msgstr ""
 
-#: events/models.py:350
+#: events/models.py:355
 msgid "bookings"
 msgstr ""
 
@@ -1263,8 +1267,8 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: templates/events/booked.html:36 templates/events/landing.html:54
-#: templates/events/landing.html:59 templates/events/mine.html:33
+#: templates/events/booked.html:36 templates/events/landing.html:59
+#: templates/events/landing.html:64 templates/events/mine.html:33
 msgid "Cancel"
 msgstr ""
 
@@ -1337,7 +1341,7 @@ msgid ""
 msgstr ""
 
 #: templates/events/checkin-add-modal-partial.html:47
-#: templates/events/landing.html:49
+#: templates/events/landing.html:54
 msgid "Already a member"
 msgstr ""
 
@@ -1453,45 +1457,52 @@ msgstr ""
 msgid "Create event"
 msgstr ""
 
-#: templates/events/landing.html:35 templates/home.html:82
+#: templates/events/landing.html:26
+#, python-format
+msgid "%(hours)s hour"
+msgid_plural "%(hours)s hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/events/landing.html:40 templates/home.html:82
 msgid "Book"
 msgstr ""
 
-#: templates/events/landing.html:39
+#: templates/events/landing.html:44
 msgid "Already taken part in one of our events?"
 msgstr "Already taken part in one of our events?"
 
-#: templates/events/landing.html:39
+#: templates/events/landing.html:44
 msgid "Book by clicking"
 msgstr ""
 
-#: templates/events/landing.html:40
+#: templates/events/landing.html:45
 msgid "here"
 msgstr ""
 
-#: templates/events/landing.html:55
+#: templates/events/landing.html:60
 msgid "Book a place"
 msgstr ""
 
-#: templates/events/landing.html:64
+#: templates/events/landing.html:69
 msgid "This date has already been"
 msgstr ""
 
-#: templates/events/landing.html:66
+#: templates/events/landing.html:71
 msgid ""
 "The booking cannot be changed any more. Thank you for coming — the next "
 "dates are on the home page."
 msgstr ""
 
-#: templates/events/landing.html:69 templates/events/mine.html:44
+#: templates/events/landing.html:74 templates/events/mine.html:44
 msgid "The next dates"
 msgstr ""
 
-#: templates/events/landing.html:71
+#: templates/events/landing.html:76
 msgid "Bookings are closed"
 msgstr ""
 
-#: templates/events/landing.html:73
+#: templates/events/landing.html:78
 #, python-format
 msgid ""
 "This event is no longer taking bookings. Write to %(email)s if you need to "

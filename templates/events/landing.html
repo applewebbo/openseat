@@ -20,7 +20,12 @@
          width="1600"
          height="900"
          class="border-base-content/5 mb-8 aspect-[16/9] w-full rounded-2xl border object-cover" />
-    <p class="text-base-content/60 text-sm font-medium">{{ event.starts_at|date:"l d F Y, H:i" }}</p>
+    <p class="text-base-content/60 text-sm font-medium">
+        {{ event.starts_at|date:"l d F Y, H:i" }}
+        {% if event.duration_hours %}
+            · {% blocktranslate count hours=event.duration_hours %}{{ hours }} hour{% plural %}{{ hours }} hours{% endblocktranslate %}
+        {% endif %}
+    </p>
     <h1 class="mt-1 text-4xl font-bold tracking-tight text-balance sm:text-5xl">{{ event.title }}</h1>
     {% if event.location %}<p class="text-base-content/70 mt-3">{{ event.location }}</p>{% endif %}
     {% if event.description %}

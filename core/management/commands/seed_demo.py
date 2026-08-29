@@ -534,7 +534,7 @@ class Command(BaseCommand):
                     "description": spec["description"],
                     "location": spec["location"],
                     "starts_at": starts_at,
-                    "ends_at": starts_at + datetime.timedelta(hours=3),
+                    "duration_hours": 3,
                     "is_published": True,
                 },
             )

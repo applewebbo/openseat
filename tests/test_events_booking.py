@@ -43,6 +43,21 @@ def test_the_event_page_needs_no_account(client, event):
     assert event.title in response.content.decode()
 
 
+def test_the_estimated_duration_is_shown_when_set(client, event):
+    event.duration_hours = 3
+    event.save()
+
+    response = client.get(event.get_absolute_url())
+
+    assert "3 ore" in response.content.decode()
+
+
+def test_no_duration_is_shown_when_unset(client, event):
+    response = client.get(event.get_absolute_url())
+
+    assert "ore" not in response.content.decode()
+
+
 def test_an_unpublished_event_is_not_found(client, event):
     event.is_published = False
     event.save()

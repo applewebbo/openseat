@@ -77,7 +77,14 @@ class Event(models.Model):
     description = CKEditor5Field(_("description"), blank=True)
     location = models.CharField(_("location"), max_length=200, blank=True)
     starts_at = models.DateTimeField(_("starts at"))
-    ends_at = models.DateTimeField(_("ends at"), null=True, blank=True)
+    duration_hours = models.PositiveSmallIntegerField(
+        _("duration (hours)"),
+        null=True,
+        blank=True,
+        help_text=_(
+            "An estimate, shown next to the start time. Leave empty if unknown."
+        ),
+    )
     image = models.ImageField(
         _("image"),
         upload_to="events/",
