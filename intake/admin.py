@@ -35,7 +35,6 @@ class AssociationAdmin(admin.ModelAdmin):
     """
 
     list_display = ("name", "city", "membership_fee")
-    prepopulated_fields = {"slug": ("name",)}
     inlines = [AgeBracketInline]
     fieldsets = [
         (
@@ -49,7 +48,7 @@ class AssociationAdmin(admin.ModelAdmin):
         ),
         (
             _("Registered details"),
-            {"fields": ("slug", "street", "postcode", "city", "tax_code", "email")},
+            {"fields": ("street", "postcode", "city", "tax_code", "email")},
         ),
         (
             _("Statute and fee"),

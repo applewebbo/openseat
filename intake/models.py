@@ -7,6 +7,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django_ckeditor_5.fields import CKEditor5Field
 
@@ -72,7 +73,9 @@ class Association(models.Model):
     """
 
     name = models.CharField(_("name"), max_length=200)
-    slug = models.SlugField(_("slug"), unique=True)
+    # Never a form field: generated from the name on first save and stable
+    # after that, so the public URLs built from it never break.
+    slug = models.SlugField(_("slug"), unique=True, editable=False)
     street = models.CharField(_("street"), max_length=200)
     postcode = models.CharField(_("postcode"), max_length=5)
     city = models.CharField(_("city"), max_length=100)
@@ -138,7 +141,18 @@ class Association(models.Model):
         cache.set(_ASSOCIATION_CACHE_KEY, instance)
         return instance
 
+    def _unique_slug(self):
+        base = slugify(self.name)
+        slug = base
+        suffix = 2
+        while Association.objects.filter(slug=slug).exists():
+            slug = f"{base}-{suffix}"
+            suffix += 1
+        return slug
+
     def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._unique_slug()
         # Cleaned here rather than at render: what the register holds is then
         # exactly what the page shows, and no template can forget the filter.
         self.home_description = clean_rich_text(self.home_description)

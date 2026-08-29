@@ -68,6 +68,15 @@ def test_the_home_page_fields_are_edited_with_the_rich_text_editor(
     assert b"django_ckeditor_5" in response.content
 
 
+def test_the_association_slug_is_neither_editable_nor_shown(staff_client, association):
+    response = staff_client.get(
+        reverse("admin:intake_association_change", args=[association.pk])
+    )
+
+    assert "slug" not in response.context["adminform"].form.fields
+    assert b'name="slug"' not in response.content
+
+
 def test_a_second_association_cannot_be_added(staff_client, association):
     """One installation, one association: the add form is closed once it exists."""
     response = staff_client.get(reverse("admin:intake_association_add"))

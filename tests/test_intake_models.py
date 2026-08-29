@@ -8,6 +8,45 @@ def test_association_str_is_its_name(association):
     assert str(association) == association.name
 
 
+def _bare_association(**overrides):
+    fields = {
+        "name": "Circolo Nautico Sole",
+        "street": "Via Delle Scuole 16",
+        "postcode": "28100",
+        "city": "Novara",
+        "tax_code": "94026180029",
+        "email": "info@example.org",
+    }
+    fields.update(overrides)
+    return Association.objects.create(**fields)
+
+
+@pytest.mark.django_db
+def test_the_slug_is_generated_from_the_name(db):
+    association = _bare_association()
+
+    assert association.slug == "circolo-nautico-sole"
+
+
+@pytest.mark.django_db
+def test_a_colliding_association_slug_gets_a_numeric_suffix(db):
+    _bare_association(tax_code="00000000000", email="one@example.org")
+
+    second = _bare_association(tax_code="00000000001", email="two@example.org")
+
+    assert second.slug == "circolo-nautico-sole-2"
+
+
+@pytest.mark.django_db
+def test_the_association_slug_never_changes_once_set(association):
+    original_slug = association.slug
+
+    association.name = "Un nome completamente diverso"
+    association.save()
+
+    assert association.slug == original_slug
+
+
 @pytest.mark.django_db
 def test_current_is_cached_across_calls(association, django_assert_num_queries):
     Association.current()  # warms the cache

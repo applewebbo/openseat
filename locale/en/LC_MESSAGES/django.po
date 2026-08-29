@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-29 08:34+0200\n"
+"POT-Creation-Date: 2026-08-29 08:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,8 +49,8 @@ msgstr "A superuser must have is_staff=True"
 msgid "A superuser must have is_superuser=True"
 msgstr "A superuser must have is_superuser=True"
 
-#: accounts/models.py:46 intake/models.py:80 intake/models.py:310
-#: intake/models.py:336 intake/models.py:458 members/models.py:51
+#: accounts/models.py:46 intake/models.py:83 intake/models.py:324
+#: intake/models.py:350 intake/models.py:472 members/models.py:51
 msgid "email address"
 msgstr "email address"
 
@@ -91,7 +91,7 @@ msgstr ""
 msgid "booked"
 msgstr ""
 
-#: events/admin.py:88 intake/models.py:74
+#: events/admin.py:88 intake/models.py:75
 msgid "name"
 msgstr ""
 
@@ -185,12 +185,12 @@ msgstr ""
 msgid "Other parent's last name"
 msgstr ""
 
-#: events/forms.py:254 intake/models.py:444
+#: events/forms.py:254 intake/models.py:458
 #: templates/intake/second-parent.html:4
 msgid "Image consent"
 msgstr ""
 
-#: events/forms.py:259 intake/models.py:339
+#: events/forms.py:259 intake/models.py:353
 msgid "WhatsApp consent"
 msgstr ""
 
@@ -206,8 +206,8 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
-#: events/models.py:57 intake/models.py:118 intake/models.py:119
-#: intake/models.py:158 intake/models.py:190 members/models.py:27
+#: events/models.py:57 intake/models.py:121 intake/models.py:122
+#: intake/models.py:172 intake/models.py:204 members/models.py:27
 msgid "association"
 msgstr ""
 
@@ -221,11 +221,11 @@ msgid ""
 "form."
 msgstr ""
 
-#: events/models.py:75 intake/models.py:75 intake/models.py:194
+#: events/models.py:75 intake/models.py:78 intake/models.py:208
 msgid "slug"
 msgstr ""
 
-#: events/models.py:76 intake/models.py:195
+#: events/models.py:76 intake/models.py:209
 msgid "title"
 msgstr ""
 
@@ -281,7 +281,7 @@ msgstr ""
 msgid "Not shown to the public yet."
 msgstr ""
 
-#: events/models.py:111 intake/models.py:206 intake/models.py:356
+#: events/models.py:111 intake/models.py:220 intake/models.py:370
 msgid "created at"
 msgstr ""
 
@@ -321,17 +321,17 @@ msgstr ""
 msgid "application"
 msgstr ""
 
-#: events/models.py:313 intake/models.py:297 intake/models.py:312
-#: intake/models.py:331 members/models.py:41
+#: events/models.py:313 intake/models.py:311 intake/models.py:326
+#: intake/models.py:345 members/models.py:41
 msgid "first name"
 msgstr ""
 
-#: events/models.py:314 intake/models.py:298 intake/models.py:313
-#: intake/models.py:334 members/models.py:42
+#: events/models.py:314 intake/models.py:312 intake/models.py:327
+#: intake/models.py:348 members/models.py:42
 msgid "last name"
 msgstr ""
 
-#: events/models.py:316 intake/models.py:299 intake/models.py:314
+#: events/models.py:316 intake/models.py:313 intake/models.py:328
 #: members/models.py:43
 msgid "date of birth"
 msgstr ""
@@ -402,40 +402,40 @@ msgstr ""
 msgid "Your bookings"
 msgstr ""
 
-#: intake/admin.py:42
+#: intake/admin.py:41
 msgid "Home page"
 msgstr ""
 
-#: intake/admin.py:46
+#: intake/admin.py:45
 msgid "These four are the public home page, in the order they appear on it."
 msgstr ""
 
-#: intake/admin.py:51
+#: intake/admin.py:50
 msgid "Registered details"
 msgstr ""
 
-#: intake/admin.py:55 intake/models.py:43
+#: intake/admin.py:54 intake/models.py:44
 msgid "Statute and fee"
 msgstr ""
 
-#: intake/admin.py:59 templates/events/recover-sent.html:12
+#: intake/admin.py:58 templates/events/recover-sent.html:12
 #: templates/events/recover.html:12
 msgid "Bookings"
 msgstr ""
 
-#: intake/admin.py:63
+#: intake/admin.py:62
 msgid "Colours"
 msgstr ""
 
-#: intake/admin.py:68
+#: intake/admin.py:67
 msgid "Used across the public pages. Six-digit hex, e.g. #ED5C08."
 msgstr ""
 
-#: intake/admin.py:105 intake/models.py:254 intake/models.py:283
+#: intake/admin.py:104 intake/models.py:268 intake/models.py:297
 msgid "form"
 msgstr ""
 
-#: intake/admin.py:136
+#: intake/admin.py:135
 msgid "images"
 msgstr ""
 
@@ -511,331 +511,331 @@ msgstr ""
 msgid "We send the link to come back to, and nothing else."
 msgstr ""
 
-#: intake/models.py:16
+#: intake/models.py:17
 msgid "Use a six-digit hex colour, for example #ED5C08"
 msgstr ""
 
-#: intake/models.py:28
+#: intake/models.py:29
 msgid "Manual only, at check-in"
 msgstr ""
 
-#: intake/models.py:29
+#: intake/models.py:30
 msgid "Automatically, at midnight before"
 msgstr ""
 
-#: intake/models.py:30
+#: intake/models.py:31
 msgid "Automatically, at the event's start time"
 msgstr ""
 
-#: intake/models.py:34
+#: intake/models.py:35
 msgid "For myself"
 msgstr ""
 
-#: intake/models.py:35
+#: intake/models.py:36
 msgid "For a minor child"
 msgstr ""
 
-#: intake/models.py:36
+#: intake/models.py:37
 msgid "For a person I am the legal guardian of"
 msgstr ""
 
-#: intake/models.py:40
+#: intake/models.py:41
 msgid "Who the application is for"
 msgstr ""
 
-#: intake/models.py:41 templates/intake/partials/review-partial.html:13
+#: intake/models.py:42 templates/intake/partials/review-partial.html:13
 msgid "Who is applying"
 msgstr ""
 
-#: intake/models.py:42 templates/intake/partials/review-partial.html:44
+#: intake/models.py:43 templates/intake/partials/review-partial.html:44
 msgid "Member details"
 msgstr ""
 
-#: intake/models.py:44
+#: intake/models.py:45
 msgid "Privacy notice"
 msgstr ""
 
-#: intake/models.py:45 templates/intake/partials/review-partial.html:82
+#: intake/models.py:46 templates/intake/partials/review-partial.html:82
 msgid "Image consents"
 msgstr ""
 
-#: intake/models.py:46
+#: intake/models.py:47
 msgid "Review and subscription"
 msgstr ""
 
-#: intake/models.py:76 intake/models.py:304 intake/models.py:319
+#: intake/models.py:79 intake/models.py:318 intake/models.py:333
 #: members/models.py:46
 msgid "street"
 msgstr ""
 
-#: intake/models.py:77 intake/models.py:306 members/models.py:48
+#: intake/models.py:80 intake/models.py:320 members/models.py:48
 msgid "postcode"
 msgstr ""
 
-#: intake/models.py:78 intake/models.py:307 intake/models.py:321
+#: intake/models.py:81 intake/models.py:321 intake/models.py:335
 #: members/models.py:49
 msgid "city"
 msgstr ""
 
-#: intake/models.py:79 intake/models.py:303 intake/models.py:318
+#: intake/models.py:82 intake/models.py:317 intake/models.py:332
 #: members/models.py:45
 msgid "tax code"
 msgstr ""
 
-#: intake/models.py:81
+#: intake/models.py:84
 msgid "statute link"
 msgstr ""
 
-#: intake/models.py:83
+#: intake/models.py:86
 msgid "annual membership fee"
 msgstr ""
 
-#: intake/models.py:86
+#: intake/models.py:89
 msgid "close bookings"
 msgstr ""
 
-#: intake/models.py:91
+#: intake/models.py:94
 msgid ""
 "When public bookings stop, on top of an editor closing them manually at "
 "check-in."
 msgstr ""
 
-#: intake/models.py:95
+#: intake/models.py:98
 msgid "logo"
 msgstr ""
 
-#: intake/models.py:97
+#: intake/models.py:100
 msgid "primary colour"
 msgstr ""
 
-#: intake/models.py:100
+#: intake/models.py:103
 msgid "accent colour"
 msgstr ""
 
-#: intake/models.py:103
+#: intake/models.py:106
 msgid "neutral colour"
 msgstr ""
 
-#: intake/models.py:108
+#: intake/models.py:111
 msgid "home page title"
 msgstr ""
 
-#: intake/models.py:109
+#: intake/models.py:112
 msgid "home page description"
 msgstr ""
 
-#: intake/models.py:111
+#: intake/models.py:114
 msgid "default event location"
 msgstr ""
 
-#: intake/models.py:114
+#: intake/models.py:117
 msgid "Pre-fills the location field when an editor creates an event."
 msgstr ""
 
-#: intake/models.py:162
+#: intake/models.py:176
 msgid "label"
 msgstr ""
 
-#: intake/models.py:164
+#: intake/models.py:178
 msgid "from age"
 msgstr ""
 
-#: intake/models.py:164
+#: intake/models.py:178
 msgid "Empty: no lower bound."
 msgstr ""
 
-#: intake/models.py:167
+#: intake/models.py:181
 msgid "to age"
 msgstr ""
 
-#: intake/models.py:167
+#: intake/models.py:181
 msgid "Empty: no upper bound."
 msgstr ""
 
-#: intake/models.py:169 intake/models.py:259
+#: intake/models.py:183 intake/models.py:273
 msgid "order"
 msgstr ""
 
-#: intake/models.py:172
+#: intake/models.py:186
 msgid "age bracket"
 msgstr ""
 
-#: intake/models.py:173
+#: intake/models.py:187
 msgid "age brackets"
 msgstr ""
 
-#: intake/models.py:196
+#: intake/models.py:210
 msgid "introduction"
 msgstr ""
 
-#: intake/models.py:197
+#: intake/models.py:211
 msgid "open"
 msgstr ""
 
-#: intake/models.py:199
+#: intake/models.py:213
 msgid "default"
 msgstr ""
 
-#: intake/models.py:202
+#: intake/models.py:216
 msgid ""
 "Preselected when an editor creates an event. Only one per association: "
 "marking this one unmarks any other."
 msgstr ""
 
-#: intake/models.py:209
+#: intake/models.py:223
 msgid "public form"
 msgstr ""
 
-#: intake/models.py:210
+#: intake/models.py:224
 msgid "public forms"
 msgstr ""
 
-#: intake/models.py:258 intake/models.py:263
+#: intake/models.py:272 intake/models.py:277
 msgid "section"
 msgstr ""
 
-#: intake/models.py:260
+#: intake/models.py:274
 msgid "enabled"
 msgstr ""
 
-#: intake/models.py:264
+#: intake/models.py:278
 msgid "sections"
 msgstr ""
 
-#: intake/models.py:278
+#: intake/models.py:292
 msgid "Draft"
 msgstr ""
 
-#: intake/models.py:279
+#: intake/models.py:293
 msgid "Submitted"
 msgstr ""
 
-#: intake/models.py:288 intake/models.py:465
+#: intake/models.py:302 intake/models.py:479
 msgid "token"
 msgstr ""
 
-#: intake/models.py:291 intake/models.py:462
+#: intake/models.py:305 intake/models.py:476
 msgid "state"
 msgstr ""
 
-#: intake/models.py:294
+#: intake/models.py:308
 msgid "applying for"
 msgstr ""
 
-#: intake/models.py:301 intake/models.py:316 members/models.py:44
+#: intake/models.py:315 intake/models.py:330 members/models.py:44
 msgid "place of birth"
 msgstr ""
 
-#: intake/models.py:305 intake/models.py:320 members/models.py:47
+#: intake/models.py:319 intake/models.py:334 members/models.py:47
 msgid "number"
 msgstr ""
 
-#: intake/models.py:308 intake/models.py:322 members/models.py:50
+#: intake/models.py:322 intake/models.py:336 members/models.py:50
 msgid "province"
 msgstr ""
 
-#: intake/models.py:309
+#: intake/models.py:323
 msgid "phone"
 msgstr ""
 
-#: intake/models.py:324
+#: intake/models.py:338
 msgid "accepts the statute"
 msgstr ""
 
-#: intake/models.py:328
+#: intake/models.py:342
 msgid "sole holder of parental responsibility"
 msgstr ""
 
-#: intake/models.py:338
+#: intake/models.py:352
 msgid "image consent"
 msgstr ""
 
-#: intake/models.py:346
+#: intake/models.py:360
 msgid "booked for"
 msgstr ""
 
-#: intake/models.py:352
+#: intake/models.py:366
 msgid "reminded at"
 msgstr ""
 
-#: intake/models.py:353
+#: intake/models.py:367
 msgid "place"
 msgstr ""
 
-#: intake/models.py:354
+#: intake/models.py:368
 msgid "submitted at"
 msgstr ""
 
-#: intake/models.py:355 intake/models.py:469
+#: intake/models.py:369 intake/models.py:483
 #: templates/account/email/base_notification.html:14
 msgid "IP address"
 msgstr ""
 
-#: intake/models.py:357
+#: intake/models.py:371
 msgid "updated at"
 msgstr ""
 
-#: intake/models.py:360 intake/models.py:453
+#: intake/models.py:374 intake/models.py:467
 msgid "submission"
 msgstr ""
 
-#: intake/models.py:361
+#: intake/models.py:375
 msgid "submissions"
 msgstr ""
 
-#: intake/models.py:365
+#: intake/models.py:379
 msgid "draft"
 msgstr ""
 
-#: intake/models.py:439
+#: intake/models.py:453
 msgid "Applicant"
 msgstr ""
 
-#: intake/models.py:440
+#: intake/models.py:454
 msgid "Second holder of parental responsibility"
 msgstr ""
 
-#: intake/models.py:443
+#: intake/models.py:457
 msgid "Membership application"
 msgstr ""
 
-#: intake/models.py:447
+#: intake/models.py:461
 msgid "Awaiting signature"
 msgstr ""
 
-#: intake/models.py:448
+#: intake/models.py:462
 msgid "Signed"
 msgstr ""
 
-#: intake/models.py:449
+#: intake/models.py:463
 msgid "Declined"
 msgstr ""
 
-#: intake/models.py:457
+#: intake/models.py:471
 msgid "signatory"
 msgstr ""
 
-#: intake/models.py:459
+#: intake/models.py:473
 msgid "role"
 msgstr ""
 
-#: intake/models.py:460
+#: intake/models.py:474
 msgid "subject"
 msgstr ""
 
-#: intake/models.py:467
+#: intake/models.py:481
 msgid "declaration"
 msgstr ""
 
-#: intake/models.py:468
+#: intake/models.py:482
 msgid "signed at"
 msgstr ""
 
-#: intake/models.py:472
+#: intake/models.py:486
 msgid "subscription"
 msgstr ""
 
-#: intake/models.py:473
+#: intake/models.py:487
 msgid "subscriptions"
 msgstr ""
 
