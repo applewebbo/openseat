@@ -1,0 +1,93 @@
+{% load i18n %}
+<div class="mb-6 flex items-center justify-between gap-4">
+    <nav class="breadcrumbs text-sm">
+        <ul>
+            <li>
+                <a href="{% url 'home' %}" class="link link-hover">{% translate "Home" %}</a>
+            </li>
+            <li>{{ event.title }}</li>
+        </ul>
+    </nav>
+    {% if can_manage_checkin %}
+        <button type="button"
+                class="btn btn-soft btn-xs shrink-0 rounded-lg"
+                hx-get="{% url 'events:landing' event.slug %}?view=manage"
+                hx-target="#sheet"
+                hx-swap="outerHTML"
+                hx-push-url="false">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 256 256"
+                 fill="currentColor"
+                 class="h-3.5 w-3.5"
+                 aria-hidden="true">
+                <path d="M251,123.13c-.37-.81-9.13-20.26-28.48-39.61C196.63,57.67,164,44,128,44S59.37,57.67,33.51,83.52C14.16,102.87,5.4,122.32,5,123.13a12.08,12.08,0,0,0,0,9.75c.37.82,9.13,20.26,28.49,39.61C59.37,198.34,92,212,128,212s68.63-13.66,94.48-39.51c19.36-19.35,28.12-38.79,28.49-39.61A12.08,12.08,0,0,0,251,123.13Zm-46.06,33C183.47,177.27,157.59,188,128,188s-55.47-10.73-76.91-31.88A130.36,130.36,0,0,1,29.52,128,130.45,130.45,0,0,1,51.09,99.89C72.54,78.73,98.41,68,128,68s55.46,10.73,76.91,31.89A130.36,130.36,0,0,1,226.48,128,130.45,130.45,0,0,1,204.91,156.12ZM128,84a44,44,0,1,0,44,44A44.05,44.05,0,0,0,128,84Zm0,64a20,20,0,1,1,20-20A20,20,0,0,1,128,148Z" />
+            </svg>
+            {% translate "Manage event" %}
+        </button>
+    {% endif %}
+</div>
+<img src="{{ event.wide_url }}"
+     alt="{{ event.title }}"
+     width="1600"
+     height="900"
+     class="border-base-content/5 mb-8 aspect-[16/9] w-full rounded-2xl border object-cover" />
+<p class="text-base-content/60 text-sm font-medium">
+    {{ event.starts_at|date:"l d F Y, H:i" }}
+    {% if event.duration_hours %}
+        · {% blocktranslate count hours=event.duration_hours %}{{ hours }} hour{% plural %}{{ hours }} hours{% endblocktranslate %}
+    {% endif %}
+</p>
+<h1 class="mt-1 text-4xl font-bold tracking-tight text-balance sm:text-5xl">{{ event.title }}</h1>
+{% if event.location %}<p class="text-base-content/70 mt-3">{{ event.location }}</p>{% endif %}
+{% if event.description %}
+    <div class="rich-text text-base-content/80 mt-5 max-w-prose text-lg leading-relaxed">
+        {{ event.description|safe }}
+    </div>
+{% endif %}
+
+{% if event.is_open %}
+    <form method="post" action="{% url 'events:join' event.slug %}" class="mt-10">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary rounded-xl max-sm:w-full sm:px-10">{% translate "Book" %}</button>
+    </form>
+
+    <p class="text-base-content/70 mt-4 text-sm">
+        {% translate "Already taken part in one of our events?" %} {% translate "Book by clicking" %}
+        <label for="member-booking" class="link link-primary cursor-pointer">{% translate "here" %}</label>
+    </p>
+
+    <input type="checkbox"
+           id="member-booking"
+           class="modal-toggle"
+           {% if form.errors %}checked{% endif %} />
+    <div class="modal" role="dialog">
+        <div class="modal-box rounded-2xl">
+            <h2 class="text-base font-semibold tracking-tight">{% translate "Already a member" %}</h2>
+            <form method="post" action="{% url 'events:identify' event.slug %}" class="mt-6">
+                {% csrf_token %}
+                {{ form }}
+                <div class="modal-action">
+                    <label for="member-booking" class="btn btn-ghost rounded-xl">{% translate "Cancel" %}</label>
+                    <button type="submit" class="btn btn-primary rounded-xl">{% translate "Book a place" %}</button>
+                </div>
+            </form>
+        </div>
+        <label class="modal-backdrop" for="member-booking">{% translate "Cancel" %}</label>
+    </div>
+{% else %}
+    <div role="status" class="border-base-content/10 bg-base-100 mt-10 rounded-2xl border p-6 sm:p-8">
+        {% if link_expired %}
+            <h2 class="text-base font-semibold tracking-tight">{% translate "This date has already been" %}</h2>
+            <p class="text-base-content/70 mt-2 max-w-prose text-sm leading-relaxed">
+                {% translate "The booking cannot be changed any more. Thank you for coming — the next dates are on the home page." %}
+            </p>
+            <a href="{% url 'home' %}"
+               class="btn btn-outline mt-6 rounded-xl max-sm:w-full sm:px-8">{% translate "The next dates" %}</a>
+        {% else %}
+            <h2 class="text-base font-semibold tracking-tight">{% translate "Bookings are closed" %}</h2>
+            <p class="text-base-content/70 mt-2 max-w-prose text-sm leading-relaxed">
+                {% blocktranslate with email=association.email %}This event is no longer taking bookings. Write to {{ email }} if you need to reach the organisers.{% endblocktranslate %}
+            </p>
+        {% endif %}
+    </div>
+{% endif %}

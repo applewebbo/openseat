@@ -1,19 +1,19 @@
 {% load i18n %}
-<li id="booking-{{ booking.pk }}" class="list-row items-center gap-3">
+<li id="booking-{{ booking.pk }}" class="list-row items-center gap-3 py-2!">
     <div class="flex min-w-0 list-col-grow items-center gap-3">
         {% if booking.is_confirmed %}
-            <span class="bg-success flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
+            <span class="bg-success flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
                   aria-hidden="true">
                 <svg xmlns="http://www.w3.org/2000/svg"
                      viewBox="0 0 256 256"
                      fill="currentColor"
-                     class="h-3.5 w-3.5 text-white">
+                     class="h-3 w-3 text-white">
                     <path d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z" />
                 </svg>
             </span>
         {% endif %}
         <div class="min-w-0">
-            <p class="truncate font-medium">{{ booking.full_name }}</p>
+            <p class="truncate text-sm font-medium">{{ booking.full_name }}</p>
             <p class="text-base-content/60 truncate text-xs">{{ booking.contact_email }}</p>
         </div>
     </div>
@@ -37,7 +37,7 @@
                       hx-target="#booking-{{ booking.pk }}"
                       hx-swap="outerHTML">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-primary btn-sm rounded-lg">{% translate "Check in" %}</button>
+                    <button type="submit" class="btn btn-primary btn-xs rounded-lg">{% translate "Check in" %}</button>
                 </form>
             {% endif %}
         </div>

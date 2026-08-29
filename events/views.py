@@ -38,6 +38,11 @@ def _open_event(slug):
     return get_object_or_404(Event, slug=slug, is_published=True)
 
 
+def _manage_url(event):
+    """Back to the management view, not the public one an editor started on."""
+    return f"{event.get_absolute_url()}?view=manage"
+
+
 def _public_form_for(event):
     """Which form a booking through this event is signed on.
 
@@ -158,14 +163,17 @@ def create(request):
 def landing(request, slug):
     """The event, and the two ways in: already a member, or not yet.
 
-    An editor never sees the public page: this is always the bookings list
-    for them, filtered live by the search box through htmx. Check-in actions
-    on it only light up once bookings are closed."""
+    Default view is the public one, for an editor same as for a visitor — a
+    "Manage" button swaps client-side into the bookings/check-in view, and a
+    "View" button swaps back. Both swaps target #sheet and never push a URL,
+    so a shared or reloaded link always lands on the public page."""
     event = _open_event(slug)
     can_manage_checkin = request.user.is_authenticated and request.user.has_perm(
         "events.change_event"
     )
-    if can_manage_checkin:
+    wants_manage = can_manage_checkin and request.GET.get("view") == "manage"
+
+    if wants_manage:
         query = request.GET.get("q", "").strip()
         active_bookings = event.bookings.active()
         context = {
@@ -175,17 +183,24 @@ def landing(request, slug):
             "query": query,
             "can_manage_checkin": can_manage_checkin,
         }
-        if request.htmx:
+        if request.htmx and request.htmx.target == "roster":
             template = "events/checkin-roster-partial.html"
         else:
-            template = "events/checkin.html"
             context["summary"] = _booking_summary(event, active_bookings)
             context["add_form"] = ManualBookingForm(event=event)
+            template = (
+                "events/checkin-sheet-partial.html"
+                if request.htmx
+                else "events/checkin.html"
+            )
         return render(request, template, context)
 
+    template = (
+        "events/landing-sheet-partial.html" if request.htmx else "events/landing.html"
+    )
     return render(
         request,
-        "events/landing.html",
+        template,
         {
             "event": event,
             "association": event.association,
@@ -203,7 +218,7 @@ def checkin_open(request, slug):
     if event.checkin_started_at is None:
         event.checkin_started_at = timezone.now()
         event.save(update_fields=["checkin_started_at"])
-    return redirect("events:landing", slug=event.slug)
+    return redirect(_manage_url(event))
 
 
 @permission_required("events.change_event", raise_exception=True)
@@ -214,7 +229,7 @@ def checkin_close(request, slug):
     if event.checkin_started_at is not None:
         event.checkin_started_at = None
         event.save(update_fields=["checkin_started_at"])
-    return redirect("events:landing", slug=event.slug)
+    return redirect(_manage_url(event))
 
 
 @permission_required("events.export_members", raise_exception=True)
@@ -254,7 +269,7 @@ def checkin_confirm(request, slug, pk):
         booking.save(update_fields=["confirmed_on", "fee_amount", "fee_method"])
     if request.htmx:
         return _row_and_summary(request, event, booking)
-    return redirect("events:landing", slug=event.slug)
+    return redirect(_manage_url(event))
 
 
 @permission_required("events.change_booking", raise_exception=True)
@@ -272,7 +287,7 @@ def checkin_undo(request, slug, pk):
         booking.save(update_fields=["confirmed_on", "fee_amount", "fee_method"])
     if request.htmx:
         return _row_and_summary(request, event, booking)
-    return redirect("events:landing", slug=event.slug)
+    return redirect(_manage_url(event))
 
 
 @login_not_required
@@ -728,4 +743,4 @@ def checkin_add(request, slug):
     booking.fee_method = FeeMethod.CASH
     booking.save(update_fields=["confirmed_on", "fee_amount", "fee_method", "member"])
 
-    return redirect("events:landing", slug=event.slug)
+    return redirect(_manage_url(event))

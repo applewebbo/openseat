@@ -4,19 +4,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('events', '0010_alter_event_description_alter_event_slug'),
+        ("events", "0010_alter_event_description_alter_event_slug"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='event',
-            name='ends_at',
+            model_name="event",
+            name="ends_at",
         ),
         migrations.AddField(
-            model_name='event',
-            name='duration_hours',
-            field=models.PositiveSmallIntegerField(blank=True, help_text='An estimate, shown next to the start time. Leave empty if unknown.', null=True, verbose_name='duration (hours)'),
+            model_name="event",
+            name="duration_hours",
+            field=models.PositiveSmallIntegerField(
+                blank=True,
+                help_text="An estimate, shown next to the start time. Leave empty if unknown.",
+                null=True,
+                verbose_name="duration (hours)",
+            ),
         ),
     ]

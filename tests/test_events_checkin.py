@@ -75,7 +75,7 @@ def test_a_staff_user_without_the_editor_group_sees_no_checkin_controls(
 
 
 def test_an_editor_sees_the_checkin_controls(editor_client, event):
-    response = editor_client.get(event.get_absolute_url())
+    response = editor_client.get(event.get_absolute_url(), {"view": "manage"})
 
     assert response.context["can_manage_checkin"] is True
     assert (
@@ -83,13 +83,43 @@ def test_an_editor_sees_the_checkin_controls(editor_client, event):
     )
 
 
+def test_the_default_view_is_public_even_for_an_editor(editor_client, event):
+    response = editor_client.get(event.get_absolute_url())
+
+    assert response.templates[0].name == "events/landing.html"
+    manage_url = f"{reverse('events:landing', args=[event.slug])}?view=manage"
+    assert manage_url in response.content.decode()
+
+
+def test_a_non_editor_passing_the_manage_flag_still_sees_the_public_page(client, event):
+    response = client.get(event.get_absolute_url(), {"view": "manage"})
+
+    assert response.templates[0].name == "events/landing.html"
+
+
+def test_the_manage_button_swaps_the_whole_sheet(editor_client, event):
+    response = editor_client.get(
+        event.get_absolute_url(), {"view": "manage"}, HTTP_HX_REQUEST="true"
+    )
+
+    assert response.templates[0].name == "events/checkin-sheet-partial.html"
+    assert b'id="sheet"' in response.content
+
+
+def test_the_view_button_swaps_back_to_the_public_sheet(editor_client, event):
+    response = editor_client.get(event.get_absolute_url(), HTTP_HX_REQUEST="true")
+
+    assert response.templates[0].name == "events/landing-sheet-partial.html"
+    assert b'id="sheet"' in response.content
+
+
 # --- the editor's bookings list, open or closed --------------------------------
 
 
-def test_an_editor_always_sees_the_bookings_list(editor_client, event, booking_factory):
+def test_an_editor_manages_the_bookings_list(editor_client, event, booking_factory):
     booking = booking_factory(event=event)
 
-    response = editor_client.get(event.get_absolute_url())
+    response = editor_client.get(event.get_absolute_url(), {"view": "manage"})
 
     assert response.templates[0].name == "events/checkin.html"
     assert booking.full_name in response.content.decode()
@@ -102,7 +132,7 @@ def test_the_roster_and_summary_share_one_bookings_query(
     one fetch instead of two is what keeps this query count from growing."""
     booking_factory(event=event)
     with CaptureQueriesContext(connection) as ctx:
-        editor_client.get(event.get_absolute_url())
+        editor_client.get(event.get_absolute_url(), {"view": "manage"})
     booking_queries = [q for q in ctx.captured_queries if "events_booking" in q["sql"]]
 
     assert len(booking_queries) == 1
@@ -113,7 +143,7 @@ def test_no_checkin_button_shows_while_bookings_are_still_open(
 ):
     booking = booking_factory(event=event)
 
-    response = editor_client.get(event.get_absolute_url())
+    response = editor_client.get(event.get_absolute_url(), {"view": "manage"})
 
     assert response.status_code == 200
     assert (
@@ -128,7 +158,7 @@ def test_checkin_button_shows_once_check_in_is_open(
     editor_client.post(reverse("events:checkin-open", args=[event.slug]))
     booking = booking_factory(event=event)
 
-    response = editor_client.get(event.get_absolute_url())
+    response = editor_client.get(event.get_absolute_url(), {"view": "manage"})
 
     assert (
         reverse("events:checkin-confirm", args=[event.slug, booking.pk]).encode()
@@ -167,7 +197,7 @@ def test_reopen_bookings_is_disabled_past_the_automatic_cutoff(editor_client, ev
     midnight = timezone.make_aware(datetime.combine(event.starts_at.date(), time.min))
 
     with time_machine.travel(midnight, tick=False):
-        response = editor_client.get(event.get_absolute_url())
+        response = editor_client.get(event.get_absolute_url(), {"view": "manage"})
 
     assert b"disabled" in response.content
 
@@ -178,7 +208,7 @@ def test_an_editor_opens_check_in(editor_client, event):
     event.refresh_from_db()
     assert event.is_checkin_open is True
     assert response.status_code == 302
-    assert response.url == event.get_absolute_url()
+    assert response.url == f"{event.get_absolute_url()}?view=manage"
 
 
 def test_opening_check_in_twice_keeps_the_first_timestamp(editor_client, event):
@@ -259,7 +289,9 @@ def test_the_roster_shows_active_bookings(
 ):
     booking = booking_factory(event=checked_in_event)
 
-    response = editor_client.get(checked_in_event.get_absolute_url())
+    response = editor_client.get(
+        checked_in_event.get_absolute_url(), {"view": "manage"}
+    )
 
     assert response.templates[0].name == "events/checkin.html"
     assert booking.full_name in response.content.decode()
@@ -271,7 +303,9 @@ def test_the_roster_hides_a_cancelled_booking(
     booking = booking_factory(event=checked_in_event)
     booking.cancel()
 
-    response = editor_client.get(checked_in_event.get_absolute_url())
+    response = editor_client.get(
+        checked_in_event.get_absolute_url(), {"view": "manage"}
+    )
 
     assert booking.full_name not in response.content.decode()
 
@@ -298,7 +332,9 @@ def test_search_narrows_the_roster(editor_client, checked_in_event, booking_fact
         event=checked_in_event, first_name="Marco", last_name="Rossi"
     )
 
-    response = editor_client.get(checked_in_event.get_absolute_url(), {"q": "Giulia"})
+    response = editor_client.get(
+        checked_in_event.get_absolute_url(), {"view": "manage", "q": "Giulia"}
+    )
 
     content = response.content.decode()
     assert match.full_name in content
@@ -311,7 +347,10 @@ def test_an_htmx_search_returns_only_the_roster_fragment(
     booking_factory(event=checked_in_event)
 
     response = editor_client.get(
-        checked_in_event.get_absolute_url(), HTTP_HX_REQUEST="true"
+        checked_in_event.get_absolute_url(),
+        {"view": "manage"},
+        HTTP_HX_REQUEST="true",
+        HTTP_HX_TARGET="roster",
     )
 
     assert response.templates[0].name == "events/checkin-roster-partial.html"
@@ -327,7 +366,7 @@ def test_the_summary_counts_bookings_and_confirmed(
     booking_factory(event=event, confirmed_on=timezone.localdate())
     booking_factory(event=event)
 
-    response = editor_client.get(event.get_absolute_url())
+    response = editor_client.get(event.get_absolute_url(), {"view": "manage"})
 
     content = response.content.decode()
     assert 'id="booking-summary"' in content
@@ -360,7 +399,7 @@ def test_the_summary_breaks_bookings_down_by_age_bracket(
         birth_date=timezone.localdate().replace(year=timezone.localdate().year - 10),
     )
 
-    response = editor_client.get(event.get_absolute_url())
+    response = editor_client.get(event.get_absolute_url(), {"view": "manage"})
 
     summary = response.context["summary"]
     counts = dict(summary["brackets"])
@@ -375,7 +414,7 @@ def test_a_booking_with_no_birth_date_is_unknown_age(
     booking_factory(event=event, birth_date=None)
     booking_factory(event=event, birth_date=None)
 
-    response = editor_client.get(event.get_absolute_url())
+    response = editor_client.get(event.get_absolute_url(), {"view": "manage"})
 
     assert response.context["summary"]["unknown_booked"] == 2
 
@@ -552,7 +591,7 @@ def test_the_add_button_shows_even_while_bookings_are_open(
     event.form = public_form
     event.save()
 
-    response = editor_client.get(event.get_absolute_url())
+    response = editor_client.get(event.get_absolute_url(), {"view": "manage"})
 
     assert reverse("events:checkin-add", args=[event.slug]).encode() in response.content
 

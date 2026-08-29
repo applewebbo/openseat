@@ -1,0 +1,119 @@
+{% load i18n %}
+<div class="bg-base-200 border-base-300 mb-6 flex flex-col gap-4 rounded-2xl border p-5">
+    <div>
+        {% if not event.is_open %}
+            <span class="badge badge-neutral badge-outline badge-sm mb-2">{% translate "Bookings closed" %}</span>
+        {% else %}
+            <span class="badge badge-outline badge-sm mb-2">{% translate "Bookings open" %}</span>
+        {% endif %}
+        <h1 class="text-xl font-bold tracking-tight">{{ event.title }}</h1>
+    </div>
+    <div class="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-end">
+        <button type="button"
+                class="btn btn-soft btn-xs w-full rounded-lg sm:w-auto"
+                hx-get="{% url 'events:landing' event.slug %}"
+                hx-target="#sheet"
+                hx-swap="outerHTML"
+                hx-push-url="false">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 256 256"
+                 fill="currentColor"
+                 class="h-3.5 w-3.5"
+                 aria-hidden="true">
+                <path d="M251,123.13c-.37-.81-9.13-20.26-28.48-39.61C196.63,57.67,164,44,128,44S59.37,57.67,33.51,83.52C14.16,102.87,5.4,122.32,5,123.13a12.08,12.08,0,0,0,0,9.75c.37.82,9.13,20.26,28.49,39.61C59.37,198.34,92,212,128,212s68.63-13.66,94.48-39.51c19.36-19.35,28.12-38.79,28.49-39.61A12.08,12.08,0,0,0,251,123.13Zm-46.06,33C183.47,177.27,157.59,188,128,188s-55.47-10.73-76.91-31.88A130.36,130.36,0,0,1,29.52,128,130.45,130.45,0,0,1,51.09,99.89C72.54,78.73,98.41,68,128,68s55.46,10.73,76.91,31.89A130.36,130.36,0,0,1,226.48,128,130.45,130.45,0,0,1,204.91,156.12ZM128,84a44,44,0,1,0,44,44A44.05,44.05,0,0,0,128,84Zm0,64a20,20,0,1,1,20-20A20,20,0,0,1,128,148Z" />
+            </svg>
+            {% translate "View event" %}
+        </button>
+        <label for="add-booking" class="btn btn-soft btn-xs w-full rounded-lg sm:w-auto">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 256 256"
+                 fill="currentColor"
+                 class="h-3.5 w-3.5"
+                 aria-hidden="true">
+                <path d="M234.38,210a123.36,123.36,0,0,0-60.78-53.23,76,76,0,1,0-91.2,0A123.36,123.36,0,0,0,21.62,210a12,12,0,1,0,20.77,12c18.12-31.32,50.12-50,85.61-50s67.49,18.69,85.61,50a12,12,0,0,0,20.77-12ZM76,96a52,52,0,1,1,52,52A52.06,52.06,0,0,1,76,96Z" />
+            </svg>
+            {% translate "Add" %}
+        </label>
+        {% if perms.events.export_members %}
+            <details class="dropdown dropdown-end w-full sm:w-auto">
+                <summary class="btn btn-soft btn-xs w-full rounded-lg sm:w-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 256 256"
+                         fill="currentColor"
+                         class="h-3.5 w-3.5"
+                         aria-hidden="true">
+                        <path d="M228,144v64a12,12,0,0,1-12,12H40a12,12,0,0,1-12-12V144a12,12,0,0,1,24,0v52H204V144a12,12,0,0,1,24,0Zm-108.49,8.49a12,12,0,0,0,17,0l40-40a12,12,0,0,0-17-17L140,115V32a12,12,0,0,0-24,0v83L96.49,95.51a12,12,0,0,0-17,17Z" />
+                    </svg>
+                    {% translate "Export" %}
+                </summary>
+                <ul class="dropdown-content menu bg-base-100 rounded-box border-base-content/5 border p-2 shadow-sm">
+                    <li>
+                        <a href="{% url 'events:export-members' event.slug %}?format=csv">CSV</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'events:export-members' event.slug %}?format=xlsx">XLSX</a>
+                    </li>
+                </ul>
+            </details>
+        {% endif %}
+        {% if event.is_checkin_open %}
+            <form method="post"
+                  action="{% url 'events:checkin-close' event.slug %}"
+                  class="w-full sm:w-auto">
+                {% csrf_token %}
+                <button type="submit"
+                        class="btn btn-soft btn-xs w-full rounded-lg sm:w-auto"
+                        {% if not event.can_reopen_bookings %}
+                            disabled
+                            title="{% translate 'Bookings are past their automatic cutoff and cannot reopen.' %}"
+                        {% endif %}>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 256 256"
+                         fill="currentColor"
+                         class="h-3.5 w-3.5"
+                         aria-hidden="true">
+                        <path d="M128,20A108,108,0,1,0,236,128,108.12,108.12,0,0,0,128,20Zm0,192a84,84,0,1,1,84-84A84.09,84.09,0,0,1,128,212Zm68-84a12,12,0,0,1-12,12H128a12,12,0,0,1-12-12V72a12,12,0,0,1,24,0v44h44A12,12,0,0,1,196,128Z" />
+                    </svg>
+                    {% translate "Reopen bookings" %}
+                </button>
+            </form>
+        {% elif event.is_open %}
+            <form method="post"
+                  action="{% url 'events:checkin-open' event.slug %}"
+                  class="w-full sm:w-auto">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-soft btn-xs w-full rounded-lg sm:w-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 256 256"
+                         fill="currentColor"
+                         class="h-3.5 w-3.5"
+                         aria-hidden="true">
+                        <path d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z" />
+                    </svg>
+                    {% translate "Open check-in" %}
+                </button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+
+{% include "events/checkin-add-modal-partial.html" %}
+
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+    {% include "events/checkin-summary-partial.html" %}
+
+    <div class="order-1 sm:col-span-2 sm:pt-5">
+        <input type="search"
+               name="q"
+               value="{{ query }}"
+               placeholder="{% translate 'Search by name' %}"
+               class="input input-sm mb-6 w-full"
+               hx-get="{% url 'events:landing' event.slug %}?view=manage"
+               hx-trigger="input changed delay:300ms, search"
+               hx-target="#roster"
+               hx-swap="outerHTML"
+               hx-push-url="false" />
+
+        {% include "events/checkin-roster-partial.html" %}
+    </div>
+</div>
