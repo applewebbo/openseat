@@ -262,8 +262,8 @@ issue number:
     fi
 
 [group('github')]
-issue-create title body="":
-    gh issue create -R {{ github_repo }} --title "{{ title }}" --body "{{ body }}"
+issue-create title body_file:
+    gh issue create -R {{ github_repo }} --title "{{ title }}" --body-file {{ body_file }}
 
 [group('github')]
 issue-comment number file:
