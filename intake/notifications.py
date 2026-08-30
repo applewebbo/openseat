@@ -1,12 +1,12 @@
 """Outbound mail. Queued through django-q2 so a slow SMTP never blocks a reply."""
 
-from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
 from django_q.tasks import async_task
 
 from core.links import absolute_url
+from core.mail import from_header
 from intake.models import Submission, Subscription
 from intake.wizard import resume_step
 
@@ -41,17 +41,18 @@ def deliver_resume_link(submission_pk, email=None, reminder=False):
             ),
         },
     )
-    send_mail(
+    EmailMessage(
         subject=(
             _("Your application to %(association)s is still open")
             if reminder
             else _("Carry on with your application to %(association)s")
         )
         % {"association": association.name},
-        message=body,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[email or submission.applicant_email],
-    )
+        body=body,
+        from_email=from_header(association),
+        to=[email or submission.applicant_email],
+        reply_to=[association.email],
+    ).send()
 
 
 def deliver_receipt(submission_pk):
@@ -67,13 +68,14 @@ def deliver_receipt(submission_pk):
             "done_url": absolute_url("intake:done", submission.token),
         },
     )
-    send_mail(
+    EmailMessage(
         subject=_("Your membership application to %(association)s")
         % {"association": association.name},
-        message=body,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[submission.applicant_email],
-    )
+        body=body,
+        from_email=from_header(association),
+        to=[submission.applicant_email],
+        reply_to=[association.email],
+    ).send()
 
 
 def deliver_second_parent_request(subscription_pk):
@@ -91,10 +93,11 @@ def deliver_second_parent_request(subscription_pk):
             "consent_url": absolute_url("intake:second-parent", subscription.token),
         },
     )
-    send_mail(
+    EmailMessage(
         subject=_("Image consent for %(member)s")
         % {"member": submission.member_display},
-        message=body,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[subscription.signatory_email],
-    )
+        body=body,
+        from_email=from_header(association),
+        to=[subscription.signatory_email],
+        reply_to=[association.email],
+    ).send()

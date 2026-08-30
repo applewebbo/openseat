@@ -1,4 +1,5 @@
 import pytest
+from django.conf import settings
 from django.core import mail
 from django.urls import reverse
 
@@ -40,6 +41,20 @@ def test_the_second_parent_is_written_to_with_their_own_link(client, minor_submi
     )
     assert reverse("intake:second-parent", args=[pending.token]) in request.body
     assert "Luca Rossi" in request.body
+
+
+def test_the_second_parent_request_names_the_association_and_offers_a_reply(
+    client, minor_submission
+):
+    """A bare noreply@ From with no Reply-To is a common reason mail lands in spam."""
+    _submit(client, minor_submission)
+
+    request = next(
+        m for m in mail.outbox if minor_submission.second_parent_email in m.to
+    )
+    association = minor_submission.form.association
+    assert request.from_email == f"{association.name} <{settings.DEFAULT_FROM_EMAIL}>"
+    assert request.reply_to == [association.email]
 
 
 def test_nobody_is_written_to_about_consents_that_were_refused(
