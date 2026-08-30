@@ -23,7 +23,7 @@ env = environ.Env(
 
 SECRET_KEY = env("SECRET_KEY")  # no default: unset must crash at startup
 ENVIRONMENT = env("ENVIRONMENT", default="prod")  # safest branch when unset
-APP_VERSION = "2026.1.4"  # the release series, as the footer shows it
+APP_VERSION = "2026.2"  # the release series, as the footer shows it
 APP_VENDOR = "Webbografico"  # whose build this is, signed in the footer
 APP_VENDOR_URL = "https://webbografico.com"
 APP_SOURCE_URL = "https://github.com/applewebbo/openseat"
