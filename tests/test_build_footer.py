@@ -8,7 +8,7 @@ def test_the_home_footer_signs_the_build(client, association):
     content = client.get(reverse("home")).content.decode()
 
     assert "Webbografico" in content
-    assert "v2026.1" in content
+    assert "v2026.2" in content
 
 
 def test_the_public_pages_sign_it_too(client, event):
@@ -16,7 +16,7 @@ def test_the_public_pages_sign_it_too(client, event):
     content = client.get(event.get_absolute_url()).content.decode()
 
     assert "Webbografico" in content
-    assert "v2026.1" in content
+    assert "v2026.2" in content
 
 
 def test_the_version_comes_from_the_settings(client, association, settings):
