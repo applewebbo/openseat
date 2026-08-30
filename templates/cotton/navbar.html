@@ -10,7 +10,7 @@
             <span class="min-w-0 truncate text-sm font-semibold tracking-tight">{{ association.name|default:"OpenSeat" }}</span>
         {% endif %}
     </a>
-    <div class="text-base-content/70 ml-auto flex shrink-0 items-center gap-3 text-sm">
+    <div class="text-base-content/70 ml-auto hidden shrink-0 items-center gap-3 text-sm sm:flex">
         {% if perms.events.add_event %}
             <a href="{% url 'events:create' %}" class="btn btn-primary btn-xs gap-1 rounded-lg">
                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -36,4 +36,43 @@
             </a>
         {% endif %}
     </div>
+    <details class="dropdown dropdown-end ml-auto sm:hidden">
+        <summary class="btn btn-ghost btn-square btn-sm" aria-label="{% translate 'Menu' %}">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 256 256"
+                 fill="currentColor"
+                 class="h-5 w-5"
+                 aria-hidden="true">
+                <path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z" />
+            </svg>
+        </summary>
+        <ul class="dropdown-content menu bg-base-100 rounded-box border-base-content/5 z-10 w-44 border p-2 shadow-sm">
+            {% if perms.events.add_event %}
+                <li>
+                    <a href="{% url 'events:create' %}" class="gap-1!">
+                        {% translate "Event" %}
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 256 256"
+                             fill="currentColor"
+                             class="h-3 w-3"
+                             aria-hidden="true">
+                            <path d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z" />
+                        </svg>
+                    </a>
+                </li>
+            {% endif %}
+            {% if request.user.is_authenticated %}
+                <li>
+                    <a href="{% url 'account-hub' %}">{% translate "Account" %}</a>
+                </li>
+                <li>
+                    <a href="{% url 'account_logout' %}">{% translate "Sign out" %}</a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{% url 'account_login' %}">{% translate "Login" %}</a>
+                </li>
+            {% endif %}
+        </ul>
+    </details>
 </div>
