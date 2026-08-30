@@ -83,6 +83,15 @@ def test_an_editor_sees_the_checkin_controls(editor_client, event):
     )
 
 
+def test_a_senior_editor_sees_the_checkin_controls(senior_editor_client, event):
+    response = senior_editor_client.get(event.get_absolute_url(), {"view": "manage"})
+
+    assert response.context["can_manage_checkin"] is True
+    assert (
+        reverse("events:checkin-open", args=[event.slug]).encode() in response.content
+    )
+
+
 def test_the_default_view_is_public_even_for_an_editor(editor_client, event):
     response = editor_client.get(event.get_absolute_url())
 
