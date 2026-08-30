@@ -116,6 +116,18 @@ def test_with_several_open_forms_the_field_offers_a_choice(
     assert closed_form not in field.queryset
 
 
+def test_with_several_open_forms_the_selected_one_is_saved(
+    editor_client, association, public_form_factory
+):
+    public_form_factory(association=association, is_open=True)
+    other_open_form = public_form_factory(association=association, is_open=True)
+
+    editor_client.post(reverse("events:create"), _post_data(form=other_open_form.pk))
+
+    event = Event.objects.get(title="Una giornata con gli asini")
+    assert event.form == other_open_form
+
+
 def test_the_default_form_is_preselected_when_open(
     editor_client, association, public_form_factory
 ):
@@ -150,6 +162,14 @@ def test_the_location_is_prefilled_from_the_association_default(
     response = editor_client.get(reverse("events:create"))
 
     assert response.context["form"].fields["location"].initial == "Ca' di Asu, Olengo"
+
+
+def test_invalid_data_redisplays_the_form_with_errors(editor_client, public_form):
+    response = editor_client.post(reverse("events:create"), _post_data(title=""))
+
+    assert response.status_code == 200
+    assert response.context["form"].errors
+    assert not Event.objects.exists()
 
 
 def test_the_description_is_sanitized(editor_client, public_form):

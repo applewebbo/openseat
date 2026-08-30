@@ -40,6 +40,20 @@ def test_the_roster_reports_whether_images_may_be_published(
     assert Submission.objects.get().image_consent_active is False
 
 
+def test_the_roster_can_be_filtered_by_form(
+    staff_client, minor_submission, minor_submission_factory
+):
+    minor_submission_factory()
+
+    response = staff_client.get(
+        reverse("admin:intake_submission_changelist"),
+        {"form": minor_submission.form_id},
+    )
+
+    assert response.status_code == 200
+    assert list(response.context["cl"].queryset) == [minor_submission]
+
+
 def test_forms_expose_their_section_switches(staff_client, public_form):
     response = staff_client.get(
         reverse("admin:intake_publicform_change", args=[public_form.pk])
