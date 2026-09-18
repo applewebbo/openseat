@@ -10,7 +10,7 @@ step that set it, so the signature covers something the signer has actually seen
 
     <section>
         <h2 class="mb-2 flex items-baseline justify-between gap-3 text-sm font-semibold">
-            {% translate "Who is applying" %}
+            {% translate "Your details" %}
             <a class="text-primary text-xs font-medium underline underline-offset-4"
                href="{% url 'intake:step' submission.token 'applicant' %}">{% translate "Change" %}</a>
         </h2>
@@ -41,7 +41,7 @@ step that set it, so the signature covers something the signer has actually seen
     {% if submission.applies_for_someone_else %}
         <section>
             <h2 class="mb-2 flex items-baseline justify-between gap-3 text-sm font-semibold">
-                {% translate "Member details" %}
+                {% translate "Who is taking part" %}
                 <a class="text-primary text-xs font-medium underline underline-offset-4"
                    href="{% url 'intake:step' submission.token 'member' %}">{% translate "Change" %}</a>
             </h2>

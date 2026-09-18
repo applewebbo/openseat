@@ -18,7 +18,19 @@
             {% blocktranslate %}Step {{ current_position }} of {{ total_positions }}{% endblocktranslate %}
         </p>
     {% endif %}
-    <h1 class="mb-8 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{{ step_label }}</h1>
+    {% if step == "applicant" and submission.applies_for_someone_else %}
+        <h1 class="mb-2 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{{ step_label }}</h1>
+        <p class="text-base-content/70 mb-8 max-w-prose text-sm leading-relaxed">
+            {% translate "You are the one signing the application and the one we write to. The details of who is taking part in the event come next." %}
+        </p>
+    {% elif step == "member" %}
+        <h1 class="mb-2 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{{ step_label }}</h1>
+        <p class="text-base-content/70 mb-8 max-w-prose text-sm leading-relaxed">
+            {% translate "The details of who will take part in the event." %}
+        </p>
+    {% else %}
+        <h1 class="mb-8 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{{ step_label }}</h1>
+    {% endif %}
 
     <form method="post"
           novalidate

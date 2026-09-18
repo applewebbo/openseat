@@ -39,8 +39,8 @@ class SubjectType(models.TextChoices):
 
 class SectionKey(models.TextChoices):
     SUBJECT = "subject", _("Who the application is for")
-    APPLICANT = "applicant", _("Who is applying")
-    MEMBER = "member", _("Member details")
+    APPLICANT = "applicant", _("Your details")
+    MEMBER = "member", _("Who is taking part")
     STATUTE = "statute", _("Statute and fee")
     PRIVACY = "privacy", _("Privacy notice")
     CONSENTS = "consents", _("Image consents")

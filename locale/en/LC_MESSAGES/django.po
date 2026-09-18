@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-18 19:28+0200\n"
+"POT-Creation-Date: 2026-09-18 19:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -552,11 +552,11 @@ msgid "Who the application is for"
 msgstr ""
 
 #: intake/models.py:42 templates/intake/partials/review-partial.html:13
-msgid "Who is applying"
+msgid "Your details"
 msgstr ""
 
 #: intake/models.py:43 templates/intake/partials/review-partial.html:44
-msgid "Member details"
+msgid "Who is taking part"
 msgstr ""
 
 #: intake/models.py:45
@@ -2133,23 +2133,33 @@ msgstr ""
 msgid "Step %(current_position)s of %(total_positions)s"
 msgstr ""
 
-#: templates/intake/step.html:38
+#: templates/intake/step.html:24
+msgid ""
+"You are the one signing the application and the one we write to. The details "
+"of who is taking part in the event come next."
+msgstr ""
+
+#: templates/intake/step.html:29
+msgid "The details of who will take part in the event."
+msgstr ""
+
+#: templates/intake/step.html:50
 msgid "Back"
 msgstr ""
 
-#: templates/intake/step.html:42
+#: templates/intake/step.html:54
 msgid "Sign and send"
 msgstr ""
 
-#: templates/intake/step.html:44
+#: templates/intake/step.html:56
 msgid "Continue"
 msgstr ""
 
-#: templates/intake/step.html:51
+#: templates/intake/step.html:63
 msgid "Your answers are saved as you go."
 msgstr ""
 
-#: templates/intake/step.html:53
+#: templates/intake/step.html:65
 msgid "Save and come back later"
 msgstr ""
 

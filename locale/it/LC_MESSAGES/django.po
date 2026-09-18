@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-18 19:28+0200\n"
+"POT-Creation-Date: 2026-09-18 19:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -576,12 +576,12 @@ msgid "Who the application is for"
 msgstr "Per chi presenti la richiesta"
 
 #: intake/models.py:42 templates/intake/partials/review-partial.html:13
-msgid "Who is applying"
-msgstr "Chi presenta la richiesta"
+msgid "Your details"
+msgstr "I tuoi dati"
 
 #: intake/models.py:43 templates/intake/partials/review-partial.html:44
-msgid "Member details"
-msgstr "Dati dell’aderente"
+msgid "Who is taking part"
+msgstr "Chi partecipa"
 
 #: intake/models.py:45
 msgid "Privacy notice"
@@ -1285,7 +1285,7 @@ msgstr "Accedi"
 
 #: templates/cotton/navbar.html:40
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: templates/events/book.html:4 templates/events/book.html:12
 #: templates/events/mail/booking.html:19 templates/events/mail/booking.txt:6
@@ -2308,23 +2308,35 @@ msgstr ""
 msgid "Step %(current_position)s of %(total_positions)s"
 msgstr "Passo %(current_position)s di %(total_positions)s"
 
-#: templates/intake/step.html:38
+#: templates/intake/step.html:24
+msgid ""
+"You are the one signing the application and the one we write to. The details "
+"of who is taking part in the event come next."
+msgstr ""
+"Sei tu a firmare la richiesta e il destinatario delle nostre comunicazioni. "
+"I dati di chi parteciperà all’evento arrivano nel passo successivo."
+
+#: templates/intake/step.html:29
+msgid "The details of who will take part in the event."
+msgstr "I dati di chi prenderà parte all’evento."
+
+#: templates/intake/step.html:50
 msgid "Back"
 msgstr "Indietro"
 
-#: templates/intake/step.html:42
+#: templates/intake/step.html:54
 msgid "Sign and send"
 msgstr "Sottoscrivi e invia"
 
-#: templates/intake/step.html:44
+#: templates/intake/step.html:56
 msgid "Continue"
 msgstr "Continua"
 
-#: templates/intake/step.html:51
+#: templates/intake/step.html:63
 msgid "Your answers are saved as you go."
 msgstr "Le risposte vengono salvate man mano."
 
-#: templates/intake/step.html:53
+#: templates/intake/step.html:65
 msgid "Save and come back later"
 msgstr "Salva e riprendi più tardi"
 
