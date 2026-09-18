@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-18 19:43+0200\n"
+"POT-Creation-Date: 2026-09-18 19:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -560,20 +560,20 @@ msgid "Automatically, at the event's start time"
 msgstr "Automatica, all'orario di inizio dell'evento"
 
 #: intake/models.py:35
-msgid "For myself"
-msgstr "Per me"
+msgid "Me"
+msgstr "Io"
 
 #: intake/models.py:36
-msgid "For a minor child"
-msgstr "Per un figlio minore"
+msgid "My child"
+msgstr "Mio figlio"
 
 #: intake/models.py:37
-msgid "For a person I am the legal guardian of"
-msgstr "Per una persona di cui sono tutore o amministratore di sostegno"
+msgid "A person I am the legal guardian of"
+msgstr "Una persona di cui sono tutore o amministratore di sostegno"
 
 #: intake/models.py:41
-msgid "Who the application is for"
-msgstr "Per chi presenti la richiesta"
+msgid "Who is taking part in the event"
+msgstr "Chi partecipa all’evento"
 
 #: intake/models.py:42 templates/intake/partials/review-partial.html:13
 msgid "Your details"
@@ -2343,6 +2343,15 @@ msgstr "Salva e riprendi più tardi"
 #: templates/widgets/masked-date-input.html:20
 msgid "Open calendar"
 msgstr "Apri calendario"
+
+#~ msgid "For myself"
+#~ msgstr "Per me"
+
+#~ msgid "For a minor child"
+#~ msgstr "Per un figlio minore"
+
+#~ msgid "Who the application is for"
+#~ msgstr "Per chi presenti la richiesta"
 
 #~ msgid "Check-in open"
 #~ msgstr "Check-in aperto"

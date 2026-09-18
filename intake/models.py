@@ -32,13 +32,13 @@ class BookingCloseMode(models.TextChoices):
 
 
 class SubjectType(models.TextChoices):
-    SELF = "self", _("For myself")
-    MINOR = "minor", _("For a minor child")
-    PROTECTED = "protected", _("For a person I am the legal guardian of")
+    SELF = "self", _("Me")
+    MINOR = "minor", _("My child")
+    PROTECTED = "protected", _("A person I am the legal guardian of")
 
 
 class SectionKey(models.TextChoices):
-    SUBJECT = "subject", _("Who the application is for")
+    SUBJECT = "subject", _("Who is taking part in the event")
     APPLICANT = "applicant", _("Your details")
     MEMBER = "member", _("Who is taking part")
     STATUTE = "statute", _("Statute and fee")

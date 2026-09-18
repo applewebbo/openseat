@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-18 19:43+0200\n"
+"POT-Creation-Date: 2026-09-18 19:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -536,19 +536,19 @@ msgid "Automatically, at the event's start time"
 msgstr ""
 
 #: intake/models.py:35
-msgid "For myself"
+msgid "Me"
 msgstr ""
 
 #: intake/models.py:36
-msgid "For a minor child"
+msgid "My child"
 msgstr ""
 
 #: intake/models.py:37
-msgid "For a person I am the legal guardian of"
+msgid "A person I am the legal guardian of"
 msgstr ""
 
 #: intake/models.py:41
-msgid "Who the application is for"
+msgid "Who is taking part in the event"
 msgstr ""
 
 #: intake/models.py:42 templates/intake/partials/review-partial.html:13
