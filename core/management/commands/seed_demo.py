@@ -6,9 +6,11 @@ the contact details are made up. Nothing in here belongs in production.
 """
 
 import datetime
+from pathlib import Path
 
 from allauth.account.models import EmailAddress
 from django.contrib.auth import get_user_model
+from django.core.files import File
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
@@ -16,6 +18,8 @@ from accounts.groups import ensure_editor_group, ensure_senior_editor_group
 from events.models import Booking, Event, FeeMethod
 from intake.models import AgeBracket, Association, PublicForm, SubjectType, Submission
 from members.models import Member
+
+LOGO_PATH = Path(__file__).resolve().parent / "assets" / "lontano-logo.png"
 
 TEST_USERS = (
     ("editor@example.com", ensure_editor_group),
@@ -430,6 +434,11 @@ class Command(BaseCommand):
                 f"kept: {association.name}"
                 + (f" (filled in {', '.join(missing)})" if missing else "")
             )
+
+        if not association.logo:
+            with LOGO_PATH.open("rb") as logo_file:
+                association.logo.save(LOGO_PATH.name, File(logo_file), save=True)
+            self.stdout.write("filled in: logo")
 
         # The migration that seeds these only runs against associations that
         # already existed at migrate time — a fresh DB has none yet, so this

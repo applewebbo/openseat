@@ -264,10 +264,24 @@
 
 #site-name .assoc-logo {
     display: inline-block;
+    box-sizing: border-box;
     height: 40px;
     width: auto;
     margin-right: 0.6rem;
     vertical-align: middle;
+    border-radius: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) #site-name .assoc-logo {
+        background: #fff;
+        padding: 4px;
+    }
+}
+
+:root[data-theme="dark"] #site-name .assoc-logo {
+    background: #fff;
+    padding: 4px;
 }
 
 .module caption,

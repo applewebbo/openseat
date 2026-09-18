@@ -25,7 +25,7 @@
                     {% if association.logo %}
                         <img src="{{ association.logo.url }}"
                              alt=""
-                             class="h-9 w-auto shrink-0" />
+                             class="h-9 w-auto shrink-0 rounded-md dark:bg-white dark:p-1" />
                     {% endif %}
                     <span class="truncate text-base font-semibold tracking-tight">{{ association.name|default:"OpenSeat" }}</span>
                 </a>
