@@ -11,6 +11,8 @@ db.sqlite3-journal
 media/
 staticfiles/
 backups/
+openseat-*.dump
+openseat-*.tar
 
 # Compiled by `manage.py tailwind build`
 static/css/tailwind.css

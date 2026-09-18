@@ -379,6 +379,33 @@ elif ENVIRONMENT == "test":
         "default": {"BACKEND": "django.core.mail.backends.locmem.EmailBackend"},
     }
 
+elif ENVIRONMENT == "restore":
+    # A disaster-recovery drill: restore the latest dump into a throwaway local
+    # database, never into whatever DATABASE_URL would point at. NAME and HOST
+    # are hard-coded constants, so `ENVIRONMENT=restore ./manage.py dbrestore`
+    # can only ever overwrite the local `openseat_restore_test` database —
+    # aiming it at production is structurally impossible. See ops/README.md.
+    DEBUG = False
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "openseat_restore_test",  # fixed on purpose — never parameterise
+            "USER": env("RESTORE_DB_USER", default=env("USER", default="postgres")),
+            "PASSWORD": env("RESTORE_DB_PASSWORD", default=""),
+            "HOST": "localhost",  # fixed on purpose — never parameterise
+            "PORT": "5432",
+        }
+    }
+    # The prod dump carries OWNER TO / GRANT statements for the prod database
+    # role, and dbbackup runs pg_restore --single-transaction, so one such line
+    # aborts the whole restore against a local cluster with no such role.
+    DBBACKUP_CONNECTORS = {
+        "default": {
+            "CONNECTOR": "dbbackup.db.postgresql.PgDumpBinaryConnector",
+            "RESTORE_SUFFIX": "--no-owner --no-privileges",
+        }
+    }
+
 else:  # prod
     # Serves STATIC_ROOT and MEDIA_ROOT alike, ahead of LoginRequiredMiddleware
     # so a public page keeps its logo. Uploads are not part of the build, so
