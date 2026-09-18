@@ -296,6 +296,11 @@ SITE_BASE_URL = env("SITE_BASE_URL", default="http://localhost:8000").rstrip("/"
 # DBBACKUP_STORAGE / DBBACKUP_STORAGE_OPTIONS pair is read by nothing since
 # django-dbbackup 4.2, so setting it would silently back up to the wrong place.
 # It stays on local disk unless a bucket is configured below.
+# Named after the project rather than dbbackup's default of the database name
+# and hostname: the bucket a BACKUP_BUCKET_NAME points at may be shared with
+# another installation, and neither default says "openseat".
+DBBACKUP_FILENAME_TEMPLATE = "openseat-{datetime}.{extension}"
+DBBACKUP_MEDIA_FILENAME_TEMPLATE = "openseat-{datetime}.{extension}"
 DBBACKUP_CLEANUP_KEEP = 10
 DBBACKUP_CLEANUP_KEEP_MEDIA = 10
 # dbbackup's own cleanup keeps a count, not an age. ops.maintenance answers

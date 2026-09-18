@@ -114,6 +114,17 @@ def test_an_empty_media_root_is_not_an_error(media):
     assert delete_orphan_media() == []
 
 
+# --- naming -----------------------------------------------------------------
+
+
+def test_backup_files_are_named_after_the_project(settings):
+    """The object storage destination is shared with other installations, so a
+    dump or media archive must carry its own name rather than dbbackup's default
+    of the database name and hostname, neither of which says "openseat"."""
+    assert settings.DBBACKUP_FILENAME_TEMPLATE.startswith("openseat-")
+    assert settings.DBBACKUP_MEDIA_FILENAME_TEMPLATE.startswith("openseat-")
+
+
 # --- backups ---------------------------------------------------------------
 
 
