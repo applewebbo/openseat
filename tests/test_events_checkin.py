@@ -2,6 +2,7 @@ from datetime import datetime, time
 
 import pytest
 import time_machine
+from django.core import mail
 from django.db import connection
 from django.test import Client
 from django.test.utils import CaptureQueriesContext
@@ -30,6 +31,7 @@ def _manual_booking_data(**overrides):
         "accepts_statute": "on",
         "sole_holder": "on",
         "consent_images": "on",
+        "send_confirmation": "on",
     }
     data.update(overrides)
     return data
@@ -621,6 +623,35 @@ def test_an_editor_adds_a_self_booking(editor_client, event, public_form):
     assert booking.fee_method == "cash"
     assert booking.member is not None
     assert booking.submission.state == booking.submission.State.SUBMITTED
+
+
+def test_a_booking_added_at_the_door_still_gets_the_confirmation_mail(
+    editor_client, event, public_form
+):
+    """Confirmed on the spot or not, they still need the link back in to
+    manage or cancel the place later."""
+    event.form = public_form
+    event.save()
+
+    editor_client.post(
+        reverse("events:checkin-add", args=[event.slug]), _manual_booking_data()
+    )
+
+    assert len(mail.outbox) == 1
+    assert mail.outbox[0].to == ["anna.verdi@example.com"]
+
+
+def test_unticking_the_checkbox_skips_the_confirmation_mail(
+    editor_client, event, public_form
+):
+    event.form = public_form
+    event.save()
+    data = _manual_booking_data()
+    del data["send_confirmation"]
+
+    editor_client.post(reverse("events:checkin-add", args=[event.slug]), data)
+
+    assert not mail.outbox
 
 
 def test_the_primary_signature_is_recorded(editor_client, event, public_form):

@@ -1,6 +1,7 @@
 import datetime
 
 import pytest
+from django.core import mail
 from django.db import connection
 from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
@@ -124,3 +125,58 @@ def test_the_slug_is_neither_editable_nor_shown(staff_client, spring_event):
 
     assert "slug" not in response.context["adminform"].form.fields
     assert b'name="slug"' not in response.content
+
+
+# --- the confirmation mail ---------------------------------------------------
+
+
+def _booking_add_data(event, **overrides):
+    data = {
+        "event": event.pk,
+        "first_name": "Anna",
+        "last_name": "Verdi",
+        "contact_email": "anna.verdi@example.com",
+        "fee_method": "",
+        "send_confirmation": "on",
+    }
+    data.update(overrides)
+    return data
+
+
+def test_adding_a_booking_from_the_admin_sends_the_confirmation(staff_client, event):
+    response = staff_client.post(
+        reverse("admin:events_booking_add"), _booking_add_data(event)
+    )
+
+    assert response.status_code == 302
+    assert len(mail.outbox) == 1
+    assert mail.outbox[0].to == ["anna.verdi@example.com"]
+
+
+def test_unticking_the_checkbox_skips_the_confirmation_mail(staff_client, event):
+    data = _booking_add_data(event)
+    del data["send_confirmation"]
+
+    response = staff_client.post(reverse("admin:events_booking_add"), data)
+
+    assert response.status_code == 302
+    assert not mail.outbox
+
+
+def test_editing_an_existing_booking_does_not_resend_the_confirmation(
+    staff_client, booking
+):
+    response = staff_client.post(
+        reverse("admin:events_booking_change", args=[booking.pk]),
+        {
+            "event": booking.event_id,
+            "first_name": booking.first_name,
+            "last_name": booking.last_name,
+            "contact_email": booking.contact_email,
+            "fee_method": "",
+            "send_confirmation": "on",
+        },
+    )
+
+    assert response.status_code == 302
+    assert not mail.outbox

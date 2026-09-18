@@ -742,5 +742,10 @@ def checkin_add(request, slug):
     booking.fee_amount = event.association.membership_fee
     booking.fee_method = FeeMethod.CASH
     booking.save(update_fields=["confirmed_on", "fee_amount", "fee_method", "member"])
+    # Confirmed at the door or not, they still need the link back in to
+    # manage or cancel the place later — the same mail the public flow sends,
+    # unless the editor unticks it for this one.
+    if data["send_confirmation"]:
+        send_booking_confirmation(event, booking.contact_email, submission)
 
     return redirect(_manage_url(event))

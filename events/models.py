@@ -249,7 +249,7 @@ class BookingQuerySet(models.QuerySet):
         Reviving a cancelled booking rather than duplicating it: they are a
         member either way, so nothing has to be signed a second time.
         """
-        booking, _created = self.get_or_create(
+        booking, created = self.get_or_create(
             event=event,
             member=member,
             defaults={
@@ -261,9 +261,22 @@ class BookingQuerySet(models.QuerySet):
                 "contact_phone": member.contact_phone,
             },
         )
+        update_fields = []
         if booking.cancelled_at is not None:
             booking.cancelled_at = None
-            booking.save(update_fields=["cancelled_at"])
+            update_fields.append("cancelled_at")
+        if not created:
+            # get_or_create's defaults only apply on creation — an existing
+            # row, cancelled or not, keeps whatever contact it was first
+            # booked with unless refreshed here, so a mail sent to it can
+            # miss an address the member has since corrected.
+            for field in ("contact_name", "contact_email", "contact_phone"):
+                value = getattr(member, field)
+                if getattr(booking, field) != value:
+                    setattr(booking, field, value)
+                    update_fields.append(field)
+        if update_fields:
+            booking.save(update_fields=update_fields)
         return booking
 
     def book_application(self, event, submission):
@@ -396,6 +409,14 @@ class Booking(models.Model):
         A booking already tied to a member is already on the register — the
         already-a-member path books nobody twice.
         """
+        # An editor picking a member but leaving contact_email blank — the
+        # admin inline offers no other way to reach whoever is booked — is
+        # filled in from the register rather than left empty, without
+        # overriding a contact an editor typed on purpose.
+        if self.member_id and not self.contact_email:
+            self.contact_name = self.contact_name or self.member.contact_name
+            self.contact_email = self.member.contact_email
+            self.contact_phone = self.contact_phone or self.member.contact_phone
         if self.confirmed_on and self.member_id is None and self.submission_id:
             from members.register import enrol
 

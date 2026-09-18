@@ -1,9 +1,11 @@
+from django import forms
 from django.contrib import admin
 from django.db.models import Count, Q
 from django.utils import formats, timezone
 from django.utils.translation import gettext_lazy as _
 
 from events.models import Booking, Event
+from events.notifications import send_booking_confirmation
 from intake.models import PublicForm
 
 
@@ -14,14 +16,42 @@ def _short(moment):
     return formats.date_format(timezone.localtime(moment), "SHORT_DATETIME_FORMAT")
 
 
+def _confirm_if_new(booking, created, send_confirmation):
+    """The same mail a public booking gets, sent once — on the way in."""
+    if (
+        created
+        and send_confirmation
+        and booking.contact_email
+        and booking.cancelled_at is None
+    ):
+        send_booking_confirmation(booking.event, booking.contact_email)
+
+
+class BookingAdminForm(forms.ModelForm):
+    # Not a model field: a one-time switch for this save, on by default —
+    # an editor unticks it only for the rare booking that should stay quiet.
+    send_confirmation = forms.BooleanField(
+        label=_("Send the confirmation mail"), required=False, initial=True
+    )
+
+    class Meta:
+        model = Booking
+        fields = "__all__"
+
+
 class BookingInline(admin.TabularInline):
     model = Booking
+    form = BookingAdminForm
     extra = 0
     autocomplete_fields = ("member",)
     fields = (
         "first_name",
         "last_name",
         "member",
+        "contact_name",
+        "contact_email",
+        "contact_phone",
+        "send_confirmation",
         "confirmed_on",
         "fee_amount",
         "fee_method",
@@ -43,6 +73,21 @@ class EventAdmin(admin.ModelAdmin):
         if db_field.name == "form":
             kwargs["queryset"] = PublicForm.objects.filter(is_open=True)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def save_formset(self, request, form, formset, change):
+        if formset.model is not Booking:
+            formset.save()
+            return
+        for obj in formset.deleted_objects:
+            obj.delete()
+        instances = formset.save(commit=False)
+        for obj, booking_form in zip(instances, formset.saved_forms, strict=True):
+            created = obj.pk is None
+            obj.save()
+            _confirm_if_new(
+                obj, created, booking_form.cleaned_data.get("send_confirmation", True)
+            )
+        formset.save_m2m()
 
     def get_queryset(self, request):
         # One annotated count instead of one `.count()` query per row — the
@@ -82,8 +127,14 @@ class BookingAdmin(admin.ModelAdmin):
         "member__last_name",
         "member__first_name",
     )
+    form = BookingAdminForm
     autocomplete_fields = ("member",)
     readonly_fields = ("submission", "created_at")
+
+    def save_model(self, request, obj, form, change):
+        created = obj.pk is None
+        super().save_model(request, obj, form, change)
+        _confirm_if_new(obj, created, form.cleaned_data.get("send_confirmation", True))
 
     @admin.display(description=_("name"), ordering="last_name")
     def full_name(self, obj):

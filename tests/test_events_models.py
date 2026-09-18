@@ -215,6 +215,44 @@ def test_booking_again_after_cancelling_revives_the_booking(event, member):
     assert second.cancelled_at is None
 
 
+def test_booking_again_refreshes_a_stale_contact(event, member):
+    """get_or_create's defaults only apply on creation, so a member's updated
+    contact must be copied across explicitly or later mail keeps missing it."""
+    Booking.objects.book(event, member)
+    member.contact_email = "new-address@example.com"
+    member.save(update_fields=["contact_email"])
+
+    booking = Booking.objects.book(event, member)
+
+    assert booking.contact_email == "new-address@example.com"
+
+
+def test_an_admin_added_booking_fills_in_the_contact_from_the_member(event, member):
+    """The admin inline offers no other way to name a contact than picking
+    the member, so an editor leaving it blank still gets a reachable one."""
+    booking = Booking.objects.create(
+        event=event,
+        member=member,
+        first_name=member.first_name,
+        last_name=member.last_name,
+    )
+
+    assert booking.contact_email == member.contact_email
+    assert booking.contact_name == member.contact_name
+
+
+def test_an_admin_typed_contact_is_never_overridden(event, member):
+    booking = Booking.objects.create(
+        event=event,
+        member=member,
+        first_name=member.first_name,
+        last_name=member.last_name,
+        contact_email="someone-else@example.com",
+    )
+
+    assert booking.contact_email == "someone-else@example.com"
+
+
 def test_the_checklist_lists_confirmed_bookings_in_name_order(
     event, member_factory, booking_factory
 ):

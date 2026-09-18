@@ -261,6 +261,12 @@ class ManualBookingForm(forms.Form):
         label=_("WhatsApp consent"),
         widget=forms.CheckboxInput(attrs=_CHECKBOX),
     )
+    send_confirmation = forms.BooleanField(
+        required=False,
+        initial=True,
+        label=_("Send the confirmation mail"),
+        widget=forms.CheckboxInput(attrs=_CHECKBOX),
+    )
 
     def __init__(self, *args, event=None, **kwargs):
         super().__init__(*args, **kwargs)
