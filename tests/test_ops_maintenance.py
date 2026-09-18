@@ -117,11 +117,12 @@ def test_an_empty_media_root_is_not_an_error(media):
 # --- backups ---------------------------------------------------------------
 
 
-def test_a_recent_backup_is_kept(backups):
-    _write(backups, "openseat-2026-08-18-000000.dump")
+def test_a_recent_backup_is_kept(backups, settings):
+    taken = timezone.now() - timedelta(days=settings.BACKUP_RETENTION_DAYS - 1)
+    name = f"openseat-{taken:%Y-%m-%d}-000000.dump"
+    _write(backups, name)
 
-    with time_machine.travel(timezone.now() + timedelta(days=1), tick=False):
-        assert purge_old_backups() == []
+    assert purge_old_backups() == []
 
 
 def test_a_backup_past_the_retention_window_is_deleted(backups):
