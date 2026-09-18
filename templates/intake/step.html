@@ -34,6 +34,7 @@
 
     <form method="post"
           novalidate
+          x-data="{ read: {% if step == 'privacy' %}false{% else %}true{% endif %} }"
           action="{% if step == 'review' %}{% url 'intake:submit' submission.token %}{% else %}{% url 'intake:step' submission.token step %}{% endif %}"
           class="border-base-content/5 bg-base-100 rounded-2xl border p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.15)] sm:p-8">
         {% csrf_token %}
@@ -49,7 +50,14 @@
                 <a class="text-base-content/70 hover:text-primary text-sm font-medium underline-offset-4 transition-colors duration-200 hover:underline"
                    href="{% url 'intake:step' submission.token previous_step %}">← {% translate "Back" %}</a>
             {% endif %}
-            <button type="submit" class="btn btn-primary ms-auto rounded-xl px-7">
+            {% if step == "privacy" %}
+                <p :class="{ invisible: read }" class="text-base-content/60 ms-auto text-xs">
+                    {% translate "Scroll to the end to continue." %}
+                </p>
+            {% endif %}
+            <button type="submit"
+                    :disabled="!read"
+                    class="btn btn-primary rounded-xl px-7 disabled:opacity-40 {% if step != "privacy" %}ms-auto{% endif %}">
                 {% if step == "review" %}
                     {% translate "Sign and send" %}
                 {% else %}

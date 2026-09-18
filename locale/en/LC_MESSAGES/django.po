@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-18 19:46+0200\n"
+"POT-Creation-Date: 2026-09-18 19:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1883,22 +1883,22 @@ msgid ""
 "refer to."
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:7
+#: templates/intake/partials/privacy-partial.html:9
 msgid "Data controller"
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:9
+#: templates/intake/partials/privacy-partial.html:11
 #, python-format
 msgid ""
 "The controller is %(name)s, %(street)s, %(postcode)s %(city)s, email "
 "%(email)s."
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:11
+#: templates/intake/partials/privacy-partial.html:13
 msgid "Purpose and legal basis"
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:13
+#: templates/intake/partials/privacy-partial.html:15
 msgid ""
 "Personal data (identity, residence, contact details, tax code) are given "
 "when applying and are processed, without further consent and in accordance "
@@ -1909,18 +1909,18 @@ msgid ""
 "GDPR)."
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:16
+#: templates/intake/partials/privacy-partial.html:18
 msgid ""
 "Any health information is discussed orally so the activity can be tailored "
 "to the member; no diagnosis or medical record is collected on paper or "
 "through this form."
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:18
+#: templates/intake/partials/privacy-partial.html:20
 msgid "Images"
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:20
+#: templates/intake/partials/privacy-partial.html:22
 msgid ""
 "Images are processed only where consent is given (art. 6(a) GDPR), by the "
 "person concerned if of age, or by those holding parental responsibility. "
@@ -1928,11 +1928,11 @@ msgid ""
 "provided for by the statute."
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:22
+#: templates/intake/partials/privacy-partial.html:24
 msgid "Recipients"
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:24
+#: templates/intake/partials/privacy-partial.html:26
 msgid ""
 "Data may be shared with parties the association must involve by law "
 "(accountant, insurer, system administrator) and with people or bodies whose "
@@ -1941,22 +1941,22 @@ msgid ""
 "28 GDPR where required."
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:26
+#: templates/intake/partials/privacy-partial.html:28
 msgid "Retention"
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:28
+#: templates/intake/partials/privacy-partial.html:30
 msgid ""
 "Data are used until membership ends. After that, only what legal, accounting "
 "or tax obligations require is kept, and the name remains in the members' "
 "register held by the association as a historical record."
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:30
+#: templates/intake/partials/privacy-partial.html:32
 msgid "Your rights"
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:32
+#: templates/intake/partials/privacy-partial.html:34
 msgid ""
 "You may at any time ask for access, rectification, erasure, restriction, "
 "portability, or object to processing (artt. 15-21 GDPR), by writing to the "
@@ -2143,23 +2143,27 @@ msgstr ""
 msgid "The details of who will take part in the event."
 msgstr ""
 
-#: templates/intake/step.html:50
+#: templates/intake/step.html:51
 msgid "Back"
 msgstr ""
 
-#: templates/intake/step.html:54
+#: templates/intake/step.html:55
+msgid "Scroll to the end to continue."
+msgstr ""
+
+#: templates/intake/step.html:62
 msgid "Sign and send"
 msgstr ""
 
-#: templates/intake/step.html:56
+#: templates/intake/step.html:64
 msgid "Continue"
 msgstr ""
 
-#: templates/intake/step.html:63
+#: templates/intake/step.html:71
 msgid "Your answers are saved as you go."
 msgstr ""
 
-#: templates/intake/step.html:65
+#: templates/intake/step.html:73
 msgid "Save and come back later"
 msgstr ""
 
