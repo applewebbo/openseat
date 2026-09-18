@@ -301,11 +301,13 @@ SITE_BASE_URL = env("SITE_BASE_URL", default="http://localhost:8000").rstrip("/"
 # another installation, and neither default says "openseat".
 DBBACKUP_FILENAME_TEMPLATE = "openseat-{datetime}.{extension}"
 DBBACKUP_MEDIA_FILENAME_TEMPLATE = "openseat-{datetime}.{extension}"
-DBBACKUP_CLEANUP_KEEP = 10
-DBBACKUP_CLEANUP_KEEP_MEDIA = 10
-# dbbackup's own cleanup keeps a count, not an age. ops.maintenance answers
-# "nothing older than this" on whatever storage the alias points at.
+# dbbackup's own cleanup keeps a count, not an age, and runs on every backup
+# (run_backup calls it with --clean) — so it must keep at least as many dumps
+# as a daily cadence produces across BACKUP_RETENTION_DAYS, or it prunes past
+# them before ops.maintenance's age-based sweep ever sees them.
 BACKUP_RETENTION_DAYS = env.int("BACKUP_RETENTION_DAYS", default=30)
+DBBACKUP_CLEANUP_KEEP = BACKUP_RETENTION_DAYS
+DBBACKUP_CLEANUP_KEEP_MEDIA = BACKUP_RETENTION_DAYS
 # An upload lands on disk before its row is saved, so a sweep in between would
 # delete a file somebody is still attaching. Spare anything this recent.
 MEDIA_ORPHAN_GRACE_HOURS = env.int("MEDIA_ORPHAN_GRACE_HOURS", default=6)
