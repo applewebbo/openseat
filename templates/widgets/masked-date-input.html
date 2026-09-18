@@ -1,0 +1,30 @@
+{% load i18n %}
+<div class="relative" x-data="maskedDate()">
+    <input type="text"
+           inputmode="numeric"
+           autocomplete="off"
+           name="{{ widget.name }}"
+           value="{{ widget.value|default:'' }}"
+           placeholder="--/--/----"
+           x-ref="text"
+           @input="onInput($event)"
+           {% include "django/forms/widgets/attrs.html" %}>
+    <input type="date"
+           class="sr-only"
+           tabindex="-1"
+           aria-hidden="true"
+           x-ref="picker"
+           @change="onPickerChange($event)">
+    <button type="button"
+            class="text-base-content/50 hover:text-base-content absolute inset-y-0 right-2 flex items-center"
+            aria-label="{% translate "Open calendar" %}"
+            @click="openPicker">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             viewBox="0 0 256 256"
+             fill="currentColor"
+             class="h-5 w-5"
+             aria-hidden="true">
+            <path d="M208,28H188V24a12,12,0,0,0-24,0v4H92V24a12,12,0,0,0-24,0v4H48A20,20,0,0,0,28,48V208a20,20,0,0,0,20,20H208a20,20,0,0,0,20-20V48A20,20,0,0,0,208,28ZM68,52a12,12,0,0,0,24,0h72a12,12,0,0,0,24,0h16V76H52V52ZM52,204V100H204V204Z" />
+        </svg>
+    </button>
+</div>

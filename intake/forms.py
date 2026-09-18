@@ -2,6 +2,7 @@ from django import forms
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from core.widgets import MaskedDateInput
 from intake.geo import comune_choices, province_choices
 from intake.models import SubjectType, Submission
 from intake.validators import (
@@ -115,10 +116,8 @@ class PersonForm(SectionForm):
             if name.endswith("_email"):
                 field.widget.attrs["inputmode"] = "email"
             if name.endswith("_birth_date"):
-                field.widget = forms.DateInput(
-                    attrs={"type": "date", "class": "input input-bordered w-full"},
-                    format="%Y-%m-%d",
-                )
+                field.widget = MaskedDateInput()
+                field.input_formats = ["%d/%m/%Y"]
             if name.endswith("_province"):
                 self.fields[name] = forms.ChoiceField(
                     label=field.label,

@@ -4,13 +4,13 @@ from django import forms
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from core.widgets import MaskedDateInput
 from events.models import Booking, Event
 from intake.models import PublicForm, SubjectType
 from intake.validators import validate_phone, validate_postcode, validate_tax_code
 from members.models import Member
 
 _TEXT = {"class": "input input-bordered w-full"}
-_DATE = {"type": "date", "class": "input input-bordered w-full"}
 _CHECKBOX = {"class": "checkbox checkbox-primary mt-0.5 [--radius-selector:0.25rem]"}
 _RADIO = {"class": "radio radio-primary mt-0.5"}
 
@@ -141,7 +141,8 @@ class ManualBookingForm(forms.Form):
     )
     applicant_birth_date = forms.DateField(
         label=_("Date of birth"),
-        widget=forms.DateInput(attrs=_DATE, format="%Y-%m-%d"),
+        input_formats=["%d/%m/%Y"],
+        widget=MaskedDateInput(),
     )
     applicant_birth_place = forms.CharField(
         label=_("Place of birth"), max_length=100, widget=forms.TextInput(attrs=_TEXT)
@@ -193,7 +194,8 @@ class ManualBookingForm(forms.Form):
     member_birth_date = forms.DateField(
         label=_("Date of birth"),
         required=False,
-        widget=forms.DateInput(attrs=_DATE, format="%Y-%m-%d"),
+        input_formats=["%d/%m/%Y"],
+        widget=MaskedDateInput(),
     )
     member_birth_place = forms.CharField(
         label=_("Place of birth"),
@@ -309,7 +311,9 @@ class EventCreateForm(forms.ModelForm):
         "form",
     ]
 
-    starts_date = forms.DateField(label=_("Date"), widget=forms.DateInput(attrs=_DATE))
+    starts_date = forms.DateField(
+        label=_("Date"), input_formats=["%d/%m/%Y"], widget=MaskedDateInput()
+    )
     starts_time = forms.TimeField(
         label=_("Time"),
         input_formats=["%H:%M"],

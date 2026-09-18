@@ -15,7 +15,7 @@ def _post_data(**overrides):
         "title": "Una giornata con gli asini",
         "description": "",
         "location": "Ca' di Asu, Olengo",
-        "starts_date": "2027-04-20",
+        "starts_date": "20/04/2027",
         "starts_time": "16:00",
         "cost": "",
         "is_published": "on",
