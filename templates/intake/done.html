@@ -13,7 +13,7 @@
             {% blocktranslate with email=submission.applicant_email %}A copy is on its way to {{ email }}. Keep this page's link if you want to come back to it.{% endblocktranslate %}
         </p>
 
-        <dl class="mt-8 divide-y divide-black/5 rounded-xl bg-[#f6f4f1] px-4 text-sm">
+        <dl class="divide-base-content/5 bg-base-200 mt-8 divide-y rounded-xl px-4 text-sm">
             <div class="flex justify-between gap-4 py-2.5">
                 <dt class="text-base-content/60">{% translate "Signed on" %}</dt>
                 <dd class="text-right font-medium tabular-nums">{{ submission.submitted_at|date:"d/m/Y H:i" }}</dd>

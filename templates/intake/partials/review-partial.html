@@ -14,7 +14,7 @@ step that set it, so the signature covers something the signer has actually seen
             <a class="text-primary text-xs font-medium underline underline-offset-4"
                href="{% url 'intake:step' submission.token 'applicant' %}">{% translate "Change" %}</a>
         </h2>
-        <dl class="divide-y divide-black/5 rounded-xl bg-[#f6f4f1] px-4 text-sm">
+        <dl class="divide-base-content/5 bg-base-200 divide-y rounded-xl px-4 text-sm">
             <div class="flex justify-between gap-4 py-2.5">
                 <dt class="text-base-content/60">{% translate "Name" %}</dt>
                 <dd class="text-right font-medium">{{ submission.applicant_first_name }} {{ submission.applicant_last_name }}</dd>
@@ -45,7 +45,7 @@ step that set it, so the signature covers something the signer has actually seen
                 <a class="text-primary text-xs font-medium underline underline-offset-4"
                    href="{% url 'intake:step' submission.token 'member' %}">{% translate "Change" %}</a>
             </h2>
-            <dl class="divide-y divide-black/5 rounded-xl bg-[#f6f4f1] px-4 text-sm">
+            <dl class="divide-base-content/5 bg-base-200 divide-y rounded-xl px-4 text-sm">
                 <div class="flex justify-between gap-4 py-2.5">
                     <dt class="text-base-content/60">{% translate "Name" %}</dt>
                     <dd class="text-right font-medium">{{ submission.member_first_name }} {{ submission.member_last_name }}</dd>
@@ -67,7 +67,7 @@ step that set it, so the signature covers something the signer has actually seen
                 <a class="text-primary text-xs font-medium underline underline-offset-4"
                    href="{% url 'intake:step' submission.token 'statute' %}">{% translate "Change" %}</a>
             </h2>
-            <p class="rounded-xl bg-[#f6f4f1] p-4 text-sm leading-relaxed">
+            <p class="bg-base-200 rounded-xl p-4 text-sm leading-relaxed">
                 {% if submission.sole_holder %}
                     {% translate "You declared that you are the sole holder of parental responsibility, so you sign alone." %}
                 {% else %}
@@ -83,7 +83,7 @@ step that set it, so the signature covers something the signer has actually seen
             <a class="text-primary text-xs font-medium underline underline-offset-4"
                href="{% url 'intake:step' submission.token 'consents' %}">{% translate "Change" %}</a>
         </h2>
-        <dl class="divide-y divide-black/5 rounded-xl bg-[#f6f4f1] px-4 text-sm">
+        <dl class="divide-base-content/5 bg-base-200 divide-y rounded-xl px-4 text-sm">
             <div class="flex justify-between gap-4 py-2.5">
                 <dt class="text-base-content/60">{% translate "Website and social channels" %}</dt>
                 <dd class="text-right font-medium">

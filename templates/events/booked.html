@@ -27,7 +27,7 @@
         <p class="text-base-content/80 mt-4">{{ event.starts_at|date:"l d F Y, H:i" }}{% if event.location %} · {{ event.location }}{% endif %}</p>
 
         {% if bookings %}
-            <ul class="mt-8 divide-y divide-black/5 rounded-xl bg-[#f6f4f1] px-4 text-sm">
+            <ul class="divide-base-content/5 bg-base-200 mt-8 divide-y rounded-xl px-4 text-sm">
                 {% for booking in bookings %}
                     <li class="flex items-center justify-between gap-3 py-2.5">
                         <span class="font-medium">{{ booking.full_name }}</span>
