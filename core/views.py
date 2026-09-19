@@ -8,6 +8,7 @@ from django.views.decorators.cache import cache_control
 from health_check.checks import Database
 from health_check.views import HealthCheckView
 
+from core.releases import RELEASES
 from events.models import Event
 from intake.models import Association
 
@@ -51,6 +52,12 @@ def home(request):
             "archive": archive,
         },
     )
+
+
+@login_not_required
+def releases(request):
+    """Plain-language changelog for non-technical users, newest release first."""
+    return render(request, "pages/releases.html", {"releases": RELEASES})
 
 
 @login_not_required

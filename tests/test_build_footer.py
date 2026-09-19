@@ -35,10 +35,8 @@ def test_the_vendor_links_to_its_own_site(client, association, settings):
     assert 'href="https://webbografico.example"' in content
 
 
-def test_the_version_links_to_the_source(client, association, settings):
-    """Self-hosted and open source: the footer says where the code is."""
-    settings.APP_SOURCE_URL = "https://github.example/openseat"
-
+def test_the_version_links_to_the_releases_page(client, association):
+    """The build tag is where a visitor learns what changed, not the source."""
     content = client.get(reverse("home")).content.decode()
 
-    assert 'href="https://github.example/openseat"' in content
+    assert reverse("releases") in content

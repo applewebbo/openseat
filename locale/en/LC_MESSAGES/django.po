@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 07:48+0200\n"
+"POT-Creation-Date: 2026-09-19 08:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,7 +79,7 @@ msgstr "Italian"
 msgid "English"
 msgstr "English"
 
-#: events/admin.py:34 events/forms.py:276
+#: events/admin.py:34 events/forms.py:279
 msgid "Send the confirmation mail"
 msgstr ""
 
@@ -108,7 +108,7 @@ msgstr ""
 msgid "Bookings for %(event)s"
 msgstr ""
 
-#: events/forms.py:28 events/forms.py:82 events/forms.py:187
+#: events/forms.py:28 events/forms.py:82 events/forms.py:190
 #: intake/forms.py:361 templates/home.html:122
 msgid "Email address"
 msgstr ""
@@ -117,7 +117,7 @@ msgstr ""
 msgid "The one the association writes to."
 msgstr ""
 
-#: events/forms.py:35 events/forms.py:160 events/forms.py:216
+#: events/forms.py:35 events/forms.py:163 events/forms.py:219
 #: templates/events/checkin-add-existing-search-partial.html:13
 #: templates/home.html:141 templates/intake/base-intake.html:59
 msgid "Tax code"
@@ -141,84 +141,84 @@ msgstr ""
 msgid "Child"
 msgstr ""
 
-#: events/forms.py:135
+#: events/forms.py:137
 msgid "Person under guardianship or supported administration"
 msgstr ""
 
-#: events/forms.py:139
+#: events/forms.py:142
 msgid "Who is attending"
 msgstr ""
 
-#: events/forms.py:146 events/forms.py:192
+#: events/forms.py:149 events/forms.py:195
 msgid "First name"
 msgstr ""
 
-#: events/forms.py:149 events/forms.py:198
+#: events/forms.py:152 events/forms.py:201
 msgid "Last name"
 msgstr ""
 
-#: events/forms.py:152 events/forms.py:204
+#: events/forms.py:155 events/forms.py:207
 msgid "Date of birth"
 msgstr ""
 
-#: events/forms.py:157 events/forms.py:210
+#: events/forms.py:160 events/forms.py:213
 msgid "Place of birth"
 msgstr ""
 
-#: events/forms.py:166 events/forms.py:222
+#: events/forms.py:169 events/forms.py:225
 msgid "Street"
 msgstr ""
 
-#: events/forms.py:169 events/forms.py:228
+#: events/forms.py:172 events/forms.py:231
 msgid "Number"
 msgstr ""
 
-#: events/forms.py:172
+#: events/forms.py:175
 msgid "Postcode"
 msgstr ""
 
-#: events/forms.py:178 events/forms.py:234
+#: events/forms.py:181 events/forms.py:237
 msgid "City"
 msgstr ""
 
-#: events/forms.py:181
+#: events/forms.py:184
 msgid "Phone"
 msgstr ""
 
-#: events/forms.py:242
+#: events/forms.py:245
 msgid "Form signed"
 msgstr ""
 
-#: events/forms.py:247
+#: events/forms.py:250
 msgid "Sole holder of parental responsibility"
 msgstr ""
 
-#: events/forms.py:251
+#: events/forms.py:254
 msgid "Other parent's first name"
 msgstr ""
 
-#: events/forms.py:257
+#: events/forms.py:260
 msgid "Other parent's last name"
 msgstr ""
 
-#: events/forms.py:265 intake/models.py:458
+#: events/forms.py:268 intake/models.py:458
 #: templates/intake/second-parent.html:4
 msgid "Image consent"
 msgstr ""
 
-#: events/forms.py:270 intake/models.py:353
+#: events/forms.py:273 intake/models.py:353
 msgid "WhatsApp consent"
 msgstr ""
 
-#: events/forms.py:322 events/forms.py:326 intake/forms.py:317
+#: events/forms.py:325 events/forms.py:329 intake/forms.py:317
 msgid "This field is required."
 msgstr ""
 
-#: events/forms.py:350 templates/account/email/base_notification.html:26
+#: events/forms.py:353 templates/account/email/base_notification.html:26
 msgid "Date"
 msgstr ""
 
-#: events/forms.py:353
+#: events/forms.py:356
 msgid "Time"
 msgstr ""
 
@@ -2180,6 +2180,21 @@ msgstr ""
 
 #: templates/intake/step.html:73
 msgid "Save and come back later"
+msgstr ""
+
+#: templates/pages/releases.html:4 templates/pages/releases.html:12
+msgid "What's new"
+msgstr ""
+
+#: templates/pages/releases.html:15
+msgid "A summary of what changed at each update."
+msgstr ""
+
+#: templates/pages/releases.html:16
+#, python-format
+msgid ""
+"For the full technical changelog, see <a href=\"%(url)s/releases\" "
+"class=\"link link-primary\" target=\"_blank\" rel=\"noopener\">GitHub</a>."
 msgstr ""
 
 #: templates/widgets/masked-date-input.html:20

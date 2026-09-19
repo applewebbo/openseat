@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 07:48+0200\n"
+"POT-Creation-Date: 2026-09-19 08:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,7 +79,7 @@ msgstr "Italiano"
 msgid "English"
 msgstr "Inglese"
 
-#: events/admin.py:34 events/forms.py:276
+#: events/admin.py:34 events/forms.py:279
 msgid "Send the confirmation mail"
 msgstr "Invia la mail di conferma"
 
@@ -108,7 +108,7 @@ msgstr "Eventi e prenotazioni"
 msgid "Bookings for %(event)s"
 msgstr "Prenotazioni per %(event)s"
 
-#: events/forms.py:28 events/forms.py:82 events/forms.py:187
+#: events/forms.py:28 events/forms.py:82 events/forms.py:190
 #: intake/forms.py:361 templates/home.html:122
 msgid "Email address"
 msgstr "Indirizzo email"
@@ -117,7 +117,7 @@ msgstr "Indirizzo email"
 msgid "The one the association writes to."
 msgstr "Quello a cui scrive l’associazione."
 
-#: events/forms.py:35 events/forms.py:160 events/forms.py:216
+#: events/forms.py:35 events/forms.py:163 events/forms.py:219
 #: templates/events/checkin-add-existing-search-partial.html:13
 #: templates/home.html:141 templates/intake/base-intake.html:59
 msgid "Tax code"
@@ -143,84 +143,84 @@ msgstr "Adulto"
 msgid "Child"
 msgstr "Bambino"
 
-#: events/forms.py:135
+#: events/forms.py:137
 msgid "Person under guardianship or supported administration"
 msgstr "Persona sotto tutela o amministrazione di sostegno"
 
-#: events/forms.py:139
+#: events/forms.py:142
 msgid "Who is attending"
 msgstr "Chi partecipa"
 
-#: events/forms.py:146 events/forms.py:192
+#: events/forms.py:149 events/forms.py:195
 msgid "First name"
 msgstr "Nome"
 
-#: events/forms.py:149 events/forms.py:198
+#: events/forms.py:152 events/forms.py:201
 msgid "Last name"
 msgstr "Cognome"
 
-#: events/forms.py:152 events/forms.py:204
+#: events/forms.py:155 events/forms.py:207
 msgid "Date of birth"
 msgstr "Data di nascita"
 
-#: events/forms.py:157 events/forms.py:210
+#: events/forms.py:160 events/forms.py:213
 msgid "Place of birth"
 msgstr "Luogo di nascita"
 
-#: events/forms.py:166 events/forms.py:222
+#: events/forms.py:169 events/forms.py:225
 msgid "Street"
 msgstr "Via"
 
-#: events/forms.py:169 events/forms.py:228
+#: events/forms.py:172 events/forms.py:231
 msgid "Number"
 msgstr "Numero civico"
 
-#: events/forms.py:172
+#: events/forms.py:175
 msgid "Postcode"
 msgstr "CAP"
 
-#: events/forms.py:178 events/forms.py:234
+#: events/forms.py:181 events/forms.py:237
 msgid "City"
 msgstr "Città"
 
-#: events/forms.py:181
+#: events/forms.py:184
 msgid "Phone"
 msgstr "Telefono"
 
-#: events/forms.py:242
+#: events/forms.py:245
 msgid "Form signed"
 msgstr "Modulo firmato"
 
-#: events/forms.py:247
+#: events/forms.py:250
 msgid "Sole holder of parental responsibility"
 msgstr "Unico titolare della responsabilità genitoriale"
 
-#: events/forms.py:251
+#: events/forms.py:254
 msgid "Other parent's first name"
 msgstr "Nome dell’altro genitore"
 
-#: events/forms.py:257
+#: events/forms.py:260
 msgid "Other parent's last name"
 msgstr "Cognome dell’altro genitore"
 
-#: events/forms.py:265 intake/models.py:458
+#: events/forms.py:268 intake/models.py:458
 #: templates/intake/second-parent.html:4
 msgid "Image consent"
 msgstr "Consenso immagini"
 
-#: events/forms.py:270 intake/models.py:353
+#: events/forms.py:273 intake/models.py:353
 msgid "WhatsApp consent"
 msgstr "Consenso WhatsApp"
 
-#: events/forms.py:322 events/forms.py:326 intake/forms.py:317
+#: events/forms.py:325 events/forms.py:329 intake/forms.py:317
 msgid "This field is required."
 msgstr "Questo campo è obbligatorio."
 
-#: events/forms.py:350 templates/account/email/base_notification.html:26
+#: events/forms.py:353 templates/account/email/base_notification.html:26
 msgid "Date"
 msgstr "Data"
 
-#: events/forms.py:353
+#: events/forms.py:356
 msgid "Time"
 msgstr "Ora"
 
@@ -2358,6 +2358,23 @@ msgstr "Le risposte vengono salvate man mano."
 #: templates/intake/step.html:73
 msgid "Save and come back later"
 msgstr "Salva e riprendi più tardi"
+
+#: templates/pages/releases.html:4 templates/pages/releases.html:12
+msgid "What's new"
+msgstr "Novità"
+
+#: templates/pages/releases.html:15
+msgid "A summary of what changed at each update."
+msgstr "Un riepilogo di cosa è cambiato a ogni aggiornamento."
+
+#: templates/pages/releases.html:16
+#, python-format
+msgid ""
+"For the full technical changelog, see <a href=\"%(url)s/releases\" "
+"class=\"link link-primary\" target=\"_blank\" rel=\"noopener\">GitHub</a>."
+msgstr ""
+"Per l'elenco tecnico completo, vedi <a href=\"%(url)s/releases\" "
+"class=\"link link-primary\" target=\"_blank\" rel=\"noopener\">GitHub</a>."
 
 #: templates/widgets/masked-date-input.html:20
 msgid "Open calendar"
