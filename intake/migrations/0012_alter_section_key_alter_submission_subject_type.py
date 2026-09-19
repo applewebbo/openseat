@@ -4,20 +4,40 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('intake', '0011_alter_association_slug'),
+        ("intake", "0011_alter_association_slug"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='section',
-            name='key',
-            field=models.CharField(choices=[('subject', 'Who is taking part in the event'), ('applicant', 'Your details'), ('member', 'Who is taking part'), ('statute', 'Statute and fee'), ('privacy', 'Privacy notice'), ('consents', 'Image consents'), ('review', 'Review and subscription')], max_length=20, verbose_name='section'),
+            model_name="section",
+            name="key",
+            field=models.CharField(
+                choices=[
+                    ("subject", "Who is taking part in the event"),
+                    ("applicant", "Your details"),
+                    ("member", "Who is taking part"),
+                    ("statute", "Statute and fee"),
+                    ("privacy", "Privacy notice"),
+                    ("consents", "Image consents"),
+                    ("review", "Review and subscription"),
+                ],
+                max_length=20,
+                verbose_name="section",
+            ),
         ),
         migrations.AlterField(
-            model_name='submission',
-            name='subject_type',
-            field=models.CharField(blank=True, choices=[('self', 'Me'), ('minor', 'My child'), ('protected', 'A person I am the legal guardian of')], max_length=10, verbose_name='applying for'),
+            model_name="submission",
+            name="subject_type",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("self", "Me"),
+                    ("minor", "My child"),
+                    ("protected", "A person I am the legal guardian of"),
+                ],
+                max_length=10,
+                verbose_name="applying for",
+            ),
         ),
     ]

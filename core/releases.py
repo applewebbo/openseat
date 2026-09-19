@@ -10,6 +10,20 @@ from datetime import date
 
 RELEASES: list[dict] = [
     {
+        "version": "2026.3",
+        "date": date(2026, 9, 19),
+        "notes": [
+            "Le email di conferma (prenotazione e domanda di adesione) "
+            "mostrano ora il logo dell'associazione.",
+            'Nuova pagina "Novità", raggiungibile dal numero di versione in '
+            "fondo al sito, con la cronologia di tutti gli aggiornamenti.",
+            "Le date si inseriscono ora digitando giorno/mese/anno, invece "
+            "di aprire il calendario nativo del telefono.",
+            "Corretti alcuni problemi di leggibilità in modalità scura, "
+            "incluso il logo dell'associazione.",
+        ],
+    },
+    {
         "version": "2026.2",
         "date": date(2026, 8, 30),
         "notes": [
