@@ -268,9 +268,29 @@ class ManualBookingForm(forms.Form):
         widget=forms.CheckboxInput(attrs=_CHECKBOX),
     )
 
+    # The two people almost always live together, so the member's own address
+    # is offered a client-side copy of the applicant's, mirroring
+    # intake.forms.MemberForm.AUTOFILL_FROM_APPLICANT — this form has no
+    # server round trip between the two sections, so the copy and its green
+    # highlight both live in Alpine (checkin-add-modal-partial.html).
+    AUTOFILL_FROM_APPLICANT = {
+        "member_street": "applicant_street",
+        "member_number": "applicant_number",
+        "member_city": "applicant_city",
+    }
+
     def __init__(self, *args, event=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.event = event
+        for applicant_name in self.AUTOFILL_FROM_APPLICANT.values():
+            self.fields[applicant_name].widget.attrs["@blur"] = (
+                "autofillMemberAddress()"
+            )
+        for member_name in self.AUTOFILL_FROM_APPLICANT:
+            attrs = self.fields[member_name].widget.attrs
+            attrs[":class"] = f"{{ 'border-success': autofilled.{member_name} }}"
+            attrs["@input"] = f"autofilled.{member_name} = false"
+            attrs["@change"] = f"autofilled.{member_name} = false"
 
     def clean(self):
         cleaned = super().clean()

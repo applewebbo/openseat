@@ -951,3 +951,29 @@ def test_mark_prefilled_skips_a_name_the_form_does_not_have(event):
     form = ManualBookingForm(event=event)
 
     _mark_prefilled(form, ["applicant_province"])
+
+
+def test_the_manual_form_wires_client_side_address_autofill(event):
+    from events.forms import ManualBookingForm
+
+    form = ManualBookingForm(event=event)
+
+    assert (
+        form.fields["applicant_street"].widget.attrs["@blur"]
+        == "autofillMemberAddress()"
+    )
+    member_attrs = form.fields["member_street"].widget.attrs
+    assert member_attrs[":class"] == "{ 'border-success': autofilled.member_street }"
+    assert member_attrs["@input"] == "autofilled.member_street = false"
+    assert member_attrs["@change"] == "autofilled.member_street = false"
+
+
+def test_the_add_booking_modal_ships_the_address_autofill_script(
+    editor_client, event, public_form
+):
+    event.form = public_form
+    event.save()
+
+    response = editor_client.get(event.get_absolute_url(), {"view": "manage"})
+
+    assert b"autofillMemberAddress" in response.content

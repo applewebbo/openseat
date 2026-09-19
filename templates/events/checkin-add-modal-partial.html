@@ -7,8 +7,21 @@
     <div class="modal-box max-w-2xl rounded-2xl"
          x-data="{
              choice: '{{ add_form.subject_type.value|default:'minor' }}',
-             soleHolder: {% if add_form.sole_holder.value == False %}false{% else %}true{% endif %}
-         }">
+             soleHolder: {% if add_form.sole_holder.value == False %}false{% else %}true{% endif %},
+             autofilled: { member_street: false, member_number: false, member_city: false },
+             autofillMemberAddress() {
+                 const map = { member_street: 'applicant_street', member_number: 'applicant_number', member_city: 'applicant_city' };
+                 for (const [memberName, applicantName] of Object.entries(map)) {
+                     const memberField = document.getElementById('id_' + memberName);
+                     const applicantField = document.getElementById('id_' + applicantName);
+                     if (memberField && applicantField && !memberField.value && applicantField.value) {
+                         memberField.value = applicantField.value;
+                         this.autofilled[memberName] = true;
+                     }
+                 }
+             }
+         }"
+         x-init="$watch('choice', value => { if (value !== 'self' && value !== 'existing') autofillMemberAddress() })">
         <label for="add-booking"
                class="btn btn-sm btn-circle btn-ghost absolute top-4 right-4"
                aria-label="{% translate 'Close' %}">✕</label>
