@@ -88,6 +88,12 @@ profile = "django"
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "core.settings"
 addopts = "--reuse-db --nomigrations"
+filterwarnings = [
+  # django-import-export's own admin internals, not code of ours to fix.
+  # Re-check on every django-import-export bump whether it still needs this (#76).
+  "ignore:Overriding get_actions\\(\\) without the 'action_location' parameter is deprecated:django.utils.deprecation.RemovedInDjango70Warning",
+  "ignore:The 'get_valid_export_item_pks\\(\\)' method in members.admin.MemberAdmin is deprecated:DeprecationWarning"
+]
 python_files = "test_*.py"
 testpaths = ["tests"]
 xfail_strict = true
