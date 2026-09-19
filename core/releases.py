@@ -15,12 +15,12 @@ RELEASES: list[dict] = [
         "notes": [
             "Le email di conferma (prenotazione e domanda di adesione) "
             "mostrano ora il logo dell'associazione.",
-            'Nuova pagina "Novità", raggiungibile dal numero di versione in '
-            "fondo al sito, con la cronologia di tutti gli aggiornamenti.",
+            "Le prenotazioni aggiunte a mano da un editor ricevono ora la "
+            "stessa mail di conferma di quelle fatte online.",
+            "L'indirizzo di un minorenne aggiunto a mano al check-in si "
+            "precompila ora con quello di chi firma la richiesta.",
             "Le date si inseriscono ora digitando giorno/mese/anno, invece "
             "di aprire il calendario nativo del telefono.",
-            "Corretti alcuni problemi di leggibilità in modalità scura, "
-            "incluso il logo dell'associazione.",
         ],
     },
     {
