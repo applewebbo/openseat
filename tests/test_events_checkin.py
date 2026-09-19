@@ -812,6 +812,26 @@ def test_the_lookup_finds_a_minor_and_prefills_their_own_fields(
     assert "border-success" in content
 
 
+def test_the_lookup_finds_a_minor_whose_birthday_is_still_ahead_this_year(
+    editor_client, event, member_factory
+):
+    """Age counts down a year until the birthday actually happens."""
+    member = member_factory(
+        association=event.association,
+        tax_code="RSSLCU11P03F952U",
+        birth_date="2011-12-25",
+    )
+
+    with time_machine.travel(datetime(2026, 6, 15), tick=False):
+        response = editor_client.get(
+            reverse("events:checkin-lookup", args=[event.slug]),
+            {"existing_tax_code": member.tax_code},
+        )
+
+    content = response.content.decode()
+    assert "choice = 'minor'" in content
+
+
 def test_the_lookup_also_prefills_the_signers_own_details_for_a_minor(
     editor_client, event, member_factory
 ):
