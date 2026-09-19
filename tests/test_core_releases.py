@@ -28,5 +28,5 @@ class TestReleasesData:
         for entry in RELEASES:
             assert entry["version"]
             assert not entry["version"].startswith("v")
-            assert 2 <= len(entry["notes"]) <= 4
+            assert len(entry["notes"]) >= 2
             assert all(note.strip() for note in entry["notes"])

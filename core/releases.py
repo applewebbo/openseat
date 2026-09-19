@@ -1,9 +1,9 @@
 """Plain-language, per-release changelog shown on the public ``/novita`` page.
 
 Newest first. Append one entry per release (the ``/release`` skill does this as
-part of the workflow). Keep the notes non-technical Italian: 2-4 short bullet
-points a board member would understand, condensed from the GitHub release
-notes — not the raw commit list.
+part of the workflow). Keep the notes non-technical Italian: short bullet
+points a board member would understand, one per user-visible change,
+condensed from the GitHub release notes — not the raw commit list.
 """
 
 from datetime import date
@@ -21,6 +21,14 @@ RELEASES: list[dict] = [
             "precompila ora con quello di chi firma la richiesta.",
             "Le date si inseriscono ora digitando giorno/mese/anno, invece "
             "di aprire il calendario nativo del telefono.",
+            'Nuova pagina "Novità", raggiungibile dal numero di versione in '
+            "fondo al sito, con la cronologia di tutti gli aggiornamenti.",
+            "Corretti alcuni problemi di leggibilità in modalità scura, "
+            "incluso il logo dell'associazione.",
+            "Le scelte su chi partecipa, nel check-in e nel modulo di "
+            "domanda, sono state riformulate per essere più chiare.",
+            "Nel modulo di domanda bisogna ora scorrere l'informativa "
+            "privacy fino in fondo prima di poter continuare.",
         ],
     },
     {
