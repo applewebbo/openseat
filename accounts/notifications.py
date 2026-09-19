@@ -8,6 +8,7 @@ from django.utils.translation import gettext as _
 from django_q.tasks import async_task
 
 from core.links import absolute_url
+from core.mail import attach_logo
 from intake.models import Association
 
 User = get_user_model()
@@ -27,8 +28,9 @@ def deliver_approval_request(user_pk):
     if not recipients:
         return
 
+    association = Association.current()
     context = {
-        "association": Association.current(),
+        "association": association,
         "pending_user": user,
         "admin_url": absolute_url("admin:accounts_customuser_change", user.pk),
     }
@@ -42,6 +44,7 @@ def deliver_approval_request(user_pk):
     message.attach_alternative(
         render_to_string("account/mail/approval_request.html", context), "text/html"
     )
+    attach_logo(message, association)
     message.send()
 
 
@@ -54,8 +57,9 @@ def deliver_account_approved(user_pk):
     if user is None:
         return
 
+    association = Association.current()
     context = {
-        "association": Association.current(),
+        "association": association,
         "login_url": absolute_url("account_login"),
     }
     message = EmailMultiAlternatives(
@@ -67,4 +71,5 @@ def deliver_account_approved(user_pk):
     message.attach_alternative(
         render_to_string("account/mail/account_approved.html", context), "text/html"
     )
+    attach_logo(message, association)
     message.send()

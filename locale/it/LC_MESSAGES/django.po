@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 08:05+0200\n"
+"POT-Creation-Date: 2026-09-19 08:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,12 +62,12 @@ msgstr "utente"
 msgid "users"
 msgstr "utenti"
 
-#: accounts/notifications.py:36
+#: accounts/notifications.py:38
 #, python-format
 msgid "New sign-up waiting for approval: %(email)s"
 msgstr "Nuova registrazione in attesa di approvazione: %(email)s"
 
-#: accounts/notifications.py:62 templates/account/mail/account_approved.html:5
+#: accounts/notifications.py:66 templates/account/mail/account_approved.html:5
 msgid "Your account has been approved"
 msgstr "Il tuo account è stato approvato"
 
@@ -204,6 +204,8 @@ msgid "Other parent's last name"
 msgstr "Cognome dell’altro genitore"
 
 #: events/forms.py:268 intake/models.py:458
+#: templates/intake/mail/second-parent.html:5
+#: templates/intake/mail/second-parent.html:18
 #: templates/intake/second-parent.html:4
 msgid "Image consent"
 msgstr "Consenso immagini"
@@ -428,8 +430,8 @@ msgstr "prenotazioni"
 msgid "Booked: %(event)s"
 msgstr "Prenotazione confermata: %(event)s"
 
-#: events/notifications.py:79 templates/events/mail/bookings.html:5
-#: templates/events/mail/bookings.html:14 templates/events/mine.html:4
+#: events/notifications.py:80 templates/events/mail/bookings.html:5
+#: templates/events/mail/bookings.html:20 templates/events/mine.html:4
 #: templates/events/mine.html:12 templates/events/mine.html:19
 msgid "Your bookings"
 msgstr "Le tue prenotazioni"
@@ -887,22 +889,22 @@ msgstr "sottoscrizione"
 msgid "subscriptions"
 msgstr "sottoscrizioni"
 
-#: intake/notifications.py:46
+#: intake/notifications.py:43
 #, python-format
 msgid "Your application to %(association)s is still open"
 msgstr "La tua richiesta a %(association)s è ancora aperta"
 
-#: intake/notifications.py:48
+#: intake/notifications.py:45
 #, python-format
 msgid "Carry on with your application to %(association)s"
 msgstr "Riprendi la tua richiesta a %(association)s"
 
-#: intake/notifications.py:72
+#: intake/notifications.py:71
 #, python-format
 msgid "Your membership application to %(association)s"
 msgstr "La tua richiesta di adesione a %(association)s"
 
-#: intake/notifications.py:97
+#: intake/notifications.py:98
 #, python-format
 msgid "Image consent for %(member)s"
 msgstr "Consenso immagine per %(member)s"
@@ -1179,7 +1181,7 @@ msgstr "Imposta una nuova password."
 
 #: templates/account/login.html:4 templates/account/login.html:9
 #: templates/account/login.html:22
-#: templates/account/mail/account_approved.html:23
+#: templates/account/mail/account_approved.html:29
 #: templates/account/mail/account_approved.txt:5
 msgid "Sign In"
 msgstr "Accedi"
@@ -1200,12 +1202,12 @@ msgstr "Accedi con una passkey"
 msgid "Send me a sign-in code"
 msgstr "Inviami un codice di accesso"
 
-#: templates/account/mail/account_approved.html:15
+#: templates/account/mail/account_approved.html:21
 #: templates/account/mail/account_approved.txt:1
 msgid "You're in"
-msgstr "Sei dentro"
+msgstr "Account approvato"
 
-#: templates/account/mail/account_approved.html:18
+#: templates/account/mail/account_approved.html:24
 #: templates/account/mail/account_approved.txt:3
 msgid "Your account has been approved. You can now sign in."
 msgstr "Il tuo account è stato approvato. Ora puoi accedere."
@@ -1214,12 +1216,12 @@ msgstr "Il tuo account è stato approvato. Ora puoi accedere."
 msgid "New sign-up"
 msgstr "Nuova registrazione"
 
-#: templates/account/mail/approval_request.html:12
+#: templates/account/mail/approval_request.html:18
 #: templates/account/mail/approval_request.txt:1
 msgid "Waiting for approval"
 msgstr "In attesa di approvazione"
 
-#: templates/account/mail/approval_request.html:16
+#: templates/account/mail/approval_request.html:22
 #: templates/account/mail/approval_request.txt:3
 msgid ""
 "Somebody signed up and their email is verified. They cannot sign in until "
@@ -1228,7 +1230,7 @@ msgstr ""
 "Qualcuno si è registrato e la sua email è verificata. Non potrà accedere "
 "finché non approvi l'account."
 
-#: templates/account/mail/approval_request.html:21
+#: templates/account/mail/approval_request.html:27
 #: templates/account/mail/approval_request.txt:7
 msgid "Review in the admin"
 msgstr "Vai all'amministrazione"
@@ -1300,7 +1302,7 @@ msgid "Menu"
 msgstr "Menu"
 
 #: templates/events/book.html:4 templates/events/book.html:12
-#: templates/events/mail/booking.html:19 templates/events/mail/booking.txt:6
+#: templates/events/mail/booking.html:25 templates/events/mail/booking.txt:6
 msgid "Who is coming"
 msgstr "Chi viene"
 
@@ -1612,25 +1614,25 @@ msgstr ""
 "Questo evento non accetta più prenotazioni. Scrivi a %(email)s se ti serve "
 "contattare gli organizzatori."
 
-#: templates/events/mail/booking.html:12 templates/events/mail/booking.txt:1
+#: templates/events/mail/booking.html:18 templates/events/mail/booking.txt:1
 #, python-format
 msgid "The place is booked."
 msgid_plural "The %(counter)s places are booked."
 msgstr[0] "Il posto è prenotato."
 msgstr[1] "I %(counter)s posti sono prenotati."
 
-#: templates/events/mail/booking.html:31
+#: templates/events/mail/booking.html:37
 msgid "Change the booking"
 msgstr "Modifica la prenotazione"
 
-#: templates/events/mail/booking.html:35
+#: templates/events/mail/booking.html:41
 msgid ""
 "Cancel it or update your contacts from this link, up until the day itself."
 msgstr ""
 "Da questo link puoi annullare la prenotazione o aggiornare i tuoi recapiti, "
 "fino al giorno stesso."
 
-#: templates/events/mail/booking.html:41 templates/events/mail/booking.txt:12
+#: templates/events/mail/booking.html:47 templates/events/mail/booking.txt:12
 #, python-format
 msgid ""
 "The membership application is signed and with the board of %(association)s, "
@@ -1639,18 +1641,20 @@ msgstr ""
 "La richiesta di adesione è firmata ed è al Consiglio Direttivo di "
 "%(association)s, che ne confermerà l'iscrizione."
 
-#: templates/events/mail/booking.html:45 templates/events/mail/booking.txt:14
-#: templates/intake/done.html:18 templates/intake/mail/receipt.txt:5
+#: templates/events/mail/booking.html:51 templates/events/mail/booking.txt:14
+#: templates/intake/done.html:18 templates/intake/mail/receipt.html:29
+#: templates/intake/mail/receipt.txt:5
 msgid "Signed on"
 msgstr "Sottoscritta il"
 
-#: templates/events/mail/booking.html:49 templates/events/mail/booking.txt:15
-#: templates/intake/done.html:22 templates/intake/mail/receipt.txt:6
+#: templates/events/mail/booking.html:55 templates/events/mail/booking.txt:15
+#: templates/intake/done.html:22 templates/intake/mail/receipt.html:33
+#: templates/intake/mail/receipt.txt:6
 msgid "Annual fee"
 msgstr "Quota annuale"
 
-#: templates/events/mail/booking.html:54 templates/events/mail/booking.txt:16
-#: templates/intake/mail/receipt.txt:8
+#: templates/events/mail/booking.html:60 templates/events/mail/booking.txt:16
+#: templates/intake/mail/receipt.html:41 templates/intake/mail/receipt.txt:8
 msgid "Your copy"
 msgstr "La tua copia"
 
@@ -1660,20 +1664,20 @@ msgstr ""
 "Da qui puoi annullare la prenotazione o aggiornare i tuoi recapiti, fino al "
 "giorno stesso:"
 
-#: templates/events/mail/bookings.html:12 templates/events/mail/bookings.txt:1
+#: templates/events/mail/bookings.html:18 templates/events/mail/bookings.txt:1
 #, python-format
 msgid "You have one booking coming up."
 msgid_plural "You have %(counter)s bookings coming up."
 msgstr[0] "Hai una prenotazione in arrivo."
 msgstr[1] "Hai %(counter)s prenotazioni in arrivo."
 
-#: templates/events/mail/bookings.html:33 templates/events/recover.html:4
+#: templates/events/mail/bookings.html:39 templates/events/recover.html:4
 #: templates/events/recover.html:21 templates/events/recover.html:26
 #: templates/home.html:114
 msgid "Manage your bookings"
 msgstr "Gestisci le tue prenotazioni"
 
-#: templates/events/mail/bookings.html:37 templates/events/mail/bookings.txt:10
+#: templates/events/mail/bookings.html:43 templates/events/mail/bookings.txt:10
 #, python-format
 msgid ""
 "The link works for %(days)s days. Ask for a new one from the home page "
@@ -1809,7 +1813,7 @@ msgstr "Statuto"
 msgid "Skip to the form"
 msgstr "Vai al modulo"
 
-#: templates/intake/done.html:4
+#: templates/intake/done.html:4 templates/intake/mail/receipt.html:18
 msgid "Application sent"
 msgstr "Richiesta inviata"
 
@@ -1947,18 +1951,58 @@ msgstr ""
 "Questo modulo al momento non accetta richieste. Scrivi a %(email)s per "
 "sapere quando riapre."
 
-#: templates/intake/mail/receipt.txt:1
-#, python-format
-msgid "The membership application for %(name)s has been sent."
-msgstr "La richiesta di adesione per %(name)s è stata inviata."
+#: templates/intake/mail/receipt.html:5
+msgid "Your membership application"
+msgstr "Richiesta di adesione"
 
-#: templates/intake/mail/receipt.txt:3
+#: templates/intake/mail/receipt.html:24 templates/intake/mail/receipt.txt:3
 #, python-format
 msgid ""
 "It is now with the board of %(association)s, which will confirm the "
 "enrolment."
 msgstr ""
-"È ora al Consiglio Direttivo di %(association)s, che confermerà l’iscrizione."
+"La tua richiesta è stata inoltrata al Consiglio Direttivo di %(association)s, "
+"che confermerà l’iscrizione."
+
+#: templates/intake/mail/receipt.txt:1
+#, python-format
+msgid "The membership application for %(name)s has been sent."
+msgstr "La richiesta di adesione per %(name)s è stata inviata."
+
+#: templates/intake/mail/resume.html:7 templates/intake/mail/resume.html:28
+msgid "Your application is still open"
+msgstr "La tua richiesta è ancora aperta"
+
+#: templates/intake/mail/resume.html:9 templates/intake/mail/resume.html:30
+msgid "Carry on with your application"
+msgstr "Riprendi la tua richiesta"
+
+#: templates/intake/mail/resume.html:35
+msgid ""
+"Nothing has been sent to the association yet. Pick it up here, and you will "
+"land where you left off."
+msgstr ""
+"All’associazione non è ancora stato inviato nulla. Riprendi da qui e ti "
+"ritrovi dove eri rimasto."
+
+#: templates/intake/mail/resume.html:37
+msgid ""
+"Open it whenever you have a moment and you will land where you left off."
+msgstr "Aprilo quando hai un momento e ti ritrovi dove eri rimasto."
+
+#: templates/intake/mail/resume.html:43
+msgid "Continue your application"
+msgstr "Riprendi la richiesta"
+
+#: templates/intake/mail/resume.html:47 templates/intake/mail/resume.txt:7
+#: templates/intake/save.html:26
+#, python-format
+msgid ""
+"An unfinished application is deleted on %(date)s, thirty days after the last "
+"change."
+msgstr ""
+"Una richiesta non completata viene cancellata il %(date)s, trenta giorni "
+"dopo l’ultima modifica."
 
 #: templates/intake/mail/resume.txt:1
 #, python-format
@@ -1981,15 +2025,7 @@ msgstr ""
 "Ecco il link per rientrare nella tua richiesta. Aprilo quando hai un momento "
 "e ti ritrovi dove eri rimasto:"
 
-#: templates/intake/mail/resume.txt:7 templates/intake/save.html:26
-#, python-format
-msgid ""
-"An unfinished application is deleted on %(date)s, thirty days after the last "
-"change."
-msgstr ""
-"Una richiesta non completata viene cancellata il %(date)s, trenta giorni "
-"dopo l’ultima modifica."
-
+#: templates/intake/mail/second-parent.html:24
 #: templates/intake/mail/second-parent.txt:1
 #, python-format
 msgid "%(parent)s has applied to enrol %(member)s in %(association)s."
@@ -1997,6 +2033,7 @@ msgstr ""
 "%(parent)s ha presentato richiesta di adesione per %(member)s a "
 "%(association)s."
 
+#: templates/intake/mail/second-parent.html:27
 #: templates/intake/mail/second-parent.txt:3
 msgid ""
 "Publishing a child's images needs the consent of both holders of parental "
@@ -2008,6 +2045,7 @@ msgstr ""
 "anche a te. Finché non rispondi non viene pubblicata alcuna immagine; "
 "l’adesione non ne risente."
 
+#: templates/intake/mail/second-parent.html:32
 #: templates/intake/mail/second-parent.txt:5
 msgid "Answer here"
 msgstr "Rispondi qui"

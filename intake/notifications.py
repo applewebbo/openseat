@@ -1,12 +1,12 @@
 """Outbound mail. Queued through django-q2 so a slow SMTP never blocks a reply."""
 
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
 from django_q.tasks import async_task
 
 from core.links import absolute_url
-from core.mail import from_header
+from core.mail import attach_logo, from_header
 from intake.models import Submission, Subscription
 from intake.wizard import resume_step
 
@@ -29,30 +29,32 @@ def deliver_resume_link(submission_pk, email=None, reminder=False):
         pk=submission_pk
     )
     association = submission.form.association
-    body = render_to_string(
-        "intake/mail/resume.txt",
-        {
-            "submission": submission,
-            "association": association,
-            "reminder": reminder,
-            "expires_at": submission.expires_at,
-            "resume_url": absolute_url(
-                "intake:step", submission.token, resume_step(submission)
-            ),
-        },
-    )
-    EmailMessage(
+    context = {
+        "submission": submission,
+        "association": association,
+        "reminder": reminder,
+        "expires_at": submission.expires_at,
+        "resume_url": absolute_url(
+            "intake:step", submission.token, resume_step(submission)
+        ),
+    }
+    message = EmailMultiAlternatives(
         subject=(
             _("Your application to %(association)s is still open")
             if reminder
             else _("Carry on with your application to %(association)s")
         )
         % {"association": association.name},
-        body=body,
+        body=render_to_string("intake/mail/resume.txt", context),
         from_email=from_header(association),
         to=[email or submission.applicant_email],
         reply_to=[association.email],
-    ).send()
+    )
+    message.attach_alternative(
+        render_to_string("intake/mail/resume.html", context), "text/html"
+    )
+    attach_logo(message, association)
+    message.send()
 
 
 def deliver_receipt(submission_pk):
@@ -60,22 +62,24 @@ def deliver_receipt(submission_pk):
         pk=submission_pk
     )
     association = submission.form.association
-    body = render_to_string(
-        "intake/mail/receipt.txt",
-        {
-            "submission": submission,
-            "association": association,
-            "done_url": absolute_url("intake:done", submission.token),
-        },
-    )
-    EmailMessage(
+    context = {
+        "submission": submission,
+        "association": association,
+        "done_url": absolute_url("intake:done", submission.token),
+    }
+    message = EmailMultiAlternatives(
         subject=_("Your membership application to %(association)s")
         % {"association": association.name},
-        body=body,
+        body=render_to_string("intake/mail/receipt.txt", context),
         from_email=from_header(association),
         to=[submission.applicant_email],
         reply_to=[association.email],
-    ).send()
+    )
+    message.attach_alternative(
+        render_to_string("intake/mail/receipt.html", context), "text/html"
+    )
+    attach_logo(message, association)
+    message.send()
 
 
 def deliver_second_parent_request(subscription_pk):
@@ -84,20 +88,22 @@ def deliver_second_parent_request(subscription_pk):
     ).get(pk=subscription_pk)
     submission = subscription.submission
     association = submission.form.association
-    body = render_to_string(
-        "intake/mail/second-parent.txt",
-        {
-            "subscription": subscription,
-            "submission": submission,
-            "association": association,
-            "consent_url": absolute_url("intake:second-parent", subscription.token),
-        },
-    )
-    EmailMessage(
+    context = {
+        "subscription": subscription,
+        "submission": submission,
+        "association": association,
+        "consent_url": absolute_url("intake:second-parent", subscription.token),
+    }
+    message = EmailMultiAlternatives(
         subject=_("Image consent for %(member)s")
         % {"member": submission.member_display},
-        body=body,
+        body=render_to_string("intake/mail/second-parent.txt", context),
         from_email=from_header(association),
         to=[subscription.signatory_email],
         reply_to=[association.email],
-    ).send()
+    )
+    message.attach_alternative(
+        render_to_string("intake/mail/second-parent.html", context), "text/html"
+    )
+    attach_logo(message, association)
+    message.send()

@@ -7,7 +7,7 @@ from django.utils.translation import gettext as _
 from django_q.tasks import async_task
 
 from core.links import absolute_url
-from core.mail import from_header
+from core.mail import attach_logo, from_header
 from events.access import contact_token_for, token_for
 from events.models import Booking, Event
 from intake.models import Association, Submission
@@ -53,6 +53,7 @@ def deliver_booking_confirmation(event_pk, email, submission_pk=None):
     message.attach_alternative(
         render_to_string("events/mail/booking.html", context), "text/html"
     )
+    attach_logo(message, event.association)
     message.send()
 
 
@@ -85,4 +86,5 @@ def deliver_booking_links(email):
     message.attach_alternative(
         render_to_string("events/mail/bookings.html", context), "text/html"
     )
+    attach_logo(message, association)
     message.send()

@@ -31,8 +31,7 @@ RELEASES: list[dict] = [
             "dispositivo di chi lo visita.",
             "Corretto un problema che, in alcuni casi, impediva la "
             "pubblicazione automatica degli aggiornamenti del sito.",
-            "Corrette alcune traduzioni italiane mancanti o sbagliate "
-            "nell'area admin.",
+            "Corrette alcune traduzioni italiane mancanti o sbagliate nell'area admin.",
             "Corrette le immagini mancanti sulle schede degli eventi passati.",
         ],
     },
@@ -62,8 +61,7 @@ RELEASES: list[dict] = [
             "Si può scegliere quando chiudere le prenotazioni pubbliche: a "
             "mano, a mezzanotte prima dell'evento (ora il comportamento "
             "predefinito) o all'orario di inizio.",
-            "Nuova scheda riepilogo con prenotazioni, conferme e fasce "
-            "d'età.",
+            "Nuova scheda riepilogo con prenotazioni, conferme e fasce d'età.",
         ],
     },
     {
@@ -75,8 +73,7 @@ RELEASES: list[dict] = [
             "Account per email e password.",
             "I nuovi account restano in attesa di approvazione prima di "
             "poter accedere.",
-            "I messaggi del sito appaiono ora come notifiche che si "
-            "chiudono da sole.",
+            "I messaggi del sito appaiono ora come notifiche che si chiudono da sole.",
             "Corretto il layout della scheda eventi sugli schermi piccoli.",
         ],
     },

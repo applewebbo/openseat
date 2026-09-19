@@ -2,7 +2,13 @@
 <html lang="{{ LANGUAGE_CODE|default:'it' }}">
     <head>
         <meta charset="utf-8" />
-        <title>{% translate "Your bookings" %}</title>
+        <title>
+            {% if reminder %}
+                {% translate "Your application is still open" %}
+            {% else %}
+                {% translate "Carry on with your application" %}
+            {% endif %}
+        </title>
     </head>
     <body style="margin:0;padding:0;background:#ffffff;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1f2124;line-height:1.5">
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:520px;margin:0 auto">
@@ -24,33 +30,28 @@
                             <td style="vertical-align:middle;font-size:14px;font-weight:600;color:#1f2124">{{ association.name }}</td>
                         </tr>
                     </table>
-                    <p style="margin:0;font-size:13px;font-weight:600;color:{{ association.colour_primary }}">
-                        {% blocktranslate count counter=bookings|length %}You have one booking coming up.{% plural %}You have {{ counter }} bookings coming up.{% endblocktranslate %}
+                    <h1 style="margin:0;font-size:22px;line-height:1.25;font-weight:700">
+                        {% if reminder %}
+                            {% translate "Your application is still open" %}
+                        {% else %}
+                            {% translate "Carry on with your application" %}
+                        {% endif %}
+                    </h1>
+                    <p style="margin:10px 0 0;font-size:14px;color:rgba(31,33,36,.7)">
+                        {% if reminder %}
+                            {% translate "Nothing has been sent to the association yet. Pick it up here, and you will land where you left off." %}
+                        {% else %}
+                            {% translate "Open it whenever you have a moment and you will land where you left off." %}
+                        {% endif %}
                     </p>
-                    <h1 style="margin:8px 0 0;font-size:22px;line-height:1.25;font-weight:700">{% translate "Your bookings" %}</h1>
-
-                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:20px">
-                        {% for booking in bookings %}
-                            <tr>
-                                <td style="padding:12px 0;border-top:1px solid rgba(0,0,0,.06)">
-                                    <p style="margin:0;font-size:16px;font-weight:600">{{ booking.event.title }}</p>
-                                    <p style="margin:4px 0 0;font-size:13px;color:rgba(31,33,36,.7)">
-                                        {{ booking.event.starts_at|date:"l d/m/Y H:i" }}{% if booking.event.location %} · {{ booking.event.location }}{% endif %}
-                                    </p>
-                                    <p style="margin:4px 0 0;font-size:14px">{{ booking.full_name }}</p>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-
                     <p style="margin:28px 0 0">
-                        <a href="{{ manage_url }}"
+                        <a href="{{ resume_url }}"
                            style="display:inline-block;padding:12px 22px;border-radius:12px;background:{{ association.colour_primary }};color:#ffffff;font-size:15px;font-weight:600;text-decoration:none">
-                            {% translate "Manage your bookings" %}
+                            {% translate "Continue your application" %}
                         </a>
                     </p>
                     <p style="margin:12px 0 0;font-size:13px;color:rgba(31,33,36,.6)">
-                        {% blocktranslate %}The link works for {{ days }} days. Ask for a new one from the home page whenever you need it.{% endblocktranslate %}
+                        {% blocktranslate with date=expires_at|date:"d/m/Y" %}An unfinished application is deleted on {{ date }}, thirty days after the last change.{% endblocktranslate %}
                     </p>
                 </td>
             </tr>
