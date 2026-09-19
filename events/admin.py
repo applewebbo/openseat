@@ -78,9 +78,9 @@ class EventAdmin(admin.ModelAdmin):
         if formset.model is not Booking:
             formset.save()
             return
+        instances = formset.save(commit=False)
         for obj in formset.deleted_objects:
             obj.delete()
-        instances = formset.save(commit=False)
         for obj, booking_form in zip(instances, formset.saved_forms, strict=True):
             created = obj.pk is None
             obj.save()

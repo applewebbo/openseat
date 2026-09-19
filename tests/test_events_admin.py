@@ -1,11 +1,17 @@
 import datetime
 
 import pytest
+from django.contrib.admin.sites import AdminSite
 from django.core import mail
 from django.db import connection
+from django.forms import modelformset_factory
 from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 from django.utils import timezone
+
+from events.admin import EventAdmin
+from events.models import Booking, Event
+from intake.models import PublicForm
 
 pytestmark = pytest.mark.django_db
 
@@ -180,3 +186,119 @@ def test_editing_an_existing_booking_does_not_resend_the_confirmation(
 
     assert response.status_code == 302
     assert not mail.outbox
+
+
+# --- the booking inline on the event change form -----------------------------
+
+
+def _bookings_management_data(total=0, initial=0):
+    return {
+        "bookings-TOTAL_FORMS": str(total),
+        "bookings-INITIAL_FORMS": str(initial),
+        "bookings-MIN_NUM_FORMS": "0",
+        "bookings-MAX_NUM_FORMS": "1000",
+    }
+
+
+def _event_post_data(event, **overrides):
+    local_start = timezone.localtime(event.starts_at)
+    data = {
+        "association": event.association_id,
+        "form": "",
+        "title": event.title,
+        "description": event.description,
+        "location": event.location,
+        "starts_at_0": local_start.date().isoformat(),
+        "starts_at_1": local_start.time().isoformat(),
+        "duration_hours": "",
+        "is_published": "on" if event.is_published else "",
+        "checkin_started_at_0": "",
+        "checkin_started_at_1": "",
+        "cost": event.cost if event.cost is not None else "",
+    }
+    data.update(_bookings_management_data())
+    data.update(overrides)
+    return data
+
+
+def test_adding_a_booking_through_the_event_inline_sends_the_confirmation(
+    staff_client, event
+):
+    data = _event_post_data(
+        event,
+        **_bookings_management_data(total=1),
+        **{
+            "bookings-0-first_name": "Anna",
+            "bookings-0-last_name": "Verdi",
+            "bookings-0-contact_email": "anna.verdi@example.com",
+            "bookings-0-fee_method": "",
+            "bookings-0-send_confirmation": "on",
+        },
+    )
+
+    response = staff_client.post(
+        reverse("admin:events_event_change", args=[event.pk]), data
+    )
+
+    assert response.status_code == 302, response.context["adminform"].form.errors
+    assert event.bookings.filter(first_name="Anna").exists()
+    assert len(mail.outbox) == 1
+    assert mail.outbox[0].to == ["anna.verdi@example.com"]
+
+
+def test_deleting_a_booking_through_the_event_inline_removes_it(
+    staff_client, event, booking_factory
+):
+    to_delete = booking_factory(event=event)
+
+    data = _event_post_data(
+        event,
+        **_bookings_management_data(total=1, initial=1),
+        **{
+            "bookings-0-id": to_delete.pk,
+            "bookings-0-first_name": to_delete.first_name,
+            "bookings-0-last_name": to_delete.last_name,
+            "bookings-0-contact_email": to_delete.contact_email,
+            "bookings-0-fee_method": "",
+            "bookings-0-DELETE": "on",
+        },
+    )
+
+    response = staff_client.post(
+        reverse("admin:events_event_change", args=[event.pk]), data
+    )
+
+    assert response.status_code == 302, response.context["adminform"].form.errors
+    assert not Booking.objects.filter(pk=to_delete.pk).exists()
+
+
+def test_save_formset_leaves_non_booking_formsets_to_django(
+    rf, event, public_form_factory
+):
+    """The guard exists because inlines besides bookings run through here too."""
+    open_form = public_form_factory(association=event.association)
+    FormSet = modelformset_factory(PublicForm, fields=("title",))
+    formset = FormSet(
+        data={
+            **{
+                f"form-{key}": value
+                for key, value in {
+                    "TOTAL_FORMS": "1",
+                    "INITIAL_FORMS": "1",
+                    "MIN_NUM_FORMS": "0",
+                    "MAX_NUM_FORMS": "1000",
+                }.items()
+            },
+            "form-0-id": open_form.pk,
+            "form-0-title": "Modulo rinominato",
+        },
+        queryset=PublicForm.objects.filter(pk=open_form.pk),
+    )
+    assert formset.is_valid(), formset.errors
+    request = rf.post(reverse("admin:events_event_change", args=[event.pk]))
+    admin_instance = EventAdmin(Event, AdminSite())
+
+    admin_instance.save_formset(request, form=None, formset=formset, change=True)
+
+    open_form.refresh_from_db()
+    assert open_form.title == "Modulo rinominato"
