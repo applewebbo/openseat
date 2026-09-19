@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-18 19:52+0200\n"
+"POT-Creation-Date: 2026-09-19 07:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,7 +79,7 @@ msgstr "Italian"
 msgid "English"
 msgstr "English"
 
-#: events/admin.py:34 events/forms.py:267
+#: events/admin.py:34 events/forms.py:276
 msgid "Send the confirmation mail"
 msgstr ""
 
@@ -108,7 +108,7 @@ msgstr ""
 msgid "Bookings for %(event)s"
 msgstr ""
 
-#: events/forms.py:28 events/forms.py:82 events/forms.py:178
+#: events/forms.py:28 events/forms.py:82 events/forms.py:187
 #: intake/forms.py:361 templates/home.html:122
 msgid "Email address"
 msgstr ""
@@ -117,7 +117,7 @@ msgstr ""
 msgid "The one the association writes to."
 msgstr ""
 
-#: events/forms.py:35 events/forms.py:151 events/forms.py:207
+#: events/forms.py:35 events/forms.py:160 events/forms.py:216
 #: templates/events/checkin-add-existing-search-partial.html:13
 #: templates/home.html:141 templates/intake/base-intake.html:59
 msgid "Tax code"
@@ -133,80 +133,92 @@ msgid ""
 "below."
 msgstr ""
 
-#: events/forms.py:130
-msgid "Applying for"
+#: events/forms.py:133
+msgid "Adult"
 msgstr ""
 
-#: events/forms.py:137 events/forms.py:183
+#: events/forms.py:134
+msgid "Child"
+msgstr ""
+
+#: events/forms.py:135
+msgid "Person under guardianship or supported administration"
+msgstr ""
+
+#: events/forms.py:139
+msgid "Who is attending"
+msgstr ""
+
+#: events/forms.py:146 events/forms.py:192
 msgid "First name"
 msgstr ""
 
-#: events/forms.py:140 events/forms.py:189
+#: events/forms.py:149 events/forms.py:198
 msgid "Last name"
 msgstr ""
 
-#: events/forms.py:143 events/forms.py:195
+#: events/forms.py:152 events/forms.py:204
 msgid "Date of birth"
 msgstr ""
 
-#: events/forms.py:148 events/forms.py:201
+#: events/forms.py:157 events/forms.py:210
 msgid "Place of birth"
 msgstr ""
 
-#: events/forms.py:157 events/forms.py:213
+#: events/forms.py:166 events/forms.py:222
 msgid "Street"
 msgstr ""
 
-#: events/forms.py:160 events/forms.py:219
+#: events/forms.py:169 events/forms.py:228
 msgid "Number"
 msgstr ""
 
-#: events/forms.py:163
+#: events/forms.py:172
 msgid "Postcode"
 msgstr ""
 
-#: events/forms.py:169 events/forms.py:225
+#: events/forms.py:178 events/forms.py:234
 msgid "City"
 msgstr ""
 
-#: events/forms.py:172
+#: events/forms.py:181
 msgid "Phone"
 msgstr ""
 
-#: events/forms.py:233
+#: events/forms.py:242
 msgid "Form signed"
 msgstr ""
 
-#: events/forms.py:238
+#: events/forms.py:247
 msgid "Sole holder of parental responsibility"
 msgstr ""
 
-#: events/forms.py:242
+#: events/forms.py:251
 msgid "Other parent's first name"
 msgstr ""
 
-#: events/forms.py:248
+#: events/forms.py:257
 msgid "Other parent's last name"
 msgstr ""
 
-#: events/forms.py:256 intake/models.py:458
+#: events/forms.py:265 intake/models.py:458
 #: templates/intake/second-parent.html:4
 msgid "Image consent"
 msgstr ""
 
-#: events/forms.py:261 intake/models.py:353
+#: events/forms.py:270 intake/models.py:353
 msgid "WhatsApp consent"
 msgstr ""
 
-#: events/forms.py:293 events/forms.py:297 intake/forms.py:317
+#: events/forms.py:322 events/forms.py:326 intake/forms.py:317
 msgid "This field is required."
 msgstr ""
 
-#: events/forms.py:321 templates/account/email/base_notification.html:26
+#: events/forms.py:350 templates/account/email/base_notification.html:26
 msgid "Date"
 msgstr ""
 
-#: events/forms.py:324
+#: events/forms.py:353
 msgid "Time"
 msgstr ""
 
@@ -1315,9 +1327,9 @@ msgstr ""
 
 #: templates/events/booked.html:66 templates/events/booked.html:98
 #: templates/events/booked.html:103
-#: templates/events/checkin-add-modal-partial.html:14
-#: templates/events/checkin-add-modal-partial.html:120
-#: templates/events/checkin-add-modal-partial.html:125
+#: templates/events/checkin-add-modal-partial.html:27
+#: templates/events/checkin-add-modal-partial.html:133
+#: templates/events/checkin-add-modal-partial.html:138
 #: templates/events/mine.html:65 templates/events/mine.html:98
 #: templates/events/mine.html:103 templates/includes/messages.html:14
 msgid "Close"
@@ -1344,33 +1356,32 @@ msgstr ""
 msgid "No member found with this tax code."
 msgstr ""
 
-#: templates/events/checkin-add-modal-partial.html:15
+#: templates/events/checkin-add-modal-partial.html:28
 msgid "Add a booking"
 msgstr ""
 
-#: templates/events/checkin-add-modal-partial.html:17
+#: templates/events/checkin-add-modal-partial.html:30
 msgid ""
 "From a paper form signed at the door. The booking is added already confirmed."
 msgstr ""
 
-#: templates/events/checkin-add-modal-partial.html:47
-#: templates/events/landing-content-partial.html:65
-msgid "Already a member"
+#: templates/events/checkin-add-modal-partial.html:60
+msgid "Member"
 msgstr ""
 
-#: templates/events/checkin-add-modal-partial.html:57
+#: templates/events/checkin-add-modal-partial.html:70
 msgid "Their own details"
 msgstr ""
 
-#: templates/events/checkin-add-modal-partial.html:58
+#: templates/events/checkin-add-modal-partial.html:71
 msgid "Details of whoever signs the request"
 msgstr ""
 
-#: templates/events/checkin-add-modal-partial.html:67
+#: templates/events/checkin-add-modal-partial.html:80
 msgid "Details of who is coming"
 msgstr ""
 
-#: templates/events/checkin-add-modal-partial.html:121
+#: templates/events/checkin-add-modal-partial.html:134
 msgid "Add, already confirmed"
 msgstr ""
 
@@ -1495,6 +1506,10 @@ msgstr ""
 
 #: templates/events/landing-content-partial.html:56
 msgid "here"
+msgstr ""
+
+#: templates/events/landing-content-partial.html:65
+msgid "Already a member"
 msgstr ""
 
 #: templates/events/landing-content-partial.html:71

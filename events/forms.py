@@ -126,9 +126,21 @@ class ManualBookingForm(forms.Form):
     email round trip to model here.
     """
 
+    # The editor fills this in about whoever is standing at the door, so the
+    # public wizard's first-person choices ("Me", "My child") don't fit here;
+    # SubjectType's values stay the same, only the wording changes.
+    SUBJECT_CHOICES = [
+        (SubjectType.SELF, _("Adult")),
+        (SubjectType.MINOR, _("Child")),
+        (
+            SubjectType.PROTECTED,
+            _("Person under guardianship or supported administration"),
+        ),
+    ]
+
     subject_type = forms.ChoiceField(
-        label=_("Applying for"),
-        choices=SubjectType.choices,
+        label=_("Who is attending"),
+        choices=SUBJECT_CHOICES,
         widget=forms.RadioSelect(attrs=_RADIO),
         initial=SubjectType.MINOR,
     )
