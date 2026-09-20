@@ -96,3 +96,17 @@ def test_the_home_page_falls_back_to_the_statute_link_when_unpublished(
 
     assert association.statute_url.encode() in response.content
     assert reverse("info").encode() not in response.content
+
+
+def test_the_home_page_falls_back_to_the_statute_file_when_unpublished(
+    client, association
+):
+    association.statute_file.save(
+        "statuto.pdf", ContentFile(b"%PDF-1.4 fake"), save=False
+    )
+    association.statute_url = ""
+    association.save()
+
+    response = client.get(reverse("home"))
+
+    assert association.statute_file.url.encode() in response.content

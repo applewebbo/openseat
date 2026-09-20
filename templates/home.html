@@ -149,6 +149,10 @@
                     <p class="mt-1">
                         <a href="{% url 'info' %}" class="link link-hover">{% translate "Info and contacts" %}</a>
                     </p>
+                {% elif association.statute_file %}
+                    <p class="mt-1">
+                        <a href="{{ association.statute_file.url }}" class="link link-hover">{% translate "Statute" %}</a>
+                    </p>
                 {% elif association.statute_url %}
                     <p class="mt-1">
                         <a href="{{ association.statute_url }}"
