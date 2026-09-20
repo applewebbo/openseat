@@ -27,6 +27,11 @@
                      alt="{{ association.name }}"
                      class="assoc-logo"
                      height="32" />
+            {% else %}
+                <img src="{% static 'img/openseat_logo.jpg' %}"
+                     alt="OpenSeat"
+                     class="assoc-logo"
+                     height="32" />
             {% endif %}
             <span class="site-name-text">OpenSeat</span>
         </a>

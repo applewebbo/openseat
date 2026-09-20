@@ -169,3 +169,4 @@ def test_a_fresh_install_says_what_to_do_next(client):
     assert response.status_code == 200
     assert response.context["association"] is None
     assert reverse("admin:index").encode() in response.content
+    assert b"img/openseat_logo.jpg" in response.content

@@ -32,6 +32,28 @@ class TestBranding:
 
         assert "OpenSeat" in content
 
+    def test_a_fresh_install_falls_back_to_the_generic_logo(self, staff_client):
+        content = staff_client.get(reverse("admin:index")).content.decode()
+
+        assert "img/openseat_logo.jpg" in content
+
+    def test_the_generic_logo_shows_until_the_association_uploads_one(
+        self, staff_client, association
+    ):
+        content = staff_client.get(reverse("admin:index")).content.decode()
+
+        assert "img/openseat_logo.jpg" in content
+
+    def test_the_generic_logo_steps_aside_once_there_is_one(
+        self, staff_client, association
+    ):
+        association.logo = "associations/ontano.png"
+        association.save()
+
+        content = staff_client.get(reverse("admin:index")).content.decode()
+
+        assert "img/openseat_logo.jpg" not in content
+
     def test_the_login_page_carries_the_branding_too(self, client, association):
         """It is the first page a volunteer sees, and the only public one."""
         content = client.get(reverse("admin:login")).content.decode()
