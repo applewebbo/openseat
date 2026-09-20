@@ -1,0 +1,89 @@
+{% load i18n intake_extras %}
+<footer class="mx-auto {{ max_width|default:"max-w-3xl" }} px-4 pb-10">
+    <div class="text-base-content/60 border-base-content/5 grid grid-cols-1 gap-6 border-t pt-6 text-xs leading-relaxed sm:grid-cols-2">
+        <div>
+            <p class="text-base-content/80 font-semibold">{{ association.name }}</p>
+            <p class="mt-1">{{ association.street }}, {{ association.postcode }} {{ association.city }}</p>
+            <p class="mt-1">{% translate "Tax code" %} {{ association.tax_code }}</p>
+        </div>
+        <div>
+            <a x-data="{ user: '{{ association.email|email_user }}', domain: '{{ association.email|email_domain }}' }"
+               x-init="$el.href = 'mailto:' + user + '@' + domain"
+               href="#"
+               class="link link-hover">{% translate "Contact us" %}</a>
+            {% if association.info_is_published %}
+                <p class="mt-1">
+                    <a href="{% url 'info' %}" class="link link-hover">{% translate "Info and contacts" %}</a>
+                </p>
+            {% elif association.statute_file %}
+                <p class="mt-1">
+                    <a href="{{ association.statute_file.url }}" class="link link-hover">{% translate "Statute" %}</a>
+                </p>
+            {% elif association.statute_url %}
+                <p class="mt-1">
+                    <a href="{{ association.statute_url }}"
+                       target="_blank"
+                       rel="noopener"
+                       class="link link-hover">{% translate "Statute" %}</a>
+                </p>
+            {% endif %}
+            {% if association.website_url or association.facebook_url or association.instagram_url %}
+                <div class="mt-3 flex items-center gap-3">
+                    {% if association.website_url %}
+                        <a href="{{ association.website_url }}"
+                           target="_blank"
+                           rel="noopener"
+                           aria-label="{% translate 'Website' %}"
+                           class="hover:text-base-content transition-all duration-200 ease-in-out">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 viewBox="0 0 256 256"
+                                 fill="currentColor"
+                                 class="h-4 w-4"
+                                 aria-hidden="true">
+                                <path d="M128,20A108,108,0,1,0,236,128,108.12,108.12,0,0,0,128,20Zm0,187a113.4,113.4,0,0,1-20.39-35h40.82a116.94,116.94,0,0,1-10,20.77A108.61,108.61,0,0,1,128,207Zm-26.49-59a135.42,135.42,0,0,1,0-40h53a135.42,135.42,0,0,1,0,40ZM44,128a83.49,83.49,0,0,1,2.43-20H77.25a160.63,160.63,0,0,0,0,40H46.43A83.49,83.49,0,0,1,44,128Zm84-79a113.4,113.4,0,0,1,20.39,35H107.59a116.94,116.94,0,0,1,10-20.77A108.61,108.61,0,0,1,128,49Zm50.73,59h30.82a83.52,83.52,0,0,1,0,40H178.75a160.63,160.63,0,0,0,0-40Zm20.77-24H173.71a140.82,140.82,0,0,0-15.5-34.36A84.51,84.51,0,0,1,199.52,84ZM97.79,49.64A140.82,140.82,0,0,0,82.29,84H56.48A84.51,84.51,0,0,1,97.79,49.64ZM56.48,172H82.29a140.82,140.82,0,0,0,15.5,34.36A84.51,84.51,0,0,1,56.48,172Zm101.73,34.36A140.82,140.82,0,0,0,173.71,172h25.81A84.51,84.51,0,0,1,158.21,206.36Z" />
+                            </svg>
+                        </a>
+                    {% endif %}
+                    {% if association.facebook_url %}
+                        <a href="{{ association.facebook_url }}"
+                           target="_blank"
+                           rel="noopener"
+                           aria-label="Facebook"
+                           class="hover:text-base-content transition-all duration-200 ease-in-out">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 viewBox="0 0 256 256"
+                                 fill="currentColor"
+                                 class="h-4 w-4"
+                                 aria-hidden="true">
+                                <path d="M128,20A108,108,0,1,0,236,128,108.12,108.12,0,0,0,128,20Zm12,191.13V156h20a12,12,0,0,0,0-24H140V112a12,12,0,0,1,12-12h16a12,12,0,0,0,0-24H152a36,36,0,0,0-36,36v20H96a12,12,0,0,0,0,24h20v55.13a84,84,0,1,1,24,0Z" />
+                            </svg>
+                        </a>
+                    {% endif %}
+                    {% if association.instagram_url %}
+                        <a href="{{ association.instagram_url }}"
+                           target="_blank"
+                           rel="noopener"
+                           aria-label="Instagram"
+                           class="hover:text-base-content transition-all duration-200 ease-in-out">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 viewBox="0 0 256 256"
+                                 fill="currentColor"
+                                 class="h-4 w-4"
+                                 aria-hidden="true">
+                                <path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,72a24,24,0,1,1,24-24A24,24,0,0,1,128,152ZM176,20H80A60.07,60.07,0,0,0,20,80v96a60.07,60.07,0,0,0,60,60h96a60.07,60.07,0,0,0,60-60V80A60.07,60.07,0,0,0,176,20Zm36,156a36,36,0,0,1-36,36H80a36,36,0,0,1-36-36V80A36,36,0,0,1,80,44h96a36,36,0,0,1,36,36ZM196,76a16,16,0,1,1-16-16A16,16,0,0,1,196,76Z" />
+                            </svg>
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+            <p class="text-base-content/50 mt-3">
+                <a href="{{ app_vendor_url }}"
+                   target="_blank"
+                   rel="noopener"
+                   class="link link-hover">{{ app_vendor }}</a>
+                —
+                <a href="{% url 'releases' %}" class="link link-hover">v{{ app_version }}</a>
+            </p>
+        </div>
+    </div>
+</footer>

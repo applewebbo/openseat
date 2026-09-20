@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n intake_extras static %}
+{% load i18n static %}
 
 {% block title %}{{ association.name }}{% endblock %}
 
@@ -133,43 +133,5 @@
         </section>
     </main>
 
-    <footer class="mx-auto max-w-3xl px-4 pb-10">
-        <div class="text-base-content/60 border-base-content/5 grid grid-cols-1 gap-6 border-t pt-6 text-xs leading-relaxed sm:grid-cols-2">
-            <div>
-                <p class="text-base-content/80 font-semibold">{{ association.name }}</p>
-                <p class="mt-1">{{ association.street }}, {{ association.postcode }} {{ association.city }}</p>
-                <p class="mt-1">{% translate "Tax code" %} {{ association.tax_code }}</p>
-            </div>
-            <div>
-                <a x-data="{ user: '{{ association.email|email_user }}', domain: '{{ association.email|email_domain }}' }"
-                   x-init="$el.href = 'mailto:' + user + '@' + domain"
-                   href="#"
-                   class="link link-hover">{% translate "Contact us" %}</a>
-                {% if association.info_is_published %}
-                    <p class="mt-1">
-                        <a href="{% url 'info' %}" class="link link-hover">{% translate "Info and contacts" %}</a>
-                    </p>
-                {% elif association.statute_file %}
-                    <p class="mt-1">
-                        <a href="{{ association.statute_file.url }}" class="link link-hover">{% translate "Statute" %}</a>
-                    </p>
-                {% elif association.statute_url %}
-                    <p class="mt-1">
-                        <a href="{{ association.statute_url }}"
-                           target="_blank"
-                           rel="noopener"
-                           class="link link-hover">{% translate "Statute" %}</a>
-                    </p>
-                {% endif %}
-                <p class="text-base-content/50 mt-3">
-                    <a href="{{ app_vendor_url }}"
-                       target="_blank"
-                       rel="noopener"
-                       class="link link-hover">{{ app_vendor }}</a>
-                    —
-                    <a href="{% url 'releases' %}" class="link link-hover">v{{ app_version }}</a>
-                </p>
-            </div>
-        </div>
-    </footer>
+    <c-footer />
 {% endblock content %}

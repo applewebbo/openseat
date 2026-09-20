@@ -36,6 +36,15 @@ def test_a_published_page_shows_the_contact_details(client, association):
     assert association.tax_code in content
 
 
+def test_the_info_page_carries_the_shared_footer(client, association):
+    association.info_is_published = True
+    association.save()
+
+    content = client.get(reverse("info")).content.decode()
+
+    assert "Contact us" in content or "Contattaci" in content
+
+
 def test_a_script_in_the_info_content_never_reaches_the_page(client, association):
     association.info_is_published = True
     association.info_content = "<p>Ciao</p><script>alert(1)</script>"
@@ -59,6 +68,7 @@ def test_the_statute_link_points_to_the_uploaded_file_when_there_is_one(
 
     assert association.statute_file.url.encode() in response.content
     assert association.statute_url.encode() not in response.content
+    assert "Scarica lo statuto" in response.content.decode()
 
 
 def test_the_statute_link_falls_back_to_the_url_without_a_file(client, association):
@@ -68,6 +78,8 @@ def test_the_statute_link_falls_back_to_the_url_without_a_file(client, associati
     response = client.get(reverse("info"))
 
     assert association.statute_url.encode() in response.content
+    assert "Leggi lo statuto" in response.content.decode()
+    assert "Scarica lo statuto" not in response.content.decode()
 
 
 def test_no_statute_link_when_neither_is_set(client, association):
@@ -77,7 +89,8 @@ def test_no_statute_link_when_neither_is_set(client, association):
 
     response = client.get(reverse("info"))
 
-    assert b"Download the statute" not in response.content
+    assert "Scarica lo statuto" not in response.content.decode()
+    assert "Leggi lo statuto" not in response.content.decode()
 
 
 def test_the_home_page_links_to_a_published_info_page(client, association):

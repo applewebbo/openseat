@@ -1,4 +1,4 @@
-{% load django_htmx i18n intake_extras static tailwind_cli %}
+{% load django_htmx i18n static tailwind_cli %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:'it' }}">
     <head>
@@ -50,39 +50,7 @@
             {% block content %}{% endblock %}
         </main>
 
-        <footer class="mx-auto max-w-2xl px-4 pb-10">
-            {% block footer %}
-                <div class="text-base-content/60 border-base-content/5 grid grid-cols-1 gap-6 border-t pt-6 text-xs leading-relaxed sm:grid-cols-2">
-                    <div>
-                        <p class="text-base-content/80 font-semibold">{{ association.name }}</p>
-                        <p class="mt-1">{{ association.street }}, {{ association.postcode }} {{ association.city }}</p>
-                        <p class="mt-1">{% translate "Tax code" %} {{ association.tax_code }}</p>
-                    </div>
-                    <div>
-                        <a x-data="{ user: '{{ association.email|email_user }}', domain: '{{ association.email|email_domain }}' }"
-                           x-init="$el.href = 'mailto:' + user + '@' + domain"
-                           href="#"
-                           class="link link-hover">{% translate "Contact us" %}</a>
-                        {% if association.statute_url %}
-                            <p class="mt-1">
-                                <a href="{{ association.statute_url }}"
-                                   target="_blank"
-                                   rel="noopener"
-                                   class="link link-hover">{% translate "Statute" %}</a>
-                            </p>
-                        {% endif %}
-                        <p class="text-base-content/50 mt-3">
-                            <a href="{{ app_vendor_url }}"
-                               target="_blank"
-                               rel="noopener"
-                               class="link link-hover">{{ app_vendor }}</a>
-                            —
-                            <a href="{% url 'releases' %}" class="link link-hover">v{{ app_version }}</a>
-                        </p>
-                    </div>
-                </div>
-            {% endblock footer %}
-        </footer>
+        <c-footer max_width="max-w-2xl" />
 
         {% htmx_script %}
         <script src="{% static 'js/main.js' %}" defer></script>

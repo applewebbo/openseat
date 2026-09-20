@@ -58,6 +58,17 @@ class TestAssociationContent:
         assert 'href="https://example.org"' in association.home_description
         assert "onclick" not in association.home_description
 
+    def test_social_links_show_only_when_set(self, client, association):
+        content = client.get(reverse("home")).content.decode()
+
+        assert "facebook.com" not in content
+
+        association.facebook_url = "https://www.facebook.com/lacadiasu/"
+        association.save()
+
+        content = client.get(reverse("home")).content.decode()
+        assert association.facebook_url in content
+
 
 @pytest.mark.django_db
 class TestEventSections:

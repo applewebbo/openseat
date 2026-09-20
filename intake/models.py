@@ -129,6 +129,9 @@ class Association(models.Model):
         default=False,
         help_text=_("When on, the info page is public and linked from the home page."),
     )
+    website_url = models.URLField(_("website"), blank=True)
+    facebook_url = models.URLField(_("Facebook"), blank=True)
+    instagram_url = models.URLField(_("Instagram"), blank=True)
     default_location = models.CharField(
         _("default event location"),
         max_length=200,

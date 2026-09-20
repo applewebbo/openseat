@@ -43,6 +43,13 @@ def test_the_event_page_needs_no_account(client, event):
     assert event.title in response.content.decode()
 
 
+def test_the_event_page_carries_the_association_footer(client, event):
+    """The shared footer, not a page-specific copy — same contacts everywhere."""
+    content = client.get(event.get_absolute_url()).content.decode()
+
+    assert event.association.tax_code in content
+
+
 def test_the_estimated_duration_is_shown_when_set(client, event):
     event.duration_hours = 3
     event.save()

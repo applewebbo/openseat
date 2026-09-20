@@ -66,6 +66,15 @@ class AssociationAdmin(admin.ModelAdmin):
             },
         ),
         (
+            _("Social links"),
+            {
+                "fields": ("website_url", "facebook_url", "instagram_url"),
+                "description": _(
+                    "Shown as icons in the home page footer when filled in."
+                ),
+            },
+        ),
+        (
             _("Bookings"),
             {"fields": ("booking_close_mode", "default_location")},
         ),
