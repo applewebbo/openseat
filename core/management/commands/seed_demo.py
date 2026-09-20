@@ -11,6 +11,7 @@ from pathlib import Path
 from allauth.account.models import EmailAddress
 from django.contrib.auth import get_user_model
 from django.core.files import File
+from django.core.files.storage import default_storage
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
@@ -436,6 +437,13 @@ class Command(BaseCommand):
             )
 
         if not association.logo:
+            # A dev DB reset leaves media/ behind: overwrite the stray file from
+            # a previous run instead of letting the storage suffix a new one.
+            target_name = association.logo.field.generate_filename(
+                association, LOGO_PATH.name
+            )
+            if default_storage.exists(target_name):
+                default_storage.delete(target_name)
             with LOGO_PATH.open("rb") as logo_file:
                 association.logo.save(LOGO_PATH.name, File(logo_file), save=True)
             self.stdout.write("filled in: logo")

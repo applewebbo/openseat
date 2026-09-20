@@ -8,6 +8,13 @@ from intake.models import Association, PublicForm, SectionKey
 from members.models import Member
 
 
+@pytest.fixture(autouse=True)
+def media(settings, tmp_path):
+    """A media root of our own, so a run never litters the real one with logos."""
+    settings.MEDIA_ROOT = tmp_path / "media"
+    return settings.MEDIA_ROOT
+
+
 @pytest.fixture
 def seeded():
     call_command("seed_demo", verbosity=0)
@@ -42,6 +49,19 @@ def test_events_book_through_the_seeded_form(seeded):
     public_form = PublicForm.objects.get()
 
     assert Event.objects.filter(form=public_form).count() == Event.objects.count()
+
+
+@pytest.mark.django_db
+def test_reseeding_after_a_reset_never_orphans_the_old_logo_file(media):
+    """A dev DB reset keeps media/ around; re-seeding must not pile up files."""
+    call_command("seed_demo", verbosity=0)
+    Association.objects.all().delete()
+
+    call_command("seed_demo", verbosity=0)
+
+    assert list((media / "associations").iterdir()) == [
+        media / "associations" / "lontano-logo.png"
+    ]
 
 
 @pytest.mark.django_db

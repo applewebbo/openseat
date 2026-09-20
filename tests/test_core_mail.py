@@ -7,6 +7,13 @@ from core.mail import LOGO_CONTENT_ID, attach_logo, from_header
 pytestmark = pytest.mark.django_db
 
 
+@pytest.fixture(autouse=True)
+def media(settings, tmp_path):
+    """A media root of our own, so a run never litters the real one with logos."""
+    settings.MEDIA_ROOT = tmp_path / "media"
+    return settings.MEDIA_ROOT
+
+
 def test_the_from_header_names_the_association(association, settings):
     settings.DEFAULT_FROM_EMAIL = "noreply@example.com"
     association.name = "Circolo Aurora"
