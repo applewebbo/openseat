@@ -145,7 +145,11 @@
                    x-init="$el.href = 'mailto:' + user + '@' + domain"
                    href="#"
                    class="link link-hover">{% translate "Contact us" %}</a>
-                {% if association.statute_url %}
+                {% if association.info_is_published %}
+                    <p class="mt-1">
+                        <a href="{% url 'info' %}" class="link link-hover">{% translate "Info and contacts" %}</a>
+                    </p>
+                {% elif association.statute_url %}
                     <p class="mt-1">
                         <a href="{{ association.statute_url }}"
                            target="_blank"

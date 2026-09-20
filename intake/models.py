@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.core.cache import cache
-from django.core.validators import RegexValidator
+from django.core.validators import FileExtensionValidator, RegexValidator
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -82,6 +82,16 @@ class Association(models.Model):
     tax_code = models.CharField(_("tax code"), max_length=16)
     email = models.EmailField(_("email address"))
     statute_url = models.URLField(_("statute link"), blank=True)
+    statute_file = models.FileField(
+        _("statute PDF"),
+        upload_to="associations/",
+        blank=True,
+        validators=[FileExtensionValidator(["pdf"])],
+        help_text=_(
+            "A downloadable copy of the statute. Shown ahead of the link above "
+            "when both are set."
+        ),
+    )
     membership_fee = models.DecimalField(
         _("annual membership fee"), max_digits=7, decimal_places=2, default=0
     )
@@ -110,6 +120,15 @@ class Association(models.Model):
     # the volunteer who edits it should never have to lay a page out.
     home_title = models.CharField(_("home page title"), max_length=200, blank=True)
     home_description = CKEditor5Field(_("home page description"), blank=True)
+    # A second, optional block of prose — the association's story, its team,
+    # anything that does not fit the fixed contact fields below it on the
+    # dedicated info page.
+    info_content = CKEditor5Field(_("info page content"), blank=True)
+    info_is_published = models.BooleanField(
+        _("publish the info page"),
+        default=False,
+        help_text=_("When on, the info page is public and linked from the home page."),
+    )
     default_location = models.CharField(
         _("default event location"),
         max_length=200,
@@ -156,6 +175,7 @@ class Association(models.Model):
         # Cleaned here rather than at render: what the register holds is then
         # exactly what the page shows, and no template can forget the filter.
         self.home_description = clean_rich_text(self.home_description)
+        self.info_content = clean_rich_text(self.info_content)
         super().save(*args, **kwargs)
         cache.delete(_ASSOCIATION_CACHE_KEY)
 

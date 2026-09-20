@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load i18n intake_extras %}
+
+{% block title %}{% translate "Info" %} — {{ association.name }}{% endblock %}
+
+{% block theme_css %}<link rel="stylesheet" href="{% url 'theme-css-current' %}" />{% endblock %}
+
+{% block content %}
+    <main class="mx-auto w-full max-w-3xl px-4 pt-10 pb-24 sm:pt-16">
+        <h1 class="text-4xl font-bold tracking-tight text-balance sm:text-5xl">
+            {% translate "Info and contacts" %}
+        </h1>
+
+        {% if association.info_content %}
+            <div class="rich-text text-base-content/80 mt-6 max-w-prose text-lg leading-relaxed">
+                {{ association.info_content|safe }}
+            </div>
+        {% endif %}
+
+        <div class="border-base-content/5 bg-base-100 mt-10 rounded-2xl border p-6 sm:p-8">
+            <h2 class="text-lg font-semibold tracking-tight">{{ association.name }}</h2>
+            <dl class="text-base-content/80 mt-4 space-y-3 text-sm leading-relaxed">
+                <div>
+                    <dt class="text-base-content/60">{% translate "Address" %}</dt>
+                    <dd>{{ association.street }}, {{ association.postcode }} {{ association.city }}</dd>
+                </div>
+                <div>
+                    <dt class="text-base-content/60">{% translate "Tax code" %}</dt>
+                    <dd>{{ association.tax_code }}</dd>
+                </div>
+                <div>
+                    <dt class="text-base-content/60">{% translate "Email" %}</dt>
+                    <dd>
+                        <a x-data="{ user: '{{ association.email|email_user }}', domain: '{{ association.email|email_domain }}' }"
+                           x-init="$el.href = 'mailto:' + user + '@' + domain"
+                           href="#"
+                           class="link link-hover">{{ association.email }}</a>
+                    </dd>
+                </div>
+            </dl>
+
+            {% if association.statute_file %}
+                <div class="divider"></div>
+                <a href="{{ association.statute_file.url }}"
+                   class="btn btn-soft btn-sm rounded-lg">{% translate "Download the statute" %}</a>
+            {% elif association.statute_url %}
+                <div class="divider"></div>
+                <a href="{{ association.statute_url }}"
+                   target="_blank"
+                   rel="noopener"
+                   class="btn btn-soft btn-sm rounded-lg">{% translate "Download the statute" %}</a>
+            {% endif %}
+        </div>
+    </main>
+{% endblock content %}

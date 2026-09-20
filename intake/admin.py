@@ -52,7 +52,18 @@ class AssociationAdmin(admin.ModelAdmin):
         ),
         (
             _("Statute and fee"),
-            {"fields": ("statute_url", "membership_fee")},
+            {"fields": ("statute_file", "statute_url", "membership_fee")},
+        ),
+        (
+            _("Info page"),
+            {
+                "fields": ("info_is_published", "info_content"),
+                "description": _(
+                    "A separate page with the address, tax code, email and "
+                    "statute link above, plus this optional text. Publishing "
+                    "it also links it from the home page."
+                ),
+            },
         ),
         (
             _("Bookings"),

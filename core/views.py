@@ -2,6 +2,7 @@ import asyncio
 import re
 
 from django.contrib.auth.decorators import login_not_required
+from django.http import Http404
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_control
@@ -52,6 +53,19 @@ def home(request):
             "archive": archive,
         },
     )
+
+
+@login_not_required
+def info(request):
+    """Contacts and statute, off the home page so they don't compete with events.
+
+    An unpublished page is a 404, not an empty shell: nothing there yet is not
+    a state the public should be able to reach, published or linked to.
+    """
+    association = Association.current()
+    if association is None or not association.info_is_published:
+        raise Http404
+    return render(request, "pages/info.html", {"association": association})
 
 
 @login_not_required
