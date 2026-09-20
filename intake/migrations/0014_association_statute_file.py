@@ -5,15 +5,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('intake', '0013_association_info_content_and_more'),
+        ("intake", "0013_association_info_content_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='association',
-            name='statute_file',
-            field=models.FileField(blank=True, help_text='A downloadable copy of the statute. Shown ahead of the link above when both are set.', upload_to='associations/', validators=[django.core.validators.FileExtensionValidator(['pdf'])], verbose_name='statute PDF'),
+            model_name="association",
+            name="statute_file",
+            field=models.FileField(
+                blank=True,
+                help_text="A downloadable copy of the statute. Shown ahead of the link above when both are set.",
+                upload_to="associations/",
+                validators=[django.core.validators.FileExtensionValidator(["pdf"])],
+                verbose_name="statute PDF",
+            ),
         ),
     ]

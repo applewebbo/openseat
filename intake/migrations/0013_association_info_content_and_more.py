@@ -5,20 +5,25 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('intake', '0012_alter_section_key_alter_submission_subject_type'),
+        ("intake", "0012_alter_section_key_alter_submission_subject_type"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='association',
-            name='info_content',
-            field=django_ckeditor_5.fields.CKEditor5Field(blank=True, verbose_name='info page content'),
+            model_name="association",
+            name="info_content",
+            field=django_ckeditor_5.fields.CKEditor5Field(
+                blank=True, verbose_name="info page content"
+            ),
         ),
         migrations.AddField(
-            model_name='association',
-            name='info_is_published',
-            field=models.BooleanField(default=False, help_text='When on, the info page is public and linked from the home page.', verbose_name='publish the info page'),
+            model_name="association",
+            name="info_is_published",
+            field=models.BooleanField(
+                default=False,
+                help_text="When on, the info page is public and linked from the home page.",
+                verbose_name="publish the info page",
+            ),
         ),
     ]
