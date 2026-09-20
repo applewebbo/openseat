@@ -1,7 +1,9 @@
 import asyncio
 import re
+from concurrent.futures import ThreadPoolExecutor
 
 from django.contrib.auth.decorators import login_not_required
+from django.db import connections
 from django.http import Http404
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
@@ -103,6 +105,26 @@ def theme_css(request, slug=None):
     )
 
 
+class _ConnectionClosingExecutor(ThreadPoolExecutor):
+    """A thread pool that leaves no DB connection open on its worker threads.
+
+    Django's connections are thread-local, and nothing in the request/response
+    cycle runs on this pool's worker threads to close what a check opened on
+    them — `request_finished` fires on the async loop's own thread, not here.
+    Left alone, every worker thread that has ever run a check keeps its own
+    connection alive for as long as the pool exists.
+    """
+
+    def submit(self, fn, /, *args, **kwargs):
+        def call_and_close():
+            try:
+                return fn(*args, **kwargs)
+            finally:
+                connections.close_all()
+
+        return super().submit(call_and_close)
+
+
 @method_decorator(login_not_required, name="dispatch")
 class SiteHealthCheckView(HealthCheckView):
     """Whether the web process can reach the database, for Coolify's probe.
@@ -116,6 +138,9 @@ class SiteHealthCheckView(HealthCheckView):
     """
 
     checks = (Database,)
+
+    def get_executor(self):
+        return _ConnectionClosingExecutor(max_workers=1)
 
     async def get(self, request, *args, **kwargs):
         with self.get_executor() as executor:

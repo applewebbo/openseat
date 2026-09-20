@@ -92,7 +92,15 @@ filterwarnings = [
   # django-import-export's own admin internals, not code of ours to fix.
   # Re-check on every django-import-export bump whether it still needs this (#76).
   "ignore:Overriding get_actions\\(\\) without the 'action_location' parameter is deprecated:django.utils.deprecation.RemovedInDjango70Warning",
-  "ignore:The 'get_valid_export_item_pks\\(\\)' method in members.admin.MemberAdmin is deprecated:DeprecationWarning"
+  "ignore:The 'get_valid_export_item_pks\\(\\)' method in members.admin.MemberAdmin is deprecated:DeprecationWarning",
+  # The health check's Database check runs on a thread pool worker; that
+  # thread's connection is explicitly closed in _ConnectionClosingExecutor
+  # (core/views.py), which is real work for the Postgres connection Django
+  # opens in production. Against the sqlite :memory: test database, Django's
+  # own backend turns close() into a no-op on purpose — closing it would wipe
+  # the schema every other test still needs — so the warning below is Django
+  # refusing our close request, not a leak in our code.
+  "ignore:unclosed database in <sqlite3.Connection.*:ResourceWarning"
 ]
 python_files = "test_*.py"
 testpaths = ["tests"]
