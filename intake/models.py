@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.core.cache import cache
+from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator, RegexValidator
 from django.db import models
 from django.urls import reverse
@@ -284,7 +285,12 @@ class PublicForm(models.Model):
 
 
 class Section(models.Model):
-    """One switchable step of a form."""
+    """One switchable step of a form — one of the fixed catalogue, or custom.
+
+    `key` is a plain string rather than a `choices=` field on purpose: a
+    custom section's key is a slug generated from its title, not a value
+    known ahead of time, so adding one must never need a migration.
+    """
 
     form = models.ForeignKey(
         PublicForm,
@@ -292,7 +298,28 @@ class Section(models.Model):
         related_name="sections",
         on_delete=models.CASCADE,
     )
-    key = models.CharField(_("section"), max_length=20, choices=SectionKey)
+    key = models.CharField(_("section"), max_length=50)
+    title = models.CharField(
+        _("title"),
+        max_length=200,
+        blank=True,
+        help_text=_("Overrides the step's label. Required for a custom section."),
+    )
+    is_custom = models.BooleanField(_("custom"), default=False, editable=False)
+    custom_body = CKEditor5Field(
+        _("custom text"),
+        blank=True,
+        help_text=_(
+            "Overrides the statute/privacy text shown on this step. Used "
+            "only by the statute and privacy sections."
+        ),
+    )
+    consent_images_label = models.CharField(
+        _("image consent label"), max_length=200, blank=True
+    )
+    consent_whatsapp_label = models.CharField(
+        _("WhatsApp consent label"), max_length=200, blank=True
+    )
     order = models.PositiveSmallIntegerField(_("order"), default=0)
     is_enabled = models.BooleanField(_("enabled"), default=True)
 
@@ -304,8 +331,20 @@ class Section(models.Model):
             models.UniqueConstraint(fields=["form", "key"], name="unique_section_key")
         ]
 
+    def clean(self):
+        super().clean()
+        if self.is_custom:
+            if not self.title:
+                raise ValidationError({"title": _("A custom section needs a title.")})
+        elif self.key not in SectionKey.values:
+            raise ValidationError({"key": _("Unknown section key.")})
+
     def __str__(self):
-        return self.get_key_display()
+        if self.title:
+            return self.title
+        if self.key in SectionKey.values:
+            return str(SectionKey(self.key).label)
+        return self.key
 
 
 class Submission(models.Model):

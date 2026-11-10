@@ -1,4 +1,5 @@
 import pytest
+from django.core.exceptions import ValidationError
 
 from intake.models import Association, SectionKey, SubjectType
 
@@ -176,6 +177,70 @@ def test_the_member_section_is_skipped_when_applying_for_oneself(public_form):
 @pytest.mark.django_db
 def test_an_unanswered_subject_type_still_yields_the_opening_step(public_form):
     assert public_form.path("") == [SectionKey.SUBJECT]
+
+
+@pytest.mark.django_db
+def test_a_fixed_section_without_a_title_override_shows_its_label(public_form):
+    section = public_form.sections.get(key=SectionKey.STATUTE)
+
+    assert str(section) == SectionKey.STATUTE.label
+
+
+@pytest.mark.django_db
+def test_a_fixed_section_with_a_title_override_shows_it_instead(public_form):
+    section = public_form.sections.get(key=SectionKey.STATUTE)
+    section.title = "Il nostro statuto"
+    section.save()
+
+    assert str(section) == "Il nostro statuto"
+
+
+@pytest.mark.django_db
+def test_a_custom_section_shows_its_title(public_form):
+    section = public_form.sections.create(
+        key="orario-preferito", title="Orario preferito", is_custom=True
+    )
+
+    assert str(section) == "Orario preferito"
+
+
+@pytest.mark.django_db
+def test_a_custom_section_without_a_title_fails_validation(public_form):
+    section = public_form.sections.create(key="orario-preferito", is_custom=True)
+
+    with pytest.raises(ValidationError):
+        section.full_clean()
+
+
+@pytest.mark.django_db
+def test_an_unknown_key_that_is_not_marked_custom_fails_validation(public_form):
+    section = public_form.sections.create(key="orario-preferito")
+
+    with pytest.raises(ValidationError):
+        section.full_clean()
+
+
+@pytest.mark.django_db
+def test_a_fixed_section_still_passes_validation(public_form):
+    section = public_form.sections.get(key=SectionKey.STATUTE)
+
+    section.full_clean()
+
+
+@pytest.mark.django_db
+def test_a_custom_section_with_a_title_passes_validation(public_form):
+    section = public_form.sections.create(
+        key="orario-preferito", title="Orario preferito", is_custom=True
+    )
+
+    section.full_clean()
+
+
+@pytest.mark.django_db
+def test_a_section_with_no_title_and_an_unknown_key_shows_the_raw_key(public_form):
+    section = public_form.sections.create(key="orario-preferito")
+
+    assert str(section) == "orario-preferito"
 
 
 @pytest.mark.django_db
