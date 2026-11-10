@@ -96,6 +96,14 @@ class Event(models.Model):
     )
     square_source = models.CharField(max_length=100, blank=True, editable=False)
     is_published = models.BooleanField(_("published"), default=True)
+    requires_membership = models.BooleanField(
+        _("requires membership"),
+        default=True,
+        help_text=_(
+            "Off: this is a pure booking — attending never creates or "
+            "updates a member, even after check-in."
+        ),
+    )
     checklist_sent_at = models.DateTimeField(
         _("checklist sent at"), null=True, blank=True
     )
@@ -417,7 +425,12 @@ class Booking(models.Model):
             self.contact_name = self.contact_name or self.member.contact_name
             self.contact_email = self.member.contact_email
             self.contact_phone = self.contact_phone or self.member.contact_phone
-        if self.confirmed_on and self.member_id is None and self.submission_id:
+        if (
+            self.confirmed_on
+            and self.member_id is None
+            and self.submission_id
+            and self.event.requires_membership
+        ):
             from members.register import enrol
 
             self.member = enrol(self.submission)

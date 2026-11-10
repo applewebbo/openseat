@@ -64,7 +64,7 @@ class EventAdmin(admin.ModelAdmin):
     # No association column or filter: one installation holds one, so the same
     # name on every row only takes space away from the title.
     list_display = ("title", "starts_on", "booked", "cost", "sent_on")
-    list_filter = ("is_published",)
+    list_filter = ("is_published", "requires_membership")
     date_hierarchy = "starts_at"
     readonly_fields = ("checklist_sent_at",)
     inlines = [BookingInline]

@@ -174,6 +174,7 @@ class EventFactory(factory.django.DjangoModelFactory):
     starts_at = factory.LazyFunction(
         lambda: timezone.now() + datetime.timedelta(days=7)
     )
+    requires_membership = True
 
 
 class BookingFactory(factory.django.DjangoModelFactory):

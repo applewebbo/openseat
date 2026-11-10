@@ -266,7 +266,9 @@ def checkin_confirm(request, slug, pk):
         booking.confirmed_on = timezone.localdate()
         booking.fee_amount = event.association.membership_fee
         booking.fee_method = FeeMethod.CASH
-        booking.save(update_fields=["confirmed_on", "fee_amount", "fee_method"])
+        booking.save(
+            update_fields=["confirmed_on", "fee_amount", "fee_method", "member"]
+        )
     if request.htmx:
         return _row_and_summary(request, event, booking)
     return redirect(_manage_url(event))

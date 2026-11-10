@@ -9,6 +9,7 @@ from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 from django.utils import timezone
 
+from events.models import Booking
 from intake.models import Subscription
 
 pytestmark = pytest.mark.django_db
@@ -464,6 +465,40 @@ def test_an_editor_checks_a_booking_in(
     assert response.status_code == 302
 
 
+def test_checking_in_a_submission_based_booking_persists_the_new_member(
+    editor_client, checked_in_event, submission_factory
+):
+    """A booking made from a submission (not yet a member) gets enrolled on
+    confirmation — and that new member must actually be saved to the DB, not
+    just set on the in-memory instance."""
+    submission = submission_factory(form__association=checked_in_event.association)
+    booking = Booking.objects.book_application(checked_in_event, submission)
+
+    editor_client.post(
+        reverse("events:checkin-confirm", args=[checked_in_event.slug, booking.pk])
+    )
+
+    booking = Booking.objects.get(pk=booking.pk)
+    assert booking.member is not None
+
+
+def test_checking_in_never_enrols_when_the_event_does_not_require_membership(
+    editor_client, event_factory, submission_factory
+):
+    booking_only_event = event_factory(requires_membership=False)
+    editor_client.post(reverse("events:checkin-open", args=[booking_only_event.slug]))
+    submission = submission_factory(form__association=booking_only_event.association)
+    booking = Booking.objects.book_application(booking_only_event, submission)
+
+    editor_client.post(
+        reverse("events:checkin-confirm", args=[booking_only_event.slug, booking.pk])
+    )
+
+    booking = Booking.objects.get(pk=booking.pk)
+    assert booking.is_confirmed
+    assert booking.member is None
+
+
 def test_checking_in_twice_keeps_the_first_confirmation(
     editor_client, checked_in_event, booking_factory
 ):
@@ -623,6 +658,22 @@ def test_an_editor_adds_a_self_booking(editor_client, event, public_form):
     assert booking.fee_method == "cash"
     assert booking.member is not None
     assert booking.submission.state == booking.submission.State.SUBMITTED
+
+
+def test_an_editor_adds_a_self_booking_without_creating_a_member_when_not_required(
+    editor_client, event_factory, public_form
+):
+    event = event_factory(requires_membership=False, form=public_form)
+
+    response = editor_client.post(
+        reverse("events:checkin-add", args=[event.slug]), _manual_booking_data()
+    )
+
+    assert response.status_code == 302
+    booking = event.bookings.active().get()
+    assert booking.full_name == "Anna Verdi"
+    assert booking.is_confirmed
+    assert booking.member is None
 
 
 def test_a_booking_added_at_the_door_still_gets_the_confirmation_mail(

@@ -346,6 +346,7 @@ class EventCreateForm(forms.ModelForm):
         "image",
         "cost",
         "is_published",
+        "requires_membership",
         "form",
     ]
 
@@ -369,6 +370,7 @@ class EventCreateForm(forms.ModelForm):
             "image",
             "cost",
             "is_published",
+            "requires_membership",
         ]
         widgets = {
             "title": forms.TextInput(attrs=_TEXT),
@@ -377,6 +379,7 @@ class EventCreateForm(forms.ModelForm):
             "image": forms.ClearableFileInput(attrs={"class": "file-input w-full"}),
             "cost": forms.NumberInput(attrs={**_TEXT, "step": "0.01"}),
             "is_published": forms.CheckboxInput(attrs=_CHECKBOX),
+            "requires_membership": forms.CheckboxInput(attrs=_CHECKBOX),
         }
 
     def __init__(self, *args, association=None, **kwargs):

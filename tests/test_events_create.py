@@ -19,6 +19,7 @@ def _post_data(**overrides):
         "starts_time": "16:00",
         "cost": "",
         "is_published": "on",
+        "requires_membership": "on",
     }
     data.update(overrides)
     return data
@@ -87,6 +88,13 @@ def test_an_editor_sets_the_estimated_duration(editor_client, public_form):
 
     event = Event.objects.get(title="Una giornata con gli asini")
     assert event.duration_hours == 3
+
+
+def test_an_editor_turns_off_the_membership_requirement(editor_client, public_form):
+    editor_client.post(reverse("events:create"), _post_data(requires_membership=""))
+
+    event = Event.objects.get(title="Una giornata con gli asini")
+    assert event.requires_membership is False
 
 
 def test_with_one_open_form_the_field_is_hidden_and_assigned(
