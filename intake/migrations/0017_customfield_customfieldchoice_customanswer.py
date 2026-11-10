@@ -5,56 +5,151 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('intake', '0016_section_consent_images_label_and_more'),
+        ("intake", "0016_section_consent_images_label_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CustomField',
+            name="CustomField",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('label', models.CharField(max_length=200, verbose_name='label')),
-                ('help_text', models.CharField(blank=True, max_length=300, verbose_name='help text')),
-                ('field_type', models.CharField(choices=[('text', 'Short text'), ('textarea', 'Long text'), ('select', 'Single choice'), ('multiselect', 'Multiple choice'), ('checkbox', 'Checkbox'), ('number', 'Number')], max_length=20, verbose_name='type')),
-                ('is_required', models.BooleanField(default=False, verbose_name='required')),
-                ('order', models.PositiveSmallIntegerField(default=0, verbose_name='order')),
-                ('section', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='custom_fields', to='intake.section', verbose_name='section')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("label", models.CharField(max_length=200, verbose_name="label")),
+                (
+                    "help_text",
+                    models.CharField(
+                        blank=True, max_length=300, verbose_name="help text"
+                    ),
+                ),
+                (
+                    "field_type",
+                    models.CharField(
+                        choices=[
+                            ("text", "Short text"),
+                            ("textarea", "Long text"),
+                            ("select", "Single choice"),
+                            ("multiselect", "Multiple choice"),
+                            ("checkbox", "Checkbox"),
+                            ("number", "Number"),
+                        ],
+                        max_length=20,
+                        verbose_name="type",
+                    ),
+                ),
+                (
+                    "is_required",
+                    models.BooleanField(default=False, verbose_name="required"),
+                ),
+                (
+                    "order",
+                    models.PositiveSmallIntegerField(default=0, verbose_name="order"),
+                ),
+                (
+                    "section",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="custom_fields",
+                        to="intake.section",
+                        verbose_name="section",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'custom field',
-                'verbose_name_plural': 'custom fields',
-                'ordering': ('order',),
+                "verbose_name": "custom field",
+                "verbose_name_plural": "custom fields",
+                "ordering": ("order",),
             },
         ),
         migrations.CreateModel(
-            name='CustomFieldChoice',
+            name="CustomFieldChoice",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('label', models.CharField(max_length=200, verbose_name='label')),
-                ('order', models.PositiveSmallIntegerField(default=0, verbose_name='order')),
-                ('field', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='choices', to='intake.customfield', verbose_name='field')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("label", models.CharField(max_length=200, verbose_name="label")),
+                (
+                    "order",
+                    models.PositiveSmallIntegerField(default=0, verbose_name="order"),
+                ),
+                (
+                    "field",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="choices",
+                        to="intake.customfield",
+                        verbose_name="field",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'choice',
-                'verbose_name_plural': 'choices',
-                'ordering': ('order',),
+                "verbose_name": "choice",
+                "verbose_name_plural": "choices",
+                "ordering": ("order",),
             },
         ),
         migrations.CreateModel(
-            name='CustomAnswer',
+            name="CustomAnswer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('value_text', models.TextField(blank=True, verbose_name='value')),
-                ('submission', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='custom_answers', to='intake.submission', verbose_name='submission')),
-                ('field', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='answers', to='intake.customfield', verbose_name='field')),
-                ('value_choices', models.ManyToManyField(blank=True, related_name='+', to='intake.customfieldchoice', verbose_name='choices')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("value_text", models.TextField(blank=True, verbose_name="value")),
+                (
+                    "submission",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="custom_answers",
+                        to="intake.submission",
+                        verbose_name="submission",
+                    ),
+                ),
+                (
+                    "field",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="answers",
+                        to="intake.customfield",
+                        verbose_name="field",
+                    ),
+                ),
+                (
+                    "value_choices",
+                    models.ManyToManyField(
+                        blank=True,
+                        related_name="+",
+                        to="intake.customfieldchoice",
+                        verbose_name="choices",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'answer',
-                'verbose_name_plural': 'answers',
-                'constraints': [models.UniqueConstraint(fields=('submission', 'field'), name='one_answer_per_field')],
+                "verbose_name": "answer",
+                "verbose_name_plural": "answers",
+                "constraints": [
+                    models.UniqueConstraint(
+                        fields=("submission", "field"), name="one_answer_per_field"
+                    )
+                ],
             },
         ),
     ]

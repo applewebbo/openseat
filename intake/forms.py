@@ -41,6 +41,28 @@ def yes_no_field(label, choices=CONSENT_CHOICES, help_text=""):
     )
 
 
+def apply_daisyui_styles(form):
+    """daisyUI classes belong to the form, not to every template using it.
+
+    Shared between the fixed `SectionForm` subclasses below and the custom
+    sections' dynamically-built forms (`intake.custom_fields`), so both
+    render with the same look without duplicating this switch.
+    """
+    for field in form.fields.values():
+        widget = field.widget
+        if isinstance(widget, forms.CheckboxInput):
+            widget.attrs.setdefault(
+                "class",
+                "checkbox checkbox-primary mt-0.5 [--radius-selector:0.25rem]",
+            )
+        elif isinstance(widget, forms.RadioSelect):
+            widget.attrs.setdefault("class", "radio radio-primary mt-0.5")
+        elif isinstance(widget, forms.Select):
+            widget.attrs.setdefault("class", "select w-full")
+        else:
+            widget.attrs.setdefault("class", "input input-bordered w-full")
+
+
 class SectionForm(forms.ModelForm):
     """Base for every step: the form owns how it renders, classes included."""
 
@@ -55,20 +77,7 @@ class SectionForm(forms.ModelForm):
         self.style_widgets()
 
     def style_widgets(self):
-        """daisyUI classes belong to the form, not to every template using it."""
-        for field in self.fields.values():
-            widget = field.widget
-            if isinstance(widget, forms.CheckboxInput):
-                widget.attrs.setdefault(
-                    "class",
-                    "checkbox checkbox-primary mt-0.5 [--radius-selector:0.25rem]",
-                )
-            elif isinstance(widget, forms.RadioSelect):
-                widget.attrs.setdefault("class", "radio radio-primary mt-0.5")
-            elif isinstance(widget, forms.Select):
-                widget.attrs.setdefault("class", "select w-full")
-            else:
-                widget.attrs.setdefault("class", "input input-bordered w-full")
+        apply_daisyui_styles(self)
 
 
 class SubjectTypeForm(SectionForm):
