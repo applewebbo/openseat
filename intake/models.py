@@ -347,6 +347,59 @@ class Section(models.Model):
         return self.key
 
 
+class CustomField(models.Model):
+    """One question an organiser added to a custom section, from the admin."""
+
+    class FieldType(models.TextChoices):
+        TEXT = "text", _("Short text")
+        TEXTAREA = "textarea", _("Long text")
+        SELECT = "select", _("Single choice")
+        MULTISELECT = "multiselect", _("Multiple choice")
+        CHECKBOX = "checkbox", _("Checkbox")
+        NUMBER = "number", _("Number")
+
+    section = models.ForeignKey(
+        Section,
+        verbose_name=_("section"),
+        related_name="custom_fields",
+        on_delete=models.CASCADE,
+    )
+    label = models.CharField(_("label"), max_length=200)
+    help_text = models.CharField(_("help text"), max_length=300, blank=True)
+    field_type = models.CharField(_("type"), max_length=20, choices=FieldType)
+    is_required = models.BooleanField(_("required"), default=False)
+    order = models.PositiveSmallIntegerField(_("order"), default=0)
+
+    class Meta:
+        verbose_name = _("custom field")
+        verbose_name_plural = _("custom fields")
+        ordering = ("order",)
+
+    def __str__(self):
+        return self.label
+
+
+class CustomFieldChoice(models.Model):
+    """One option of a single- or multiple-choice custom field."""
+
+    field = models.ForeignKey(
+        CustomField,
+        verbose_name=_("field"),
+        related_name="choices",
+        on_delete=models.CASCADE,
+    )
+    label = models.CharField(_("label"), max_length=200)
+    order = models.PositiveSmallIntegerField(_("order"), default=0)
+
+    class Meta:
+        verbose_name = _("choice")
+        verbose_name_plural = _("choices")
+        ordering = ("order",)
+
+    def __str__(self):
+        return self.label
+
+
 class Submission(models.Model):
     """One person's answers, from the first keystroke to the signed request."""
 
@@ -506,6 +559,45 @@ class Submission(models.Model):
 
     def path(self):
         return self.form.path(self.subject_type)
+
+
+class CustomAnswer(models.Model):
+    """One applicant's answer to one custom field, on one submission.
+
+    `value_text` holds text, a number as a string, or a checkbox's boolean
+    as a string; `value_choices` holds a select's or multiselect's picks —
+    one row either way, so the field-factory has a single choice-handling
+    branch instead of two.
+    """
+
+    submission = models.ForeignKey(
+        Submission,
+        verbose_name=_("submission"),
+        related_name="custom_answers",
+        on_delete=models.CASCADE,
+    )
+    field = models.ForeignKey(
+        CustomField,
+        verbose_name=_("field"),
+        related_name="answers",
+        on_delete=models.CASCADE,
+    )
+    value_text = models.TextField(_("value"), blank=True)
+    value_choices = models.ManyToManyField(
+        CustomFieldChoice, verbose_name=_("choices"), blank=True, related_name="+"
+    )
+
+    class Meta:
+        verbose_name = _("answer")
+        verbose_name_plural = _("answers")
+        constraints = [
+            models.UniqueConstraint(
+                fields=["submission", "field"], name="one_answer_per_field"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.submission} — {self.field.label}"
 
 
 class Subscription(models.Model):

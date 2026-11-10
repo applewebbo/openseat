@@ -244,6 +244,47 @@ def test_a_section_with_no_title_and_an_unknown_key_shows_the_raw_key(public_for
 
 
 @pytest.mark.django_db
+def test_a_custom_field_str_is_its_label(public_form):
+    section = public_form.sections.create(key="orario", title="Orario", is_custom=True)
+
+    field = section.custom_fields.create(label="Orario preferito", field_type="text")
+
+    assert str(field) == "Orario preferito"
+
+
+@pytest.mark.django_db
+def test_a_custom_fields_choices_are_listed_in_order(public_form):
+    section = public_form.sections.create(key="orario", title="Orario", is_custom=True)
+    field = section.custom_fields.create(label="Fascia", field_type="select")
+    second = field.choices.create(label="Pomeriggio", order=1)
+    first = field.choices.create(label="Mattina", order=0)
+
+    assert list(field.choices.all()) == [first, second]
+    assert str(first) == "Mattina"
+
+
+@pytest.mark.django_db
+def test_a_submission_has_at_most_one_answer_per_field(public_form, submission):
+    from django.db import IntegrityError, transaction
+
+    section = public_form.sections.create(key="orario", title="Orario", is_custom=True)
+    field = section.custom_fields.create(label="Orario preferito", field_type="text")
+    submission.custom_answers.create(field=field, value_text="Mattina")
+
+    with pytest.raises(IntegrityError), transaction.atomic():
+        submission.custom_answers.create(field=field, value_text="Pomeriggio")
+
+
+@pytest.mark.django_db
+def test_an_answer_str_names_the_submission_and_the_field(public_form, submission):
+    section = public_form.sections.create(key="orario", title="Orario", is_custom=True)
+    field = section.custom_fields.create(label="Orario preferito", field_type="text")
+    answer = submission.custom_answers.create(field=field, value_text="Mattina")
+
+    assert str(answer) == f"{submission} — Orario preferito"
+
+
+@pytest.mark.django_db
 def test_submission_starts_as_a_draft_with_its_own_token(submission):
     assert submission.state == submission.State.DRAFT
     assert submission.token

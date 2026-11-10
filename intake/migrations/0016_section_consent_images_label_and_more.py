@@ -5,40 +5,54 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('intake', '0015_association_facebook_url_association_instagram_url_and_more'),
+        ("intake", "0015_association_facebook_url_association_instagram_url_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='section',
-            name='consent_images_label',
-            field=models.CharField(blank=True, max_length=200, verbose_name='image consent label'),
+            model_name="section",
+            name="consent_images_label",
+            field=models.CharField(
+                blank=True, max_length=200, verbose_name="image consent label"
+            ),
         ),
         migrations.AddField(
-            model_name='section',
-            name='consent_whatsapp_label',
-            field=models.CharField(blank=True, max_length=200, verbose_name='WhatsApp consent label'),
+            model_name="section",
+            name="consent_whatsapp_label",
+            field=models.CharField(
+                blank=True, max_length=200, verbose_name="WhatsApp consent label"
+            ),
         ),
         migrations.AddField(
-            model_name='section',
-            name='custom_body',
-            field=django_ckeditor_5.fields.CKEditor5Field(blank=True, help_text='Overrides the statute/privacy text shown on this step. Used only by the statute and privacy sections.', verbose_name='custom text'),
+            model_name="section",
+            name="custom_body",
+            field=django_ckeditor_5.fields.CKEditor5Field(
+                blank=True,
+                help_text="Overrides the statute/privacy text shown on this step. Used only by the statute and privacy sections.",
+                verbose_name="custom text",
+            ),
         ),
         migrations.AddField(
-            model_name='section',
-            name='is_custom',
-            field=models.BooleanField(default=False, editable=False, verbose_name='custom'),
+            model_name="section",
+            name="is_custom",
+            field=models.BooleanField(
+                default=False, editable=False, verbose_name="custom"
+            ),
         ),
         migrations.AddField(
-            model_name='section',
-            name='title',
-            field=models.CharField(blank=True, help_text="Overrides the step's label. Required for a custom section.", max_length=200, verbose_name='title'),
+            model_name="section",
+            name="title",
+            field=models.CharField(
+                blank=True,
+                help_text="Overrides the step's label. Required for a custom section.",
+                max_length=200,
+                verbose_name="title",
+            ),
         ),
         migrations.AlterField(
-            model_name='section',
-            name='key',
-            field=models.CharField(max_length=50, verbose_name='section'),
+            model_name="section",
+            name="key",
+            field=models.CharField(max_length=50, verbose_name="section"),
         ),
     ]
