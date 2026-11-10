@@ -4,25 +4,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('intake', '0014_association_statute_file'),
+        ("intake", "0014_association_statute_file"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='association',
-            name='facebook_url',
-            field=models.URLField(blank=True, verbose_name='Facebook'),
+            model_name="association",
+            name="facebook_url",
+            field=models.URLField(blank=True, verbose_name="Facebook"),
         ),
         migrations.AddField(
-            model_name='association',
-            name='instagram_url',
-            field=models.URLField(blank=True, verbose_name='Instagram'),
+            model_name="association",
+            name="instagram_url",
+            field=models.URLField(blank=True, verbose_name="Instagram"),
         ),
         migrations.AddField(
-            model_name='association',
-            name='website_url',
-            field=models.URLField(blank=True, verbose_name='website'),
+            model_name="association",
+            name="website_url",
+            field=models.URLField(blank=True, verbose_name="website"),
         ),
     ]

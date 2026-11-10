@@ -10,6 +10,18 @@ from datetime import date
 
 RELEASES: list[dict] = [
     {
+        "version": "2026.3.1",
+        "date": date(2026, 11, 10),
+        "notes": [
+            'Nuova pagina "Informazioni" con i contatti dell\'associazione e '
+            "il link allo statuto, raggiungibile dal footer.",
+            "Il logo di OpenSeat viene mostrato come sostituto finché "
+            "l'associazione non carica il proprio.",
+            "Il footer della pagina iniziale mostra ora il link allo "
+            "statuto anche quando è stato caricato solo un PDF.",
+        ],
+    },
+    {
         "version": "2026.3",
         "date": date(2026, 9, 19),
         "notes": [

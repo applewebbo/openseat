@@ -8,20 +8,20 @@ repos:
   - id: check-added-large-files
 
 - repo: https://github.com/asottile/pyupgrade
-  rev: v3.21.2
+  rev: v3.22.0
   hooks:
   - id: pyupgrade
     args: [--py314-plus]
 
 - repo: https://github.com/adamchainz/django-upgrade
-  rev: 1.32.0
+  rev: 1.33.0
   hooks:
   - id: django-upgrade
     args: [--target-version, '6.1']
 
   # FORMATTERS
 - repo: https://github.com/adamchainz/djade-pre-commit
-  rev: 1.9.0
+  rev: 1.10.0
   hooks:
   - id: djade
     # djade 1.9.0 tops out at 6.0; raise to 6.1 once it ships support
@@ -39,7 +39,7 @@ repos:
     types_or: [html]
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.16.8
+  rev: v0.17.4
   hooks:
   - id: ruff-format
 
@@ -54,7 +54,7 @@ repos:
 
   # LINTERS
 - repo: https://github.com/djlint/djLint
-  rev: v1.46.1
+  rev: v1.49.10
   hooks:
   - id: djlint-django
     files: ^templates/.*\.html$
@@ -64,7 +64,7 @@ repos:
     exclude: ^templates/.*/mail/.*\.html$|^templates/account/email/.*\.html$
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.16.8
+  rev: v0.17.4
   hooks:
   - id: ruff
     args: [--fix, --exit-non-zero-on-fix]
