@@ -1,11 +1,15 @@
-{% load i18n %}
+{% load i18n intake_extras %}
 <div class="bg-base-200 mb-8 rounded-xl p-5 text-sm leading-relaxed">
-    <p class="mb-3">
-        {% blocktranslate with name=association.name %}By applying you declare that you accept the statute of {{ name }} and share its institutional purposes.{% endblocktranslate %}
-    </p>
-    <p>
-        {% blocktranslate with fee=association.membership_fee %}You also undertake to pay the annual membership fee of € {{ fee }}.{% endblocktranslate %}
-    </p>
+    {% if section.custom_body %}
+        {{ section.custom_body|render_custom_body:association|safe }}
+    {% else %}
+        <p class="mb-3">
+            {% blocktranslate with name=association.name %}By applying you declare that you accept the statute of {{ name }} and share its institutional purposes.{% endblocktranslate %}
+        </p>
+        <p>
+            {% blocktranslate with fee=association.membership_fee %}You also undertake to pay the annual membership fee of € {{ fee }}.{% endblocktranslate %}
+        </p>
+    {% endif %}
     {% if association.statute_url %}
         <a class="text-primary mt-3 inline-block font-medium underline underline-offset-4"
            href="{{ association.statute_url }}"

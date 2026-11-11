@@ -244,6 +244,16 @@ def test_a_section_with_no_title_and_an_unknown_key_shows_the_raw_key(public_for
 
 
 @pytest.mark.django_db
+def test_a_sections_custom_body_is_sanitized_on_save(public_form):
+    section = public_form.sections.get(key=SectionKey.STATUTE)
+    section.custom_body = "<p>Ciao</p><script>alert(1)</script>"
+    section.save()
+
+    assert "<script>" not in section.custom_body
+    assert "<p>Ciao</p>" in section.custom_body
+
+
+@pytest.mark.django_db
 def test_a_custom_field_str_is_its_label(public_form):
     section = public_form.sections.create(key="orario", title="Orario", is_custom=True)
 

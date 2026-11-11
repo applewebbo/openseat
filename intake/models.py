@@ -339,6 +339,10 @@ class Section(models.Model):
         elif self.key not in SectionKey.values:
             raise ValidationError({"key": _("Unknown section key.")})
 
+    def save(self, *args, **kwargs):
+        self.custom_body = clean_rich_text(self.custom_body)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         if self.title:
             return self.title

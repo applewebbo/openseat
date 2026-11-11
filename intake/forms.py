@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from core.widgets import MaskedDateInput
 from intake.geo import comune_choices, province_choices
-from intake.models import SubjectType, Submission
+from intake.models import SectionKey, SubjectType, Submission
 from intake.validators import (
     validate_phone,
     validate_postcode,
@@ -341,6 +341,18 @@ class ConsentsForm(SectionForm):
 
     class Meta(SectionForm.Meta):
         fields = ["consent_images", "consent_whatsapp"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.form_id is None:
+            return
+        section = self.instance.form.sections.filter(key=SectionKey.CONSENTS).first()
+        if section is None:
+            return
+        if section.consent_images_label:
+            self.fields["consent_images"].label = section.consent_images_label
+        if section.consent_whatsapp_label:
+            self.fields["consent_whatsapp"].label = section.consent_whatsapp_label
 
 
 class ReviewForm(SectionForm):

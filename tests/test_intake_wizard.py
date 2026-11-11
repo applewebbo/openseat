@@ -317,6 +317,40 @@ def test_an_unanswered_required_custom_field_blocks_submission(
     assert adult_submission.state == Submission.State.DRAFT
 
 
+def test_the_statute_step_falls_back_to_the_stock_text(client, adult_submission):
+    response = client.get(
+        _step_url(adult_submission, SectionKey.STATUTE)
+    ).content.decode()
+
+    assert "Ontano" in response
+
+
+def test_an_overridden_statute_body_replaces_the_stock_text(client, adult_submission):
+    adult_submission.form.sections.filter(key=SectionKey.STATUTE).update(
+        custom_body="<p>Regolamento personalizzato del circolo.</p>"
+    )
+
+    response = client.get(
+        _step_url(adult_submission, SectionKey.STATUTE)
+    ).content.decode()
+
+    assert "Regolamento personalizzato del circolo." in response
+    assert "istituzionali" not in response
+
+
+def test_an_overridden_privacy_body_replaces_the_stock_text(client, adult_submission):
+    adult_submission.form.sections.filter(key=SectionKey.PRIVACY).update(
+        custom_body="<p>Informativa privacy personalizzata.</p>"
+    )
+
+    response = client.get(
+        _step_url(adult_submission, SectionKey.PRIVACY)
+    ).content.decode()
+
+    assert "Informativa privacy personalizzata." in response
+    assert "GDPR" not in response
+
+
 def test_resuming_a_custom_step_prefills_the_saved_answer(client, adult_submission):
     _section, custom_field = _add_custom_step(adult_submission)
     adult_submission.custom_answers.create(field=custom_field, value_text="Mattina")

@@ -1,7 +1,7 @@
 import pytest
 
 from intake.forms import ConsentsForm, ReviewForm, StatuteForm, SubjectTypeForm
-from intake.models import SubjectType
+from intake.models import SectionKey, SubjectType
 from intake.validators import tax_code_check_character
 
 
@@ -118,6 +118,32 @@ def test_refusing_both_image_consents_is_a_valid_answer(submission):
 
     assert form.is_valid(), form.errors
     assert form.save().consent_images is False
+
+
+@pytest.mark.django_db
+def test_default_consent_labels_show_when_no_override_is_set(submission):
+    form = ConsentsForm(instance=submission)
+
+    assert (
+        form.fields["consent_images"].label
+        == ConsentsForm.base_fields["consent_images"].label
+    )
+    assert (
+        form.fields["consent_whatsapp"].label
+        == ConsentsForm.base_fields["consent_whatsapp"].label
+    )
+
+
+@pytest.mark.django_db
+def test_an_overridden_consent_label_replaces_the_default(submission):
+    submission.form.sections.filter(key=SectionKey.CONSENTS).update(
+        consent_images_label="Foto sul sito", consent_whatsapp_label="Foto su WhatsApp"
+    )
+
+    form = ConsentsForm(instance=submission)
+
+    assert form.fields["consent_images"].label == "Foto sul sito"
+    assert form.fields["consent_whatsapp"].label == "Foto su WhatsApp"
 
 
 @pytest.mark.django_db
