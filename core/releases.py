@@ -10,6 +10,21 @@ from datetime import date
 
 RELEASES: list[dict] = [
     {
+        "version": "2026.4",
+        "date": date(2026, 11, 11),
+        "notes": [
+            "Un evento può ora essere impostato come semplice prenotazione, "
+            "senza che partecipare crei o aggiorni una voce nel libro soci.",
+            "Il modulo pubblico di adesione può ora essere personalizzato "
+            "dall'admin: nuove sezioni e domande si aggiungono senza "
+            "bisogno di un deploy.",
+            "Le sezioni del modulo mostrano in admin un'anteprima di come "
+            "appariranno sul sito pubblico, prima di pubblicarle.",
+            "Pubblicata una documentazione completa del sito e dell'admin, "
+            "in italiano e inglese.",
+        ],
+    },
+    {
         "version": "2026.3.1",
         "date": date(2026, 11, 10),
         "notes": [

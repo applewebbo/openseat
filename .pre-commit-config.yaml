@@ -54,7 +54,7 @@ repos:
 
   # LINTERS
 - repo: https://github.com/djlint/djLint
-  rev: v1.49.10
+  rev: v1.50.0
   hooks:
   - id: djlint-django
     files: ^templates/.*\.html$
