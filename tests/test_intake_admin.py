@@ -363,3 +363,16 @@ def test_the_preview_is_closed_to_an_anonymous_visitor(client, public_form):
     response = client.get(reverse("admin:intake_section_preview", args=[section.pk]))
 
     assert response.status_code == 302
+
+
+def test_the_preview_is_closed_to_staff_without_view_permission(
+    editor_client, public_form
+):
+    """An editor has no permissions on intake's models at all — events only."""
+    section = public_form.sections.get(key="statute")
+
+    response = editor_client.get(
+        reverse("admin:intake_section_preview", args=[section.pk])
+    )
+
+    assert response.status_code == 403
