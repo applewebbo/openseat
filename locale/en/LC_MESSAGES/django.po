@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 08:03+0100\n"
+"POT-Creation-Date: 2026-11-11 08:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -174,7 +174,7 @@ msgstr ""
 msgid "Street"
 msgstr ""
 
-#: events/forms.py:172 events/forms.py:231 intake/models.py:377
+#: events/forms.py:172 events/forms.py:231
 msgid "Number"
 msgstr ""
 
@@ -840,6 +840,10 @@ msgstr ""
 
 #: intake/models.py:376
 msgid "Checkbox"
+msgstr ""
+
+#: intake/models.py:377
+msgid "Numeric value"
 msgstr ""
 
 #: intake/models.py:386

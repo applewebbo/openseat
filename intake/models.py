@@ -374,7 +374,7 @@ class CustomField(models.Model):
         SELECT = "select", _("Single choice")
         MULTISELECT = "multiselect", _("Multiple choice")
         CHECKBOX = "checkbox", _("Checkbox")
-        NUMBER = "number", _("Number")
+        NUMBER = "number", _("Numeric value")
 
     section = models.ForeignKey(
         Section,

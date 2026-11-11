@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 08:03+0100\n"
+"POT-Creation-Date: 2026-11-11 08:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -176,7 +176,7 @@ msgstr "Luogo di nascita"
 msgid "Street"
 msgstr "Via"
 
-#: events/forms.py:172 events/forms.py:231 intake/models.py:377
+#: events/forms.py:172 events/forms.py:231
 msgid "Number"
 msgstr "Numero civico"
 
@@ -305,8 +305,8 @@ msgid ""
 "Off: this is a pure booking — attending never creates or updates a member, "
 "even after check-in."
 msgstr ""
-"Disattivato: è una semplice prenotazione — partecipare non crea né "
-"aggiorna mai un socio, nemmeno dopo il check-in."
+"Disattivato: è una semplice prenotazione — partecipare non crea né aggiorna "
+"mai un socio, nemmeno dopo il check-in."
 
 #: events/models.py:108
 msgid "checklist sent at"
@@ -822,21 +822,23 @@ msgstr "sezione"
 
 #: intake/models.py:306
 msgid "Overrides the step's label. Required for a custom section."
-msgstr ""
+msgstr "Sostituisce l'etichetta del passaggio. Obbligatorio per una sezione personalizzata."
 
 #: intake/models.py:308
 msgid "custom"
-msgstr ""
+msgstr "personalizzata"
 
 #: intake/models.py:310
 msgid "custom text"
-msgstr ""
+msgstr "testo personalizzato"
 
 #: intake/models.py:313
 msgid ""
 "Overrides the statute/privacy text shown on this step. Used only by the "
 "statute and privacy sections."
 msgstr ""
+"Sostituisce il testo di statuto/privacy mostrato in questo passaggio. "
+"Usato solo dalle sezioni statuto e privacy."
 
 #: intake/models.py:318
 msgid "image consent label"
@@ -856,59 +858,63 @@ msgstr "sezioni"
 
 #: intake/models.py:342
 msgid "A custom section needs a title."
-msgstr ""
+msgstr "Una sezione personalizzata richiede un titolo."
 
 #: intake/models.py:372
 msgid "Short text"
-msgstr ""
+msgstr "Testo breve"
 
 #: intake/models.py:373
 msgid "Long text"
-msgstr ""
+msgstr "Testo lungo"
 
 #: intake/models.py:374
 msgid "Single choice"
-msgstr ""
+msgstr "Scelta singola"
 
 #: intake/models.py:375
 msgid "Multiple choice"
-msgstr ""
+msgstr "Scelta multipla"
 
 #: intake/models.py:376
 msgid "Checkbox"
 msgstr "Casella di spunta"
 
+#: intake/models.py:377
+msgid "Numeric value"
+msgstr "Valore numerico"
+
 #: intake/models.py:386
 msgid "help text"
-msgstr ""
+msgstr "testo di aiuto"
 
 #: intake/models.py:387
 msgid "type"
-msgstr ""
+msgstr "tipo"
 
 #: intake/models.py:388
 msgid "required"
-msgstr ""
+msgstr "obbligatorio"
 
 #: intake/models.py:392
 msgid "custom field"
-msgstr ""
+msgstr "campo personalizzato"
 
 #: intake/models.py:393
 msgid "custom fields"
-msgstr ""
+msgstr "campi personalizzati"
 
 #: intake/models.py:405 intake/models.py:599
 msgid "field"
-msgstr ""
+msgstr "campo"
 
 #: intake/models.py:413
 msgid "choice"
-msgstr ""
+msgstr "scelta"
 
 #: intake/models.py:414 intake/models.py:605
 msgid "choices"
-msgstr ""
+msgstr "scelte"
 
 #: intake/models.py:425
 msgid "Draft"
@@ -997,15 +1003,15 @@ msgstr "bozza"
 
 #: intake/models.py:603
 msgid "value"
-msgstr ""
+msgstr "valore"
 
 #: intake/models.py:609
 msgid "answer"
-msgstr ""
+msgstr "risposta"
 
 #: intake/models.py:610
 msgid "answers"
-msgstr ""
+msgstr "risposte"
 
 #: intake/models.py:625
 msgid "Applicant"
