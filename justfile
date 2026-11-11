@@ -364,6 +364,22 @@ release-create tag previous_tag="" notes_file="" draft="false" prerelease="false
 
     gh release create "{{ tag }}" -R {{ github_repo }} "${RELEASE_FLAGS[@]}"
 
+# ---------- docs ----------
+# Serve the Italian documentation locally with live reload
+[group('docs')]
+@docs-serve:
+    echo "Starting MkDocs development server..."
+    echo "Documentation will be available at http://127.0.0.1:8000"
+    uv run --group docs mkdocs serve -f mkdocs-it.yml
+
+# Build both languages' documentation for production
+[group('docs')]
+@docs-build:
+    echo "Building documentation..."
+    uv run --group docs mkdocs build -f mkdocs.yml -d site/en
+    uv run --group docs mkdocs build -f mkdocs-it.yml -d site/it
+    echo "Documentation built in site/ directory"
+
 # ---------- housekeeping ----------
 # Removes the Tailwind binary too: the next build downloads ~120MB again
 [group('setup')]

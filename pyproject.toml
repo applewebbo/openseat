@@ -21,6 +21,11 @@ dev = [
   "ruff",
   "time-machine"
 ]
+docs = [
+  "mkdocs>=1.5",
+  "mkdocs-material>=9.7.7",
+  "pymdown-extensions>=11.0.1"
+]
 
 [project]
 dependencies = [

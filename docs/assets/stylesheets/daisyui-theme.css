@@ -1,0 +1,21 @@
+/* Align mkdocs-material colors to OpenSeat's default association palette
+   (Association.colour_primary default, #ED5C08) — an association styles its
+   own instance differently, but the docs need one fixed colour to ship with. */
+
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: #ed5c08;
+  --md-primary-fg-color--light: #f4813d;
+  --md-primary-fg-color--dark: #b8470a;
+  --md-primary-bg-color: #ffffff;
+  --md-accent-fg-color: #ed5c08;
+  --md-accent-fg-color--transparent: rgba(237, 92, 8, 0.1);
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #ff9d5c;
+  --md-primary-fg-color--light: #ffc08a;
+  --md-primary-fg-color--dark: #ed5c08;
+  --md-primary-bg-color: #1e1e2e;
+  --md-accent-fg-color: #ff9d5c;
+  --md-accent-fg-color--transparent: rgba(255, 157, 92, 0.1);
+}

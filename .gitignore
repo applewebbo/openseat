@@ -30,6 +30,7 @@ htmlcov/
 plans/
 .DS_Store
 .playwright-mcp/
+/site
 
 # Impeccable working files: briefs, captures, decision logs
 .impeccable/
