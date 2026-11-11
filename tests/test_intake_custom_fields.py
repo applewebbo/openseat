@@ -217,9 +217,7 @@ def test_save_answers_sets_the_chosen_options_for_a_multiselect(
 def test_save_answers_ignores_fields_missing_from_cleaned_data(
     custom_section, submission
 ):
-    custom_field = custom_section.custom_fields.create(
-        label="Preferenza", field_type="text"
-    )
+    custom_section.custom_fields.create(label="Preferenza", field_type="text")
 
     save_answers(custom_section, submission, {})
 

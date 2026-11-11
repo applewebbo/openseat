@@ -37,10 +37,16 @@ class _CustomSectionForm(forms.Form):
     """Base for a custom section's form — fields are added per section."""
 
     template_name = "intake/forms/section-form.html"
+    section = None
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, submission=None, **kwargs):
         super().__init__(*args, **kwargs)
+        self.submission = submission
         apply_daisyui_styles(self)
+
+    def save(self):
+        """Mirrors `ModelForm.save()` so the wizard view can call it unconditionally."""
+        save_answers(self.section, self.submission, self.cleaned_data)
 
 
 def build_custom_section_form(section):
@@ -50,6 +56,7 @@ def build_custom_section_form(section):
         _field_name(custom_field): _build_field(custom_field)
         for custom_field in section.custom_fields.all()
     }
+    fields["section"] = section
     return type("CustomSectionForm", (_CustomSectionForm,), fields)
 
 
@@ -79,6 +86,31 @@ def load_initial(section, submission):
         else:
             initial[name] = answer.value_text
     return initial
+
+
+def data_on_file(section, submission):
+    """Re-bind a custom step's form to what the draft already holds.
+
+    Mirrors `wizard._data_on_file` for the fixed forms, but a checkbox's True
+    becomes "on" and False/unanswered omits the key entirely — the literal
+    string "False" would be read as checked by
+    `CheckboxInput.value_from_datadict`, which only tests `bool(data.get(name))`.
+    """
+    initial = load_initial(section, submission)
+    data = {}
+    for custom_field in section.custom_fields.all():
+        name = _field_name(custom_field)
+        if name not in initial:
+            continue
+        value = initial[name]
+        if custom_field.field_type == CustomField.FieldType.CHECKBOX:
+            if value:
+                data[name] = "on"
+        elif custom_field.field_type == CustomField.FieldType.MULTISELECT:
+            data[name] = [choice.pk for choice in value]
+        else:
+            data[name] = value
+    return data
 
 
 def save_answers(section, submission, cleaned_data):

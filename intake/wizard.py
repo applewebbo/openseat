@@ -1,5 +1,6 @@
 """Where the applicant is in the form, and which form belongs to each step."""
 
+from intake.custom_fields import build_custom_section_form, data_on_file, load_initial
 from intake.forms import (
     ApplicantForm,
     ConsentsForm,
@@ -23,7 +24,12 @@ SECTION_FORMS = {
 
 
 def form_for(submission, step, data=None):
-    return SECTION_FORMS[step](data=data, instance=submission)
+    if step in SECTION_FORMS:
+        return SECTION_FORMS[step](data=data, instance=submission)
+    section = submission.form.sections.get(key=step, is_custom=True)
+    form_class = build_custom_section_form(section)
+    initial = load_initial(section, submission) if data is None else None
+    return form_class(data=data, initial=initial, submission=submission)
 
 
 def neighbours(submission, step):
@@ -65,16 +71,24 @@ def incomplete_steps(submission):
     for step in submission.path():
         if step == SectionKey.REVIEW:
             continue
-        form = SECTION_FORMS[step](
-            data=_data_on_file(submission, step), instance=submission
-        )
-        if not form.is_valid():
+        if not _rebind(submission, step).is_valid():
             missing.append(step)
     return missing
 
 
+def _rebind(submission, step):
+    """A step's form bound to what the draft already holds, for re-validation."""
+    if step in SECTION_FORMS:
+        return SECTION_FORMS[step](
+            data=_data_on_file(submission, step), instance=submission
+        )
+    section = submission.form.sections.get(key=step, is_custom=True)
+    form_class = build_custom_section_form(section)
+    return form_class(data=data_on_file(section, submission), submission=submission)
+
+
 def _data_on_file(submission, step):
-    """Re-bind a step's form to what the draft already holds."""
+    """Re-bind a fixed step's form to what the draft already holds."""
     form = SECTION_FORMS[step](instance=submission)
     data = {}
     for name in form.fields:

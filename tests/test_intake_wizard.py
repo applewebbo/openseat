@@ -258,6 +258,74 @@ def test_the_client_ip_prefers_the_forwarded_header(client, minor_submission):
     assert minor_submission.ip == "203.0.113.7"
 
 
+def _add_custom_step(submission, **field_kwargs):
+    """A custom section between CONSENTS and REVIEW, with one custom field."""
+    section = submission.form.sections.create(
+        key="orario", title="Orario", is_custom=True, order=6
+    )
+    submission.form.sections.filter(key=SectionKey.REVIEW).update(order=7)
+    field_kwargs.setdefault("label", "Preferenza orario")
+    field_kwargs.setdefault("field_type", "text")
+    custom_field = section.custom_fields.create(**field_kwargs)
+    return section, custom_field
+
+
+def test_a_custom_section_joins_the_path_in_order(adult_submission):
+    _add_custom_step(adult_submission)
+
+    path = adult_submission.path()
+
+    assert path.index("orario") == path.index(SectionKey.CONSENTS) + 1
+    assert path.index("orario") == path.index(SectionKey.REVIEW) - 1
+
+
+def test_rendering_a_custom_step_shows_its_fields(client, adult_submission):
+    _add_custom_step(adult_submission)
+
+    response = client.get(_step_url(adult_submission, "orario")).content.decode()
+
+    assert "Preferenza orario" in response
+    assert "Orario" in response
+
+
+def test_submitting_a_custom_step_saves_the_answer_and_moves_on(
+    client, adult_submission
+):
+    _section, custom_field = _add_custom_step(adult_submission)
+
+    response = client.post(
+        _step_url(adult_submission, "orario"), {f"field_{custom_field.pk}": "Mattina"}
+    )
+
+    assert response.status_code == 302
+    assert response.url == reverse("intake:review", args=[adult_submission.token])
+    answer = adult_submission.custom_answers.get(field=custom_field)
+    assert answer.value_text == "Mattina"
+
+
+def test_an_unanswered_required_custom_field_blocks_submission(
+    client, adult_submission
+):
+    _add_custom_step(adult_submission, is_required=True)
+
+    response = client.post(
+        _submit_url(adult_submission), {"place": "Novara", "declaration": "on"}
+    )
+
+    assert response.url == _step_url(adult_submission, "orario")
+    adult_submission.refresh_from_db()
+    assert adult_submission.state == Submission.State.DRAFT
+
+
+def test_resuming_a_custom_step_prefills_the_saved_answer(client, adult_submission):
+    _section, custom_field = _add_custom_step(adult_submission)
+    adult_submission.custom_answers.create(field=custom_field, value_text="Mattina")
+
+    response = client.get(_step_url(adult_submission, "orario")).content.decode()
+
+    assert "Mattina" in response
+
+
 def _step_url(submission, step):
     return reverse("intake:step", args=[submission.token, step])
 

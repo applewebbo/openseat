@@ -285,13 +285,15 @@ def second_parent(request, token):
 def _step_context(submission, step, form):
     previous, _following = neighbours(submission, step)
     current, total = position(submission, step)
+    section = submission.form.sections.get(key=step)
     return {
         "submission": submission,
         "association": submission.form.association,
         "public_form": submission.form,
         "form": form,
         "step": step,
-        "step_label": SectionKey(step).label,
+        "section": section,
+        "step_label": str(section),
         "previous_step": previous,
         "current_position": current,
         "total_positions": total,
