@@ -112,6 +112,59 @@ def test_the_association_cannot_be_deleted(staff_client, association):
     assert response.status_code == 403
 
 
+def test_the_add_form_offers_no_statute_or_consent_only_fields(
+    staff_client, public_form
+):
+    """Those belong to one specific fixed section each; on a blank add form
+    they would just sit there unexplained."""
+    response = staff_client.get(reverse("admin:intake_section_add"))
+
+    fields = response.context["adminform"].form.fields
+    assert "custom_body" not in fields
+    assert "consent_images_label" not in fields
+    assert "consent_whatsapp_label" not in fields
+
+
+def test_the_statute_sections_change_form_offers_its_custom_text(
+    staff_client, public_form
+):
+    section = public_form.sections.get(key="statute")
+
+    response = staff_client.get(
+        reverse("admin:intake_section_change", args=[section.pk])
+    )
+
+    fields = response.context["adminform"].form.fields
+    assert "custom_body" in fields
+    assert "consent_images_label" not in fields
+
+
+def test_the_consents_sections_change_form_offers_its_labels(staff_client, public_form):
+    section = public_form.sections.get(key="consents")
+
+    response = staff_client.get(
+        reverse("admin:intake_section_change", args=[section.pk])
+    )
+
+    fields = response.context["adminform"].form.fields
+    assert "consent_images_label" in fields
+    assert "consent_whatsapp_label" in fields
+    assert "custom_body" not in fields
+
+
+def test_a_custom_sections_change_form_offers_neither(staff_client, public_form):
+    section = public_form.sections.create(key="orario", title="Orario", is_custom=True)
+
+    response = staff_client.get(
+        reverse("admin:intake_section_change", args=[section.pk])
+    )
+
+    fields = response.context["adminform"].form.fields
+    assert "custom_body" not in fields
+    assert "consent_images_label" not in fields
+    assert "consent_whatsapp_label" not in fields
+
+
 def test_adding_a_section_from_its_own_admin_creates_a_custom_one(
     staff_client, public_form
 ):

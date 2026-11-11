@@ -8,6 +8,7 @@ from intake.models import (
     CustomFieldChoice,
     PublicForm,
     Section,
+    SectionKey,
     Submission,
     Subscription,
 )
@@ -137,17 +138,18 @@ class SectionAdmin(admin.ModelAdmin):
     list_select_related = ("form",)
 
     def get_fields(self, request, obj=None):
-        fields = [
-            "form",
-            "title",
-            "custom_body",
-            "consent_images_label",
-            "consent_whatsapp_label",
-            "order",
-            "is_enabled",
-        ]
+        # A blank add form only needs what every section has; the rest
+        # (statute/privacy text, consent labels) belongs to one specific
+        # fixed section each and would otherwise sit there unexplained.
+        fields = ["form"]
         if obj is not None:
-            fields.insert(1, "key")
+            fields.append("key")
+        fields.append("title")
+        if obj is not None and obj.key in (SectionKey.STATUTE, SectionKey.PRIVACY):
+            fields.append("custom_body")
+        if obj is not None and obj.key == SectionKey.CONSENTS:
+            fields += ["consent_images_label", "consent_whatsapp_label"]
+        fields += ["order", "is_enabled"]
         return fields
 
     def get_readonly_fields(self, request, obj=None):
