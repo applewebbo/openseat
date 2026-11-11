@@ -134,6 +134,27 @@ def test_default_consent_labels_show_when_no_override_is_set(submission):
     )
 
 
+def test_consent_labels_stay_default_for_an_unsaved_submission():
+    form = ConsentsForm()
+
+    assert (
+        form.fields["consent_images"].label
+        == ConsentsForm.base_fields["consent_images"].label
+    )
+
+
+@pytest.mark.django_db
+def test_consent_labels_stay_default_when_the_section_is_missing(submission):
+    submission.form.sections.filter(key=SectionKey.CONSENTS).delete()
+
+    form = ConsentsForm(instance=submission)
+
+    assert (
+        form.fields["consent_images"].label
+        == ConsentsForm.base_fields["consent_images"].label
+    )
+
+
 @pytest.mark.django_db
 def test_an_overridden_consent_label_replaces_the_default(submission):
     submission.form.sections.filter(key=SectionKey.CONSENTS).update(

@@ -1,7 +1,12 @@
 import pytest
 from django import forms
 
-from intake.custom_fields import build_custom_section_form, load_initial, save_answers
+from intake.custom_fields import (
+    build_custom_section_form,
+    data_on_file,
+    load_initial,
+    save_answers,
+)
 from intake.models import CustomField, Submission
 
 pytestmark = pytest.mark.django_db
@@ -222,3 +227,56 @@ def test_save_answers_ignores_fields_missing_from_cleaned_data(
     save_answers(custom_section, submission, {})
 
     assert not submission.custom_answers.exists()
+
+
+def test_data_on_file_is_empty_for_an_unanswered_submission(custom_section, submission):
+    custom_section.custom_fields.create(label="Preferenza", field_type="text")
+
+    assert data_on_file(custom_section, submission) == {}
+
+
+def test_data_on_file_passes_on_for_a_checked_checkbox(custom_section, submission):
+    custom_field = custom_section.custom_fields.create(
+        label="Accetto", field_type=CustomField.FieldType.CHECKBOX
+    )
+    submission.custom_answers.create(field=custom_field, value_text="True")
+
+    assert data_on_file(custom_section, submission) == {
+        f"field_{custom_field.pk}": "on"
+    }
+
+
+def test_data_on_file_omits_an_unchecked_checkbox(custom_section, submission):
+    custom_field = custom_section.custom_fields.create(
+        label="Accetto", field_type=CustomField.FieldType.CHECKBOX
+    )
+    submission.custom_answers.create(field=custom_field, value_text="False")
+
+    assert data_on_file(custom_section, submission) == {}
+
+
+def test_data_on_file_lists_the_chosen_option_pks_for_a_multiselect(
+    custom_section, submission
+):
+    custom_field = custom_section.custom_fields.create(
+        label="Interessi", field_type=CustomField.FieldType.MULTISELECT
+    )
+    morning = custom_field.choices.create(label="Mattina")
+    evening = custom_field.choices.create(label="Sera")
+    answer = submission.custom_answers.create(field=custom_field)
+    answer.value_choices.set([morning, evening])
+
+    data = data_on_file(custom_section, submission)
+
+    assert set(data[f"field_{custom_field.pk}"]) == {morning.pk, evening.pk}
+
+
+def test_data_on_file_carries_over_a_plain_text_value(custom_section, submission):
+    custom_field = custom_section.custom_fields.create(
+        label="Preferenza", field_type="text"
+    )
+    submission.custom_answers.create(field=custom_field, value_text="Mattina")
+
+    assert data_on_file(custom_section, submission) == {
+        f"field_{custom_field.pk}": "Mattina"
+    }
