@@ -3,7 +3,7 @@ from django.db import connection
 from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 
-from intake.models import Submission
+from intake.models import CustomField, Section, Submission
 
 pytestmark = pytest.mark.django_db
 
@@ -110,3 +110,126 @@ def test_the_association_cannot_be_deleted(staff_client, association):
     )
 
     assert response.status_code == 403
+
+
+def test_adding_a_section_from_its_own_admin_creates_a_custom_one(
+    staff_client, public_form
+):
+    response = staff_client.post(
+        reverse("admin:intake_section_add"),
+        {
+            "form": public_form.pk,
+            "title": "Orario preferito",
+            "custom_body": "",
+            "consent_images_label": "",
+            "consent_whatsapp_label": "",
+            "order": 10,
+            "is_enabled": "on",
+        },
+    )
+
+    assert response.status_code == 302
+    section = Section.objects.get(title="Orario preferito")
+    assert section.is_custom is True
+    assert section.key == "orario-preferito"
+
+
+def test_a_colliding_custom_section_title_gets_a_numeric_suffix(
+    staff_client, public_form
+):
+    public_form.sections.create(key="orario", title="Orario", is_custom=True)
+
+    staff_client.post(
+        reverse("admin:intake_section_add"),
+        {
+            "form": public_form.pk,
+            "title": "Orario",
+            "custom_body": "",
+            "consent_images_label": "",
+            "consent_whatsapp_label": "",
+            "order": 11,
+            "is_enabled": "on",
+        },
+    )
+
+    assert public_form.sections.filter(key="orario-2").exists()
+
+
+def test_a_custom_section_without_a_title_is_rejected_with_an_error(
+    staff_client, public_form
+):
+    response = staff_client.post(
+        reverse("admin:intake_section_add"),
+        {
+            "form": public_form.pk,
+            "title": "",
+            "custom_body": "",
+            "consent_images_label": "",
+            "consent_whatsapp_label": "",
+            "order": 10,
+            "is_enabled": "on",
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.context["adminform"].form.errors
+
+
+def test_the_key_of_a_fixed_section_cannot_be_edited(staff_client, public_form):
+    section = public_form.sections.get(key="statute")
+
+    response = staff_client.get(
+        reverse("admin:intake_section_change", args=[section.pk])
+    )
+
+    assert response.status_code == 200
+    assert "key" not in response.context["adminform"].form.fields
+
+
+def test_a_custom_section_offers_the_custom_field_inline(staff_client, public_form):
+    section = public_form.sections.create(key="orario", title="Orario", is_custom=True)
+
+    response = staff_client.get(
+        reverse("admin:intake_section_change", args=[section.pk])
+    )
+
+    assert b"custom_fields" in response.content
+
+
+def test_a_fixed_section_offers_no_custom_field_inline(staff_client, public_form):
+    section = public_form.sections.get(key="statute")
+
+    response = staff_client.get(
+        reverse("admin:intake_section_change", args=[section.pk])
+    )
+
+    assert b"custom_fields" not in response.content
+
+
+def test_a_select_fields_choices_are_editable_in_its_own_admin(
+    staff_client, public_form
+):
+    section = public_form.sections.create(key="orario", title="Orario", is_custom=True)
+    custom_field = section.custom_fields.create(
+        label="Fascia", field_type=CustomField.FieldType.SELECT
+    )
+
+    response = staff_client.get(
+        reverse("admin:intake_customfield_change", args=[custom_field.pk])
+    )
+
+    assert response.status_code == 200
+    assert b"choices" in response.content
+
+
+def test_a_text_fields_admin_offers_no_choices_inline(staff_client, public_form):
+    section = public_form.sections.create(key="orario", title="Orario", is_custom=True)
+    custom_field = section.custom_fields.create(
+        label="Preferenza", field_type=CustomField.FieldType.TEXT
+    )
+
+    response = staff_client.get(
+        reverse("admin:intake_customfield_change", args=[custom_field.pk])
+    )
+
+    assert b"choices" not in response.content

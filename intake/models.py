@@ -333,15 +333,29 @@ class Section(models.Model):
 
     def clean(self):
         super().clean()
-        if self.is_custom:
-            if not self.title:
-                raise ValidationError({"title": _("A custom section needs a title.")})
-        elif self.key not in SectionKey.values:
-            raise ValidationError({"key": _("Unknown section key.")})
+        # A known key is a fixed section, whatever `is_custom` says — a slug
+        # has not been generated for a new custom one yet, so it cannot be
+        # part of this check.
+        if self.key in SectionKey.values:
+            return
+        if not self.title:
+            raise ValidationError({"title": _("A custom section needs a title.")})
 
     def save(self, *args, **kwargs):
         self.custom_body = clean_rich_text(self.custom_body)
+        if not self.key:
+            self.is_custom = True
+            self.key = self._unique_key()
         super().save(*args, **kwargs)
+
+    def _unique_key(self):
+        base = slugify(self.title)
+        key = base
+        suffix = 2
+        while Section.objects.filter(form=self.form, key=key).exists():
+            key = f"{base}-{suffix}"
+            suffix += 1
+        return key
 
     def __str__(self):
         if self.title:

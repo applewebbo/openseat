@@ -4,6 +4,8 @@ from django.utils.translation import gettext_lazy as _
 from intake.models import (
     AgeBracket,
     Association,
+    CustomField,
+    CustomFieldChoice,
     PublicForm,
     Section,
     Submission,
@@ -12,11 +14,19 @@ from intake.models import (
 
 
 class SectionInline(admin.TabularInline):
-    """The catalogue the organiser switches on and off for this form."""
+    """The catalogue the organiser switches on and off for this form.
+
+    A new row is added from `SectionAdmin`, not here: that is where a blank
+    key turns into a generated slug and `is_custom` is set.
+    """
 
     model = Section
     extra = 0
-    fields = ("key", "order", "is_enabled")
+    fields = ("key", "title", "order", "is_enabled")
+    show_change_link = True
+
+    def has_add_permission(self, request, obj=None):
+        return False
 
 
 class AgeBracketInline(admin.TabularInline):
@@ -106,6 +116,71 @@ class PublicFormAdmin(admin.ModelAdmin):
     list_select_related = ("association",)
     prepopulated_fields = {"slug": ("title",)}
     inlines = [SectionInline]
+
+
+class CustomFieldInline(admin.TabularInline):
+    """Quick listing and ordering; a field's own choices live on its own page."""
+
+    model = CustomField
+    extra = 0
+    fields = ("label", "field_type", "help_text", "is_required", "order")
+    show_change_link = True
+
+
+@admin.register(Section)
+class SectionAdmin(admin.ModelAdmin):
+    """One page per section: a fixed one only has its text to edit here, a
+    custom one also gets its questions, linked on to `CustomFieldAdmin`."""
+
+    list_display = ("__str__", "form", "is_custom", "is_enabled", "order")
+    list_filter = ("is_custom", "is_enabled", "form")
+    list_select_related = ("form",)
+
+    def get_fields(self, request, obj=None):
+        fields = [
+            "form",
+            "title",
+            "custom_body",
+            "consent_images_label",
+            "consent_whatsapp_label",
+            "order",
+            "is_enabled",
+        ]
+        if obj is not None:
+            fields.insert(1, "key")
+        return fields
+
+    def get_readonly_fields(self, request, obj=None):
+        # Blank on a new section: `Section.save()` generates it from the
+        # title. A fixed section's key is what the wizard matches on, so it
+        # is never the organiser's to change either.
+        return ("key",) if obj is not None else ()
+
+    def get_inlines(self, request, obj):
+        if obj is not None and obj.is_custom:
+            return [CustomFieldInline]
+        return []
+
+
+class CustomFieldChoiceInline(admin.TabularInline):
+    model = CustomFieldChoice
+    extra = 0
+    fields = ("label", "order")
+
+
+@admin.register(CustomField)
+class CustomFieldAdmin(admin.ModelAdmin):
+    list_display = ("label", "section", "field_type", "is_required", "order")
+    list_filter = ("field_type", "section__form")
+    list_select_related = ("section",)
+
+    def get_inlines(self, request, obj):
+        if obj is not None and obj.field_type in (
+            CustomField.FieldType.SELECT,
+            CustomField.FieldType.MULTISELECT,
+        ):
+            return [CustomFieldChoiceInline]
+        return []
 
 
 class SubscriptionInline(admin.TabularInline):
