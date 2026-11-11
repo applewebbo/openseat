@@ -50,6 +50,8 @@ slot an applicant prefers — you can add your own.
    **enabled**
 5. Save
 
+![The form for adding a new section](../assets/screenshots/admin-section-add.png)
+
 !!! warning "Mind the order relative to the review step"
     The **Review and signature** section is always the last step the form
     reaches. If your custom section's order is higher than the review
@@ -76,14 +78,30 @@ From the section's page, click **Add another Custom field** and choose:
 - **Required** — if checked, the form will not move on until it is answered
 - **Order** — the order of the questions within the section
 
+![A custom section with its fields](../assets/screenshots/admin-section-custom-fields.png)
+
 For the **Single choice** and **Multiple choice** types you also need to
 define the options: save the field, then open its own page (**Admin →
 Association and applications → Custom field**, or the link from the
 section's table) and add rows under **Choices**, each with its own label and
 order.
 
+![A single-choice field's options](../assets/screenshots/admin-customfield-choices.png)
+
 Each applicant's answers stay attached to their own application and show up
 alongside the rest of it in the application's admin detail page.
+
+## Previewing a Section
+
+Before publishing a section — fixed or custom — you can see what it will
+actually look like without leaving admin. At the bottom of the change page
+there is a **Preview** box, collapsed by default so it does not take up
+space: click **Show the preview** to open it.
+
+![The Statute and fee section's preview, open](../assets/screenshots/admin-section-preview.png)
+
+It is a snapshot of what is saved, not a live preview: to see the effect of
+a change to the title or the text, save the page first.
 
 ## Booking Without Joining
 

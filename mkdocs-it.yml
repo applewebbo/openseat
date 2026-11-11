@@ -41,8 +41,23 @@ plugins:
 
 nav:
 - Home: index.md
-- Guida Utente:
-  - Costruttore di Moduli: user-guide/form-builder.md
+- Guida Visitatori:
+  - Associarsi: visitor-guide/join.md
+  - Prenotare un Evento: visitor-guide/booking.md
+  - Gestire la Propria Prenotazione: visitor-guide/manage-booking.md
+  - Il Consenso del Secondo Genitore: visitor-guide/second-parent.md
+  - Novità e Informazioni: visitor-guide/pages.md
+- Guida Amministratore:
+  - Associazione: admin-guide/association.md
+  - Moduli Pubblici: admin-guide/forms.md
+  - Costruttore di Moduli: admin-guide/form-builder.md
+  - Eventi: admin-guide/events.md
+  - Prenotazioni: admin-guide/bookings.md
+  - Check-in il Giorno dell'Evento: admin-guide/checkin.md
+  - Richieste di Adesione: admin-guide/submissions.md
+  - Registro Soci: admin-guide/members.md
+  - Utenti e Permessi: admin-guide/users.md
+  - Backup: admin-guide/backups.md
 
 markdown_extensions:
 - admonition

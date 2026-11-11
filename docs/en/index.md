@@ -25,13 +25,21 @@ organisation.
 
 <div class="grid cards" markdown>
 
--   :material-book-open-variant:{ .lg .middle } __User Guide__
+-   :material-account-group:{ .lg .middle } __Visitor Guide__
 
     ---
 
-    Learn how to configure the public intake form.
+    How to join, book an event, and manage your own booking.
 
-    [:octicons-arrow-right-24: Form Builder](user-guide/form-builder.md)
+    [:octicons-arrow-right-24: Applying for Membership](visitor-guide/join.md)
+
+-   :material-book-open-variant:{ .lg .middle } __Admin Guide__
+
+    ---
+
+    Association, forms, events, check-in, members and permissions.
+
+    [:octicons-arrow-right-24: Form Builder](admin-guide/form-builder.md)
 
 -   :material-git:{ .lg .middle } __Open Source__
 

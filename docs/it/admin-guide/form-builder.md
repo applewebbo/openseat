@@ -49,6 +49,8 @@ tua.
 4. Imposta l'**ordine** (un numero più basso compare prima) e se è **attiva**
 5. Salva
 
+![Form di creazione di una nuova sezione](../assets/screenshots/admin-section-add.png)
+
 !!! warning "Attenzione all'ordine rispetto al riepilogo"
     La sezione **Riepilogo e sottoscrizione** è sempre l'ultimo passaggio
     raggiungibile dal modulo. Se dai alla tua sezione personalizzata un
@@ -76,14 +78,30 @@ scegli:
 - **Obbligatorio** — se spuntato, il modulo non avanza finché non risposto
 - **Ordine** — l'ordine delle domande dentro la sezione
 
+![Una sezione personalizzata con i suoi campi](../assets/screenshots/admin-section-custom-fields.png)
+
 Per i tipi **Scelta singola** e **Scelta multipla** devi anche definire le
 opzioni: salva il campo, poi apri la sua pagina dedicata (**Admin →
 Associazione e domande → Custom field**, oppure il link dalla tabella della
 sezione) e aggiungi le righe in **Choices**, ciascuna con una propria
 etichetta e un ordine.
 
+![Le opzioni di un campo a scelta singola](../assets/screenshots/admin-customfield-choices.png)
+
 Le risposte di ogni persona restano collegate alla propria richiesta e sono
 visibili insieme al resto nel dettaglio della richiesta in admin.
+
+## Anteprima di una Sezione
+
+Prima di pubblicare una sezione — fissa o personalizzata — puoi vederne
+l'aspetto reale senza uscire dall'admin. In fondo alla pagina di modifica
+trovi un riquadro **Anteprima** chiuso per non occupare spazio: clicca
+**Mostra l'anteprima** per aprirlo.
+
+![L'anteprima della sezione Statuto e quota, aperta](../assets/screenshots/admin-section-preview.png)
+
+È un'istantanea di ciò che è salvato, non un'anteprima dal vivo: per vedere
+l'effetto di una modifica al titolo o al testo devi prima salvare la pagina.
 
 ## Prenotazione Senza Adesione
 

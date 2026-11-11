@@ -28,13 +28,21 @@ dall'associazione.
 
 <div class="grid cards" markdown>
 
--   :material-book-open-variant:{ .lg .middle } __Guida Utente__
+-   :material-account-group:{ .lg .middle } __Guida Visitatori__
 
     ---
 
-    Scopri come configurare il modulo pubblico di adesione.
+    Come associarsi, prenotare un evento e gestire la propria prenotazione.
 
-    [:octicons-arrow-right-24: Costruttore di Moduli](user-guide/form-builder.md)
+    [:octicons-arrow-right-24: Associarsi](visitor-guide/join.md)
+
+-   :material-book-open-variant:{ .lg .middle } __Guida Amministratore__
+
+    ---
+
+    Associazione, moduli, eventi, check-in, soci e permessi.
+
+    [:octicons-arrow-right-24: Costruttore di Moduli](admin-guide/form-builder.md)
 
 -   :material-git:{ .lg .middle } __Open Source__
 

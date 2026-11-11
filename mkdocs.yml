@@ -41,8 +41,23 @@ plugins:
 
 nav:
 - Home: index.md
-- User Guide:
-  - Form Builder: user-guide/form-builder.md
+- Visitor Guide:
+  - Applying for Membership: visitor-guide/join.md
+  - Booking an Event: visitor-guide/booking.md
+  - Managing Your Booking: visitor-guide/manage-booking.md
+  - The Second Parent's Consent: visitor-guide/second-parent.md
+  - News and Information: visitor-guide/pages.md
+- Admin Guide:
+  - Association: admin-guide/association.md
+  - Public Forms: admin-guide/forms.md
+  - Form Builder: admin-guide/form-builder.md
+  - Events: admin-guide/events.md
+  - Bookings: admin-guide/bookings.md
+  - Check-in on the Day of the Event: admin-guide/checkin.md
+  - Applications: admin-guide/submissions.md
+  - Member Register: admin-guide/members.md
+  - Users and Permissions: admin-guide/users.md
+  - Backups: admin-guide/backups.md
 
 markdown_extensions:
 - admonition
