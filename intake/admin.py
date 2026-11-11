@@ -1,6 +1,12 @@
 from django.contrib import admin
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404, render
+from django.urls import path, reverse
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 
+from intake.custom_fields import build_custom_section_form
 from intake.models import (
     AgeBracket,
     Association,
@@ -12,6 +18,7 @@ from intake.models import (
     Submission,
     Subscription,
 )
+from intake.wizard import SECTION_FORMS
 
 
 class SectionInline(admin.TabularInline):
@@ -150,18 +157,74 @@ class SectionAdmin(admin.ModelAdmin):
         if obj is not None and obj.key == SectionKey.CONSENTS:
             fields += ["consent_images_label", "consent_whatsapp_label"]
         fields += ["order", "is_enabled"]
+        if obj is not None:
+            fields.append("preview")
         return fields
 
     def get_readonly_fields(self, request, obj=None):
         # Blank on a new section: `Section.save()` generates it from the
         # title. A fixed section's key is what the wizard matches on, so it
-        # is never the organiser's to change either.
-        return ("key",) if obj is not None else ()
+        # is never the organiser's to change either. The preview is never
+        # editable at all — it is rendered, not stored.
+        return ("preview", "key") if obj is not None else ()
 
     def get_inlines(self, request, obj):
         if obj is not None and obj.is_custom:
             return [CustomFieldInline]
         return []
+
+    @admin.display(description=_("preview"))
+    def preview(self, obj):
+        # A fixed, phone-sized width on purpose: the public form never grows
+        # past it in practice, since its own layout caps out at that size too.
+        # Collapsed behind <details> so a section with nothing to preview
+        # (SUBJECT, APPLICANT…) does not cost vertical space by default.
+        url = reverse(
+            f"admin:{self.model._meta.app_label}_{self.model._meta.model_name}_preview",
+            args=[obj.pk],
+        )
+        return format_html(
+            "<details><summary>{}</summary>"
+            '<iframe src="{}" title="{}" '
+            'style="width:460px;max-width:100%;height:700px;'
+            "border:1px solid #d1d5db;border-radius:0.5rem;margin-top:0.5rem;"
+            '"></iframe></details>',
+            _("Show the preview"),
+            url,
+            _("Section preview"),
+        )
+
+    def get_urls(self):
+        urls = [
+            path(
+                "<int:object_id>/preview/",
+                self.admin_site.admin_view(
+                    xframe_options_sameorigin(self.preview_view)
+                ),
+                name=f"{self.model._meta.app_label}_{self.model._meta.model_name}_preview",
+            ),
+        ]
+        return urls + super().get_urls()
+
+    def preview_view(self, request, object_id):
+        section = get_object_or_404(Section, pk=object_id)
+        if not self.has_view_permission(request, section):
+            raise PermissionDenied
+        submission = Submission(form=section.form)
+        if section.key in SECTION_FORMS:
+            form = SECTION_FORMS[section.key](instance=submission)
+        else:
+            form = build_custom_section_form(section)(submission=submission)
+        return render(
+            request,
+            "admin/intake/section-preview.html",
+            {
+                "section": section,
+                "association": section.form.association,
+                "step_label": str(section),
+                "form": form,
+            },
+        )
 
 
 class CustomFieldChoiceInline(admin.TabularInline):

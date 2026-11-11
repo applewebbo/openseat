@@ -1,0 +1,31 @@
+{% load django_htmx i18n static tailwind_cli %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'it' }}">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="noindex" />
+        <title>{{ step_label }}</title>
+        {% tailwind_css %}
+        <link rel="stylesheet" href="{% url 'theme-css' association.slug %}" />
+        <link rel="stylesheet" href="{% static 'css/custom.css' %}" />
+    </head>
+    <body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'
+          class="text-base-content bg-base-100 p-5 antialiased">
+        <div x-data="{ read: true }"
+             class="border-base-content/5 bg-base-100 mx-auto max-w-2xl rounded-2xl border p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.15)] sm:p-8">
+            <h1 class="mb-8 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{{ step_label }}</h1>
+            {% if section.key == "statute" %}
+                {% include "intake/partials/statute-partial.html" %}
+            {% elif section.key == "privacy" %}
+                {% include "intake/partials/privacy-partial.html" %}
+            {% endif %}
+            {{ form }}
+        </div>
+        {% htmx_script %}
+        <script src="{% static 'js/main.js' %}" defer></script>
+        <script src="{% static 'js/alpine-collapse.min.js' %}" defer></script>
+        <script src="{% static 'js/alpine-focus.min.js' %}" defer></script>
+        <script src="{% static 'js/alpine.min.js' %}" defer></script>
+    </body>
+</html>

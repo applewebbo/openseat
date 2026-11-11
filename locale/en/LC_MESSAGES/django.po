@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 08:19+0100\n"
+"POT-Creation-Date: 2026-11-11 16:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -439,58 +439,70 @@ msgstr ""
 msgid "Your bookings"
 msgstr ""
 
-#: intake/admin.py:51
+#: intake/admin.py:59
 msgid "Home page"
 msgstr ""
 
-#: intake/admin.py:55
+#: intake/admin.py:63
 msgid "These four are the public home page, in the order they appear on it."
 msgstr ""
 
-#: intake/admin.py:60
+#: intake/admin.py:68
 msgid "Registered details"
 msgstr ""
 
-#: intake/admin.py:64 intake/models.py:45
+#: intake/admin.py:72 intake/models.py:45
 msgid "Statute and fee"
 msgstr ""
 
-#: intake/admin.py:68
+#: intake/admin.py:76
 msgid "Info page"
 msgstr ""
 
-#: intake/admin.py:72
+#: intake/admin.py:80
 msgid ""
 "A separate page with the address, tax code, email and statute link above, "
 "plus this optional text. Publishing it also links it from the home page."
 msgstr ""
 
-#: intake/admin.py:79
+#: intake/admin.py:87
 msgid "Social links"
 msgstr ""
 
-#: intake/admin.py:83
+#: intake/admin.py:91
 msgid "Shown as icons in the home page footer when filled in."
 msgstr ""
 
-#: intake/admin.py:88 templates/events/recover-sent.html:12
+#: intake/admin.py:96 templates/events/recover-sent.html:12
 #: templates/events/recover.html:12
 msgid "Bookings"
 msgstr ""
 
-#: intake/admin.py:92
+#: intake/admin.py:100
 msgid "Colours"
 msgstr ""
 
-#: intake/admin.py:97
+#: intake/admin.py:105
 msgid "Used across the public pages. Six-digit hex, e.g. #ED5C08."
 msgstr ""
 
-#: intake/admin.py:199 intake/models.py:297 intake/models.py:430
+#: intake/admin.py:176
+msgid "preview"
+msgstr ""
+
+#: intake/admin.py:192
+msgid "Show the preview"
+msgstr ""
+
+#: intake/admin.py:194
+msgid "Section preview"
+msgstr ""
+
+#: intake/admin.py:264 intake/models.py:297 intake/models.py:430
 msgid "form"
 msgstr ""
 
-#: intake/admin.py:230
+#: intake/admin.py:295
 msgid "images"
 msgstr ""
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 08:19+0100\n"
+"POT-Creation-Date: 2026-11-11 16:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -453,28 +453,28 @@ msgstr "Prenotazione confermata: %(event)s"
 msgid "Your bookings"
 msgstr "Le tue prenotazioni"
 
-#: intake/admin.py:51
+#: intake/admin.py:59
 msgid "Home page"
 msgstr "Home"
 
-#: intake/admin.py:55
+#: intake/admin.py:63
 msgid "These four are the public home page, in the order they appear on it."
 msgstr ""
 "Questi quattro campi sono la pagina pubblica, nell'ordine in cui compaiono."
 
-#: intake/admin.py:60
+#: intake/admin.py:68
 msgid "Registered details"
 msgstr "Dati anagrafici dell'associazione"
 
-#: intake/admin.py:64 intake/models.py:45
+#: intake/admin.py:72 intake/models.py:45
 msgid "Statute and fee"
 msgstr "Statuto e quota"
 
-#: intake/admin.py:68
+#: intake/admin.py:76
 msgid "Info page"
 msgstr "Pagina informazioni"
 
-#: intake/admin.py:72
+#: intake/admin.py:80
 msgid ""
 "A separate page with the address, tax code, email and statute link above, "
 "plus this optional text. Publishing it also links it from the home page."
@@ -483,33 +483,45 @@ msgstr ""
 "sopra, più questo testo facoltativo. Pubblicandola compare anche un link "
 "dalla home page."
 
-#: intake/admin.py:79
+#: intake/admin.py:87
 msgid "Social links"
 msgstr ""
 
-#: intake/admin.py:83
+#: intake/admin.py:91
 msgid "Shown as icons in the home page footer when filled in."
 msgstr ""
 
-#: intake/admin.py:88 templates/events/recover-sent.html:12
+#: intake/admin.py:96 templates/events/recover-sent.html:12
 #: templates/events/recover.html:12
 msgid "Bookings"
 msgstr "Prenotazioni"
 
-#: intake/admin.py:92
+#: intake/admin.py:100
 msgid "Colours"
 msgstr "Colori"
 
-#: intake/admin.py:97
+#: intake/admin.py:105
 msgid "Used across the public pages. Six-digit hex, e.g. #ED5C08."
 msgstr ""
 "Usati in tutte le pagine pubbliche. Esadecimale a sei cifre, es. #ED5C08."
 
-#: intake/admin.py:199 intake/models.py:297 intake/models.py:430
+#: intake/admin.py:176
+msgid "preview"
+msgstr "anteprima"
+
+#: intake/admin.py:192
+msgid "Show the preview"
+msgstr "Mostra l'anteprima"
+
+#: intake/admin.py:194
+msgid "Section preview"
+msgstr "Anteprima della sezione"
+
+#: intake/admin.py:264 intake/models.py:297 intake/models.py:430
 msgid "form"
 msgstr "modulo"
 
-#: intake/admin.py:230
+#: intake/admin.py:295
 msgid "images"
 msgstr "immagini"
 
@@ -822,7 +834,9 @@ msgstr "sezione"
 
 #: intake/models.py:306
 msgid "Overrides the step's label. Required for a custom section."
-msgstr "Sostituisce l'etichetta del passaggio. Obbligatorio per una sezione personalizzata."
+msgstr ""
+"Sostituisce l'etichetta del passaggio. Obbligatorio per una sezione "
+"personalizzata."
 
 #: intake/models.py:308
 msgid "custom"
@@ -837,8 +851,8 @@ msgid ""
 "Overrides the statute/privacy text shown on this step. Used only by the "
 "statute and privacy sections."
 msgstr ""
-"Sostituisce il testo di statuto/privacy mostrato in questo passaggio. "
-"Usato solo dalle sezioni statuto e privacy."
+"Sostituisce il testo di statuto/privacy mostrato in questo passaggio. Usato "
+"solo dalle sezioni statuto e privacy."
 
 #: intake/models.py:318
 msgid "image consent label"

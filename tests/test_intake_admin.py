@@ -286,3 +286,80 @@ def test_a_text_fields_admin_offers_no_choices_inline(staff_client, public_form)
     )
 
     assert b"choices" not in response.content
+
+
+def test_a_sections_change_page_offers_a_preview_iframe(staff_client, public_form):
+    section = public_form.sections.get(key="statute")
+
+    response = staff_client.get(
+        reverse("admin:intake_section_change", args=[section.pk])
+    )
+
+    assert response.status_code == 200
+    preview_url = reverse("admin:intake_section_preview", args=[section.pk])
+    assert preview_url.encode() in response.content
+
+
+def test_the_add_form_offers_no_preview(staff_client, public_form):
+    response = staff_client.get(
+        reverse("admin:intake_section_add"), {"form": public_form.pk}
+    )
+
+    assert b"iframe" not in response.content
+
+
+def test_the_statute_preview_shows_the_stock_text_by_default(staff_client, public_form):
+    section = public_form.sections.get(key="statute")
+
+    response = staff_client.get(
+        reverse("admin:intake_section_preview", args=[section.pk])
+    )
+
+    assert response.status_code == 200
+    assert "accettare lo statuto" in response.content.decode()
+
+
+def test_the_statute_preview_shows_the_custom_text_when_set(staff_client, public_form):
+    section = public_form.sections.get(key="statute")
+    section.custom_body = "<p>Testo su misura per questa associazione.</p>"
+    section.save()
+
+    response = staff_client.get(
+        reverse("admin:intake_section_preview", args=[section.pk])
+    )
+
+    assert "Testo su misura per questa associazione." in response.content.decode()
+
+
+def test_the_consents_preview_shows_its_overridden_labels(staff_client, public_form):
+    section = public_form.sections.get(key="consents")
+    section.consent_images_label = "Consenso foto personalizzato"
+    section.save()
+
+    response = staff_client.get(
+        reverse("admin:intake_section_preview", args=[section.pk])
+    )
+
+    assert "Consenso foto personalizzato" in response.content.decode()
+
+
+def test_a_custom_sections_preview_shows_its_fields(staff_client, public_form):
+    section = public_form.sections.create(key="orario", title="Orario", is_custom=True)
+    section.custom_fields.create(
+        label="Fascia preferita", field_type=CustomField.FieldType.TEXT
+    )
+
+    response = staff_client.get(
+        reverse("admin:intake_section_preview", args=[section.pk])
+    )
+
+    assert response.status_code == 200
+    assert "Fascia preferita" in response.content.decode()
+
+
+def test_the_preview_is_closed_to_an_anonymous_visitor(client, public_form):
+    section = public_form.sections.get(key="statute")
+
+    response = client.get(reverse("admin:intake_section_preview", args=[section.pk]))
+
+    assert response.status_code == 302
