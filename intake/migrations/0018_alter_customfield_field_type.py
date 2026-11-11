@@ -4,15 +4,25 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('intake', '0017_customfield_customfieldchoice_customanswer'),
+        ("intake", "0017_customfield_customfieldchoice_customanswer"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='customfield',
-            name='field_type',
-            field=models.CharField(choices=[('text', 'Short text'), ('textarea', 'Long text'), ('select', 'Single choice'), ('multiselect', 'Multiple choice'), ('checkbox', 'Checkbox'), ('number', 'Numeric value')], max_length=20, verbose_name='type'),
+            model_name="customfield",
+            name="field_type",
+            field=models.CharField(
+                choices=[
+                    ("text", "Short text"),
+                    ("textarea", "Long text"),
+                    ("select", "Single choice"),
+                    ("multiselect", "Multiple choice"),
+                    ("checkbox", "Checkbox"),
+                    ("number", "Numeric value"),
+                ],
+                max_length=20,
+                verbose_name="type",
+            ),
         ),
     ]
