@@ -133,6 +133,16 @@ def test_the_slug_is_neither_editable_nor_shown(staff_client, spring_event):
     assert b'name="slug"' not in response.content
 
 
+def test_checkin_started_at_is_not_editable(staff_client, spring_event):
+    """Set only by opening/closing check-in at the door, never by hand."""
+    response = staff_client.get(
+        reverse("admin:events_event_change", args=[spring_event.pk])
+    )
+
+    assert "checkin_started_at" not in response.context["adminform"].form.fields
+    assert b'name="checkin_started_at"' not in response.content
+
+
 # --- the confirmation mail ---------------------------------------------------
 
 

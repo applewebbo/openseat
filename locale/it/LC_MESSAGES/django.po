@@ -297,16 +297,16 @@ msgid "published"
 msgstr "pubblicato"
 
 #: events/models.py:100
-#, fuzzy
-#| msgid "annual membership fee"
 msgid "requires membership"
-msgstr "quota associativa annuale"
+msgstr "richiede l'adesione"
 
 #: events/models.py:103
 msgid ""
 "Off: this is a pure booking — attending never creates or updates a member, "
 "even after check-in."
 msgstr ""
+"Disattivato: è una semplice prenotazione — partecipare non crea né "
+"aggiorna mai un socio, nemmeno dopo il check-in."
 
 #: events/models.py:108
 msgid "checklist sent at"
@@ -736,10 +736,8 @@ msgstr ""
 "Se attivo, la pagina informazioni è pubblica e collegata dalla home page."
 
 #: intake/models.py:133
-#, fuzzy
-#| msgid "View site"
 msgid "website"
-msgstr "Vai al sito"
+msgstr "sito web"
 
 #: intake/models.py:134
 msgid "Facebook"
@@ -841,16 +839,12 @@ msgid ""
 msgstr ""
 
 #: intake/models.py:318
-#, fuzzy
-#| msgid "image consent"
 msgid "image consent label"
-msgstr "consenso immagine"
+msgstr "etichetta del consenso immagine"
 
 #: intake/models.py:321
-#, fuzzy
-#| msgid "WhatsApp consent"
 msgid "WhatsApp consent label"
-msgstr "Consenso WhatsApp"
+msgstr "etichetta del consenso WhatsApp"
 
 #: intake/models.py:324
 msgid "enabled"
@@ -881,10 +875,8 @@ msgid "Multiple choice"
 msgstr ""
 
 #: intake/models.py:376
-#, fuzzy
-#| msgid "Check your inbox"
 msgid "Checkbox"
-msgstr "Controlla la posta"
+msgstr "Casella di spunta"
 
 #: intake/models.py:386
 msgid "help text"
@@ -1480,10 +1472,8 @@ msgid "Statute"
 msgstr "Statuto"
 
 #: templates/cotton/footer.html:36
-#, fuzzy
-#| msgid "View site"
 msgid "Website"
-msgstr "Vai al sito"
+msgstr "Sito web"
 
 #: templates/cotton/navbar.html:23 templates/cotton/navbar.html:53
 msgid "Event"

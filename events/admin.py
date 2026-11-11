@@ -66,7 +66,7 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ("title", "starts_on", "booked", "cost", "sent_on")
     list_filter = ("is_published", "requires_membership")
     date_hierarchy = "starts_at"
-    readonly_fields = ("checklist_sent_at",)
+    readonly_fields = ("checklist_sent_at", "checkin_started_at")
     inlines = [BookingInline]
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
