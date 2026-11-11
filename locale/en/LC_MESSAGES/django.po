@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 12:12+0200\n"
+"POT-Creation-Date: 2026-11-11 08:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,8 +49,8 @@ msgstr "A superuser must have is_staff=True"
 msgid "A superuser must have is_superuser=True"
 msgstr "A superuser must have is_superuser=True"
 
-#: accounts/models.py:46 intake/models.py:83 intake/models.py:344
-#: intake/models.py:370 intake/models.py:492 members/models.py:51
+#: accounts/models.py:46 intake/models.py:84 intake/models.py:457
+#: intake/models.py:483 intake/models.py:644 members/models.py:51
 msgid "email address"
 msgstr "email address"
 
@@ -70,6 +70,10 @@ msgstr ""
 #: accounts/notifications.py:66 templates/account/mail/account_approved.html:5
 msgid "Your account has been approved"
 msgstr ""
+
+#: core/apps.py:17
+msgid "Choose an option"
+msgstr "Choose an option"
 
 #: core/settings.py:199
 msgid "Italian"
@@ -95,7 +99,7 @@ msgstr ""
 msgid "booked"
 msgstr ""
 
-#: events/admin.py:139 intake/models.py:75
+#: events/admin.py:139 intake/models.py:76
 msgid "name"
 msgstr ""
 
@@ -109,7 +113,7 @@ msgid "Bookings for %(event)s"
 msgstr ""
 
 #: events/forms.py:28 events/forms.py:82 events/forms.py:190
-#: intake/forms.py:361 templates/home.html:122
+#: intake/forms.py:382 templates/home.html:122
 msgid "Email address"
 msgstr ""
 
@@ -118,8 +122,8 @@ msgid "The one the association writes to."
 msgstr ""
 
 #: events/forms.py:35 events/forms.py:163 events/forms.py:219
+#: templates/cotton/footer.html:7
 #: templates/events/checkin-add-existing-search-partial.html:13
-#: templates/home.html:141 templates/intake/base-intake.html:59
 #: templates/pages/info.html:28
 msgid "Tax code"
 msgstr ""
@@ -170,7 +174,7 @@ msgstr ""
 msgid "Street"
 msgstr ""
 
-#: events/forms.py:172 events/forms.py:231
+#: events/forms.py:172 events/forms.py:231 intake/models.py:377
 msgid "Number"
 msgstr ""
 
@@ -202,31 +206,31 @@ msgstr ""
 msgid "Other parent's last name"
 msgstr ""
 
-#: events/forms.py:268 intake/models.py:478
+#: events/forms.py:268 intake/models.py:630
 #: templates/intake/mail/second-parent.html:5
 #: templates/intake/mail/second-parent.html:28
 #: templates/intake/second-parent.html:4
 msgid "Image consent"
 msgstr ""
 
-#: events/forms.py:273 intake/models.py:373
+#: events/forms.py:273 intake/models.py:486
 msgid "WhatsApp consent"
 msgstr ""
 
-#: events/forms.py:325 events/forms.py:329 intake/forms.py:317
+#: events/forms.py:325 events/forms.py:329 intake/forms.py:326
 msgid "This field is required."
 msgstr ""
 
-#: events/forms.py:353 templates/account/email/base_notification.html:26
+#: events/forms.py:354 templates/account/email/base_notification.html:26
 msgid "Date"
 msgstr ""
 
-#: events/forms.py:356
+#: events/forms.py:357
 msgid "Time"
 msgstr ""
 
-#: events/models.py:57 intake/models.py:140 intake/models.py:141
-#: intake/models.py:192 intake/models.py:224 members/models.py:27
+#: events/models.py:57 intake/models.py:144 intake/models.py:145
+#: intake/models.py:196 intake/models.py:228 members/models.py:27
 msgid "association"
 msgstr ""
 
@@ -240,11 +244,11 @@ msgid ""
 "form."
 msgstr ""
 
-#: events/models.py:75 intake/models.py:78 intake/models.py:228
+#: events/models.py:75 intake/models.py:79 intake/models.py:232
 msgid "slug"
 msgstr ""
 
-#: events/models.py:76 intake/models.py:229
+#: events/models.py:76 intake/models.py:233 intake/models.py:303
 msgid "title"
 msgstr ""
 
@@ -285,132 +289,142 @@ msgid "published"
 msgstr ""
 
 #: events/models.py:100
-msgid "checklist sent at"
+msgid "requires membership"
 msgstr ""
 
 #: events/models.py:103
-msgid "check-in started at"
+msgid ""
+"Off: this is a pure booking — attending never creates or updates a member, "
+"even after check-in."
 msgstr ""
 
-#: events/models.py:107
-msgid "Set by an editor at the door. Closes public bookings until cleared."
+#: events/models.py:108
+msgid "checklist sent at"
 msgstr ""
 
 #: events/models.py:111
+msgid "check-in started at"
+msgstr ""
+
+#: events/models.py:115
+msgid "Set by an editor at the door. Closes public bookings until cleared."
+msgstr ""
+
+#: events/models.py:119
 msgid "suggested cost"
 msgstr ""
 
-#: events/models.py:116
+#: events/models.py:124
 msgid "Not shown to the public yet."
 msgstr ""
 
-#: events/models.py:118 intake/models.py:240 intake/models.py:390
+#: events/models.py:126 intake/models.py:244 intake/models.py:503
 msgid "created at"
 msgstr ""
 
-#: events/models.py:123 events/models.py:311
+#: events/models.py:131 events/models.py:319
 msgid "event"
 msgstr ""
 
-#: events/models.py:124
+#: events/models.py:132
 msgid "events"
 msgstr ""
 
-#: events/models.py:127
+#: events/models.py:135
 msgid "Can export the members acquired at an event"
 msgstr ""
 
-#: events/models.py:217
+#: events/models.py:225
 msgid "Cash"
 msgstr ""
 
-#: events/models.py:218
+#: events/models.py:226
 msgid "Bank transfer"
 msgstr ""
 
-#: events/models.py:219
+#: events/models.py:227
 msgid "Other"
 msgstr ""
 
-#: events/models.py:317 members/models.py:71
+#: events/models.py:325 members/models.py:71
 msgid "member"
 msgstr ""
 
-#: events/models.py:322
+#: events/models.py:330
 msgid "Filled in when the booking is confirmed."
 msgstr ""
 
-#: events/models.py:326 members/models.py:33
+#: events/models.py:334 members/models.py:33
 msgid "application"
 msgstr ""
 
-#: events/models.py:333 intake/models.py:331 intake/models.py:346
-#: intake/models.py:365 members/models.py:41
+#: events/models.py:341 intake/models.py:444 intake/models.py:459
+#: intake/models.py:478 members/models.py:41
 msgid "first name"
 msgstr ""
 
-#: events/models.py:334 intake/models.py:332 intake/models.py:347
-#: intake/models.py:368 members/models.py:42
+#: events/models.py:342 intake/models.py:445 intake/models.py:460
+#: intake/models.py:481 members/models.py:42
 msgid "last name"
 msgstr ""
 
-#: events/models.py:336 intake/models.py:333 intake/models.py:348
+#: events/models.py:344 intake/models.py:446 intake/models.py:461
 #: members/models.py:43
 msgid "date of birth"
 msgstr ""
 
-#: events/models.py:340
+#: events/models.py:348
 msgid ""
 "A snapshot taken when the booking was made — it is not recalculated later, "
 "not even against the event date."
 msgstr ""
 
-#: events/models.py:344 members/models.py:55
+#: events/models.py:352 members/models.py:55
 #: templates/events/mail/checklist.txt:7
 msgid "contact"
 msgstr ""
 
-#: events/models.py:345 members/models.py:56
+#: events/models.py:353 members/models.py:56
 msgid "contact email"
 msgstr ""
 
-#: events/models.py:346 members/models.py:57
+#: events/models.py:354 members/models.py:57
 msgid "contact phone"
 msgstr ""
 
-#: events/models.py:348
+#: events/models.py:356
 msgid "note"
 msgstr ""
 
-#: events/models.py:351
+#: events/models.py:359
 msgid "confirmed on"
 msgstr ""
 
-#: events/models.py:354
+#: events/models.py:362
 msgid "The day they turned up and paid the fee."
 msgstr ""
 
-#: events/models.py:357
+#: events/models.py:365
 msgid "fee paid"
 msgstr ""
 
-#: events/models.py:360
+#: events/models.py:368
 msgid "paid by"
 msgstr ""
 
-#: events/models.py:363
+#: events/models.py:371
 msgid "booked at"
 msgstr ""
 
-#: events/models.py:364
+#: events/models.py:372
 msgid "cancelled at"
 msgstr ""
 
-#: events/models.py:369
+#: events/models.py:377
 msgid "booking"
 msgstr ""
 
-#: events/models.py:370
+#: events/models.py:378
 msgid "bookings"
 msgstr ""
 
@@ -425,50 +439,58 @@ msgstr ""
 msgid "Your bookings"
 msgstr ""
 
-#: intake/admin.py:41
+#: intake/admin.py:51
 msgid "Home page"
 msgstr ""
 
-#: intake/admin.py:45
+#: intake/admin.py:55
 msgid "These four are the public home page, in the order they appear on it."
 msgstr ""
 
-#: intake/admin.py:50
+#: intake/admin.py:60
 msgid "Registered details"
 msgstr ""
 
-#: intake/admin.py:54 intake/models.py:44
+#: intake/admin.py:64 intake/models.py:45
 msgid "Statute and fee"
 msgstr ""
 
-#: intake/admin.py:58
+#: intake/admin.py:68
 msgid "Info page"
 msgstr ""
 
-#: intake/admin.py:62
+#: intake/admin.py:72
 msgid ""
 "A separate page with the address, tax code, email and statute link above, "
 "plus this optional text. Publishing it also links it from the home page."
 msgstr ""
 
-#: intake/admin.py:69 templates/events/recover-sent.html:12
+#: intake/admin.py:79
+msgid "Social links"
+msgstr ""
+
+#: intake/admin.py:83
+msgid "Shown as icons in the home page footer when filled in."
+msgstr ""
+
+#: intake/admin.py:88 templates/events/recover-sent.html:12
 #: templates/events/recover.html:12
 msgid "Bookings"
 msgstr ""
 
-#: intake/admin.py:73
+#: intake/admin.py:92
 msgid "Colours"
 msgstr ""
 
-#: intake/admin.py:78
+#: intake/admin.py:97
 msgid "Used across the public pages. Six-digit hex, e.g. #ED5C08."
 msgstr ""
 
-#: intake/admin.py:115 intake/models.py:288 intake/models.py:317
+#: intake/admin.py:199 intake/models.py:297 intake/models.py:430
 msgid "form"
 msgstr ""
 
-#: intake/admin.py:146
+#: intake/admin.py:230
 msgid "images"
 msgstr ""
 
@@ -494,15 +516,15 @@ msgstr ""
 msgid "I am the sole holder of parental responsibility"
 msgstr ""
 
-#: intake/forms.py:272
+#: intake/forms.py:281
 msgid "I accept the statute and undertake to pay the annual membership fee"
 msgstr ""
 
-#: intake/forms.py:275 templates/intake/partials/review-partial.html:66
+#: intake/forms.py:284 templates/intake/partials/review-partial.html:66
 msgid "Parental responsibility"
 msgstr ""
 
-#: intake/forms.py:278
+#: intake/forms.py:287
 msgid ""
 "Being separated or divorced does not make you the sole holder: under shared "
 "custody both parents remain holders. You are the sole holder with exclusive "
@@ -510,387 +532,494 @@ msgid ""
 "recognised the child."
 msgstr ""
 
-#: intake/forms.py:301
+#: intake/forms.py:310
 msgid "Their first name"
 msgstr ""
 
-#: intake/forms.py:302
+#: intake/forms.py:311
 msgid "Their last name"
 msgstr ""
 
-#: intake/forms.py:303
+#: intake/forms.py:312
 msgid "Their email address"
 msgstr ""
 
-#: intake/forms.py:305
+#: intake/forms.py:314
 msgid "Used only to ask them about the image consents."
 msgstr ""
 
-#: intake/forms.py:327
+#: intake/forms.py:336
 msgid "Publishing images on the association's website and social channels"
 msgstr ""
 
-#: intake/forms.py:330
+#: intake/forms.py:339
 msgid "Sending photos and videos through the WhatsApp broadcast list"
 msgstr ""
 
-#: intake/forms.py:341
+#: intake/forms.py:362
 msgid ""
 "I declare that the information above is true and I ask to be admitted as a "
 "member"
 msgstr ""
 
-#: intake/forms.py:362
+#: intake/forms.py:383
 msgid "We send the link to come back to, and nothing else."
 msgstr ""
 
-#: intake/models.py:17
+#: intake/models.py:18
 msgid "Use a six-digit hex colour, for example #ED5C08"
 msgstr ""
 
-#: intake/models.py:29
+#: intake/models.py:30
 msgid "Manual only, at check-in"
 msgstr ""
 
-#: intake/models.py:30
+#: intake/models.py:31
 msgid "Automatically, at midnight before"
 msgstr ""
 
-#: intake/models.py:31
+#: intake/models.py:32
 msgid "Automatically, at the event's start time"
 msgstr ""
 
-#: intake/models.py:35
+#: intake/models.py:36
 msgid "Me"
 msgstr ""
 
-#: intake/models.py:36
+#: intake/models.py:37
 msgid "My child"
 msgstr ""
 
-#: intake/models.py:37
+#: intake/models.py:38
 msgid "A person I am the legal guardian of"
 msgstr ""
 
-#: intake/models.py:41
+#: intake/models.py:42
 msgid "Who is taking part in the event"
 msgstr ""
 
-#: intake/models.py:42 templates/intake/partials/review-partial.html:13
+#: intake/models.py:43 templates/intake/partials/review-partial.html:13
 msgid "Your details"
 msgstr ""
 
-#: intake/models.py:43 templates/intake/partials/review-partial.html:44
+#: intake/models.py:44 templates/intake/partials/review-partial.html:44
 msgid "Who is taking part"
 msgstr ""
 
-#: intake/models.py:45
+#: intake/models.py:46
 msgid "Privacy notice"
 msgstr ""
 
-#: intake/models.py:46 templates/intake/partials/review-partial.html:82
+#: intake/models.py:47 templates/intake/partials/review-partial.html:82
 msgid "Image consents"
 msgstr ""
 
-#: intake/models.py:47
+#: intake/models.py:48
 msgid "Review and subscription"
 msgstr ""
 
-#: intake/models.py:79 intake/models.py:338 intake/models.py:353
+#: intake/models.py:80 intake/models.py:451 intake/models.py:466
 #: members/models.py:46
 msgid "street"
 msgstr ""
 
-#: intake/models.py:80 intake/models.py:340 members/models.py:48
+#: intake/models.py:81 intake/models.py:453 members/models.py:48
 msgid "postcode"
 msgstr ""
 
-#: intake/models.py:81 intake/models.py:341 intake/models.py:355
+#: intake/models.py:82 intake/models.py:454 intake/models.py:468
 #: members/models.py:49
 msgid "city"
 msgstr ""
 
-#: intake/models.py:82 intake/models.py:337 intake/models.py:352
+#: intake/models.py:83 intake/models.py:450 intake/models.py:465
 #: members/models.py:45
 msgid "tax code"
 msgstr ""
 
-#: intake/models.py:84
+#: intake/models.py:85
 msgid "statute link"
 msgstr ""
 
-#: intake/models.py:86
+#: intake/models.py:87
 msgid "statute PDF"
 msgstr ""
 
-#: intake/models.py:91
+#: intake/models.py:92
 msgid ""
 "A downloadable copy of the statute. Shown ahead of the link above when both "
 "are set."
 msgstr ""
 
-#: intake/models.py:96
+#: intake/models.py:97
 msgid "annual membership fee"
 msgstr ""
 
-#: intake/models.py:99
+#: intake/models.py:100
 msgid "close bookings"
 msgstr ""
 
-#: intake/models.py:104
+#: intake/models.py:105
 msgid ""
 "When public bookings stop, on top of an editor closing them manually at "
 "check-in."
 msgstr ""
 
-#: intake/models.py:108
+#: intake/models.py:109
 msgid "logo"
 msgstr ""
 
-#: intake/models.py:110
+#: intake/models.py:111
 msgid "primary colour"
 msgstr ""
 
-#: intake/models.py:113
+#: intake/models.py:114
 msgid "accent colour"
 msgstr ""
 
-#: intake/models.py:116
+#: intake/models.py:117
 msgid "neutral colour"
 msgstr ""
 
-#: intake/models.py:121
+#: intake/models.py:122
 msgid "home page title"
 msgstr ""
 
-#: intake/models.py:122
+#: intake/models.py:123
 msgid "home page description"
 msgstr ""
 
-#: intake/models.py:126
+#: intake/models.py:127
 msgid "info page content"
 msgstr ""
 
-#: intake/models.py:128
+#: intake/models.py:129
 msgid "publish the info page"
 msgstr ""
 
-#: intake/models.py:130
+#: intake/models.py:131
 msgid "When on, the info page is public and linked from the home page."
 msgstr ""
 
 #: intake/models.py:133
+msgid "website"
+msgstr ""
+
+#: intake/models.py:134
+msgid "Facebook"
+msgstr ""
+
+#: intake/models.py:135
+msgid "Instagram"
+msgstr ""
+
+#: intake/models.py:137
 msgid "default event location"
 msgstr ""
 
-#: intake/models.py:136
+#: intake/models.py:140
 msgid "Pre-fills the location field when an editor creates an event."
 msgstr ""
 
-#: intake/models.py:196
+#: intake/models.py:200 intake/models.py:385 intake/models.py:409
 msgid "label"
 msgstr ""
 
-#: intake/models.py:198
+#: intake/models.py:202
 msgid "from age"
 msgstr ""
 
-#: intake/models.py:198
+#: intake/models.py:202
 msgid "Empty: no lower bound."
 msgstr ""
 
-#: intake/models.py:201
+#: intake/models.py:205
 msgid "to age"
 msgstr ""
 
-#: intake/models.py:201
+#: intake/models.py:205
 msgid "Empty: no upper bound."
 msgstr ""
 
-#: intake/models.py:203 intake/models.py:293
+#: intake/models.py:207 intake/models.py:323 intake/models.py:389
+#: intake/models.py:410
 msgid "order"
 msgstr ""
 
-#: intake/models.py:206
+#: intake/models.py:210
 msgid "age bracket"
 msgstr ""
 
-#: intake/models.py:207
+#: intake/models.py:211
 msgid "age brackets"
 msgstr ""
 
-#: intake/models.py:230
+#: intake/models.py:234
 msgid "introduction"
 msgstr ""
 
-#: intake/models.py:231
+#: intake/models.py:235
 msgid "open"
 msgstr ""
 
-#: intake/models.py:233
+#: intake/models.py:237
 msgid "default"
 msgstr ""
 
-#: intake/models.py:236
+#: intake/models.py:240
 msgid ""
 "Preselected when an editor creates an event. Only one per association: "
 "marking this one unmarks any other."
 msgstr ""
 
-#: intake/models.py:243
+#: intake/models.py:247
 msgid "public form"
 msgstr ""
 
-#: intake/models.py:244
+#: intake/models.py:248
 msgid "public forms"
 msgstr ""
 
-#: intake/models.py:292 intake/models.py:297
+#: intake/models.py:301 intake/models.py:327 intake/models.py:381
 msgid "section"
 msgstr ""
 
-#: intake/models.py:294
-msgid "enabled"
+#: intake/models.py:306
+msgid "Overrides the step's label. Required for a custom section."
 msgstr ""
 
-#: intake/models.py:298
-msgid "sections"
+#: intake/models.py:308
+msgid "custom"
 msgstr ""
 
-#: intake/models.py:312
-msgid "Draft"
+#: intake/models.py:310
+msgid "custom text"
 msgstr ""
 
 #: intake/models.py:313
-msgid "Submitted"
+msgid ""
+"Overrides the statute/privacy text shown on this step. Used only by the "
+"statute and privacy sections."
 msgstr ""
 
-#: intake/models.py:322 intake/models.py:499
-msgid "token"
+#: intake/models.py:318
+msgid "image consent label"
 msgstr ""
 
-#: intake/models.py:325 intake/models.py:496
-msgid "state"
+#: intake/models.py:321
+msgid "WhatsApp consent label"
+msgstr ""
+
+#: intake/models.py:324
+msgid "enabled"
 msgstr ""
 
 #: intake/models.py:328
-msgid "applying for"
+msgid "sections"
 msgstr ""
 
-#: intake/models.py:335 intake/models.py:350 members/models.py:44
-msgid "place of birth"
-msgstr ""
-
-#: intake/models.py:339 intake/models.py:354 members/models.py:47
-msgid "number"
-msgstr ""
-
-#: intake/models.py:342 intake/models.py:356 members/models.py:50
-msgid "province"
-msgstr ""
-
-#: intake/models.py:343
-msgid "phone"
-msgstr ""
-
-#: intake/models.py:358
-msgid "accepts the statute"
-msgstr ""
-
-#: intake/models.py:362
-msgid "sole holder of parental responsibility"
+#: intake/models.py:342
+msgid "A custom section needs a title."
 msgstr ""
 
 #: intake/models.py:372
-msgid "image consent"
+msgid "Short text"
 msgstr ""
 
-#: intake/models.py:380
-msgid "booked for"
+#: intake/models.py:373
+msgid "Long text"
+msgstr ""
+
+#: intake/models.py:374
+msgid "Single choice"
+msgstr ""
+
+#: intake/models.py:375
+msgid "Multiple choice"
+msgstr ""
+
+#: intake/models.py:376
+msgid "Checkbox"
 msgstr ""
 
 #: intake/models.py:386
-msgid "reminded at"
+msgid "help text"
 msgstr ""
 
 #: intake/models.py:387
-msgid "place"
+msgid "type"
 msgstr ""
 
 #: intake/models.py:388
+msgid "required"
+msgstr ""
+
+#: intake/models.py:392
+msgid "custom field"
+msgstr ""
+
+#: intake/models.py:393
+msgid "custom fields"
+msgstr ""
+
+#: intake/models.py:405 intake/models.py:599
+msgid "field"
+msgstr ""
+
+#: intake/models.py:413
+msgid "choice"
+msgstr ""
+
+#: intake/models.py:414 intake/models.py:605
+msgid "choices"
+msgstr ""
+
+#: intake/models.py:425
+msgid "Draft"
+msgstr ""
+
+#: intake/models.py:426
+msgid "Submitted"
+msgstr ""
+
+#: intake/models.py:435 intake/models.py:651
+msgid "token"
+msgstr ""
+
+#: intake/models.py:438 intake/models.py:648
+msgid "state"
+msgstr ""
+
+#: intake/models.py:441
+msgid "applying for"
+msgstr ""
+
+#: intake/models.py:448 intake/models.py:463 members/models.py:44
+msgid "place of birth"
+msgstr ""
+
+#: intake/models.py:452 intake/models.py:467 members/models.py:47
+msgid "number"
+msgstr ""
+
+#: intake/models.py:455 intake/models.py:469 members/models.py:50
+msgid "province"
+msgstr ""
+
+#: intake/models.py:456
+msgid "phone"
+msgstr ""
+
+#: intake/models.py:471
+msgid "accepts the statute"
+msgstr ""
+
+#: intake/models.py:475
+msgid "sole holder of parental responsibility"
+msgstr ""
+
+#: intake/models.py:485
+msgid "image consent"
+msgstr ""
+
+#: intake/models.py:493
+msgid "booked for"
+msgstr ""
+
+#: intake/models.py:499
+msgid "reminded at"
+msgstr ""
+
+#: intake/models.py:500
+msgid "place"
+msgstr ""
+
+#: intake/models.py:501
 msgid "submitted at"
 msgstr ""
 
-#: intake/models.py:389 intake/models.py:503
+#: intake/models.py:502 intake/models.py:655
 #: templates/account/email/base_notification.html:14
 msgid "IP address"
 msgstr ""
 
-#: intake/models.py:391
+#: intake/models.py:504
 msgid "updated at"
 msgstr ""
 
-#: intake/models.py:394 intake/models.py:487
+#: intake/models.py:507 intake/models.py:593 intake/models.py:639
 msgid "submission"
 msgstr ""
 
-#: intake/models.py:395
+#: intake/models.py:508
 msgid "submissions"
 msgstr ""
 
-#: intake/models.py:399
+#: intake/models.py:512
 msgid "draft"
 msgstr ""
 
-#: intake/models.py:473
+#: intake/models.py:603
+msgid "value"
+msgstr ""
+
+#: intake/models.py:609
+msgid "answer"
+msgstr ""
+
+#: intake/models.py:610
+msgid "answers"
+msgstr ""
+
+#: intake/models.py:625
 msgid "Applicant"
 msgstr ""
 
-#: intake/models.py:474
+#: intake/models.py:626
 msgid "Second holder of parental responsibility"
 msgstr ""
 
-#: intake/models.py:477
+#: intake/models.py:629
 msgid "Membership application"
 msgstr ""
 
-#: intake/models.py:481
+#: intake/models.py:633
 msgid "Awaiting signature"
 msgstr ""
 
-#: intake/models.py:482
+#: intake/models.py:634
 msgid "Signed"
 msgstr ""
 
-#: intake/models.py:483
+#: intake/models.py:635
 msgid "Declined"
 msgstr ""
 
-#: intake/models.py:491
+#: intake/models.py:643
 msgid "signatory"
 msgstr ""
 
-#: intake/models.py:493
+#: intake/models.py:645
 msgid "role"
 msgstr ""
 
-#: intake/models.py:494
+#: intake/models.py:646
 msgid "subject"
 msgstr ""
 
-#: intake/models.py:501
+#: intake/models.py:653
 msgid "declaration"
 msgstr ""
 
-#: intake/models.py:502
+#: intake/models.py:654
 msgid "signed at"
 msgstr ""
 
-#: intake/models.py:506
+#: intake/models.py:658
 msgid "subscription"
 msgstr ""
 
-#: intake/models.py:507
+#: intake/models.py:659
 msgid "subscriptions"
 msgstr ""
 
@@ -930,18 +1059,18 @@ msgstr ""
 msgid "Write the number with digits, spaces or a plus sign."
 msgstr ""
 
-#: intake/views.py:336
+#: intake/views.py:338
 #, python-format
 msgid ""
 "Application for membership of %(association)s, accepting its statute and "
 "undertaking to pay the annual fee."
 msgstr ""
 
-#: intake/views.py:343
+#: intake/views.py:345
 msgid "Signed as sole holder of parental responsibility."
 msgstr ""
 
-#: intake/views.py:347
+#: intake/views.py:349
 msgid ""
 "Signed on behalf of the other parent too, in agreement with them, under "
 "artt. 316 and 337-ter of the Civil Code."
@@ -1264,6 +1393,22 @@ msgstr ""
 #: templates/allauth/layouts/manage.html:34 templates/cotton/navbar.html:31
 #: templates/cotton/navbar.html:69
 msgid "Sign out"
+msgstr ""
+
+#: templates/cotton/footer.html:13 templates/events/recover-sent.html:32
+msgid "Contact us"
+msgstr ""
+
+#: templates/cotton/footer.html:16 templates/pages/info.html:11
+msgid "Info and contacts"
+msgstr ""
+
+#: templates/cotton/footer.html:20 templates/cotton/footer.html:27
+msgid "Statute"
+msgstr ""
+
+#: templates/cotton/footer.html:36
+msgid "Website"
 msgstr ""
 
 #: templates/cotton/navbar.html:23 templates/cotton/navbar.html:53
@@ -1681,11 +1826,6 @@ msgid ""
 "have passed. Write to us and we will look it up."
 msgstr ""
 
-#: templates/events/recover-sent.html:32 templates/home.html:147
-#: templates/intake/base-intake.html:65
-msgid "Contact us"
-msgstr ""
-
 #: templates/events/recover.html:20
 msgid "This link has expired"
 msgstr ""
@@ -1746,14 +1886,6 @@ msgstr ""
 
 #: templates/home.html:91
 msgid "Archived events"
-msgstr ""
-
-#: templates/home.html:150 templates/pages/info.html:11
-msgid "Info and contacts"
-msgstr ""
-
-#: templates/home.html:157 templates/intake/base-intake.html:71
-msgid "Statute"
 msgstr ""
 
 #: templates/intake/base-intake.html:36
@@ -1970,22 +2102,22 @@ msgid ""
 "refer to."
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:9
+#: templates/intake/partials/privacy-partial.html:12
 msgid "Data controller"
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:11
+#: templates/intake/partials/privacy-partial.html:14
 #, python-format
 msgid ""
 "The controller is %(name)s, %(street)s, %(postcode)s %(city)s, email "
 "%(email)s."
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:13
+#: templates/intake/partials/privacy-partial.html:16
 msgid "Purpose and legal basis"
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:15
+#: templates/intake/partials/privacy-partial.html:18
 msgid ""
 "Personal data (identity, residence, contact details, tax code) are given "
 "when applying and are processed, without further consent and in accordance "
@@ -1996,18 +2128,18 @@ msgid ""
 "GDPR)."
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:18
+#: templates/intake/partials/privacy-partial.html:21
 msgid ""
 "Any health information is discussed orally so the activity can be tailored "
 "to the member; no diagnosis or medical record is collected on paper or "
 "through this form."
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:20
+#: templates/intake/partials/privacy-partial.html:23
 msgid "Images"
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:22
+#: templates/intake/partials/privacy-partial.html:25
 msgid ""
 "Images are processed only where consent is given (art. 6(a) GDPR), by the "
 "person concerned if of age, or by those holding parental responsibility. "
@@ -2015,11 +2147,11 @@ msgid ""
 "provided for by the statute."
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:24
+#: templates/intake/partials/privacy-partial.html:27
 msgid "Recipients"
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:26
+#: templates/intake/partials/privacy-partial.html:29
 msgid ""
 "Data may be shared with parties the association must involve by law "
 "(accountant, insurer, system administrator) and with people or bodies whose "
@@ -2028,22 +2160,22 @@ msgid ""
 "28 GDPR where required."
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:28
+#: templates/intake/partials/privacy-partial.html:31
 msgid "Retention"
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:30
+#: templates/intake/partials/privacy-partial.html:33
 msgid ""
 "Data are used until membership ends. After that, only what legal, accounting "
 "or tax obligations require is kept, and the name remains in the members' "
 "register held by the association as a historical record."
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:32
+#: templates/intake/partials/privacy-partial.html:35
 msgid "Your rights"
 msgstr ""
 
-#: templates/intake/partials/privacy-partial.html:34
+#: templates/intake/partials/privacy-partial.html:37
 msgid ""
 "You may at any time ask for access, rectification, erasure, restriction, "
 "portability, or object to processing (artt. 15-21 GDPR), by writing to the "
@@ -2128,19 +2260,20 @@ msgid ""
 "network address of the signature are recorded with it."
 msgstr ""
 
-#: templates/intake/partials/statute-partial.html:4
+#: templates/intake/partials/statute-partial.html:7
 #, python-format
 msgid ""
 "By applying you declare that you accept the statute of %(name)s and share "
 "its institutional purposes."
 msgstr ""
 
-#: templates/intake/partials/statute-partial.html:7
+#: templates/intake/partials/statute-partial.html:10
 #, python-format
 msgid "You also undertake to pay the annual membership fee of € %(fee)s."
 msgstr ""
 
-#: templates/intake/partials/statute-partial.html:13
+#: templates/intake/partials/statute-partial.html:17
+#: templates/pages/info.html:51
 msgid "Read the statute"
 msgstr ""
 
@@ -2262,7 +2395,7 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
-#: templates/pages/info.html:45 templates/pages/info.html:51
+#: templates/pages/info.html:45
 msgid "Download the statute"
 msgstr ""
 
