@@ -42,7 +42,7 @@ dall'associazione.
 
     Associazione, moduli, eventi, check-in, soci e permessi.
 
-    [:octicons-arrow-right-24: Costruttore di Moduli](admin-guide/form-builder.md)
+    [:octicons-arrow-right-24: Associazione](admin-guide/association.md)
 
 -   :material-git:{ .lg .middle } __Open Source__
 

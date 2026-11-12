@@ -39,7 +39,7 @@ organisation.
 
     Association, forms, events, check-in, members and permissions.
 
-    [:octicons-arrow-right-24: Form Builder](admin-guide/form-builder.md)
+    [:octicons-arrow-right-24: Association](admin-guide/association.md)
 
 -   :material-git:{ .lg .middle } __Open Source__
 
