@@ -1,6 +1,6 @@
 procs:
   web:
-    cmd: [just, local]
+    shell: just local "${PORT:-8000}"
   worker:
     cmd: [uv, run, python, manage.py, qcluster]
   # SMTP on 1025 to match EMAIL_PORT, inbox at http://localhost:8025

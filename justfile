@@ -172,12 +172,12 @@ update_comuni:
 # ---------- development ----------
 
 [group('development')]
-@local:
-    uv run python manage.py tailwind runserver
+@local port="8000":
+    uv run python manage.py tailwind runserver {{ port }}
 
 [group('development')]
-@serve:
-    mprocs -c mprocs-local.yaml
+@serve port="8000":
+    PORT={{ port }} mprocs -c mprocs-local.yaml
 
 # The mail pane of `just serve`. Wrapped only so a missing binary says why the
 # pane went away; installing it is the developer's call, not this recipe's.
